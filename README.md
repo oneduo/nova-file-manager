@@ -166,3 +166,18 @@ FileManager::make(__('Avatar'), 'avatar')->storeDisk('avatar_disk')
 See also the list of [contributors](https://github.com/bbs-lab/nova-file-manager/contributors) who
 participated in this project.
 
+## Changelog
+
+Please see [CHANGELOG](CHANGELOG.md) for more information what has changed recently.
+
+## Security
+
+If you discover any security related issues, please email paris@big-boss-studio.com instead of using the issue tracker.
+
+## Contributing
+
+Please see [CONTRIBUTING](CONTRIBUTING.md) for details.
+
+## License
+
+The MIT License (MIT). Please see [License File](LICENSE.md) for more information.
