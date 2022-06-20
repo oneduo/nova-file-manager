@@ -26,6 +26,8 @@ A file manager tool and field for Laravel Nova. Beautifully designed, and custom
 🔧 Various customization and configuration options
 </p>
 
+<img src="./docs/preview.png"/>
+
 ## Table of Contents
 
 - [Getting Started](#getting_started)
@@ -33,7 +35,7 @@ A file manager tool and field for Laravel Nova. Beautifully designed, and custom
 - [Configuration](#configuration-file)
 - [Contributing](../CONTRIBUTING.md)
 - [Authors](#authors)
-
+- [Screenshots](#screenshots)
 ## Getting Started <a name = "getting_started"></a>
 
 ### Prerequisites
@@ -165,6 +167,13 @@ FileManager::make(__('Avatar'), 'avatar')->storeDisk('avatar_disk')
 
 See also the list of [contributors](https://github.com/bbs-lab/nova-file-manager/contributors) who
 participated in this project.
+
+## Screenshots <a name= "screenshots"></a>
+
+<img src="./docs/preview.gif"/>
+
+You can find more screenshots in the `docs` directory.
+
 
 ## Changelog
 
