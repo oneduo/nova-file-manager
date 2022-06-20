@@ -1,0 +1,9 @@
+{
+  "NovaFileManagerMeta::mime": "Mime type",
+  "NovaFileManagerMeta::lastModifiedAt": "Last modified",
+  "NovaFileManagerMeta::type": "Type",
+  "NovaFileManagerMeta::width": "Width",
+  "NovaFileManagerMeta::height": "Height",
+  "NovaFileManagerMeta::aspectRatio": "Aspect ratio",
+  "NovaFileManager.title": "File Manager"
+}
