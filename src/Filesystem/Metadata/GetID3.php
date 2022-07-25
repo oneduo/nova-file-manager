@@ -1,4 +1,6 @@
-<?php /** @noinspection ALL */
+<?php
+
+/** @noinspection ALL */
 
 declare(strict_types=1);
 
@@ -14,7 +16,6 @@ class GetID3 extends BaseGetID3
      * @param  string  $filename
      * @param  int  $filesize
      * @param  resource  $fp
-     *
      * @return bool
      *
      * @throws getid3_exception
@@ -33,7 +34,7 @@ class GetID3 extends BaseGetID3
 
             // init result array and set parameters
             $this->filename = $filename;
-            $this->info = array();
+            $this->info = [];
             $this->info['GETID3_VERSION'] = $this->version();
             $this->info['php_memory_limit'] = (($this->memory_limit > 0) ? $this->memory_limit : false);
 
@@ -53,7 +54,7 @@ class GetID3 extends BaseGetID3
                     'rb'))) {
                 // great
             } else {
-                $errormessagelist = array();
+                $errormessagelist = [];
                 if (!is_readable($filename)) {
                     $errormessagelist[] = '!is_readable';
                 }
@@ -66,6 +67,7 @@ class GetID3 extends BaseGetID3
                 if (empty($errormessagelist)) {
                     $errormessagelist[] = 'fopen failed';
                 }
+
                 throw new getid3_exception('Could not open "'.$filename.'" ('.implode('; ', $errormessagelist).')');
             }
 
@@ -84,10 +86,10 @@ class GetID3 extends BaseGetID3
             $this->info['fileformat'] = '';                // filled in later
             $this->info['audio']['dataformat'] = '';                // filled in later, unset if not used
             $this->info['video']['dataformat'] = '';                // filled in later, unset if not used
-            $this->info['tags'] = array();           // filled in later, unset if not used
-            $this->info['error'] = array();           // filled in later, unset if not used
-            $this->info['warning'] = array();           // filled in later, unset if not used
-            $this->info['comments'] = array();           // filled in later, unset if not used
+            $this->info['tags'] = [];           // filled in later, unset if not used
+            $this->info['error'] = [];           // filled in later, unset if not used
+            $this->info['warning'] = [];           // filled in later, unset if not used
+            $this->info['comments'] = [];           // filled in later, unset if not used
             $this->info['encoding'] = $this->encoding;   // required by id3v2 and iso modules - can be unset at the end if desired
 
             // option_max_2gb_check
@@ -104,10 +106,12 @@ class GetID3 extends BaseGetID3
                     if ($real_filesize === false) {
                         unset($this->info['filesize']);
                         fclose($this->fp);
+
                         throw new getid3_exception('Unable to determine actual filesize. File is most likely larger than '.round(PHP_INT_MAX / 1073741824).'GB and is not supported by PHP.');
                     } elseif (getid3_lib::intValueSupported($real_filesize)) {
                         unset($this->info['filesize']);
                         fclose($this->fp);
+
                         throw new getid3_exception('PHP seems to think the file is larger than '.round(PHP_INT_MAX / 1073741824).'GB, but filesystem reports it as '.number_format($real_filesize / 1073741824,
                                 3).'GB, please report to info@getid3.org');
                     }
@@ -118,10 +122,10 @@ class GetID3 extends BaseGetID3
             }
 
             return true;
-
         } catch (Exception $e) {
             $this->error($e->getMessage());
         }
+
         return false;
     }
 }

@@ -1,52 +1,64 @@
 {
-  "name": "bbs-lab/nova-file-manager",
-  "description": "A handy file manager tool for Laravel Nova",
-  "keywords": [
-    "laravel",
-    "nova",
-    "file",
-    "manager",
-    "tool",
-    "multiple",
-    "filesystem",
-    "disks"
-  ],
-  "license": "MIT",
-  "authors": [
-    {
-      "name": "Charaf Rezrazi",
-      "email": "charaf@big-boss-studio.com"
+    "name" : "bbs-lab/nova-file-manager",
+    "description" : "A handy file manager tool for Laravel Nova",
+    "keywords" : [
+        "laravel",
+        "nova",
+        "file",
+        "manager",
+        "tool",
+        "multiple",
+        "filesystem",
+        "disks"
+    ],
+    "license" : "MIT",
+    "authors" : [
+        {
+            "name" : "Charaf Rezrazi",
+            "email" : "charaf@big-boss-studio.com"
+        },
+        {
+            "name" : "Mikaël Popowicz",
+            "email" : "mpopowicz@big-boss-studio.com"
+        }
+    ],
+    "require" : {
+        "php" : "^8.0",
+        "james-heinrich/getid3" : "^1.9",
+        "pion/laravel-chunk-upload" : "^1.5",
+        "laravel/nova" : "^4.0",
+        "ext-json" : "*"
     },
-    {
-      "name": "Mikaël Popowicz",
-      "email": "mpopowicz@big-boss-studio.com"
-    }
-  ],
-  "require": {
-    "php": "^8.0",
-    "james-heinrich/getid3": "^1.9",
-    "pion/laravel-chunk-upload": "^1.5",
-    "laravel/nova": "^4.0",
-    "ext-json": "*"
-  },
-  "require-dev": {
-    "spatie/laravel-ray": "^1.29"
-  },
-  "autoload": {
-    "psr-4": {
-      "BBSLab\\NovaFileManager\\": "src/"
-    }
-  },
-  "extra": {
-    "laravel": {
-      "providers": [
-        "BBSLab\\NovaFileManager\\ToolServiceProvider"
-      ]
-    }
-  },
-  "config": {
-    "sort-packages": true
-  },
-  "minimum-stability": "dev",
-  "prefer-stable": true
+    "require-dev" : {
+        "laravel/pint" : "^0.1.7",
+        "spatie/laravel-ray" : "^1.29"
+    },
+    "autoload" : {
+        "psr-4" : {
+            "BBSLab\\NovaFileManager\\" : "src/"
+        }
+    },
+    "extra" : {
+        "laravel" : {
+            "providers" : [
+                "BBSLab\\NovaFileManager\\ToolServiceProvider"
+            ]
+        }
+    },
+    "scripts" : {
+        "pint" : [
+            "./vendor/bin/pint"
+        ]
+    },
+    "config" : {
+        "sort-packages" : true
+    },
+    "repositories" : [
+        {
+            "type" : "composer",
+            "url" : "https://nova.laravel.com"
+        }
+    ],
+    "minimum-stability" : "dev",
+    "prefer-stable" : true
 }

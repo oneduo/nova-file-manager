@@ -26,15 +26,15 @@ class ToolServiceProvider extends ServiceProvider
             $this->routes();
         });
 
-        $this->loadTranslationsFrom(__DIR__ . '/../resources/lang', 'nova-file-manager');
-        $this->mergeConfigFrom(__DIR__ . '/../config/nova-file-manager.php', 'nova-file-manager');
+        $this->loadTranslationsFrom(__DIR__.'/../resources/lang', 'nova-file-manager');
+        $this->mergeConfigFrom(__DIR__.'/../config/nova-file-manager.php', 'nova-file-manager');
 
         $this->publishes([
-            __DIR__ . '/../config/nova-file-manager.php' => config_path('nova-file-manager.php'),
+            __DIR__.'/../config/nova-file-manager.php' => config_path('nova-file-manager.php'),
         ], 'config');
 
         Nova::serving(static function (ServingNova $event) {
-            Nova::translations(__DIR__ . '/../lang/en.json');
+            Nova::translations(__DIR__.'/../lang/en.json');
         });
 
         Inertia::version(static function () {

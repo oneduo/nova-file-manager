@@ -15,6 +15,7 @@ use League\Flysystem\UnableToRetrieveMetadata;
 abstract class Entity implements Arrayable
 {
     protected array $data = [];
+
     protected Filesystem $fileSystem;
 
     public function __construct(
@@ -133,5 +134,4 @@ abstract class Entity implements Arrayable
     }
 
     abstract public function meta(): array;
-
 }

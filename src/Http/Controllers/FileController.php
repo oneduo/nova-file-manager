@@ -10,7 +10,6 @@ use BBSLab\NovaFileManager\Events\FileRenamed;
 use BBSLab\NovaFileManager\Http\Requests\DeleteFileRequest;
 use BBSLab\NovaFileManager\Http\Requests\DownloadFileRequest;
 use BBSLab\NovaFileManager\Http\Requests\RenameFileRequest;
-use BBSLab\NovaFileManager\Http\Requests\RenameFolderRequest;
 use BBSLab\NovaFileManager\Http\Requests\UploadRequest;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Routing\Controller;
@@ -39,7 +38,7 @@ class FileController extends Controller
         if (!$result) {
             return response()->json(
                 [
-                    'error' => __('Could not rename file !')
+                    'error' => __('Could not rename file !'),
                 ],
                 Response::HTTP_UNPROCESSABLE_ENTITY
             );
@@ -48,7 +47,7 @@ class FileController extends Controller
         event(new FileRenamed($manager->disk, $oldPath, $newPath));
 
         return response()->json([
-            'message' => __('File renamed successfully.')
+            'message' => __('File renamed successfully.'),
         ]);
     }
 
@@ -63,7 +62,7 @@ class FileController extends Controller
         if (!$result) {
             return response()->json(
                 [
-                    'error' => __('Could not delete file !')
+                    'error' => __('Could not delete file !'),
                 ],
                 Response::HTTP_UNPROCESSABLE_ENTITY
             );
@@ -72,7 +71,7 @@ class FileController extends Controller
         event(new FileDeleted($manager->disk, $path));
 
         return response()->json([
-            'message' => __('File deleted successfully.')
+            'message' => __('File deleted successfully.'),
         ]);
     }
 
@@ -80,7 +79,6 @@ class FileController extends Controller
     {
         $disk = $request->get('disk');
         $path = $request->get('path');
-
 
         return response()->download(Storage::disk($disk)->path($path));
     }

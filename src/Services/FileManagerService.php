@@ -87,8 +87,8 @@ class FileManagerService implements FileManagerContract
     public function omitHiddenFilesAndDirectories(): void
     {
         $this->filterCallbacks[] = $this->shouldShowHiddenFiles
-            ? static fn() => true
-            : static fn(string $path) => !str($path)->startsWith('.');
+            ? static fn () => true
+            : static fn (string $path) => !str($path)->startsWith('.');
     }
 
     public function files(): Collection
@@ -96,7 +96,7 @@ class FileManagerService implements FileManagerContract
         $this->omitHiddenFilesAndDirectories();
 
         return collect($this->fileSystem->files($this->path))
-            ->filter(fn(string $file) => $this->applyFilterCallbacks($file));
+            ->filter(fn (string $file) => $this->applyFilterCallbacks($file));
     }
 
     public function directories(): Collection
@@ -104,8 +104,8 @@ class FileManagerService implements FileManagerContract
         $this->omitHiddenFilesAndDirectories();
 
         return collect($this->fileSystem->directories($this->path))
-            ->filter(fn(string $file) => $this->applyFilterCallbacks($file))
-            ->map(fn(string $path) => [
+            ->filter(fn (string $file) => $this->applyFilterCallbacks($file))
+            ->map(fn (string $path) => [
                 'id' => Str::random(6),
                 'path' => str($path)->start(DIRECTORY_SEPARATOR),
                 'name' => pathinfo($path, PATHINFO_BASENAME),
@@ -114,10 +114,9 @@ class FileManagerService implements FileManagerContract
             ->values();
     }
 
-
     public function mapIntoEntity(): Closure
     {
-        return fn(string $path) => $this->makeEntity($path);
+        return fn (string $path) => $this->makeEntity($path);
     }
 
     public function makeEntity(string $path)
@@ -150,12 +149,12 @@ class FileManagerService implements FileManagerContract
         str($this->path)
             ->ltrim(DIRECTORY_SEPARATOR)
             ->explode(DIRECTORY_SEPARATOR)
-            ->filter(fn(string $item) => !blank($item))
+            ->filter(fn (string $item) => !blank($item))
             ->each(function (string $item) use ($paths) {
                 return $paths->push($paths->last().DIRECTORY_SEPARATOR.$item);
             });
 
-        return $paths->map(fn(string $item) => [
+        return $paths->map(fn (string $item) => [
             'id' => Str::random(6),
             'path' => $item,
             'name' => str($item)->afterLast('/'),

@@ -1,9 +1,11 @@
 <?php
 
+declare(strict_types=1);
+
 namespace BBSLab\NovaFileManager\Http\Middleware;
 
-use Laravel\Nova\Nova;
 use BBSLab\NovaFileManager\NovaFileManager;
+use Laravel\Nova\Nova;
 
 class Authorize
 {

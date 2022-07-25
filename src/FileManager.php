@@ -15,6 +15,7 @@ class FileManager extends Field
     public $component = 'nova-file-manager-field';
 
     public string $diskColumn;
+
     public Closure $storageCallback;
 
     public function __construct($name, $attribute = null, Closure $storageCallback = null)
@@ -69,16 +70,16 @@ class FileManager extends Field
                 string $attribute,
                 string $requestAttribute
             ) {
-                $value = $request->input($requestAttribute);
+            $value = $request->input($requestAttribute);
 
-                $payload = json_decode($value, true, 512, JSON_THROW_ON_ERROR);
+            $payload = json_decode($value, true, 512, JSON_THROW_ON_ERROR);
 
-                $values = [
-                    $attribute => $payload['path'],
-                ];
+            $values = [
+                $attribute => $payload['path'],
+            ];
 
-                return $this->mergeExtraStorageColumns($payload, $values);
-            };
+            return $this->mergeExtraStorageColumns($payload, $values);
+        };
     }
 
     protected function mergeExtraStorageColumns(array $payload, array $attributes): array
@@ -104,7 +105,6 @@ class FileManager extends Field
         }
 
         $manager = FileManagerService::make();
-
 
         if (isset($this->diskColumn)) {
             $disk = $resource->{$this->diskColumn};

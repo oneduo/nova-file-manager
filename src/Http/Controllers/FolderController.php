@@ -21,7 +21,7 @@ class FolderController extends Controller
     {
         $result = $request->manager()->mkdir(
             $path = trim($request->get('path'))
-        );;
+        );
 
         if (!$result) {
             return response()->json(

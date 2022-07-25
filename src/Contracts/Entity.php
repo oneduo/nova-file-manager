@@ -6,5 +6,4 @@ namespace BBSLab\NovaFileManager\Contracts;
 
 interface Entity
 {
-
 }
