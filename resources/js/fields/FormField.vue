@@ -1,9 +1,5 @@
 <template>
-  <DefaultField
-    :field="field"
-    :errors="errors"
-    :show-help-text="showHelpText"
-  >
+  <DefaultField :field="field" :errors="errors" :show-help-text="showHelpText">
     <template #field>
       <div v-if="!!file" class="mb-6">
         <div class="w-full mb-3 flex items-center space-x-2">
@@ -139,8 +135,8 @@ import { FormField, HandlesValidationErrors } from 'laravel-nova'
 import { mapActions, mapMutations, mapState } from 'vuex'
 
 export default {
-  name: 'FormField',
   mixins: [FormField, HandlesValidationErrors],
+
   components: {
     Browser,
     CloudIcon,
@@ -151,15 +147,19 @@ export default {
     TransitionChild,
     TransitionRoot,
   },
-  props: ['resourceName', 'resourceId', 'field', 'showHelpText'],
+
+  props: ['resourceName', 'resourceId', 'field'],
+
   mounted() {
     this.setIsFieldMode(true)
     this.init()
     this.setValue(this.field?.value?.file)
   },
+
   beforeUnmount() {
     this.destroy()
   },
+
   computed: {
     ...mapState('nova-file-manager', ['darkMode', 'disk', 'fieldValue']),
     isOpen() {
@@ -185,6 +185,7 @@ export default {
       return this.field.maxWidth || 320
     },
   },
+
   methods: {
     ...mapActions('nova-file-manager', ['openModal', 'closeModal']),
     ...mapMutations('nova-file-manager', ['init', 'destroy', 'setSelectedFile', 'setIsFieldMode', 'setValue']),
