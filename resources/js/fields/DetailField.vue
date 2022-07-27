@@ -36,7 +36,28 @@
           <DocumentIcon class="h-8 w-8"/>
         </div>
         <div class="w-full mt-3 sm">
-          {{ field.value?.file.name }}
+          <button
+            v-if="field.value?.file.name && field.copyable"
+            @click.prevent="copy"
+            type="button"
+            class="flex items-center hover:bg-gray-50 dark:hover:bg-gray-900 text-gray-500 dark:text-gray-400 hover:text-gray-500 active:text-gray-600 rounded-lg px-1 -mx-1"
+            v-tooltip="__('Copy to clipboard')"
+          >
+          <span ref="theFieldValue">
+            {{ field.value?.file.name }}
+          </span>
+
+            <Icon
+              class="text-gray-500 dark:text-gray-400 ml-1"
+              :solid="true"
+              type="clipboard"
+              width="14"
+            />
+          </button>
+
+          <p v-else>
+            {{ field.value?.file.name }}
+          </p>
         </div>
       </div>
     </template>
@@ -44,13 +65,16 @@
 </template>
 
 <script>
+import { CopiesToClipboard } from 'laravel-nova'
 import { DocumentIcon } from '@heroicons/vue/outline'
 import { mapState } from 'vuex'
 import ImageLoader from '@/components/ImageLoader'
 
 export default {
-  name: 'DetailField',
+  mixins: [CopiesToClipboard],
+
   components: { DocumentIcon, ImageLoader },
+
   props: ['field', 'index'],
 
   computed: {
@@ -68,7 +92,13 @@ export default {
     maxWidth() {
       return this.field.maxWidth || 320
     },
-  }
+  },
+
+  methods: {
+    copy() {
+      this.copyValueToClipboard(this.field.value?.file.name)
+    },
+  },
 }
 </script>
 <style scoped>

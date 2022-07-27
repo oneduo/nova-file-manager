@@ -21,11 +21,20 @@ class FileManager extends Field
 
     public Closure $storageCallback;
 
+    public bool $copyable = false;
+
     public function __construct($name, $attribute = null, Closure $storageCallback = null)
     {
         parent::__construct($name, $attribute);
 
         $this->prepareStorageCallback($storageCallback);
+    }
+
+    public function copyable(): static
+    {
+        $this->copyable = true;
+
+        return $this;
     }
 
     public function storeDisk(string $column): static
@@ -135,6 +144,12 @@ class FileManager extends Field
 
     public function jsonSerialize(): array
     {
-        return array_merge(parent::jsonSerialize(), $this->imageAttributes());
+        return array_merge(
+            parent::jsonSerialize(),
+            $this->imageAttributes(),
+            [
+                'copyable' => $this->copyable,
+            ]
+        );
     }
 }
