@@ -75,7 +75,13 @@ abstract class Entity implements Arrayable
     protected function mime(): string
     {
         try {
-            return $this->fileSystem->mimeType($this->path);
+            $type = $this->fileSystem->mimeType($this->path);
+
+            if ($type === false) {
+                throw UnableToRetrieveMetadata::mimeType($this->path);
+            }
+
+            return $type;
         } catch (UnableToRetrieveMetadata $e) {
             report($e);
 

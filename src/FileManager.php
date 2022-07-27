@@ -8,10 +8,13 @@ use BBSLab\NovaFileManager\Services\FileManagerService;
 use Closure;
 use Illuminate\Database\Eloquent\Model;
 use Laravel\Nova\Fields\Field;
+use Laravel\Nova\Fields\PresentsImages;
 use Laravel\Nova\Http\Requests\NovaRequest;
 
 class FileManager extends Field
 {
+    use PresentsImages;
+
     public $component = 'nova-file-manager-field';
 
     public string $diskColumn;
@@ -128,5 +131,10 @@ class FileManager extends Field
                 $this->value = call_user_func($this->resolveCallback, $value, $resource, $attribute);
             });
         }
+    }
+
+    public function jsonSerialize(): array
+    {
+        return array_merge(parent::jsonSerialize(), $this->imageAttributes());
     }
 }

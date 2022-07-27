@@ -5,30 +5,48 @@
     :show-help-text="showHelpText"
   >
     <template #field>
-      <div
-        v-if="!!file"
-        class="block w-full overflow-hidden rounded-lg border border-gray-300 dark:border-gray-700 max-w-xs mb-2"
-      >
-        <img
-          v-if="file.type === 'image'"
-          :src="file.url"
-          alt=""
-          class="rounded-md"
-        />
-        <template v-else-if="file.type === 'video'">
-          <div class="relative">
-            <video class="rounded-md">
-              <source :src="file.url" />
-              Sorry, your browser doesn't support embedded videos.
-            </video>
-          </div>
-        </template>
-        <div
-          v-else
-          class="flex items-center justify-center h-full border-gray-500"
-        >
-          <DocumentIcon class="h-8 w-8" />
+      <div v-if="!!file" class="mb-6">
+        <div class="w-full mb-3 flex items-center space-x-2">
+          <span
+            class="inline-flex items-center px-2 py-0.5 rounded-full text-xs font-medium bg-gray-100 dark:bg-gray-900 text-gray-800 dark:text-gray-400"
+          >
+            {{ disk || field.value?.disk }}
+          </span>
+          <span
+            class="inline-flex items-center px-2 py-0.5 rounded-full text-xs font-medium bg-gray-100 dark:bg-gray-900 text-gray-800 dark:text-gray-400"
+          >
+            {{ file.size }}
+          </span>
         </div>
+        <template v-if="isImage">
+          <ImageLoader
+            :src="file.url"
+            :maxWidth="maxWidth"
+            :rounded="rounded"
+            @missing="value => (missing = value)"
+          />
+        </template>
+        <template v-else-if="isVideo">
+          <video
+            class="bg-white dark:bg-gray-800 rounded-lg shadow relative relative border border-lg border-gray-300 dark:border-gray-600 overflow-hidden px-0 py-0"
+            controls="controls"
+            :style="{ maxWidth: `${maxWidth}px`}"
+          >
+            <source :src="file.url"/>
+            Sorry, your browser doesn't support embedded videos.
+          </video>
+        </template>
+        <div v-else class="flex items-center justify-center h-full border-gray-500">
+          <DocumentIcon class="h-8 w-8"/>
+        </div>
+
+        <p class="mt-3 flex items-center text-sm">
+          <DeleteButton
+            @click="confirmRemoval"
+          >
+            <span class="class ml-2 mt-1"> {{ __('Remove') }} </span>
+          </DeleteButton>
+        </p>
       </div>
       <div class="nova-file-manager">
         <div :class="darkMode && 'dark'">
@@ -86,7 +104,7 @@
         leave-to="opacity-0"
         class="z-[60]"
       >
-        <div class="fixed inset-0 bg-gray-800/20 backdrop-blur-sm transition-opacity" />
+        <div class="fixed inset-0 bg-gray-800/20 backdrop-blur-sm transition-opacity"/>
       </TransitionChild>
 
       <div :class="`fixed z-[60] inset-0 overflow-y-auto w-full ${darkMode && 'dark'}`">
@@ -103,7 +121,7 @@
             <DialogPanel
               class="relative bg-transparent rounded-lg overflow-hidden shadow-xl transition-all w-full border border-gray-500 dark:border-gray-600 md:m-8 m-0"
             >
-              <Browser class="w-full" />
+              <Browser class="w-full"/>
             </DialogPanel>
           </TransitionChild>
         </div>
@@ -116,6 +134,7 @@
 import { CloudIcon, DocumentIcon } from '@heroicons/vue/outline'
 import { Dialog, DialogPanel, TransitionChild, TransitionRoot } from '@headlessui/vue'
 import Browser from '@/components/Browser'
+import ImageLoader from '@/components/ImageLoader'
 import { FormField, HandlesValidationErrors } from 'laravel-nova'
 import { mapActions, mapMutations, mapState } from 'vuex'
 
@@ -128,6 +147,7 @@ export default {
     DocumentIcon,
     Dialog,
     DialogPanel,
+    ImageLoader,
     TransitionChild,
     TransitionRoot,
   },
@@ -135,6 +155,7 @@ export default {
   mounted() {
     this.setIsFieldMode(true)
     this.init()
+    this.setValue(this.field?.value?.file)
   },
   beforeUnmount() {
     this.destroy()
@@ -145,24 +166,42 @@ export default {
       return this.$store.getters['nova-file-manager/allModals'].includes('browser')
     },
     selectedPath() {
-      return this.fieldValue?.path || this.field?.value?.file?.path
+      return this.fieldValue?.path
     },
     file() {
-      return this.fieldValue || this.field?.value?.file
+      return this.fieldValue
+    },
+    isImage() {
+      return this.file.type === 'image'
+    },
+    isVideo() {
+      return this.file.type === 'video'
+    },
+    rounded() {
+      return this.field.rounded
+    },
+
+    maxWidth() {
+      return this.field.maxWidth || 320
     },
   },
   methods: {
     ...mapActions('nova-file-manager', ['openModal', 'closeModal']),
-    ...mapMutations('nova-file-manager', ['init', 'destroy', 'setSelectedFile', 'setIsFieldMode']),
+    ...mapMutations('nova-file-manager', ['init', 'destroy', 'setSelectedFile', 'setIsFieldMode', 'setValue']),
     fill(formData) {
-      formData.append(
-        this.field.attribute,
-        JSON.stringify({
-          disk: this.disk,
-          path: this.selectedPath,
-        }),
-      )
+      if (this.selectedPath) {
+        formData.append(
+          this.field.attribute,
+          JSON.stringify({
+            disk: this.disk,
+            path: this.selectedPath,
+          }),
+        )
+      }
     },
+    confirmRemoval() {
+      this.setValue(null)
+    }
   },
 }
 </script>
