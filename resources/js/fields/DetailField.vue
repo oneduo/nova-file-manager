@@ -2,18 +2,7 @@
   <PanelItem :index="index" :field="field">
     <template v-slot:value v-if="field.value?.file">
       <div>
-        <div class="w-full mb-3 flex items-center space-x-2">
-        <span
-          class="inline-flex items-center px-2 py-0.5 rounded-full text-xs font-medium bg-gray-100 dark:bg-gray-900 text-gray-800 dark:text-gray-400"
-        >
-          {{ field.value?.disk }}
-        </span
-        >
-          <span
-            class="inline-flex items-center px-2 py-0.5 rounded-full text-xs font-medium bg-gray-100 dark:bg-gray-900 text-gray-800 dark:text-gray-400"
-          >{{ field.value?.file.size }}</span
-          >
-        </div>
+
         <template v-if="isImage">
           <ImageLoader
             :src="field.value?.file.url"
@@ -58,6 +47,18 @@
           <p v-else>
             {{ field.value?.file.name }}
           </p>
+          <div class="w-full mt-3 flex items-center space-x-2">
+        <span
+          class="inline-flex items-center px-2 py-0.5 rounded text-xs font-medium bg-gray-100 dark:bg-gray-900 text-gray-800 dark:text-gray-400"
+        >
+          {{ field.value?.disk }}
+        </span
+        >
+            <span
+              class="inline-flex items-center px-2 py-0.5 rounded text-xs font-medium bg-gray-100 dark:bg-gray-900 text-gray-800 dark:text-gray-400"
+            >{{ field.value?.file.size }}</span
+            >
+          </div>
         </div>
       </div>
     </template>

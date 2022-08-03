@@ -1,7 +1,7 @@
 <template>
   <div class="flex flex-col gap-y-4 pt-4">
-    <div class="flex items-center justify-between">
-      <div class="flex flex-row gap-x-2">
+    <div class="flex items-center justify-between flex-wrap md:flex-nowrap gap-2">
+      <div class="flex flex-row items-center gap-x-2">
         <DiskSelector
           :disk="disk"
           :disks="disks"
@@ -17,6 +17,7 @@
           :set-view="setView"
         />
       </div>
+      <ToolbarSearch keyword="" />
       <div class="flex flex-row gap-x-2">
         <IconButton
           variant="transparent"
@@ -57,6 +58,7 @@ import DiskSelector from '@/components/DiskSelector'
 import PaginationSelector from '@/components/Elements/PaginationSelector'
 import Breadcrumbs from '@/components/Breadcrumbs'
 import IconButton from '@/components/Elements/IconButton'
+import ToolbarSearch from '@/components/Elements/ToolbarSearch'
 import ViewToggle from '@/components/Elements/ViewToggle'
 import UploadModal from '@/components/Modals/UploadModal'
 import CreateFolderModal from '@/components/Modals/CreateFolderModal'
@@ -75,6 +77,7 @@ export default {
     XIcon,
     UploadModal,
     CreateFolderModal,
+    ToolbarSearch,
   },
   methods: {
     ...mapMutations('nova-file-manager', ['setSelectedFile']),

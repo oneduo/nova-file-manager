@@ -2,18 +2,6 @@
   <DefaultField :field="field" :errors="errors" :show-help-text="showHelpText">
     <template #field>
       <div v-if="!!file" class="mb-6">
-        <div class="w-full mb-3 flex items-center space-x-2">
-          <span
-            class="inline-flex items-center px-2 py-0.5 rounded-full text-xs font-medium bg-gray-100 dark:bg-gray-900 text-gray-800 dark:text-gray-400"
-          >
-            {{ disk || field.value?.disk }}
-          </span>
-          <span
-            class="inline-flex items-center px-2 py-0.5 rounded-full text-xs font-medium bg-gray-100 dark:bg-gray-900 text-gray-800 dark:text-gray-400"
-          >
-            {{ file.size }}
-          </span>
-        </div>
         <template v-if="isImage">
           <ImageLoader
             :src="file.url"
@@ -34,6 +22,20 @@
         </template>
         <div v-else class="flex items-center justify-center h-full border-gray-500">
           <DocumentIcon class="h-8 w-8"/>
+        </div>
+        <div class="w-full mt-3 flex items-center space-x-2">
+        <span
+          class="inline-flex items-center px-2 py-0.5 rounded text-xs font-medium bg-gray-100 dark:bg-gray-900 text-gray-800 dark:text-gray-400"
+        >
+          {{ disk || field.value?.disk }}
+        </span
+        >
+          <span
+            class="inline-flex items-center px-2 py-0.5 rounded text-xs font-medium bg-gray-100 dark:bg-gray-900 text-gray-800 dark:text-gray-400"
+          >
+            {{ file.size }}
+          </span
+          >
         </div>
 
         <p class="mt-3 flex items-center text-sm">
