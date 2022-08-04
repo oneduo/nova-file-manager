@@ -7,6 +7,7 @@ namespace BBSLab\NovaFileManager;
 use BBSLab\NovaFileManager\Services\FileManagerService;
 use Closure;
 use Illuminate\Database\Eloquent\Model;
+use JsonException;
 use Laravel\Nova\Fields\Field;
 use Laravel\Nova\Fields\PresentsImages;
 use Laravel\Nova\Http\Requests\NovaRequest;
@@ -84,10 +85,14 @@ class FileManager extends Field
             ) {
             $value = $request->input($requestAttribute);
 
-            $payload = json_decode($value, true, 512, JSON_THROW_ON_ERROR);
+            try {
+                $payload = json_decode($value ?? '', true, 512, JSON_THROW_ON_ERROR);
+            } catch (JsonException) {
+                $payload = [];
+            }
 
             $values = [
-                $attribute => $payload['path'],
+                $attribute => $payload['path'] ?? null,
             ];
 
             return $this->mergeExtraStorageColumns($payload, $values);
@@ -97,7 +102,7 @@ class FileManager extends Field
     protected function mergeExtraStorageColumns(array $payload, array $attributes): array
     {
         if (isset($this->diskColumn)) {
-            $attributes[$this->diskColumn] = $payload['disk'];
+            $attributes[$this->diskColumn] = $payload['disk'] ?? null;
         }
 
         return $attributes;
