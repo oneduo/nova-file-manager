@@ -2,6 +2,7 @@
   <EntityCard
     :file="file"
     :checked="checked"
+    :as="as"
   >
     <img
       :src="file.url"
@@ -22,7 +23,7 @@ export default {
     CheckCircleIcon,
     Sidebar,
   },
-  props: ['file', 'checked'],
+  props: ['file', 'checked', 'as'],
 }
 </script>
 

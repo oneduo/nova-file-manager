@@ -1,13 +1,14 @@
 <template>
-  <span>{{ path }}</span>
+  <span v-if="field.value?.files.length === 1">
+    {{ field.value.files[0].path }}
+  </span>
+  <span v-else>
+    {{ __('NovaFileManager.totalFilesCount', {count: field.value?.files.length}) }}
+  </span>
 </template>
 
 <script setup>
-import { computed } from 'vue'
-
 const props = defineProps({
   field: null,
 })
-
-const path = computed(() => props.field.value?.path ?? null)
 </script>

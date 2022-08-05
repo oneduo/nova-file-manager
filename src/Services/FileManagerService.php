@@ -87,7 +87,7 @@ class FileManagerService implements FileManagerContract
             }
 
             // join words with .* expression
-            $words = implode('.*', $words);
+            $words = implode('.*', array_map(fn(string $word) => preg_quote($word, '/'), $words));
 
             return preg_match("/(.*{$words}.*)/i", $path);
         };

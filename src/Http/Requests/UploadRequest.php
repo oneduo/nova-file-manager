@@ -23,8 +23,13 @@ class UploadRequest extends BaseRequest
         ];
     }
 
-    public function authorize(): bool
+    /**
+     * todo: fix chunk upload validation
+     *
+     * @return string
+     */
+    private function mimes(): string
     {
-        return true;
+        return implode(',', config('nova-file-manager.allowed_mimes'));
     }
 }

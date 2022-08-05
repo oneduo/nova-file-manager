@@ -1,39 +1,38 @@
 <template>
-  <div class="relative w-1/3 mr-auto">
-    <Icon
-      type="search"
-      width="20"
-      class="absolute ml-2 text-gray-400"
-      :style="{ top: '4px' }"
-    />
-
-    <RoundInput
-      class="appearance-none rounded-full h-8 pl-10 w-full bg-gray-100 dark:bg-gray-900 dark:focus:bg-gray-800 focus:bg-white focus:outline-none focus:ring focus:ring-primary-200 dark:focus:ring-gray-600"
-      :placeholder="__('Search')"
-      type="search"
-      :value="keyword"
-      @input="handleChange"
-      spellcheck="false"
-      :aria-label="__('Search')"
+  <div class="relative rounded-md shadow-sm w-full md:w-1/3 md:focus-within:w-full md:duration-500 md:transition-all">
+    <div class="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
+      <SearchIcon class="h-4 w-4 text-gray-400" aria-hidden="true"/>
+    </div>
+    <input
+        type="search"
+        class="rounded-full pr-3 h-9 pl-8 w-full bg-gray-100 focus:dark:bg-gray-700 dark:bg-gray-700/40 dark:focus:bg-gray-800 focus:bg-white focus:outline-none focus:ring-1 focus:ring-blue-500 text-sm placeholder-gray-500 text-gray-500 dark:text-gray-200"
+        :placeholder="__('Search')"
+        :value="search"
+        @input="_search"
     />
   </div>
 </template>
 
 <script>
+import {SearchIcon} from '@heroicons/vue/outline'
+import {mapActions, mapState} from "vuex";
+import debounce from 'lodash/debounce';
+
 export default {
-  props: {
-    keyword: {
-      type: String,
-    },
+  components: {
+    SearchIcon,
+  },
+
+  computed: {
+    ...mapState('nova-file-manager', ['search']),
   },
 
   methods: {
-    /**
-     * Update the field's internal value
-     */
-    handleChange(event) {
-      // TODO: call store
-    },
+    ...mapActions('nova-file-manager', ['setSearch']),
+
+    _search: debounce(function ({target: {value}}) {
+      this.setSearch(value);
+    }, Nova.config('debounce')),
   },
 }
 </script>

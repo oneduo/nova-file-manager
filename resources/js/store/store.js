@@ -1,22 +1,22 @@
-import sanitize from '@/helpers/sanitize'
-import { Errors } from 'form-backend-validation'
-import { darkMode } from '../../../tailwind.config'
 import Resumable from 'resumablejs'
-import maperrors from '@/helpers/maperrors'
+import { Errors } from 'form-backend-validation'
+import sanitize from '@/helpers/sanitize'
+import errors from '@/helpers/errors'
 
 const store = {
   namespaced: true,
   state() {
     return {
-      // browser state
+      // file browser state
       path: null,
       disk: null,
       disks: null,
       page: null,
+      search: null,
       perPage: 15,
       perPageOptions: [5, 15, 30, 50],
 
-      // content
+      // files, directories and other data
       files: null,
       directories: null,
       breadcrumbs: null,
@@ -24,6 +24,9 @@ const store = {
       selectedFile: null,
       fieldValue: null,
       errors: null,
+      selection: [],
+      preview: null,
+      limit: 1,
 
       // status
       ready: false,
@@ -42,6 +45,7 @@ const store = {
     }
   },
   mutations: {
+    // This is the main mutation that is being evaluated when the browser is mounted
     init(state) {
       this.commit('nova-file-manager/detectDarkMode')
       this.commit('nova-file-manager/loadFromLocalStorage')
@@ -50,10 +54,14 @@ const store = {
       state.csrfToken = document.head.querySelector('meta[name="csrf-token"]').content
       state.ready = true
     },
+
+    // This mutation will be evaluated when the browser is unmounted
     destroy(state) {
       state.darkModeObserver?.disconnect()
       state.darkModeObserver = null
     },
+
+    // this cool function will allow us to listen to any color scheme change so as to sync the browser's dark mode with nova's
     detectDarkMode(state) {
       state.darkMode = document.documentElement.classList.contains('dark')
 
@@ -72,24 +80,69 @@ const store = {
         })
       }
     },
-    loadFromLocalStorage() {
-      const keys = ['perPage', 'view', 'disk']
 
-      keys.forEach((key) => {
+    // we save the current state to localStorage, and this handy function allows us to retrieve it
+    loadFromLocalStorage(state) {
+      if (state.isFieldMode) {
+        return
+      }
+
+      // we only remember a few parameters
+      const keysToRetrieve = ['perPage', 'view', 'disk']
+
+      // then we can loop on these keys
+      keysToRetrieve.forEach((key) => {
         const value = window?.localStorage.getItem(`nova-file-manager::${key}`)
 
         if (value) {
+          // and then trigger the corresponding setter mutation
           this.commit(`nova-file-manager/set${key.charAt(0).toUpperCase() + key.slice(1)}`, value)
         }
       })
     },
-    setFromQueryString() {
-      const searchParams = Object.fromEntries(new URLSearchParams(window.location.search).entries())
 
+    // when accessing the browser through a url that contains a query string, we can use this mutation to set the state from the query string
+    setFromQueryString(state) {
+      if (state.isFieldMode) {
+        return
+      }
+
+      // grab all the query strings in the current url
+      const searchParams = Object.fromEntries(
+        new URLSearchParams(window?.location.search).entries(),
+      )
+
+      // loop on each query string
       for (const [key, value] of Object.entries(searchParams)) {
-        this.commit(`nova-file-manager/set${key.charAt(0).toUpperCase() + key.slice(1)}`, value)
+        // if we match one of these keys, we trigger the setter mutation
+        if (['path', 'disk', 'page', 'perPage'].includes(key)) {
+          this.commit(`nova-file-manager/set${key.charAt(0).toUpperCase() + key.slice(1)}`, value)
+        }
+      }
+
+      // a trick to set the path to the root if we go back a level
+      if (!window.location.href.includes('?')) {
+        this.commit('nova-file-manager/setPath', '/')
       }
     },
+
+    selectFile(state, file) {
+      if (state.selection?.length === state.limit) {
+        return
+      }
+
+      state.selection = [file, ...state.selection]
+    },
+
+    deselectFile(state, file) {
+      state.selection = state.selection.filter((_file) => _file.id !== file.id)
+    },
+
+    previewFile(state, file) {
+      state.preview = file
+    },
+
+    // setters
     setIsFieldMode(state, value) {
       state.isFieldMode = value
     },
@@ -144,16 +197,32 @@ const store = {
     setValue(state, value) {
       state.fieldValue = value
     },
-    OPEN: (state, payload) => state.toolModals.unshift(payload),
-    CLOSE: (state, payload) => (state.toolModals = state.toolModals.filter((e) => e !== payload)),
+    setSearch(state, value) {
+      state.search = value?.length ? value : null
+    },
+    setLimit(state, limit) {
+      state.limit = limit
+    },
+    setSelection(state, value) {
+      console.log('setSelection', value)
+      state.selection = value
+    },
+    openModal: (state, payload) => {
+      state.toolModals.unshift(payload)
+    },
+    closeModal: (state, payload) => {
+      state.toolModals = state.toolModals.filter((name) => name !== payload)
+    },
   },
   actions: {
-    setPath({ commit, dispatch }, path) {
+    setPath({ state, commit, dispatch }, path) {
+      dispatch('reset')
       commit('setPath', path)
       dispatch('getData')
       dispatch('updateQueryString', { path })
     },
     setDisk({ commit, dispatch }, disk) {
+      dispatch('reset')
       commit('setDisk', disk)
       dispatch('getData')
       dispatch('updateQueryString', { disk })
@@ -173,6 +242,19 @@ const store = {
     setView({ commit, dispatch }, view) {
       commit('setView', view)
       dispatch('saveToLocalStorage', { view })
+    },
+    setSearch({ commit, dispatch }, search) {
+      commit('setSearch', search)
+      dispatch('getData')
+      dispatch('updateQueryString', { search })
+    },
+    reset({ commit, dispatch }) {
+      const keys = ['page', 'search']
+
+      keys.forEach((key) => {
+        commit(`set${key.charAt(0).toUpperCase() + key.slice(1)}`, null)
+        dispatch(`updateQueryString`, { [key]: null })
+      })
     },
     async getDisks({ commit, state }) {
       commit('setIsFetchingDisks', true)
@@ -203,6 +285,11 @@ const store = {
       commit('setPagination', data.pagination)
 
       commit('setIsFetchingData', false)
+
+      // temporary fix
+      // @see https://github.com/tailwindlabs/headlessui/issues/1319
+      document.documentElement.style.removeProperty('overflow')
+      document.documentElement.style.removeProperty('padding-right')
     },
     async createFolder({ dispatch, state, commit }, path) {
       try {
@@ -219,7 +306,7 @@ const store = {
         dispatch('closeModal', 'createFolder')
         dispatch('getData')
       } catch (error) {
-        commit('setErrors', { createFolder: maperrors(error.response?.data?.errors) })
+        commit('setErrors', { createFolder: errors(error.response?.data?.errors) })
       }
     },
     async renameFolder({ dispatch, state, commit }, { id, oldPath, newPath }) {
@@ -239,7 +326,7 @@ const store = {
         dispatch('closeModal', `renameFolder-${id}`)
         dispatch('getData')
       } catch (error) {
-        commit('setErrors', { renameFolder: maperrors(error.response?.data?.errors) })
+        commit('setErrors', { renameFolder: errors(error.response?.data?.errors) })
       }
     },
     async deleteFolder({ dispatch, state, commit }, { id, path }) {
@@ -257,14 +344,15 @@ const store = {
         dispatch('closeModal', `deleteFolder-${id}`)
         dispatch('getData')
       } catch (error) {
-        commit('setErrors', { renameFolder: maperrors(error.response?.data?.errors) })
+        commit('setErrors', { renameFolder: errors(error.response?.data?.errors) })
       }
     },
+
     async upload({ dispatch, state, commit }, file) {
       commit('setIsUploading', true)
 
       const uploader = new Resumable({
-        chunkSize: 10 * 1024 * 1024,
+        chunkSize: 20 * 1024 * 1024,
         simultaneousUploads: 3,
         testChunks: false,
         throttleProgressCallbacks: 1,
@@ -316,7 +404,7 @@ const store = {
         commit('setSelectedFile', null)
         dispatch('getData')
       } catch (error) {
-        commit('setErrors', { renameFile: maperrors(error.response?.data?.errors) })
+        commit('setErrors', { renameFile: errors(error.response?.data?.errors) })
       }
     },
     async deleteFile({ dispatch, state, commit }, { id, path }) {
@@ -329,19 +417,24 @@ const store = {
         Nova.success(response.data.message)
 
         dispatch('closeModal', `deleteFile-${id}`)
-        commit('setSelectedFile', null)
+        commit('previewFile', null)
         dispatch('getData')
       } catch (error) {
-        commit('setErrors', { deleteFile: maperrors(error.response?.data?.errors) })
+        commit('setErrors', { deleteFile: errors(error.response?.data?.errors) })
       }
     },
-    updateQueryString({}, values) {
-      let searchParams = new URLSearchParams(window.location.search)
-      let page = Nova.app.config.globalProperties.$inertia.page
+    updateQueryString({ state }, values) {
+      if (state.isFieldMode) {
+        return
+      }
+
+      const searchParams = new URLSearchParams(window.location.search)
+
+      const page = Nova.app.config.globalProperties.$inertia.page
 
       for (const [key, value] of Object.entries(values)) {
-        if (value !== null) {
-          searchParams.set(key, value || '')
+        if (value?.length > 0) {
+          searchParams.set(key, value)
         } else {
           searchParams.delete(key)
         }
@@ -350,16 +443,30 @@ const store = {
       if (page.url !== `${window.location.pathname}?${searchParams}`) {
         page.url = `${window.location.pathname}?${searchParams}`
 
-        window.history.pushState(page, '', `${window.location.pathname}?${searchParams}`)
+        const separator = searchParams.toString().length > 0 ? '?' : ''
+
+        window.history.pushState(page, '', `${window.location.pathname}${separator}${searchParams}`)
       }
     },
-    saveToLocalStorage({}, values) {
+
+    saveToLocalStorage({ state }, values) {
+      if (state.isFieldMode) {
+        return
+      }
+
       for (const [key, value] of Object.entries(values)) {
         window?.localStorage.setItem(`nova-file-manager::${key}`, value)
       }
     },
-    openModal: ({ commit }, payload) => commit('OPEN', payload),
-    closeModal: ({ commit }, payload) => commit('CLOSE', payload),
+
+    openModal: ({ commit }, payload) => {
+      commit('openModal', payload)
+    },
+
+    closeModal: ({ commit }, payload) => {
+      commit('closeModal', payload)
+    },
+
     closeBrowser: ({ state, dispatch, commit }) => {
       commit('setValue', state.selectedFile)
       commit('setSelectedFile', null)
@@ -369,6 +476,10 @@ const store = {
   getters: {
     active: (state) => (state.toolModals.length > 0 ? state.toolModals[0] : null),
     allModals: (state) => state.toolModals,
+    selection: (state) => state.selection,
+    isFileSelected: (state) => (file) => {
+      return state.selection.find((item) => item.id === file.id)
+    },
   },
 }
 

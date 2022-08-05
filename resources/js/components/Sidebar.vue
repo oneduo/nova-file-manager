@@ -1,6 +1,6 @@
 <template>
   <aside
-    class="absolute top-0 right-0 h-full w-96 z-10 overflow-y-auto bg-gray-200/80 dark:bg-gray-900/80 backdrop-blur-xl py-4 px-8 lg:block shadow-lg"
+    class="absolute top-0 right-0 h-full w-96 z-10 overflow-y-auto bg-gray-200/80 dark:bg-gray-900/80 backdrop-blur-xl py-4 px-8 md:block shadow-lg"
   >
     <div class="relative space-y-4">
       <div class="relative z-0 inline-flex shadow-sm rounded-md w-full justify-between">
@@ -101,12 +101,12 @@
       </div>
     </div>
   </aside>
-  <DeleteFileModal
+  <delete-file-modal
     :name="`deleteFile-${file.id}`"
     :on-confirm="onDelete"
   />
 
-  <RenameFileModal
+  <rename-file-modal
     :name="`renameFile-${file.id}`"
     :old-name="file.name"
     :on-submit="onRename"
@@ -162,5 +162,3 @@ export default {
   },
 }
 </script>
-
-<style scoped></style>

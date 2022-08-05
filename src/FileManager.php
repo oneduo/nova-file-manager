@@ -17,12 +17,10 @@ class FileManager extends Field
     use PresentsImages;
 
     public $component = 'nova-file-manager-field';
-
     public string $diskColumn;
-
-    public Closure $storageCallback;
-
     public bool $copyable = false;
+    public int $limit = 1;
+    public Closure $storageCallback;
 
     public function __construct($name, $attribute = null, Closure $storageCallback = null)
     {
@@ -41,6 +39,13 @@ class FileManager extends Field
     public function storeDisk(string $column): static
     {
         $this->diskColumn = $column;
+
+        return $this;
+    }
+
+    public function mutliple(int $limit = 1): static
+    {
+        $this->limit = $limit;
 
         return $this;
     }
@@ -75,14 +80,19 @@ class FileManager extends Field
         }
     }
 
+    public function asJson(string $column)
+    {
+
+    }
+
     protected function prepareStorageCallback(Closure $storageCallback = null): void
     {
         $this->storageCallback = $storageCallback ?? function (
-                NovaRequest $request,
-                Model $model,
-                string $attribute,
-                string $requestAttribute
-            ) {
+            NovaRequest $request,
+            Model $model,
+            string $attribute,
+            string $requestAttribute
+        ) {
             $value = $request->input($requestAttribute);
 
             try {
@@ -91,8 +101,18 @@ class FileManager extends Field
                 $payload = [];
             }
 
+            $files = collect($payload['files'] ?? []);
+
+            $values = [];
+
+            $value = match ($files->count()) {
+                0 => null,
+                1 => $files->first()['path'],
+                default => $files->pluck('path')->toArray(),
+            };
+
             $values = [
-                $attribute => $payload['path'] ?? null,
+                $attribute => $value,
             ];
 
             return $this->mergeExtraStorageColumns($payload, $values);
@@ -115,11 +135,12 @@ class FileManager extends Field
     {
         $attribute ??= $this->attribute;
 
-        if (($path = $resource->{$attribute}) === null) {
+        if (($files = $resource->{$attribute}) === null) {
             $this->value = null;
 
             return;
         }
+
 
         $manager = FileManagerService::make();
 
@@ -131,14 +152,28 @@ class FileManager extends Field
             $manager->disk($disk);
         }
 
-        /** @var \BBSLab\NovaFileManager\Entities\Entity $entity */
-        $entity = $manager->makeEntity($path);
+        $entities = collect();
+
+        if (is_string($files)) {
+            if (empty($files)) {
+                $this->value = null;
+
+                return;
+            }
+
+            $entities->push($manager->makeEntity($files));
+        }
+
+        if (is_iterable($files)) {
+            foreach ($files as $file) {
+                $entities->push($manager->makeEntity($file));
+            }
+        }
 
         if (!$this->resolveCallback) {
             $this->value = [
-                'disk' => $entity->disk,
-                'path' => $entity->path,
-                'file' => $entity->toArray(),
+                'disk' => $manager->disk,
+                'files' => $entities->toArray(),
             ];
         } elseif (is_callable($this->resolveCallback)) {
             tap($this->resolveAttribute($resource, $attribute), function ($value) use ($resource, $attribute) {
@@ -154,6 +189,7 @@ class FileManager extends Field
             $this->imageAttributes(),
             [
                 'copyable' => $this->copyable,
+                'limit' => $this->limit,
             ]
         );
     }

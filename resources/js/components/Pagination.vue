@@ -2,7 +2,7 @@
   <div
     class="pt-3 flex items-center justify-between border-t border-gray-200 dark:border-gray-700 px-4 py-2"
   >
-    <div class="flex-1 flex items-center justify-between lg:hidden">
+    <div class="flex-1 flex items-center justify-between md:hidden">
       <button
         @click.prevent="() => setPage(Math.max(1, currentPage - 1))"
         class="relative inline-flex items-center px-3 py-2 rounded border border-gray-300 dark:border-gray-700 bg-white dark:bg-gray-900 text-sm font-semibold text-gray-500 hover:bg-gray-50 dark:hover:bg-gray-800"
@@ -25,7 +25,7 @@
         {{ __('Next') }}
       </button>
     </div>
-    <div class="hidden lg:flex-1 lg:flex lg:items-center lg:justify-between lg:flex-wrap">
+    <div class="hidden md:flex-1 md:flex md:items-center md:justify-between md:flex-wrap">
       <div>
         <p class="text-sm text-gray-700 dark:text-gray-400 space-x-1">
           <span>{{ __('Showing') }}</span>

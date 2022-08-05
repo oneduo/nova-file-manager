@@ -1,9 +1,9 @@
 <template>
   <RadioGroup v-model="selected">
-    <table class="min-w-full divide-y divide-gray-300 dark:divide-gray-700">
-      <tbody class="divide-y divide-gray-200 dark:divide-gray-700">
+    <table class="min-w-full divide-y divide-gray-300 dark:divide-gray-600/50">
+      <tbody class="divide-y divide-gray-200 dark:divide-gray-900/20">
         <tr
-          class="border-t border-gray-200 dark:border-gray-700"
+          class="border-t border-gray-200 dark:border-gray-700/50"
           v-if="directories?.length"
         >
           <th
@@ -18,15 +18,15 @@
           v-for="directory in directories"
           :key="directory.id"
         >
-          <tr class="cursor-pointer hover:bg-gray-100 dark:hover:bg-gray-900">
+          <tr class="cursor-pointer">
             <td
               class="whitespace-nowrap py-4 text-sm"
               @click="setPath(directory.path)"
             >
-              <div class="flex items-center">
+              <div class="flex items-center text-gray-500 dark:text-gray-300 hover:text-blue-500">
                 <FolderIcon class="w-5 h-5" />
                 <div class="ml-4">
-                  <div class="font-medium text-gray-900 dark:text-gray-100">
+                  <div class="font-medium">
                     {{ directory.name }}
                   </div>
                 </div>
@@ -102,15 +102,15 @@
           v-slot="{ checked, active }"
           :key="file.id"
         >
-          <tr class="cursor-pointer hover:bg-gray-100 dark:hover:bg-gray-900">
+          <tr class="cursor-pointer">
             <td
               class="whitespace-nowrap py-4 text-sm w-full"
               colspan="2"
             >
-              <div class="flex items-center">
+              <div class="flex items-center text-gray-500 dark:text-gray-300 hover:text-blue-500">
                 <DocumentIcon class="w-5 h-5" />
                 <div class="ml-4">
-                  <div class="font-medium text-gray-900 dark:text-gray-100">{{ file.name }}</div>
+                  <div class="font-medium">{{ file.name }}</div>
                 </div>
               </div>
             </td>

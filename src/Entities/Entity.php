@@ -118,13 +118,18 @@ abstract class Entity implements Arrayable
         return $this->lastModifiedAtTimestamp()->diffForHumans();
     }
 
+    public function id(): string
+    {
+        return sha1_file($this->fileSystem->path($this->path));
+    }
+
     public function toArray(): array
     {
         if (empty($this->data)) {
             $shouldAnalyze = config('nova-file-manager.enable_file_analysis');
 
             $this->data = array_merge([
-                'id' => Str::random(6),
+                'id' => $this->id(),
                 'name' => $this->name(),
                 'path' => $this->path,
                 'size' => $this->size(),
