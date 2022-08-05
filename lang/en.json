@@ -1,9 +1,13 @@
 {
-  "NovaFileManagerMeta::mime": "Mime type",
-  "NovaFileManagerMeta::lastModifiedAt": "Last modified",
-  "NovaFileManagerMeta::type": "Type",
-  "NovaFileManagerMeta::width": "Width",
-  "NovaFileManagerMeta::height": "Height",
-  "NovaFileManagerMeta::aspectRatio": "Aspect ratio",
-  "NovaFileManager.title": "File Manager"
+  "NovaFileManager.meta.size": "Size",
+  "NovaFileManager.meta.mime": "Mime type",
+  "NovaFileManager.meta.lastModifiedAt": "Last modified",
+  "NovaFileManager.meta.type": "Type",
+  "NovaFileManager.meta.width": "Width",
+  "NovaFileManager.meta.height": "Height",
+  "NovaFileManager.meta.aspectRatio": "Aspect ratio",
+  "NovaFileManager.title": "File Manager",
+  "NovaFileManager.openBrowser": "Open File Manager",
+  "NovaFileManager.totalFilesCount": ":count files",
+  "NovaFileManager.selectionCount": ":count selected"
 }
