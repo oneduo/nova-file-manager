@@ -2,34 +2,34 @@
   <div class="flex flex-1 items-stretch overflow-hidden rounded-md w-full min-h-[30vh]">
     <main class="relative flex-1 overflow-y-auto bg-gray-50 dark:bg-gray-800">
       <div class="w-full px-4 space-y-4 mb-4">
-        <Toolbar/>
+        <Toolbar />
 
         <div
-            class="w-full h-80 flex justify-center items-center"
-            v-if="isFetchingData"
+          class="w-full h-80 flex justify-center items-center"
+          v-if="isFetchingData"
         >
-          <Spinner class="w-16 h-16"/>
+          <Spinner class="w-16 h-16" />
         </div>
 
         <template v-else>
           <BrowserContent
-              :view="view"
-              :files="files"
-              :directories="directories"
-              :filled="filled"
+            :view="view"
+            :files="files"
+            :directories="directories"
+            :filled="filled"
           />
         </template>
       </div>
 
       <Pagination
-          v-if="!isFetchingData && pagination && pagination.total > 0"
-          :from="pagination.from"
-          :to="pagination.to"
-          :links="pagination.links"
-          :total="pagination.total"
-          :current-page="pagination.current_page"
-          :last-page="pagination.last_page"
-          class="mt-auto"
+        v-if="!isFetchingData && pagination && pagination.total > 0"
+        :from="pagination.from"
+        :to="pagination.to"
+        :links="pagination.links"
+        :total="pagination.total"
+        :current-page="pagination.current_page"
+        :last-page="pagination.last_page"
+        class="mt-auto"
       />
     </main>
   </div>
@@ -40,7 +40,7 @@
 import Toolbar from '@/components/Toolbar'
 import Pagination from '@/components/Pagination'
 import Spinner from '@/components/Elements/Spinner'
-import {mapActions, mapMutations, mapState} from 'vuex'
+import { mapActions, mapMutations, mapState } from 'vuex'
 import Sidebar from '@/components/Sidebar'
 import BrowserContent from '@/components/BrowserContent'
 

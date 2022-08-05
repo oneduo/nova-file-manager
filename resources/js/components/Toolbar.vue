@@ -1,66 +1,68 @@
 <template>
   <div class="flex flex-col gap-y-4 pt-4">
-    <div class="flex items-center justify-between flex-wrap sm:flex-nowrap gap-2 gap-y-2 flex-col-reverse sm:flex-row">
+    <div
+      class="flex items-center justify-between flex-wrap sm:flex-nowrap gap-2 gap-y-2 flex-col-reverse sm:flex-row"
+    >
       <div class="flex flex-row items-center gap-x-2 w-full">
         <DiskSelector
-            :disk="disk"
-            :disks="disks"
-            :set-disk="setDisk"
+          :disk="disk"
+          :disks="disks"
+          :set-disk="setDisk"
         />
         <PaginationSelector
-            :per-page="perPage"
-            :per-page-options="perPageOptions"
-            :set-per-page="setPerPage"
+          :per-page="perPage"
+          :per-page-options="perPageOptions"
+          :set-per-page="setPerPage"
         />
         <ViewToggle
-            :current="view"
-            :set-view="setView"
+          :current="view"
+          :set-view="setView"
         />
-        <ToolbarSearch/>
+        <ToolbarSearch />
       </div>
       <div class="flex flex-row gap-x-2 justify-end w-full md:w-auto">
         <IconButton
-            variant="transparent"
-            v-if="isFieldMode"
-            @click="closeBrowser"
+          variant="transparent"
+          v-if="isFieldMode"
+          @click="closeBrowser"
         >
-          <XIcon class="w-5 h-5"/>
+          <XIcon class="w-5 h-5" />
         </IconButton>
         <IconButton @click="openModal('createFolder')">
-          <FolderAddIcon class="w-5 h-5"/>
+          <FolderAddIcon class="w-5 h-5" />
         </IconButton>
         <IconButton
-            @click="openModal('upload')"
-            variant="primary"
+          @click="openModal('upload')"
+          variant="primary"
         >
-          <CloudUploadIcon class="h-5 w-5"/>
+          <CloudUploadIcon class="h-5 w-5" />
         </IconButton>
         <IconButton
-            @click="closeBrowser"
-            variant="success"
-            v-if="isFieldMode"
+          @click="closeBrowser"
+          variant="success"
+          v-if="isFieldMode"
         >
-          <CheckIcon class="h-5 w-5"/>
+          <CheckIcon class="h-5 w-5" />
         </IconButton>
       </div>
     </div>
     <Breadcrumbs
-        :items="breadcrumbs"
-        :set-path="setPath"
+      :items="breadcrumbs"
+      :set-path="setPath"
     />
   </div>
 
-  <UploadModal name="upload"/>
+  <UploadModal name="upload" />
 
   <CreateFolderModal
-      name="createFolder"
-      :on-submit="createFolder"
+    name="createFolder"
+    :on-submit="createFolder"
   />
 </template>
 
 <script>
-import {mapActions, mapMutations, mapState} from 'vuex'
-import {CheckIcon, CloudUploadIcon, FolderAddIcon, XIcon} from '@heroicons/vue/outline'
+import { mapActions, mapMutations, mapState } from 'vuex'
+import { CheckIcon, CloudUploadIcon, FolderAddIcon, XIcon } from '@heroicons/vue/outline'
 import DiskSelector from '@/components/DiskSelector'
 import PaginationSelector from '@/components/Elements/PaginationSelector'
 import Breadcrumbs from '@/components/Breadcrumbs'

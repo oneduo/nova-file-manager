@@ -8,7 +8,6 @@
 [![PHP](https://img.shields.io/badge/PHP-8-blue.svg)]()
 [![Laravel Nova](https://img.shields.io/badge/laravel%2Fnova-4-cyan.svg)]()
 
-
 </div>
 
 ---
@@ -24,6 +23,7 @@ A file manager tool and field for Laravel Nova. Beautifully designed, and custom
 💽 Multi disk and filesystem support  
 🧩 Supports chunk uploads  
 🔧 Various customization and configuration options
+
 </p>
 
 <img src="./docs/preview.png"/>
@@ -36,6 +36,7 @@ A file manager tool and field for Laravel Nova. Beautifully designed, and custom
 - [Contributing](../CONTRIBUTING.md)
 - [Authors](#authors)
 - [Screenshots](#screenshots)
+
 ## Getting Started <a name = "getting_started"></a>
 
 ### Prerequisites
@@ -46,7 +47,7 @@ This package requires the following :
 - Laravel Nova 4
 
 > **Note** If you plan on using this package with an S3 bucket, be mindful to follow the instructions
-for <a href="https://laravel.com/docs/9.x/filesystem#s3-driver-configuration">setting up an S3 storage disk. </a>
+> for <a href="https://laravel.com/docs/9.x/filesystem#s3-driver-configuration">setting up an S3 storage disk. </a>
 
 ### Installing
 
@@ -80,8 +81,8 @@ use BBSLab\NovaFileManager\NovaFileManager;
 class NovaServiceProvider extends NovaApplicationServiceProvider
 {
     // ...
-    
-    public function tools(): array 
+
+    public function tools(): array
     {
         return [
             // ... any other tools
@@ -106,8 +107,8 @@ use BBSLab\NovaFileManager\FileManager;
 class User extends Resource
 {
     // ...
-    
-    public function fields(NovaRequest $request): array 
+
+    public function fields(NovaRequest $request): array
     {
         return [
             // ... any other fields
@@ -149,7 +150,7 @@ FileManager::make(__('Avatar'), 'avatar')->storeDisk('avatar_disk')
 ## Configuration file <a name = "configuration-file"></a>
 
 | Key                       | Description                                                                              | Type       | Default   | Notes                                                             |
-|---------------------------|------------------------------------------------------------------------------------------|------------|-----------|-------------------------------------------------------------------|
+| ------------------------- | ---------------------------------------------------------------------------------------- | ---------- | --------- | ----------------------------------------------------------------- |
 | `default_disk`            | The default disk used by the package                                                     | `string`   | `public`  | The default disk must be defined in your `filesystems.php` config |
 | `available_disks`         | Provides a list of available disks to be used by the package                             | `string[]` | -         |                                                                   |
 | `show_hidden_files`       | Toggles whether or not to show files and directories that start with a "dot"             | `bool`     | `false`   |                                                                   |
@@ -173,7 +174,6 @@ participated in this project.
 <img src="./docs/preview.gif"/>
 
 You can find more screenshots in the `docs` directory.
-
 
 ## Changelog
 

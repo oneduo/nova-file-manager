@@ -7,10 +7,7 @@ module.exports = {
 
   resolve: {
     alias: {
-      'laravel-nova': path.join(
-        __dirname,
-        '../../laravel/nova/resources/js/mixins/packages.js',
-      ),
+      'laravel-nova': path.join(__dirname, '../../laravel/nova/resources/js/mixins/packages.js'),
       '@': path.join(__dirname, '/resources/js'),
     },
   },

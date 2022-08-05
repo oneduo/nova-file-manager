@@ -6,9 +6,16 @@
     :class="cardClasses"
     :style="cardStyles"
   >
-    <div class="missing p-8" v-if="missing">
+    <div
+      class="missing p-8"
+      v-if="missing"
+    >
       <p class="text-center leading-normal">
-        <a :href="src" target="_blank">{{ __('This image') }}</a>
+        <a
+          :href="src"
+          target="_blank"
+          >{{ __('This image') }}</a
+        >
         {{ __('could not be found.') }}
       </p>
     </div>
@@ -49,9 +56,7 @@ export default {
     },
 
     cardStyles() {
-      return this.loading
-        ? { height: this.maxWidth + 'px', width: this.maxWidth + 'px' }
-        : null
+      return this.loading ? { height: this.maxWidth + 'px', width: this.maxWidth + 'px' } : null
     },
   },
 
@@ -64,9 +69,9 @@ export default {
         image.addEventListener('error', () => reject())
 
         image.src = this.src
-      })
+      }),
     )
-      .then(image => {
+      .then((image) => {
         image.className = 'block w-full'
         image.draggable = false
 

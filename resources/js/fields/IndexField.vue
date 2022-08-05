@@ -3,7 +3,7 @@
     {{ field.value.files[0].path }}
   </span>
   <span v-else>
-    {{ __('NovaFileManager.totalFilesCount', {count: field.value?.files.length}) }}
+    {{ __('NovaFileManager.totalFilesCount', { count: field.value?.files.length }) }}
   </span>
 </template>
 

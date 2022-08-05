@@ -38,8 +38,7 @@
     "vue": "^3.2.37",
     "vuedraggable": "^4.1.0",
     "vue-loader": "^16.8.3",
-    "vuex": "^4.0.2",
+    "vuex": "^4.0.2"
   },
-  "dependencies": {
-  }
+  "dependencies": {}
 }
