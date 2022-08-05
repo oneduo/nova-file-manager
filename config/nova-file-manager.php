@@ -116,4 +116,25 @@ return [
         'unit' => 'minutes',
         'value' => 10,
     ],
+
+    /*
+    |--------------------------------------------------------------------------
+    | Allowed mime types
+    |--------------------------------------------------------------------------
+    |
+    | Here you can specify the mime types that are allowed to be uploaded
+    | through the tool.
+    |
+    | Uses: Laravel `mimes` validation rule
+    */
+    'allowed_mimes' => [
+        'jpg',
+        'jpeg',
+        'png',
+        'gif',
+        'mp4',
+        'zip',
+        'pdf',
+        // ... more mimes
+    ],
 ];
