@@ -22,8 +22,9 @@ A file manager tool and field for Laravel Nova. Beautifully designed, and custom
 💅 Built with Tailwindcss 3, Vue 3 and Vuex  
 💽 Multi disk and filesystem support  
 🧩 Supports chunk uploads  
-🔧 Various customization and configuration options
-
+🔧 Various customization and configuration options  
+🔍 A performant local search feature  
+🤹‍ Allows to save multiple assets on the same field
 </p>
 
 <img src="./docs/preview.png"/>
@@ -121,6 +122,87 @@ class User extends Resource
 You have now successfully added a File Manager field to your resource.
 
 ### Advanced usage
+
+### Multiple selection on the form field
+
+When using the `FileManager` field on your Nova resource, you can instruct the tool to allow multiple selection for your attribute.
+
+By default, the tool will only allow single selection.
+
+You can allow multiple selection by using the `multiple` method to the field, and specifying the allowed maximum limit.
+
+
+```php
+// app/Nova/User.php
+
+use BBSLab\NovaFileManager\FileManager;
+
+class User extends Resource
+{
+    // ...
+
+    public function fields(NovaRequest $request): array
+    {
+        return [
+            // ... any other fields
+            FileManager::make(__('Attachements'), 'attachements')->mutliple(3),
+        ];
+    }
+}
+```
+
+>**Note** If the multiple limit is set to 1, the field saves the value as a plain string containing the file's path in the specified storage disk. For any value greater than 1, the field saves the value as an array of file paths. You can access these paths easily by setting a cast on your attribute.
+
+```php
+// app/Models/User.php
+
+class User extends Authenticatable
+{
+    // ...
+
+    protected $fillable = [
+        'name',
+        'email',
+        'password',
+        'attachements',
+    ];
+
+    protected $casts = [
+        'attachements' => 'array',
+    ];
+}
+
+```
+
+### Validation
+
+When using the field, you can specify the number of files that can be set a value for your resource's attribute.
+
+For that, you can specifically use the following custom rule :
+
+```php
+// app/Nova/User.php
+
+use BBSLab\NovaFileManager\FileManager;
+use BBSLab\NovaFileManager\Rules\FileLimit;
+class User extends Resource
+{
+    // ...
+
+    public function fields(NovaRequest $request): array
+    {
+        return [
+            // ... any other fields
+            FileManager::make(__('Attachements'), 'attachements')
+                ->rules(new FileLimit(min: 3, max: 10))
+                ->mutliple(limit: 10),
+        ];
+    }
+}
+```
+
+> **Note** You need to set up your field with `multiple` if you plan on having a minimum value greater than one, and if you expect your field to have more than one file.
+
 
 #### Saving the disk name alongside the path
 
