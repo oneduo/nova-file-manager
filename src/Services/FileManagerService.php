@@ -18,7 +18,9 @@ use League\Flysystem\UnableToRetrieveMetadata;
 class FileManagerService implements FileManagerContract
 {
     public FileSystem $fileSystem;
+
     public bool $shouldShowHiddenFiles;
+
     public array $filterCallbacks = [];
 
     public function __construct(
@@ -64,14 +66,14 @@ class FileManagerService implements FileManagerContract
         $this->applySearchCallback();
 
         return collect($this->fileSystem->files($this->path))
-            ->filter(fn(string $file) => $this->applyFilterCallbacks($file));
+            ->filter(fn (string $file) => $this->applyFilterCallbacks($file));
     }
 
     public function omitHiddenFilesAndDirectories(): void
     {
         $this->filterCallbacks[] = $this->shouldShowHiddenFiles
-            ? static fn() => true
-            : static fn(string $path) => !str($path)->startsWith('.');
+            ? static fn () => true
+            : static fn (string $path) => !str($path)->startsWith('.');
     }
 
     public function applySearchCallback(): void
@@ -82,12 +84,12 @@ class FileManagerService implements FileManagerContract
 
         $this->filterCallbacks[] = function (string $path) {
             // split search string into words
-            if (! $words = preg_split('/[\s]+/', $this->search)) {
+            if (!$words = preg_split('/[\s]+/', $this->search)) {
                 return true;
             }
 
             // join words with .* expression
-            $words = implode('.*', array_map(fn(string $word) => preg_quote($word, '/'), $words));
+            $words = implode('.*', array_map(fn (string $word) => preg_quote($word, '/'), $words));
 
             return preg_match("/(.*{$words}.*)/i", $path);
         };
@@ -109,8 +111,8 @@ class FileManagerService implements FileManagerContract
         $this->omitHiddenFilesAndDirectories();
 
         return collect($this->fileSystem->directories($this->path))
-            ->filter(fn(string $file) => $this->applyFilterCallbacks($file))
-            ->map(fn(string $path) => [
+            ->filter(fn (string $file) => $this->applyFilterCallbacks($file))
+            ->map(fn (string $path) => [
                 'id' => Str::random(6),
                 'path' => str($path)->start(DIRECTORY_SEPARATOR),
                 'name' => pathinfo($path, PATHINFO_BASENAME),
@@ -126,12 +128,12 @@ class FileManagerService implements FileManagerContract
         str($this->path)
             ->ltrim(DIRECTORY_SEPARATOR)
             ->explode(DIRECTORY_SEPARATOR)
-            ->filter(fn(string $item) => !blank($item))
+            ->filter(fn (string $item) => !blank($item))
             ->each(function (string $item) use ($paths) {
                 return $paths->push($paths->last().DIRECTORY_SEPARATOR.$item);
             });
 
-        return $paths->map(fn(string $item) => [
+        return $paths->map(fn (string $item) => [
             'id' => Str::random(6),
             'path' => $item,
             'name' => str($item)->afterLast('/'),
@@ -192,7 +194,7 @@ class FileManagerService implements FileManagerContract
 
     public function mapIntoEntity(): Closure
     {
-        return fn(string $path) => $this->makeEntity($path);
+        return fn (string $path) => $this->makeEntity($path);
     }
 
     public function makeEntity(string $path)
@@ -221,7 +223,6 @@ class FileManagerService implements FileManagerContract
 
     /**
      * @param  string  $type
-     *
      * @return <class-string>
      */
     public function entityClassForType(string $type): string

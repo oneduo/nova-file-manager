@@ -17,9 +17,13 @@ class FileManager extends Field
     use PresentsImages;
 
     public $component = 'nova-file-manager-field';
+
     public string $diskColumn;
+
     public bool $copyable = false;
+
     public int $limit = 1;
+
     public Closure $storageCallback;
 
     public function __construct($name, $attribute = null, Closure $storageCallback = null)
@@ -82,7 +86,6 @@ class FileManager extends Field
 
     public function asJson(string $column)
     {
-
     }
 
     protected function prepareStorageCallback(Closure $storageCallback = null): void
@@ -140,7 +143,6 @@ class FileManager extends Field
 
             return;
         }
-
 
         $manager = FileManagerService::make();
 

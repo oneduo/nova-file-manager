@@ -9,7 +9,6 @@ use Illuminate\Contracts\Support\Arrayable;
 use Illuminate\Filesystem\AwsS3V3Adapter;
 use Illuminate\Support\Carbon;
 use Illuminate\Support\Facades\Storage;
-use Illuminate\Support\Str;
 use League\Flysystem\UnableToRetrieveMetadata;
 
 abstract class Entity implements Arrayable
