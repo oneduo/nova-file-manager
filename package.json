@@ -13,7 +13,7 @@
   },
   "devDependencies": {
     "@babel/core": "^7.18.2",
-    "@headlessui/vue": "^1.6.4",
+    "@headlessui/vue": "^0.0.0-insiders.fa10cb0",
     "@heroicons/vue": "^1.0.6",
     "@inertiajs/inertia": "^0.11.0",
     "@inertiajs/inertia-vue3": "^0.6.0",
@@ -29,7 +29,6 @@
     "eslint-plugin-vue": "^9.1.0",
     "form-backend-validation": "^2.4.0",
     "laravel-mix": "^6.0.41",
-    "laravel-nova": "^1.12.3",
     "lodash": "^4.17.19",
     "postcss": "^8.4.14",
     "postcss-import": "^14.1.0",
@@ -37,7 +36,10 @@
     "resumablejs": "^1.1.0",
     "tailwindcss": "^3.0.24",
     "vue": "^3.2.37",
+    "vuedraggable": "^4.1.0",
     "vue-loader": "^16.8.3",
-    "vuex": "^4.0.2"
+    "vuex": "^4.0.2",
+  },
+  "dependencies": {
   }
 }
