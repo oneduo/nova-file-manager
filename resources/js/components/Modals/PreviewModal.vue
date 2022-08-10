@@ -225,10 +225,11 @@ export default {
     },
   },
   methods: {
-    ...mapMutations('nova-file-manager', ['previewFile', 'openModal']),
+    ...mapMutations('nova-file-manager', ['previewFile', 'openModal', 'fixPortal']),
     ...mapActions('nova-file-manager', ['deleteFile', 'renameFile']),
     closeModal() {
       this.previewFile(null)
+      this.fixPortal()
     },
     onRename(value) {
       this.renameFile({ id: this.file.id, oldPath: this.file.path, newPath: value })

@@ -1,11 +1,11 @@
 <template>
   <PanelItem
-    :index="index"
     :field="field"
+    :index="index"
   >
     <template
-      v-slot:value
       v-if="field.value?.files"
+      v-slot:value
     >
       <div class="nova-file-manager">
         <div :class="darkMode && 'dark'">
@@ -43,11 +43,9 @@ export default {
     this.detectDarkMode()
   },
 
-  data() {
-    return {
-      selected: null,
-    }
-  },
+  data: () => ({
+    selected: null,
+  }),
 
   methods: {
     ...mapMutations('nova-file-manager', ['init', 'detectDarkMode', 'previewFile']),

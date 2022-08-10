@@ -1,5 +1,6 @@
 <template>
   <ConfirmModal
+    :name="name"
     :is-open="isOpen"
     :on-close="onClose"
     :icon="icon"
@@ -23,7 +24,7 @@
         type="button"
         variant="secondary"
         :icon="false"
-        @click="onClose"
+        @click="closeModal(name)"
         class="w-full sm:w-auto"
       >
         {{ __('Cancel') }}
@@ -36,6 +37,7 @@
 import { ExclamationIcon } from '@heroicons/vue/outline'
 import ConfirmModal from '@/components/Modals/ConfirmModal'
 import Button from '@/components/Elements/Button'
+import { mapActions } from 'vuex'
 
 export default {
   components: {
@@ -49,9 +51,9 @@ export default {
       type: Boolean,
       default: false,
     },
-    onClose: {
-      type: Function,
-      default: () => {},
+    name: {
+      type: String,
+      required: true,
     },
     onConfirm: {
       type: Function,
@@ -63,6 +65,10 @@ export default {
     icon() {
       return ExclamationIcon
     },
+  },
+
+  methods: {
+    ...mapActions('nova-file-manager', ['closeModal']),
   },
 }
 </script>

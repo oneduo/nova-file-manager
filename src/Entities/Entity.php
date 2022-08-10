@@ -119,7 +119,7 @@ abstract class Entity implements Arrayable
 
     public function id(): string
     {
-        return sha1_file($this->fileSystem->path($this->path));
+        return sha1($this->fileSystem->path($this->path));
     }
 
     public function toArray(): array

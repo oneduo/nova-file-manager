@@ -109,10 +109,14 @@ export default {
       required: true,
       default: () => 'detail',
     },
+    field: {
+      type: Object,
+      required: true,
+    },
   },
 
   methods: {
-    ...mapMutations('nova-file-manager', ['previewFile', 'deselectFile']),
+    ...mapMutations('nova-file-manager', ['previewFile', 'deselectFieldFile']),
 
     copy(file) {
       this.selected = true
@@ -132,7 +136,10 @@ export default {
     },
 
     remove(file) {
-      this.deselectFile(file)
+      this.deselectFieldFile({
+        field: this.field.attribute,
+        file,
+      })
     },
   },
 }

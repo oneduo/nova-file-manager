@@ -22,7 +22,9 @@ class FileManager extends Field
 
     public bool $copyable = false;
 
-    public int $limit = 1;
+    public bool $multiple = false;
+
+    public ?int $limit = null;
 
     public Closure $storageCallback;
 
@@ -47,7 +49,14 @@ class FileManager extends Field
         return $this;
     }
 
-    public function mutliple(int $limit = 1): static
+    public function multiple(bool $multiple = true): static
+    {
+        $this->multiple = $multiple;
+
+        return $this;
+    }
+
+    public function limit(?int $limit = null): static
     {
         $this->limit = $limit;
 
@@ -106,8 +115,6 @@ class FileManager extends Field
 
             $files = collect($payload['files'] ?? []);
 
-            $values = [];
-
             $value = match ($files->count()) {
                 0 => null,
                 1 => $files->first()['path'],
@@ -131,17 +138,10 @@ class FileManager extends Field
         return $attributes;
     }
 
-    /**
-     * @throws \JsonException
-     */
-    public function resolve($resource, $attribute = null): void
+    protected function resolveAttribute($resource, $attribute = null): ?array
     {
-        $attribute ??= $this->attribute;
-
-        if (($files = $resource->{$attribute}) === null) {
-            $this->value = null;
-
-            return;
+        if (!$value = parent::resolveAttribute($resource, $attribute)) {
+            return null;
         }
 
         $manager = FileManagerService::make();
@@ -156,32 +156,24 @@ class FileManager extends Field
 
         $entities = collect();
 
-        if (is_string($files)) {
-            if (empty($files)) {
-                $this->value = null;
-
-                return;
+        if (is_string($value)) {
+            if (empty($value)) {
+                return null;
             }
 
-            $entities->push($manager->makeEntity($files));
+            $entities->push($manager->makeEntity($value));
         }
 
-        if (is_iterable($files)) {
-            foreach ($files as $file) {
+        if (is_iterable($value)) {
+            foreach ($value as $file) {
                 $entities->push($manager->makeEntity($file));
             }
         }
 
-        if (!$this->resolveCallback) {
-            $this->value = [
-                'disk' => $manager->disk,
-                'files' => $entities->toArray(),
-            ];
-        } elseif (is_callable($this->resolveCallback)) {
-            tap($this->resolveAttribute($resource, $attribute), function ($value) use ($resource, $attribute) {
-                $this->value = call_user_func($this->resolveCallback, $value, $resource, $attribute);
-            });
-        }
+        return [
+            'disk' => $manager->disk,
+            'files' => $entities->toArray(),
+        ];
     }
 
     public function jsonSerialize(): array
@@ -191,7 +183,8 @@ class FileManager extends Field
             $this->imageAttributes(),
             [
                 'copyable' => $this->copyable,
-                'limit' => $this->limit,
+                'multiple' => $this->multiple,
+                'limit' => $this->multiple ? $this->limit : 1,
             ]
         );
     }

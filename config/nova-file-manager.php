@@ -81,7 +81,14 @@ return [
     |
     | default: true
     */
-    'enable_file_analysis' => env('NOVA_FILE_MANAGER_ENABLE_FILE_ANALYSIS', true),
+
+    'file_analysis' => [
+        'enable' => env('NOVA_FILE_MANAGER_ENABLE_FILE_ANALYSIS', true),
+        'cache' => [
+            'enable' => env('NOVA_FILE_MANAGER_FILE_ANALYSIS_CACHE_ENABLE', true),
+            'ttl_in_seconds' => env('NOVA_FILE_MANAGER_FILE_ANALYSIS_CACHE_TTL_IN_SECONDS', 60 * 60 * 24),
+        ],
+    ],
 
     /*
     |--------------------------------------------------------------------------

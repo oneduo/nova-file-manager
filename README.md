@@ -25,6 +25,7 @@ A file manager tool and field for Laravel Nova. Beautifully designed, and custom
 🔧 Various customization and configuration options  
 🔍 A performant local search feature  
 🤹‍ Allows to save multiple assets on the same field
+
 </p>
 
 <img src="./docs/preview.png"/>
@@ -129,8 +130,7 @@ When using the `FileManager` field on your Nova resource, you can instruct the t
 
 By default, the tool will only allow single selection.
 
-You can allow multiple selection by using the `multiple` method to the field, and specifying the allowed maximum limit.
-
+You can allow multiple selection by using the `multiple` method to the field. You may limit the number of selected field by using the `limit` method.
 
 ```php
 // app/Nova/User.php
@@ -145,13 +145,15 @@ class User extends Resource
     {
         return [
             // ... any other fields
-            FileManager::make(__('Attachements'), 'attachements')->mutliple(3),
+            FileManager::make(__('Attachements'), 'attachements')
+                ->multiple()
+                ->limit(10),
         ];
     }
 }
 ```
 
->**Note** If the multiple limit is set to 1, the field saves the value as a plain string containing the file's path in the specified storage disk. For any value greater than 1, the field saves the value as an array of file paths. You can access these paths easily by setting a cast on your attribute.
+> **Note** If the limit is set to 1, the field saves the value as a plain string containing the file's path in the specified storage disk. For any value greater than 1, the field saves the value as an array of file paths. You can access these paths easily by setting a cast on your attribute.
 
 ```php
 // app/Models/User.php
@@ -195,14 +197,14 @@ class User extends Resource
             // ... any other fields
             FileManager::make(__('Attachements'), 'attachements')
                 ->rules(new FileLimit(min: 3, max: 10))
-                ->mutliple(limit: 10),
+                ->multiple()
+                ->limit(10),
         ];
     }
 }
 ```
 
 > **Note** You need to set up your field with `multiple` if you plan on having a minimum value greater than one, and if you expect your field to have more than one file.
-
 
 #### Saving the disk name alongside the path
 
@@ -231,17 +233,19 @@ FileManager::make(__('Avatar'), 'avatar')->storeDisk('avatar_disk')
 
 ## Configuration file <a name = "configuration-file"></a>
 
-| Key                       | Description                                                                              | Type       | Default   | Notes                                                             |
-| ------------------------- | ---------------------------------------------------------------------------------------- | ---------- | --------- | ----------------------------------------------------------------- |
-| `default_disk`            | The default disk used by the package                                                     | `string`   | `public`  | The default disk must be defined in your `filesystems.php` config |
-| `available_disks`         | Provides a list of available disks to be used by the package                             | `string[]` | -         |                                                                   |
-| `show_hidden_files`       | Toggles whether or not to show files and directories that start with a "dot"             | `bool`     | `false`   |                                                                   |
-| `human_readable_size`     | When set to true, the package will display file sizes in a more friendly readable format | `bool`     | `true`    |                                                                   |
-| `human_readable_datetime` | When set to true, the package will display dates with `diffForHumans()`                  | `bool`     | `true`    |                                                                   |
-| `enable_file_analysis`    | When set to true, the package will use getID3 to parse metadata from the files           | `bool`     | `true`    |                                                                   |
-| `url_signing.enabled`     | When set to true, all the file urls will be signed                                       | `bool`     | `false`   |                                                                   |
-| `url_signing.unit`        | Defines the unit for the expiration time                                                 | `string`   | `minutes` | The expiration time must not exceed 1 week                        |
-| `url_signing.value`       | Defines the value for the expiration time                                                | `int`      | `10`      |                                                                   |
+| Key                                  | Description                                                                              | Type       | Default   | Notes                                                             |
+|--------------------------------------|------------------------------------------------------------------------------------------|------------|-----------|-------------------------------------------------------------------|
+| `default_disk`                       | The default disk used by the package                                                     | `string`   | `public`  | The default disk must be defined in your `filesystems.php` config |
+| `available_disks`                    | Provides a list of available disks to be used by the package                             | `string[]` | -         |                                                                   |
+| `show_hidden_files`                  | Toggles whether or not to show files and directories that start with a "dot"             | `bool`     | `false`   |                                                                   |
+| `human_readable_size`                | When set to true, the package will display file sizes in a more friendly readable format | `bool`     | `true`    |                                                                   |
+| `human_readable_datetime`            | When set to true, the package will display dates with `diffForHumans()`                  | `bool`     | `true`    |                                                                   |
+| `file_analysis.enable`               | When set to true, the package will use getID3 to parse metadata from the files           | `bool`     | `true`    |                                                                   |
+| `file_analysis.cache.enable`         | When set to true, the package will cache the file analysis result                        | `bool`     | `true`    |                                                                   |
+| `file_analysis.cache.ttl_in_seconds` | TTL for analysis caching in seconds                                                      | `int`      | `86400`   |                                                                   |
+| `url_signing.enabled`                | When set to true, all the file urls will be signed                                       | `bool`     | `false`   |                                                                   |
+| `url_signing.unit`                   | Defines the unit for the expiration time                                                 | `string`   | `minutes` | The expiration time must not exceed 1 week                        |
+| `url_signing.value`                  | Defines the value for the expiration time                                                | `int`      | `10`      |                                                                   |
 
 ## Authors <a name = "authors"></a>
 
@@ -268,6 +272,13 @@ If you discover any security related issues, please email paris@big-boss-studio.
 ## Contributing
 
 Please see [CONTRIBUTING](CONTRIBUTING.md) for details.
+
+## Credits
+
+- [getID3() by James Heinrich](https://github.com/JamesHeinrich/getID3)
+- [Laravel Chunk Upload](https://github.com/pionl/laravel-chunk-upload)
+- [Laravel Pint](https://github.com/laravel/pint)
+- [Spatie Laravel Ray](spatie/laravel-ray)
 
 ## License
 
