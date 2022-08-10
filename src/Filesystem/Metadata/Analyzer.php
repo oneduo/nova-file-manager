@@ -25,7 +25,7 @@ abstract class Analyzer implements AnalyzerContract
         return Cache::remember(
             key: "nova-file-manager:analysis:{$path}",
             ttl: config('nova-file-manager.file_analysis.cache.ttl_in_seconds'),
-            callback: fn() => $this->rawAnalyze($path)
+            callback: fn () => $this->rawAnalyze($path)
         );
     }
 

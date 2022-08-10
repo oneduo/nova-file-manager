@@ -140,7 +140,7 @@ class FileManager extends Field
 
     protected function resolveAttribute($resource, $attribute = null): ?array
     {
-        if (! $value = parent::resolveAttribute($resource, $attribute)) {
+        if (!$value = parent::resolveAttribute($resource, $attribute)) {
             return null;
         }
 
