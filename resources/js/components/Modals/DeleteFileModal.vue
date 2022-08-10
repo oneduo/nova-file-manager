@@ -69,6 +69,6 @@ export default {
 
   methods: {
     ...mapActions('nova-file-manager', ['closeModal']),
-  }
+  },
 }
 </script>

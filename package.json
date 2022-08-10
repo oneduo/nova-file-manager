@@ -9,7 +9,8 @@
     "hot": "mix watch --hot",
     "prod": "npm run production",
     "production": "mix --production",
-    "nova:install": "npm --prefix='../../vendor/laravel/nova' ci"
+    "nova:install": "npm --prefix='../../vendor/laravel/nova' ci",
+    "prettier": "prettier -w ."
   },
   "devDependencies": {
     "@babel/core": "^7.18.2",

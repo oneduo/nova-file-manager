@@ -25,6 +25,7 @@ A file manager tool and field for Laravel Nova. Beautifully designed, and custom
 🔧 Various customization and configuration options  
 🔍 A performant local search feature  
 🤹‍ Allows to save multiple assets on the same field
+
 </p>
 
 <img src="./docs/preview.png"/>
@@ -131,7 +132,6 @@ By default, the tool will only allow single selection.
 
 You can allow multiple selection by using the `multiple` method to the field, and specifying the allowed maximum limit.
 
-
 ```php
 // app/Nova/User.php
 
@@ -151,7 +151,7 @@ class User extends Resource
 }
 ```
 
->**Note** If the multiple limit is set to 1, the field saves the value as a plain string containing the file's path in the specified storage disk. For any value greater than 1, the field saves the value as an array of file paths. You can access these paths easily by setting a cast on your attribute.
+> **Note** If the multiple limit is set to 1, the field saves the value as a plain string containing the file's path in the specified storage disk. For any value greater than 1, the field saves the value as an array of file paths. You can access these paths easily by setting a cast on your attribute.
 
 ```php
 // app/Models/User.php
@@ -202,7 +202,6 @@ class User extends Resource
 ```
 
 > **Note** You need to set up your field with `multiple` if you plan on having a minimum value greater than one, and if you expect your field to have more than one file.
-
 
 #### Saving the disk name alongside the path
 

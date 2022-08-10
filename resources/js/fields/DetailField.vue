@@ -11,7 +11,7 @@
         <div :class="darkMode && 'dark'">
           <div class="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-2 mb-2">
             <template v-for="file in field.value?.files">
-              <FieldCard :file="file"/>
+              <FieldCard :file="file" />
             </template>
           </div>
         </div>

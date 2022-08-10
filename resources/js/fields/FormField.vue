@@ -67,7 +67,7 @@
         leave-from="opacity-100"
         leave-to="opacity-0"
       >
-        <div class="fixed inset-0 bg-gray-800/20 backdrop-blur-sm transition-opacity"/>
+        <div class="fixed inset-0 bg-gray-800/20 backdrop-blur-sm transition-opacity" />
       </TransitionChild>
 
       <div :class="`fixed z-[60] inset-0 overflow-y-auto w-full ${darkMode && 'dark'}`">
@@ -84,7 +84,7 @@
             <DialogPanel
               class="relative bg-transparent rounded-lg overflow-hidden shadow-xl transition-all w-full border border-gray-500 dark:border-gray-600 md:m-8 m-0"
             >
-              <Browser class="w-full"/>
+              <Browser class="w-full" />
             </DialogPanel>
           </TransitionChild>
         </div>
@@ -133,7 +133,7 @@ export default {
     this.initField({
       attribute: this.field.attribute,
       limit: this.field.limit || null,
-      selection: this.field.value?.files || []
+      selection: this.field.value?.files || [],
     })
   },
 
@@ -175,7 +175,7 @@ export default {
       'setSelectedFile',
       'setIsFieldMode',
       'setValue',
-      'deselectFieldFile'
+      'deselectFieldFile',
     ]),
     fill(formData) {
       if (this.files?.length) {
@@ -208,6 +208,6 @@ export default {
         this.displayModal = false
       }
     },
-  }
+  },
 }
 </script>

@@ -151,14 +151,18 @@ const store = {
 
     deselectFile(state, file) {
       if (state.isFieldMode) {
-        state.currentField.selection = state.currentField?.selection.filter((_file) => _file.id !== file.id)
+        state.currentField.selection = state.currentField?.selection.filter(
+          (_file) => _file.id !== file.id,
+        )
       } else {
         state.selection = state.selection.filter((_file) => _file.id !== file.id)
       }
     },
 
     deselectFieldFile(state, { field, file }) {
-      state.fields[field].selection = state.fields[field].selection.filter((_file) => _file.id !== file.id)
+      state.fields[field].selection = state.fields[field].selection.filter(
+        (_file) => _file.id !== file.id,
+      )
     },
 
     previewFile(state, file) {
@@ -229,7 +233,7 @@ const store = {
     setSelection(state, value) {
       state.selection = value
     },
-    setFieldSelection(state, { attribute, value}) {
+    setFieldSelection(state, { attribute, value }) {
       state.fields[attribute].selection = value
     },
     openModal: (state, payload) => {
@@ -255,7 +259,7 @@ const store = {
         document.documentElement.style.removeProperty('overflow')
         document.documentElement.style.removeProperty('padding-right')
       }, 250)
-    }
+    },
   },
   actions: {
     setPath({ state, commit, dispatch }, path) {
@@ -523,7 +527,7 @@ const store = {
         return state.selection.find((item) => item.id === file.id)
       }
     },
-    fieldByAttribute: (state) => (attribute) => state.fields[attribute]
+    fieldByAttribute: (state) => (attribute) => state.fields[attribute],
   },
 }
 
