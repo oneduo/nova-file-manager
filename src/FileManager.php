@@ -138,7 +138,7 @@ class FileManager extends Field
     {
         $attribute ??= $this->attribute;
 
-        if (($files = $resource->{$attribute}) === null) {
+        if (($files = $this->resolveAttribute($resource, $attribute)) === null) {
             $this->value = null;
 
             return;
