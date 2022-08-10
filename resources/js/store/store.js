@@ -42,11 +42,18 @@ const store = {
       view: 'grid',
       toolModals: [],
       csrfToken: null,
+
+      currentField: null,
+      fields: {},
     }
   },
   mutations: {
     // This is the main mutation that is being evaluated when the browser is mounted
     init(state) {
+      if (state.ready) {
+        return
+      }
+
       this.commit('nova-file-manager/detectDarkMode')
       this.commit('nova-file-manager/loadFromLocalStorage')
       this.commit('nova-file-manager/setFromQueryString')
@@ -127,15 +134,31 @@ const store = {
     },
 
     selectFile(state, file) {
-      if (state.selection?.length === state.limit) {
-        return
-      }
+      if (state.isFieldMode) {
+        if (state.currentField?.selection?.length === state.currentField?.limit) {
+          return
+        }
 
-      state.selection = [file, ...state.selection]
+        state.currentField.selection = [file, ...state.currentField?.selection]
+      } else {
+        if (state.selection?.length === state.limit) {
+          return
+        }
+
+        state.selection = [file, ...state.selection]
+      }
     },
 
     deselectFile(state, file) {
-      state.selection = state.selection.filter((_file) => _file.id !== file.id)
+      if (state.isFieldMode) {
+        state.currentField.selection = state.currentField?.selection.filter((_file) => _file.id !== file.id)
+      } else {
+        state.selection = state.selection.filter((_file) => _file.id !== file.id)
+      }
+    },
+
+    deselectFieldFile(state, { field, file }) {
+      state.fields[field].selection = state.fields[field].selection.filter((_file) => _file.id !== file.id)
     },
 
     previewFile(state, file) {
@@ -204,8 +227,10 @@ const store = {
       state.limit = limit
     },
     setSelection(state, value) {
-      console.log('setSelection', value)
       state.selection = value
+    },
+    setFieldSelection(state, { attribute, value}) {
+      state.fields[attribute].selection = value
     },
     openModal: (state, payload) => {
       state.toolModals.unshift(payload)
@@ -213,6 +238,24 @@ const store = {
     closeModal: (state, payload) => {
       state.toolModals = state.toolModals.filter((name) => name !== payload)
     },
+    initField: (state, { attribute, limit, selection }) => {
+      state.fields[attribute] = { limit, selection }
+    },
+    setCurrentField: (state, field) => {
+      state.currentField = !!field ? state.fields[field] : null
+    },
+    fixPortal: (state) => {
+      if (state.toolModals.length || !!state.preview) {
+        return
+      }
+
+      setTimeout(() => {
+        // temporary fix
+        // @see https://github.com/tailwindlabs/headlessui/issues/1319
+        document.documentElement.style.removeProperty('overflow')
+        document.documentElement.style.removeProperty('padding-right')
+      }, 250)
+    }
   },
   actions: {
     setPath({ state, commit, dispatch }, path) {
@@ -285,11 +328,6 @@ const store = {
       commit('setPagination', data.pagination)
 
       commit('setIsFetchingData', false)
-
-      // temporary fix
-      // @see https://github.com/tailwindlabs/headlessui/issues/1319
-      document.documentElement.style.removeProperty('overflow')
-      document.documentElement.style.removeProperty('padding-right')
     },
     async createFolder({ dispatch, state, commit }, path) {
       try {
@@ -465,6 +503,7 @@ const store = {
 
     closeModal: ({ commit }, payload) => {
       commit('closeModal', payload)
+      commit('fixPortal')
     },
 
     closeBrowser: ({ state, dispatch, commit }) => {
@@ -478,8 +517,13 @@ const store = {
     allModals: (state) => state.toolModals,
     selection: (state) => state.selection,
     isFileSelected: (state) => (file) => {
-      return state.selection.find((item) => item.id === file.id)
+      if (state.isFieldMode) {
+        return state.currentField?.selection.find((item) => item.id === file.id)
+      } else {
+        return state.selection.find((item) => item.id === file.id)
+      }
     },
+    fieldByAttribute: (state) => (attribute) => state.fields[attribute]
   },
 }
 
