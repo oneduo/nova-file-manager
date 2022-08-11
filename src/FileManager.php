@@ -146,7 +146,7 @@ class FileManager extends Field
         $manager = FileManagerService::make();
 
         if (isset($this->diskColumn)) {
-            $disk = $resource->{$this->diskColumn};
+            $disk = parent::resolveAttribute($resource, $this->diskColumn);
         }
 
         if (isset($disk)) {
