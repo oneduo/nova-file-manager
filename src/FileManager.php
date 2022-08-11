@@ -6,7 +6,6 @@ namespace BBSLab\NovaFileManager;
 
 use BBSLab\NovaFileManager\Services\FileManagerService;
 use Closure;
-use Illuminate\Database\Eloquent\Model;
 use JsonException;
 use Laravel\Nova\Fields\Field;
 use Laravel\Nova\Fields\PresentsImages;
@@ -101,7 +100,7 @@ class FileManager extends Field
     {
         $this->storageCallback = $storageCallback ?? function (
             NovaRequest $request,
-            Model $model,
+            $model,
             string $attribute,
             string $requestAttribute
         ) {
@@ -147,7 +146,7 @@ class FileManager extends Field
         $manager = FileManagerService::make();
 
         if (isset($this->diskColumn)) {
-            $disk = $resource->{$this->diskColumn};
+            $disk = parent::resolveAttribute($resource, $this->diskColumn);
         }
 
         if (isset($disk)) {
