@@ -1,6 +1,10 @@
 <template>
   <ConfirmModal
-    :content="__('This will will delete the file from the storage. This action cannot be undone.')"
+    :content="
+      __(
+        'This will will delete the file from the storage. This action cannot be undone.'
+      )
+    "
     :icon="icon"
     :is-open="isOpen"
     :name="name"
@@ -42,21 +46,20 @@ import Button from '@/components/Elements/Button'
 
 const store = useStore()
 const props = defineProps({
-  isOpen: {
-    type: Boolean,
-    default: false,
-  },
-  name: {
-    type: String,
-    required: true,
-  },
-  onConfirm: {
-    type: Function,
-    default: () => {
+    isOpen: {
+        type: Boolean,
+        default: false,
     },
-  },
+    name: {
+        type: String,
+        required: true,
+    },
+    onConfirm: {
+        type: Function,
+        default: () => {},
+    },
 })
 
 const icon = computed(() => ExclamationIcon)
-const closeModal = (name) => store.dispatch('nova-file-manager/closeModal', name)
+const closeModal = name => store.dispatch('nova-file-manager/closeModal', name)
 </script>

@@ -77,14 +77,14 @@ const store = useStore()
 const props = defineProps(['name', 'onSubmit'])
 const value = ref(null)
 
-onMounted(() => value.value = null)
+onMounted(() => (value.value = null))
 
 const { errors, hasErrors, errorsList } = useErrors('createFolder')
 
-const closeModal = (name) => store.dispatch('nova-file-manager/closeModal', name)
+const closeModal = name => store.dispatch('nova-file-manager/closeModal', name)
 const submit = () => {
-  props.onSubmit(value.value)
+    props.onSubmit(value.value)
 
-  value.value = null
+    value.value = null
 }
 </script>

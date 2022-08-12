@@ -1,7 +1,9 @@
 <template>
   <ConfirmModal
     :content="
-      __('This will will delete the folder from the storage. This action cannot be undone.')
+      __(
+        'This will will delete the folder from the storage. This action cannot be undone.'
+      )
     "
     :icon="icon"
     :name="name"
@@ -43,5 +45,5 @@ import Button from '@/components/Elements/Button'
 const store = useStore()
 const props = defineProps(['name', 'onConfirm'])
 const icon = computed(() => ExclamationIcon)
-const closeModal = (name) => store.dispatch('nova-file-manager/closeModal', name)
+const closeModal = name => store.dispatch('nova-file-manager/closeModal', name)
 </script>

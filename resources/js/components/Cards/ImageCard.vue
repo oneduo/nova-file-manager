@@ -1,9 +1,5 @@
 <template>
-  <EntityCard
-    :as="as"
-    :checked="checked"
-    :file="file"
-  >
+  <EntityCard :as="as" :checked="checked" :file="file">
     <img
       :src="file.url"
       alt=""

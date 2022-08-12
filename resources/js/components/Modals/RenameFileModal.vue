@@ -1,9 +1,5 @@
 <template>
-  <InputModal
-    :name="name"
-    :on-submit="submit"
-    :title="__('Rename file')"
-  >
+  <InputModal :name="name" :on-submit="submit" :title="__('Rename file')">
     <template v-slot:inputs>
       <div>
         <div
@@ -77,10 +73,10 @@ const store = useStore()
 const props = defineProps(['name', 'onSubmit', 'oldName'])
 const value = ref(null)
 
-onMounted(() => value.value = props.oldName)
+onMounted(() => (value.value = props.oldName))
 
 const { errors, hasErrors, errorsList } = useErrors('renameFile')
 
-const closeModal = (name) => store.dispatch('nova-file-manager/closeModal', name)
+const closeModal = name => store.dispatch('nova-file-manager/closeModal', name)
 const submit = () => props.onSubmit(value.value)
 </script>

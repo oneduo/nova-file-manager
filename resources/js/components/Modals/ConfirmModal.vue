@@ -1,9 +1,5 @@
 <template>
-  <TransitionRoot
-    :show="isOpen"
-    as="template"
-    class="nova-file-manager"
-  >
+  <TransitionRoot :show="isOpen" as="template" class="nova-file-manager">
     <Dialog
       as="div"
       class="relative z-[60]"
@@ -19,7 +15,9 @@
         leave-from="opacity-100"
         leave-to="opacity-0"
       >
-        <div class="fixed inset-0 bg-gray-800/20 backdrop-blur-sm transition-opacity"/>
+        <div
+          class="fixed inset-0 bg-gray-800/20 backdrop-blur-sm transition-opacity"
+        />
       </TransitionChild>
 
       <div
@@ -68,8 +66,8 @@
               <div
                 class="mt-5 sm:mt-4 sm:flex sm:flex-row-reverse sm:gap-x-2 space-y-3 sm:space-y-0"
               >
-                <slot name="confimButton"/>
-                <slot name="cancelButton"/>
+                <slot name="confimButton" />
+                <slot name="cancelButton" />
               </div>
             </DialogPanel>
           </TransitionChild>
@@ -82,26 +80,39 @@
 <script setup>
 import { computed, onBeforeUnmount } from 'vue'
 import { useStore } from 'vuex'
-import { Dialog, DialogPanel, DialogTitle, TransitionChild, TransitionRoot } from '@headlessui/vue'
+import {
+    Dialog,
+    DialogPanel,
+    DialogTitle,
+    TransitionChild,
+    TransitionRoot,
+} from '@headlessui/vue'
 
 const variants = {
-  danger: {
-    iconBackground: 'bg-red-100 dark:bg-red-800/30',
-    iconColor: 'text-red-600 dark:text-red-500',
-  },
+    danger: {
+        iconBackground: 'bg-red-100 dark:bg-red-800/30',
+        iconColor: 'text-red-600 dark:text-red-500',
+    },
 }
 
 const store = useStore()
 const props = defineProps(['name', 'title', 'content', 'icon', 'variant'])
 const darkMode = computed(() => store.state['nova-file-manager'].darkMode)
-const isOpen = computed(() => store.getters['nova-file-manager/allModals'].includes(props.name))
-const iconBackgroundClass = computed(() => props.variant ? variants[props.variant].iconBackground : null)
-const iconColorClass = computed(() => props.variant ? variants[props.variant].iconColor : null)
-const closeModal = () => store.dispatch('nova-file-manager/closeModal', props.name)
+const isOpen = computed(() =>
+    store.getters['nova-file-manager/allModals'].includes(props.name)
+)
+const iconBackgroundClass = computed(() =>
+    props.variant ? variants[props.variant].iconBackground : null
+)
+const iconColorClass = computed(() =>
+    props.variant ? variants[props.variant].iconColor : null
+)
+const closeModal = () =>
+    store.dispatch('nova-file-manager/closeModal', props.name)
 
 onBeforeUnmount(() => {
-  if (isOpen.value) {
-    closeModal()
-  }
+    if (isOpen.value) {
+        closeModal()
+    }
 })
 </script>

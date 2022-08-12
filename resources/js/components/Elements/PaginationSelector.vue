@@ -1,9 +1,5 @@
 <template>
-  <Select
-    :current="perPage"
-    :on-click="setPerPage"
-    :options="perPageOptions"
-  />
+  <Select :current="perPage" :on-click="setPerPage" :options="perPageOptions" />
 </template>
 
 <script setup>

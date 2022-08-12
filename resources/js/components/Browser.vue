@@ -1,14 +1,16 @@
 <template>
-  <div class="flex flex-1 items-stretch overflow-hidden rounded-md w-full min-h-[30vh]">
+  <div
+    class="flex flex-1 items-stretch overflow-hidden rounded-md w-full min-h-[30vh]"
+  >
     <main class="relative flex-1 overflow-y-auto bg-gray-50 dark:bg-gray-800">
       <div class="w-full px-4 space-y-4 mb-4">
-        <Toolbar/>
+        <Toolbar />
 
         <div
           v-if="isFetchingData"
           class="w-full h-80 flex justify-center items-center"
         >
-          <Spinner class="w-16 h-16"/>
+          <Spinner class="w-16 h-16" />
         </div>
 
         <template v-else>
@@ -50,15 +52,17 @@ const directories = computed(() => store.state['nova-file-manager'].directories)
 const filled = computed(() => files.value?.length || directories.value?.length)
 const pagination = computed(() => store.state['nova-file-manager'].pagination)
 const view = computed(() => store.state['nova-file-manager'].view)
-const isFetchingData = computed(() => store.state['nova-file-manager'].isFetchingData)
+const isFetchingData = computed(
+    () => store.state['nova-file-manager'].isFetchingData
+)
 
 onMounted(() => {
-  store.commit('nova-file-manager/init')
-  store.dispatch('nova-file-manager/getDisks')
-  store.dispatch('nova-file-manager/getData')
+    store.commit('nova-file-manager/init')
+    store.dispatch('nova-file-manager/getDisks')
+    store.dispatch('nova-file-manager/getData')
 })
 
 onBeforeUnmount(() => {
-  store.commit('nova-file-manager/destroy')
+    store.commit('nova-file-manager/destroy')
 })
 </script>

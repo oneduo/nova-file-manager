@@ -1,9 +1,5 @@
 <template>
-  <Select
-    :current="disk"
-    :on-click="setDisk"
-    :options="disks"
-  />
+  <Select :current="disk" :on-click="setDisk" :options="disks" />
 </template>
 
 <script setup>

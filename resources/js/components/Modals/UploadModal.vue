@@ -1,9 +1,5 @@
 <template>
-  <TransitionRoot
-    :show="isOpen"
-    as="template"
-    class="nova-file-manager"
-  >
+  <TransitionRoot :show="isOpen" as="template" class="nova-file-manager">
     <Dialog
       as="div"
       class="relative z-[60]"
@@ -49,13 +45,15 @@
             <DialogPanel
               class="relative bg-white dark:bg-gray-900 rounded-lg text-left overflow-hidden shadow-xl transform transition-all sm:my-8 sm:max-w-lg sm:w-full"
             >
-              <div class="max-w-lg flex justify-center px-6 pt-5 pb-6 rounded-md min-h-1/3">
-                <div
-                  v-if="!isUploading"
-                  class="space-y-1 text-center"
-                >
+              <div
+                class="max-w-lg flex justify-center px-6 pt-5 pb-6 rounded-md min-h-1/3"
+              >
+                <div v-if="!isUploading" class="space-y-1 text-center">
                   <CloudUploadIcon
-                    :class="['mx-auto h-12 w-12 text-gray-400', active && 'animate-bounce']"
+                    :class="[
+                      'mx-auto h-12 w-12 text-gray-400',
+                      active && 'animate-bounce',
+                    ]"
                   />
                   <div class="flex text-sm text-gray-600">
                     <label
@@ -71,14 +69,13 @@
                         @change="onChange"
                       />
                     </label>
-                    <p class="pl-1 text-gray-500">{{ __('or drag and drop') }}</p>
+                    <p class="pl-1 text-gray-500">
+                      {{ __('or drag and drop') }}
+                    </p>
                   </div>
                 </div>
-                <div
-                  v-else
-                  class="text-center"
-                >
-                  <Spinner class="mx-auto h-12 w-12"/>
+                <div v-else class="text-center">
+                  <Spinner class="mx-auto h-12 w-12" />
                 </div>
               </div>
             </DialogPanel>
@@ -92,7 +89,12 @@
 <script setup>
 import { computed, onBeforeUnmount, reactive, ref, watch } from 'vue'
 import { useStore } from 'vuex'
-import { Dialog, DialogPanel, TransitionChild, TransitionRoot } from '@headlessui/vue'
+import {
+    Dialog,
+    DialogPanel,
+    TransitionChild,
+    TransitionRoot,
+} from '@headlessui/vue'
 import { CloudUploadIcon } from '@heroicons/vue/outline'
 import Spinner from '@/components/Elements/Spinner'
 
@@ -100,29 +102,31 @@ const store = useStore()
 const props = defineProps(['name'])
 const darkMode = computed(() => store.state['nova-file-manager'].darkMode)
 const isUploading = computed(() => store.state['nova-file-manager'].isUploading)
-const isOpen = computed(() => store.getters['nova-file-manager/allModals'].includes(props.name))
+const isOpen = computed(() =>
+    store.getters['nova-file-manager/allModals'].includes(props.name)
+)
 
 const active = ref(false)
 const file = ref(null)
 
-const closeModal = () => store.dispatch('nova-file-manager/closeModal', props.name)
-const setFile = (value) => file.value = value
-const dragenter = () => active.value = true
-const dragleave = () => active.value = false
-const onDrop = (e) => file.value = e.dataTransfer.files[0]
-const onChange = (e) => file.value = e.target.files[0]
+const closeModal = () =>
+    store.dispatch('nova-file-manager/closeModal', props.name)
+const setFile = value => (file.value = value)
+const dragenter = () => (active.value = true)
+const dragleave = () => (active.value = false)
+const onDrop = e => (file.value = e.dataTransfer.files[0])
+const onChange = e => (file.value = e.target.files[0])
 const submit = () => {
-  if (!!file.value) {
-    store.dispatch('nova-file-manager/upload', file.value)
-  }
+    if (file.value) {
+        store.dispatch('nova-file-manager/upload', file.value)
+    }
 }
 
 onBeforeUnmount(() => {
-  if (isOpen.value) {
-    closeModal()
-  }
+    if (isOpen.value) {
+        closeModal()
+    }
 })
 
 watch(file, () => submit())
-
 </script>

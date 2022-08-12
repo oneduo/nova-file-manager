@@ -1,13 +1,9 @@
 <template>
-  <EntityCard
-    :as="as"
-    :checked="checked"
-    :file="file"
-  >
+  <EntityCard :as="as" :checked="checked" :file="file">
     <div
       class="m-auto flex items-center justify-center bg-gray-200 dark:bg-gray-900 group-hover:opacity-75"
     >
-      <DocumentIcon class="h-16 w-16 text-gray-600"/>
+      <DocumentIcon class="h-16 w-16 text-gray-600" />
     </div>
   </EntityCard>
 </template>

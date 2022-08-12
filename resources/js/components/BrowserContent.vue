@@ -9,57 +9,41 @@
         <DisclosureButton v-slot="{ open }">
           <div class="flex flex-row w-full items-center gap-x-1">
             <span class="text-gray-500 text-xs">{{ __('Folders') }}</span>
-            <ChevronDownIcon
-              v-if="open"
-              class="h-3 w-3 text-gray-600"
-            />
-            <ChevronRightIcon
-              v-else
-              class="h-3 w-3 text-gray-600"
-            />
+            <ChevronDownIcon v-if="open" class="h-3 w-3 text-gray-600" />
+            <ChevronRightIcon v-else class="h-3 w-3 text-gray-600" />
           </div>
         </DisclosureButton>
 
         <DisclosurePanel>
           <section aria-labelledby="gallery-heading">
-            <DirectoryGrid :directories="directories"/>
+            <DirectoryGrid :directories="directories" />
           </section>
         </DisclosurePanel>
       </Disclosure>
     </div>
     <div class="space-y-2">
-      <Disclosure
-        v-if="files?.length"
-        v-slot="{ open }"
-        :default-open="true"
-      >
+      <Disclosure v-if="files?.length" v-slot="{ open }" :default-open="true">
         <DisclosureButton>
           <div class="flex flex-row w-full items-center gap-x-1">
             <span class="text-gray-500 text-xs">Files</span>
-            <ChevronDownIcon
-              v-if="open"
-              class="h-3 w-3 text-gray-600"
-            />
-            <ChevronRightIcon
-              v-else
-              class="h-3 w-3 text-gray-600"
-            />
+            <ChevronDownIcon v-if="open" class="h-3 w-3 text-gray-600" />
+            <ChevronRightIcon v-else class="h-3 w-3 text-gray-600" />
           </div>
         </DisclosureButton>
 
         <DisclosurePanel>
           <section aria-labelledby="gallery-heading">
-            <FileGrid/>
+            <FileGrid />
           </section>
         </DisclosurePanel>
       </Disclosure>
     </div>
   </template>
   <template v-else>
-    <List/>
+    <List />
   </template>
 
-  <Empty v-if="!filled"/>
+  <Empty v-if="!filled" />
 </template>
 
 <script setup>

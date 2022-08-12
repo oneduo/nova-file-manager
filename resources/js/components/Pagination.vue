@@ -25,7 +25,9 @@
         {{ __('Next') }}
       </button>
     </div>
-    <div class="hidden md:flex-1 md:flex md:items-center md:justify-between md:flex-wrap">
+    <div
+      class="hidden md:flex-1 md:flex md:items-center md:justify-between md:flex-wrap"
+    >
       <div>
         <p class="text-sm text-gray-700 dark:text-gray-400 space-x-1">
           <span>{{ __('Showing') }}</span>
@@ -47,10 +49,7 @@
             @click.prevent="() => setPage(Math.max(1, currentPage - 1))"
           >
             <span class="sr-only">{{ __('Previous') }}</span>
-            <ChevronLeftIcon
-              aria-hidden="true"
-              class="h-5 w-5"
-            />
+            <ChevronLeftIcon aria-hidden="true" class="h-5 w-5" />
           </button>
           <button
             v-for="link in links.slice(1, -1)"
@@ -70,10 +69,7 @@
             @click.prevent="() => setPage(Math.min(lastPage, currentPage + 1))"
           >
             <span class="sr-only">{{ __('Next') }}</span>
-            <ChevronRightIcon
-              aria-hidden="true"
-              class="h-5 w-5"
-            />
+            <ChevronRightIcon aria-hidden="true" class="h-5 w-5" />
           </button>
         </nav>
       </div>
@@ -86,7 +82,14 @@ import { useStore } from 'vuex'
 import { ChevronLeftIcon, ChevronRightIcon } from '@heroicons/vue/solid'
 
 const store = useStore()
-const props = defineProps(['currentPage', 'from', 'to', 'total', 'lastPage', 'links'])
+const props = defineProps([
+    'currentPage',
+    'from',
+    'to',
+    'total',
+    'lastPage',
+    'links',
+])
 
-const setPage = (page) => store.dispatch('nova-file-manager/setPage', page)
+const setPage = page => store.dispatch('nova-file-manager/setPage', page)
 </script>

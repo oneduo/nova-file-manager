@@ -12,7 +12,7 @@
         @dblclick="openPreview(file)"
       />
 
-      <preview-modal :file="file"/>
+      <preview-modal :file="file" />
     </li>
   </ul>
 </template>
@@ -31,21 +31,24 @@ const timer = ref(null)
 
 const files = computed(() => store.state['nova-file-manager'].files)
 const selection = computed(() => store.state['nova-file-manager'].selection)
-const isFileSelected = computed(() => store.getters['nova-file-manager/isFileSelected'])
+const isFileSelected = computed(
+    () => store.getters['nova-file-manager/isFileSelected']
+)
 
-const fileCardComponent = (file) => {
-  switch (file.type) {
+const fileCardComponent = file => {
+    switch (file.type) {
     case 'image':
-      return ImageCard
+        return ImageCard
     case 'video':
-      return VideoCard
+        return VideoCard
     default:
-      return FileCard
-  }
+        return FileCard
+    }
 }
 
-const openPreview = (file) => store.commit('nova-file-manager/previewFile', file)
-const toggleSelection = (file) => store.getters['nova-file-manager/isFileSelected'](file)
-  ? store.commit('nova-file-manager/deselectFile', file)
-  : store.commit('nova-file-manager/selectFile', file)
+const openPreview = file => store.commit('nova-file-manager/previewFile', file)
+const toggleSelection = file =>
+    store.getters['nova-file-manager/isFileSelected'](file)
+        ? store.commit('nova-file-manager/deselectFile', file)
+        : store.commit('nova-file-manager/selectFile', file)
 </script>
