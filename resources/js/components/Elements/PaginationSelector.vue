@@ -1,26 +1,13 @@
 <template>
   <Select
     :current="perPage"
-    :options="perPageOptions"
     :on-click="setPerPage"
+    :options="perPageOptions"
   />
 </template>
 
-<script>
-import { Menu, MenuButton, MenuItem, MenuItems } from '@headlessui/vue'
-import { CheckIcon, ChevronDownIcon } from '@heroicons/vue/solid'
+<script setup>
 import Select from '@/components/Elements/Select'
 
-export default {
-  components: {
-    Select,
-    Menu,
-    MenuButton,
-    MenuItem,
-    MenuItems,
-    ChevronDownIcon,
-    CheckIcon,
-  },
-  props: ['perPage', 'perPageOptions', 'setPerPage'],
-}
+const props = defineProps(['perPage', 'perPageOptions', 'setPerPage'])
 </script>

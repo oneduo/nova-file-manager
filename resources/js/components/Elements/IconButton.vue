@@ -1,14 +1,16 @@
 <template>
   <component
     :is="!asAnchor ? 'button' : 'a'"
-    :type="!asAnchor ? type ?? 'button' : undefined"
     :class="`inline-flex items-center rounded-full border border-transparent p-1 shadow-sm focus:outline-none focus:ring-1 ${variantClass}`"
+    :type="!asAnchor ? type ?? 'button' : undefined"
   >
     <slot></slot>
   </component>
 </template>
 
-<script>
+<script setup>
+import { computed } from 'vue'
+
 const variants = {
   primary: 'bg-blue-500 text-white hover:bg-blue-600 focus:ring-white',
   secondary:
@@ -18,13 +20,6 @@ const variants = {
   transparent:
     'bg-transparent text-black dark:text-white hover:bg-gray-900/20 dark:hover:bg-gray-900/50',
 }
-export default {
-  name: 'IconButton',
-  props: ['variant', 'asAnchor', 'type'],
-  computed: {
-    variantClass() {
-      return variants[this.variant] ?? variants.secondary
-    },
-  },
-}
+const props = defineProps(['variant', 'asAnchor', 'type'])
+const variantClass = computed(() => variants[props.variant] ?? variants.secondary)
 </script>

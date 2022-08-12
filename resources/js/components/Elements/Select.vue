@@ -9,8 +9,8 @@
       >
         {{ current }}
         <ChevronDownIcon
-          class="-mr-1 ml-2 h-5 w-5 dark:group-hover:text-white group-hover:text-black"
           aria-hidden="true"
+          class="-mr-1 ml-2 h-5 w-5 dark:group-hover:text-white group-hover:text-black"
         />
       </MenuButton>
     </div>
@@ -31,16 +31,16 @@
           <MenuItem v-for="value in options">
             <div class="flex flex-row">
               <button
-                tabindex="1"
-                @click.prevent="onClick(value)"
-                type="button"
                 class="flex flex-row justify-between hover:bg-gray-50 dark:hover:bg-gray-800 block w-full text-left cursor-pointer py-2 px-3 focus:outline-none focus:ring-1 focus:ring-blue-500 rounded truncate whitespace-nowrap text-gray-500 dark:text-gray-500 dark:hover:text-gray-400 dark:active:text-gray-600"
+                tabindex="1"
+                type="button"
+                @click.prevent="onClick(value)"
               >
                 <span>{{ value }}</span>
                 <span v-if="current === value">
                   <CheckIcon
-                    class="h-5 w-5 text-blue-500"
                     aria-hidden="true"
+                    class="h-5 w-5 text-blue-500"
                   />
                 </span>
               </button>
@@ -52,20 +52,9 @@
   </Menu>
 </template>
 
-<script>
+<script setup>
 import { Menu, MenuButton, MenuItem, MenuItems } from '@headlessui/vue'
 import { CheckIcon, ChevronDownIcon } from '@heroicons/vue/solid'
 
-export default {
-  name: 'Select',
-  components: {
-    Menu,
-    MenuButton,
-    MenuItem,
-    MenuItems,
-    ChevronDownIcon,
-    CheckIcon,
-  },
-  props: ['current', 'options', 'onClick'],
-}
+const props = defineProps(['current', 'options', 'onClick'])
 </script>

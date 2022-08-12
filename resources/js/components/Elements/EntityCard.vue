@@ -8,7 +8,7 @@
         checked && 'ring-1 ring-blue-500'
       }`"
     >
-      <slot />
+      <slot/>
     </div>
     <p
       class="pointer-events-none mt-2 block truncate text-sm font-medium text-gray-900 dark:text-gray-50"
@@ -23,20 +23,10 @@
   </component>
 </template>
 
-<script>
+<script setup>
 import { CheckCircleIcon } from '@heroicons/vue/solid'
-import { DocumentIcon } from '@heroicons/vue/outline'
-import Sidebar from '@/components/Sidebar'
 
-export default {
-  name: 'EntityCard',
-  components: {
-    CheckCircleIcon,
-    DocumentIcon,
-    Sidebar,
-  },
-  props: ['file', 'checked', 'as'],
-}
+const props = defineProps(['file', 'checked', 'as'])
 </script>
 
 <style scoped></style>
