@@ -1,32 +1,23 @@
 <template>
   <EntityCard
-    :file="file"
-    :checked="checked"
     :as="as"
+    :checked="checked"
+    :file="file"
   >
     <video class="group-hover:opacity-75 pointer-events-none object-cover">
-      <source :src="file.url" />
+      <source :src="file.url"/>
       Sorry, your browser doesn't support embedded videos.
     </video>
 
     <div class="absolute m-auto flex items-center justify-center bg-transparent">
-      <PlayIcon class="h-16 w-16 text-white/60" />
+      <PlayIcon class="h-16 w-16 text-white/60"/>
     </div>
   </EntityCard>
 </template>
 
-<script>
-import { CheckCircleIcon, PlayIcon } from '@heroicons/vue/solid'
-import Sidebar from '@/components/Sidebar'
+<script setup>
+import { PlayIcon } from '@heroicons/vue/solid'
 import EntityCard from '@/components/Elements/EntityCard'
 
-export default {
-  components: {
-    EntityCard,
-    CheckCircleIcon,
-    PlayIcon,
-    Sidebar,
-  },
-  props: ['file', 'checked', 'as'],
-}
+const props = defineProps(['file', 'checked', 'as'])
 </script>

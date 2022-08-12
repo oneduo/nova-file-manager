@@ -25,5 +25,5 @@ const variants = {
 const props = defineProps(['id', 'type', 'variant', 'icon', 'href'])
 const paddingClass = computed(() => props.icon ? 'px-3' : 'px-4')
 const colorClass = computed(() => variants[props.variant] || variants.primary)
-const buttonClass = computed(() => `${colorClass} ${paddingClass}`)
+const buttonClass = computed(() => `${colorClass.value} ${paddingClass.value}`)
 </script>

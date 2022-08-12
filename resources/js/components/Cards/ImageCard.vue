@@ -1,8 +1,8 @@
 <template>
   <EntityCard
-    :file="file"
-    :checked="checked"
     :as="as"
+    :checked="checked"
+    :file="file"
   >
     <img
       :src="file.url"
@@ -12,19 +12,8 @@
   </EntityCard>
 </template>
 
-<script>
-import { CheckCircleIcon } from '@heroicons/vue/solid'
-import Sidebar from '@/components/Sidebar'
+<script setup>
 import EntityCard from '@/components/Elements/EntityCard'
 
-export default {
-  components: {
-    EntityCard,
-    CheckCircleIcon,
-    Sidebar,
-  },
-  props: ['file', 'checked', 'as'],
-}
+const props = defineProps(['file', 'checked', 'as'])
 </script>
-
-<style scoped></style>
