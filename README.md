@@ -234,7 +234,7 @@ FileManager::make(__('Avatar'), 'avatar')->storeDisk('avatar_disk')
 ## Configuration file <a name = "configuration-file"></a>
 
 | Key                                  | Description                                                                              | Type       | Default   | Notes                                                             |
-|--------------------------------------|------------------------------------------------------------------------------------------|------------|-----------|-------------------------------------------------------------------|
+| ------------------------------------ | ---------------------------------------------------------------------------------------- | ---------- | --------- | ----------------------------------------------------------------- |
 | `default_disk`                       | The default disk used by the package                                                     | `string`   | `public`  | The default disk must be defined in your `filesystems.php` config |
 | `available_disks`                    | Provides a list of available disks to be used by the package                             | `string[]` | -         |                                                                   |
 | `show_hidden_files`                  | Toggles whether or not to show files and directories that start with a "dot"             | `bool`     | `false`   |                                                                   |

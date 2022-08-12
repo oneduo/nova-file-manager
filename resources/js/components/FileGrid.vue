@@ -27,12 +27,11 @@ import Sidebar from '@/components/Sidebar'
 import PreviewModal from '@/components/Modals/PreviewModal'
 
 export default {
-  data() {
-    return {
-      clicks: 0,
-      timer: null,
-    }
-  },
+  data: () => ({
+    clicks: 0,
+    timer: null,
+  }),
+
   components: {
     PreviewModal,
     RadioGroup,
@@ -43,12 +42,7 @@ export default {
     Sidebar,
   },
   methods: {
-    ...mapMutations('nova-file-manager', [
-      'setSelectedFile',
-      'selectFile',
-      'deselectFile',
-      'previewFile',
-    ]),
+    ...mapMutations('nova-file-manager', ['selectFile', 'deselectFile', 'previewFile']),
     fileCardComponent(file) {
       switch (file.type) {
         case 'image':
