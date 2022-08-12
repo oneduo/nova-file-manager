@@ -1,18 +1,21 @@
 const path = require('path')
 
-module.exports = {
-  externals: {
-    vue: 'Vue',
-  },
+module.exports = (env) => {
+    const prefix = env.NOVA_PREFIX || 'vendor'
+    return {
+        externals: {
+            vue: 'Vue',
+        },
 
-  resolve: {
-    alias: {
-      'laravel-nova': path.join(__dirname, '../../laravel/nova/resources/js/mixins/packages.js'),
-      '@': path.join(__dirname, '/resources/js'),
-    },
-  },
+        resolve: {
+            alias: {
+                'laravel-nova': path.join(__dirname, prefix, '/laravel/nova/resources/js/mixins/packages.js'),
+                '@': path.join(__dirname, '/resources/js'),
+            },
+        },
 
-  output: {
-    uniqueName: 'nova-file-manager',
-  },
+        output: {
+            uniqueName: 'nova-file-manager',
+        },
+    }
 }

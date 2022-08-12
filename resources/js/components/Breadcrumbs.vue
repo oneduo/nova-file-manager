@@ -12,7 +12,7 @@
           <HomeIcon class="flex-shrink-0 h-4 w-4" />
         </button>
       </li>
-      <li v-for="page in items">
+      <li v-for="page in items" :key="page.path">
         <div class="flex items-center">
           <ChevronRightIcon
             class="flex-shrink-0 h-4 w-4 text-gray-400 dark:text-gray-600"
@@ -38,15 +38,10 @@
 </template>
 
 <script setup>
-import { useStore } from 'vuex'
 import { ChevronRightIcon, HomeIcon } from '@heroicons/vue/outline'
-import { computed } from 'vue'
 
-const store = useStore()
-const props = defineProps({
+defineProps({
     items: null,
     setPath: null,
 })
-
-const selection = computed(() => store.state['nova-file-manager'].selection)
 </script>
