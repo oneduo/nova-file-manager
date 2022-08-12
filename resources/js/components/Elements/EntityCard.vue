@@ -25,8 +25,6 @@
 
 <script setup>
 import { CheckCircleIcon } from '@heroicons/vue/solid'
-import { DocumentIcon } from '@heroicons/vue/outline'
-import Sidebar from '@/components/Sidebar'
 
 const props = defineProps(['file', 'checked', 'as'])
 </script>

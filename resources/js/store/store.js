@@ -50,10 +50,6 @@ const store = {
   mutations: {
     // This is the main mutation that is being evaluated when the browser is mounted
     init(state) {
-      if (state.ready) {
-        return
-      }
-
       this.commit('nova-file-manager/detectDarkMode')
       this.commit('nova-file-manager/loadFromLocalStorage')
       this.commit('nova-file-manager/setFromQueryString')
@@ -134,29 +130,25 @@ const store = {
     },
 
     selectFile(state, file) {
-      if (state.isFieldMode) {
-        if (state.currentField?.selection?.length === state.currentField?.limit) {
-          return
-        }
-
-        state.currentField.selection = [file, ...state.currentField?.selection]
-      } else {
-        if (state.selection?.length === state.limit) {
-          return
-        }
-
-        state.selection = [file, ...state.selection]
+      if (!state.isFieldMode) {
+        return
       }
+
+      if (state.currentField?.selection?.length === state.currentField?.limit) {
+        return
+      }
+
+      state.currentField.selection = [file, ...state.currentField?.selection]
     },
 
     deselectFile(state, file) {
-      if (state.isFieldMode) {
-        state.currentField.selection = state.currentField?.selection.filter(
-          (_file) => _file.id !== file.id,
-        )
-      } else {
-        state.selection = state.selection.filter((_file) => _file.id !== file.id)
+      if (!state.isFieldMode) {
+        return
       }
+
+      state.currentField.selection = state.currentField?.selection.filter(
+        (_file) => _file.id !== file.id,
+      )
     },
 
     deselectFieldFile(state, { field, file }) {

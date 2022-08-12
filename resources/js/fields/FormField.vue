@@ -97,7 +97,6 @@
 import { CloudIcon, DocumentIcon, TrashIcon } from '@heroicons/vue/outline'
 import { Dialog, DialogPanel, TransitionChild, TransitionRoot } from '@headlessui/vue'
 import Browser from '@/components/Browser'
-import ImageLoader from '@/components/ImageLoader'
 import { FormField, HandlesValidationErrors } from 'laravel-nova'
 import { mapActions, mapGetters, mapMutations, mapState } from 'vuex'
 import draggable from 'vuedraggable'
@@ -114,7 +113,6 @@ export default {
     TrashIcon,
     Dialog,
     DialogPanel,
-    ImageLoader,
     TransitionChild,
     TransitionRoot,
     draggable,

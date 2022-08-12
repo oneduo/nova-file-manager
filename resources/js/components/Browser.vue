@@ -41,7 +41,6 @@ import Toolbar from '@/components/Toolbar'
 import Pagination from '@/components/Pagination'
 import Spinner from '@/components/Elements/Spinner'
 import { mapActions, mapMutations, mapState } from 'vuex'
-import Sidebar from '@/components/Sidebar'
 import BrowserContent from '@/components/BrowserContent'
 
 export default {
@@ -50,7 +49,6 @@ export default {
     Toolbar,
     Pagination,
     Spinner,
-    Sidebar,
   },
 
   mounted() {

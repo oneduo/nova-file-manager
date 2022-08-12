@@ -4,8 +4,8 @@
   >
     <div class="flex-1 flex items-center justify-between md:hidden">
       <button
-        @click.prevent="() => setPage(Math.max(1, currentPage - 1))"
         class="relative inline-flex items-center px-3 py-2 rounded border border-gray-300 dark:border-gray-700 bg-white dark:bg-gray-900 text-sm font-semibold text-gray-500 hover:bg-gray-50 dark:hover:bg-gray-800"
+        @click.prevent="() => setPage(Math.max(1, currentPage - 1))"
       >
         {{ __('Previous') }}
       </button>
@@ -19,8 +19,8 @@
         </p>
       </div>
       <button
-        @click.prevent="() => setPage(Math.min(lastPage, currentPage + 1))"
         class="relative inline-flex items-center px-3 py-2 rounded border border-gray-300 dark:border-gray-700 bg-white dark:bg-gray-900 text-sm font-semibold text-gray-500 hover:bg-gray-50 dark:hover:bg-gray-800"
+        @click.prevent="() => setPage(Math.min(lastPage, currentPage + 1))"
       >
         {{ __('Next') }}
       </button>
@@ -38,41 +38,41 @@
       </div>
       <div>
         <nav
-          class="relative z-0 inline-flex rounded-md shadow-sm -space-x-px"
           aria-label="Pagination"
+          class="relative z-0 inline-flex rounded-md shadow-sm -space-x-px"
         >
           <button
-            @click.prevent="() => setPage(Math.max(1, currentPage - 1))"
             :disabled="currentPage === 1"
             class="relative inline-flex items-center px-2 py-2 rounded-l-md border border-gray-300 dark:border-gray-700 bg-white dark:bg-gray-900/30 text-sm font-medium text-gray-500 hover:bg-gray-50 dark:hover:bg-gray-800 hover:text-gray-800 dark:hover:text-gray-200"
+            @click.prevent="() => setPage(Math.max(1, currentPage - 1))"
           >
             <span class="sr-only">{{ __('Previous') }}</span>
             <ChevronLeftIcon
-              class="h-5 w-5"
               aria-hidden="true"
+              class="h-5 w-5"
             />
           </button>
           <button
             v-for="link in links.slice(1, -1)"
-            @click.prevent="Number(link.label) ? setPage(link.label) : null"
             :class="{
               'z-10 bg-blue-50 dark:bg-blue-800/30 border-blue-500 text-blue-600 dark:text-blue-300 relative inline-flex items-center px-4 py-2 border text-sm font-medium':
                 link.active,
               'bg-white dark:bg-gray-900/30 border-gray-300 dark:border-gray-700 text-gray-500 hover:bg-gray-50 dark:hover:bg-gray-800 hover:text-gray-800 dark:hover:text-gray-200 relative inline-flex items-center px-4 py-2 border text-sm font-medium':
                 !link.active,
             }"
+            @click.prevent="Number(link.label) ? setPage(link.label) : null"
           >
             {{ link.label }}
           </button>
           <button
-            @click.prevent="() => setPage(Math.min(lastPage, currentPage + 1))"
             :disabled="lastPage === currentPage"
             class="relative inline-flex items-center px-2 py-2 rounded-r-md border border-gray-300 dark:border-gray-700 bg-white dark:bg-gray-900/30 text-sm font-medium text-gray-500 hover:bg-gray-50 dark:hover:bg-gray-800 hover:text-gray-800 dark:hover:text-gray-200"
+            @click.prevent="() => setPage(Math.min(lastPage, currentPage + 1))"
           >
             <span class="sr-only">{{ __('Next') }}</span>
             <ChevronRightIcon
-              class="h-5 w-5"
               aria-hidden="true"
+              class="h-5 w-5"
             />
           </button>
         </nav>
@@ -81,20 +81,12 @@
   </div>
 </template>
 
-<script>
+<script setup>
+import { useStore } from 'vuex'
 import { ChevronLeftIcon, ChevronRightIcon } from '@heroicons/vue/solid'
-import { mapActions } from 'vuex'
 
-export default {
-  components: {
-    ChevronLeftIcon,
-    ChevronRightIcon,
-  },
+const store = useStore()
+const props = defineProps(['currentPage', 'from', 'to', 'total', 'lastPage', 'links'])
 
-  props: ['currentPage', 'from', 'to', 'total', 'lastPage', 'links'],
-
-  methods: {
-    ...mapActions('nova-file-manager', ['setPage']),
-  },
-}
+const setPage = (page) => store.dispatch('nova-file-manager/setPage', page)
 </script>

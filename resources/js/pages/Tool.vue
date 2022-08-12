@@ -1,49 +1,34 @@
 <template>
   <div class="nova-file-manager">
     <div :class="darkMode && 'dark'">
-      <Head :title="__('NovaFileManager.title')" />
+      <Head :title="__('NovaFileManager.title')"/>
 
       <Heading class="mb-6">{{ __('NovaFileManager.title') }}</Heading>
 
-      <Browser />
+      <Browser/>
     </div>
   </div>
 </template>
-<script>
+<script setup>
+import { useStore } from 'vuex'
 import Browser from '@/components/Browser'
-import { mapMutations, mapState } from 'vuex'
+import { computed, onMounted } from 'vue'
 
-export default {
-  components: {
-    Browser,
-  },
 
-  props: {
-    config: {
-      type: Object,
-      required: true,
-    },
-  },
+const store = useStore()
+const props = defineProps({
+  config: {
+    type: Object,
+    required: true,
+  }
+})
 
-  mounted() {
-    this.setSelection([])
-    this.setLimit(null)
-    this.init()
-    this.setIsFieldMode(false)
-  },
+const darkMode = computed(() => store.state['nova-file-manager'].darkMode)
 
-  computed: {
-    ...mapState('nova-file-manager', ['darkMode']),
-  },
-
-  methods: {
-    ...mapMutations('nova-file-manager', [
-      'init',
-      'setSelection',
-      'setLimit',
-      'setPath',
-      'setIsFieldMode',
-    ]),
-  },
-}
+onMounted(() => {
+  store.commit('nova-file-manager/setSelection', [])
+  store.commit('nova-file-manager/setLimit', null)
+  store.commit('nova-file-manager/init')
+  store.commit('nova-file-manager/setIsFieldMode', false)
+})
 </script>

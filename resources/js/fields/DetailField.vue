@@ -24,14 +24,13 @@
 import { CopiesToClipboard } from 'laravel-nova'
 import { CheckIcon, ClipboardCopyIcon, DocumentIcon } from '@heroicons/vue/outline'
 import { mapMutations, mapState } from 'vuex'
-import ImageLoader from '@/components/ImageLoader'
 import PreviewModal from '@/components/Modals/PreviewModal'
 import FieldCard from '@/components/Cards/FieldCard'
 
 export default {
   mixins: [CopiesToClipboard],
 
-  components: { FieldCard, DocumentIcon, ImageLoader, ClipboardCopyIcon, CheckIcon, PreviewModal },
+  components: { FieldCard, DocumentIcon, ClipboardCopyIcon, CheckIcon, PreviewModal },
 
   props: ['field', 'index'],
 

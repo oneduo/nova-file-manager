@@ -3,26 +3,26 @@
     <div class="space-y-2">
       <Disclosure
         v-if="directories?.length"
-        :default-open="true"
         v-slot="{ open }"
+        :default-open="true"
       >
         <DisclosureButton v-slot="{ open }">
           <div class="flex flex-row w-full items-center gap-x-1">
             <span class="text-gray-500 text-xs">{{ __('Folders') }}</span>
             <ChevronDownIcon
-              class="h-3 w-3 text-gray-600"
               v-if="open"
+              class="h-3 w-3 text-gray-600"
             />
             <ChevronRightIcon
-              class="h-3 w-3 text-gray-600"
               v-else
+              class="h-3 w-3 text-gray-600"
             />
           </div>
         </DisclosureButton>
 
         <DisclosurePanel>
           <section aria-labelledby="gallery-heading">
-            <DirectoryGrid :directories="directories" />
+            <DirectoryGrid :directories="directories"/>
           </section>
         </DisclosurePanel>
       </Disclosure>
@@ -30,39 +30,39 @@
     <div class="space-y-2">
       <Disclosure
         v-if="files?.length"
-        :default-open="true"
         v-slot="{ open }"
+        :default-open="true"
       >
         <DisclosureButton>
           <div class="flex flex-row w-full items-center gap-x-1">
             <span class="text-gray-500 text-xs">Files</span>
             <ChevronDownIcon
-              class="h-3 w-3 text-gray-600"
               v-if="open"
+              class="h-3 w-3 text-gray-600"
             />
             <ChevronRightIcon
-              class="h-3 w-3 text-gray-600"
               v-else
+              class="h-3 w-3 text-gray-600"
             />
           </div>
         </DisclosureButton>
 
         <DisclosurePanel>
           <section aria-labelledby="gallery-heading">
-            <FileGrid />
+            <FileGrid/>
           </section>
         </DisclosurePanel>
       </Disclosure>
     </div>
   </template>
   <template v-else>
-    <List />
+    <List/>
   </template>
 
-  <Empty v-if="!filled" />
+  <Empty v-if="!filled"/>
 </template>
 
-<script>
+<script setup>
 import { Disclosure, DisclosureButton, DisclosurePanel } from '@headlessui/vue'
 import { ChevronDownIcon, ChevronRightIcon } from '@heroicons/vue/outline'
 import FileGrid from '@/components/FileGrid'
@@ -70,21 +70,7 @@ import DirectoryGrid from '@/components/DirectoryGrid'
 import List from '@/components/List'
 import Empty from '@/components/Empty'
 
-export default {
-  name: 'BrowserContent',
-  components: {
-    Disclosure,
-    DisclosureButton,
-    DisclosurePanel,
-    ChevronDownIcon,
-    ChevronRightIcon,
-    FileGrid,
-    DirectoryGrid,
-    List,
-    Empty,
-  },
-  props: ['view', 'files', 'directories', 'filled'],
-}
+const props = defineProps(['view', 'files', 'directories', 'filled'])
 </script>
 
 <style scoped></style>
