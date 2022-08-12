@@ -55,6 +55,7 @@ export default {
     },
 
     openPreview(file) {
+      console.log('open preview')
       this.previewFile(file)
     },
 

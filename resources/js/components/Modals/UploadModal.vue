@@ -1,7 +1,7 @@
 <template>
   <TransitionRoot
-    as="template"
     :show="isOpen"
+    as="template"
     class="nova-file-manager"
   >
     <Dialog
@@ -31,8 +31,8 @@
       </TransitionChild>
 
       <div
-        class="fixed z-10 inset-0 overflow-y-auto"
         :class="darkMode && 'dark'"
+        class="fixed z-10 inset-0 overflow-y-auto"
       >
         <div
           class="flex items-end sm:items-center justify-center min-h-full p-4 text-center sm:p-0"
@@ -51,23 +51,23 @@
             >
               <div class="max-w-lg flex justify-center px-6 pt-5 pb-6 rounded-md min-h-1/3">
                 <div
-                  class="space-y-1 text-center"
                   v-if="!isUploading"
+                  class="space-y-1 text-center"
                 >
                   <CloudUploadIcon
                     :class="['mx-auto h-12 w-12 text-gray-400', active && 'animate-bounce']"
                   />
                   <div class="flex text-sm text-gray-600">
                     <label
-                      for="file-upload"
                       class="relative cursor-pointer rounded-md font-medium text-blue-500 hover:underline focus-within:outline-"
+                      for="file-upload"
                     >
                       <span>{{ __('Upload a file') }}</span>
                       <input
                         id="file-upload"
+                        class="sr-only"
                         name="file-upload"
                         type="file"
-                        class="sr-only"
                         @change="onChange"
                       />
                     </label>
@@ -75,10 +75,10 @@
                   </div>
                 </div>
                 <div
-                  class="text-center"
                   v-else
+                  class="text-center"
                 >
-                  <Spinner class="mx-auto h-12 w-12" />
+                  <Spinner class="mx-auto h-12 w-12"/>
                 </div>
               </div>
             </DialogPanel>
@@ -89,69 +89,40 @@
   </TransitionRoot>
 </template>
 
-<script>
+<script setup>
+import { computed, onBeforeUnmount, reactive, ref, watch } from 'vue'
+import { useStore } from 'vuex'
 import { Dialog, DialogPanel, TransitionChild, TransitionRoot } from '@headlessui/vue'
 import { CloudUploadIcon } from '@heroicons/vue/outline'
 import Spinner from '@/components/Elements/Spinner'
-import { mapActions, mapState } from 'vuex'
 
-export default {
-  name: 'UploadModal',
-  components: {
-    Dialog,
-    DialogPanel,
-    TransitionChild,
-    TransitionRoot,
-    CloudUploadIcon,
-    Spinner,
-  },
-  props: ['name'],
-  data() {
-    return {
-      active: false,
-      file: null,
-    }
-  },
-  computed: {
-    ...mapState('nova-file-manager', ['darkMode', 'isUploading']),
-    isOpen() {
-      return this.$store.getters['nova-file-manager/allModals'].includes(this.name)
-    },
-  },
+const store = useStore()
+const props = defineProps(['name'])
+const darkMode = computed(() => store.state['nova-file-manager'].darkMode)
+const isUploading = computed(() => store.state['nova-file-manager'].isUploading)
+const isOpen = computed(() => store.getters['nova-file-manager/allModals'].includes(props.name))
 
-  methods: {
-    ...mapActions('nova-file-manager', ['upload']),
-    closeModal() {
-      this.$store.dispatch('nova-file-manager/closeModal', this.name)
-    },
-    setFile(input) {
-      this.file = input
-    },
-    dragenter() {
-      this.active = true
-    },
-    dragleave() {
-      this.active = false
-    },
-    onDrop(e) {
-      this.file = e.dataTransfer.files[0]
-    },
-    onChange(e) {
-      this.file = e.target.files[0]
-    },
-    submit() {
-      if (!!this.file) {
-        this.upload(this.file)
-      }
-    },
-  },
-  watch: {
-    file() {
-      this.submit()
-    },
-  },
-  beforeDestroy() {
-    if (this.isOpen) this.closeModal()
-  },
+const active = ref(false)
+const file = ref(null)
+
+const closeModal = () => store.dispatch('nova-file-manager/closeModal', props.name)
+const setFile = (value) => file.value = value
+const dragenter = () => active.value = true
+const dragleave = () => active.value = false
+const onDrop = (e) => file.value = e.dataTransfer.files[0]
+const onChange = (e) => file.value = e.target.files[0]
+const submit = () => {
+  if (!!file.value) {
+    store.dispatch('nova-file-manager/upload', file.value)
+  }
 }
+
+onBeforeUnmount(() => {
+  if (isOpen.value) {
+    closeModal()
+  }
+})
+
+watch(file, () => submit())
+
 </script>

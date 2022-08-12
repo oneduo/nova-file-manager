@@ -1,31 +1,31 @@
 <template>
   <ConfirmModal
-    :name="name"
-    :is-open="isOpen"
-    :on-close="onClose"
-    :icon="icon"
-    :title="__('Are you sure you want to delete this file?')"
     :content="__('This will will delete the file from the storage. This action cannot be undone.')"
+    :icon="icon"
+    :is-open="isOpen"
+    :name="name"
+    :on-close="onClose"
+    :title="__('Are you sure you want to delete this file?')"
     variant="danger"
   >
     <template v-slot:confimButton>
       <Button
+        :icon="false"
+        class="w-full sm:w-auto"
         type="button"
         variant="danger"
-        :icon="false"
         @click="onConfirm"
-        class="w-full sm:w-auto"
       >
         {{ __('Delete') }}
       </Button>
     </template>
     <template v-slot:cancelButton>
       <Button
+        :icon="false"
+        class="w-full sm:w-auto"
         type="button"
         variant="secondary"
-        :icon="false"
         @click="closeModal(name)"
-        class="w-full sm:w-auto"
       >
         {{ __('Cancel') }}
       </Button>
@@ -33,42 +33,30 @@
   </ConfirmModal>
 </template>
 
-<script>
+<script setup>
+import { computed } from 'vue'
+import { useStore } from 'vuex'
 import { ExclamationIcon } from '@heroicons/vue/outline'
 import ConfirmModal from '@/components/Modals/ConfirmModal'
 import Button from '@/components/Elements/Button'
-import { mapActions } from 'vuex'
 
-export default {
-  components: {
-    ConfirmModal,
-    Button,
-    ExclamationIcon,
+const store = useStore()
+const props = defineProps({
+  isOpen: {
+    type: Boolean,
+    default: false,
   },
-
-  props: {
-    isOpen: {
-      type: Boolean,
-      default: false,
-    },
-    name: {
-      type: String,
-      required: true,
-    },
-    onConfirm: {
-      type: Function,
-      default: () => {},
+  name: {
+    type: String,
+    required: true,
+  },
+  onConfirm: {
+    type: Function,
+    default: () => {
     },
   },
+})
 
-  computed: {
-    icon() {
-      return ExclamationIcon
-    },
-  },
-
-  methods: {
-    ...mapActions('nova-file-manager', ['closeModal']),
-  },
-}
+const icon = computed(() => ExclamationIcon)
+const closeModal = (name) => store.dispatch('nova-file-manager/closeModal', name)
 </script>

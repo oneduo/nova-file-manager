@@ -1,8 +1,8 @@
 <template>
   <InputModal
     :name="name"
-    :title="__('Create a new folder')"
     :on-submit="submit"
+    :title="__('Create a new folder')"
   >
     <template v-slot:inputs>
       <div>
@@ -15,26 +15,26 @@
           ]"
         >
           <label
-            for="name"
             class="block text-xs font-medium text-gray-700 dark:text-gray-200"
+            for="name"
           >
             {{ __('Folder Name') }}
           </label>
           <input
-            v-model="value"
-            type="text"
-            name="name"
             id="name"
-            class="block w-full border-0 p-0 bg-gray-100 dark:bg-gray-900 placeholder-gray-400 sm:text-sm text-black dark:text-white focus:outline-none focus:ring-0"
+            v-model="value"
             :placeholder="__('Type your folder name here')"
+            class="block w-full border-0 p-0 bg-gray-100 dark:bg-gray-900 placeholder-gray-400 sm:text-sm text-black dark:text-white focus:outline-none focus:ring-0"
+            name="name"
+            type="text"
           />
         </div>
         <template v-if="hasErrors">
           <p
-            v-if="hasErrors"
             v-for="error in errorsList"
-            class="mt-2 text-sm text-red-600"
+            v-if="hasErrors"
             id="email-error"
+            class="mt-2 text-sm text-red-600"
           >
             {{ error }}
           </p>
@@ -43,22 +43,22 @@
     </template>
     <template v-slot:submitButton>
       <Button
-        type="submit"
-        variant="primary"
+        :disabled="!value"
         :icon="false"
         class="w-full sm:w-auto"
-        :disabled="!value"
+        type="submit"
+        variant="primary"
       >
         {{ __('Create Folder') }}
       </Button>
     </template>
     <template v-slot:cancelButton>
       <Button
+        :icon="false"
+        class="w-full sm:w-auto"
         type="reset"
         variant="secondary"
-        :icon="false"
         @click="closeModal(name)"
-        class="w-full sm:w-auto"
       >
         {{ __('Cancel') }}
       </Button>
@@ -66,44 +66,25 @@
   </InputModal>
 </template>
 
-<script>
+<script setup>
+import { computed, onMounted, ref } from 'vue'
+import { useStore } from 'vuex'
 import Button from '@/components/Elements/Button'
 import InputModal from '@/components/Modals/InputModal'
-import { mapActions, mapState } from 'vuex'
+import { useErrors } from '@/hooks'
 
-export default {
-  components: {
-    Button,
-    InputModal,
-  },
+const store = useStore()
+const props = defineProps(['name', 'onSubmit'])
+const value = ref(null)
 
-  props: ['name', 'onSubmit'],
+onMounted(() => value.value = null)
 
-  data: () => ({
-    value: null,
-  }),
+const { errors, hasErrors, errorsList } = useErrors('createFolder')
 
-  mounted() {
-    this.value = null
-  },
+const closeModal = (name) => store.dispatch('nova-file-manager/closeModal', name)
+const submit = () => {
+  props.onSubmit(value.value)
 
-  computed: {
-    ...mapState('nova-file-manager', ['errors']),
-    hasErrors() {
-      return this.errors?.has('createFolder')
-    },
-    errorsList() {
-      return this.errors?.get('createFolder')
-    },
-  },
-
-  methods: {
-    ...mapActions('nova-file-manager', ['closeModal']),
-    submit() {
-      this.onSubmit(this.value)
-
-      this.value = null
-    },
-  },
+  value.value = null
 }
 </script>

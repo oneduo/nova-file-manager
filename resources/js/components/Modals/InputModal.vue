@@ -1,7 +1,7 @@
 <template>
   <TransitionRoot
-    as="template"
     :show="isOpen"
+    as="template"
     class="nova-file-manager"
   >
     <Dialog
@@ -19,12 +19,12 @@
         leave-from="opacity-100"
         leave-to="opacity-0"
       >
-        <div class="fixed inset-0 bg-gray-800/20 backdrop-blur-sm transition-opacity" />
+        <div class="fixed inset-0 bg-gray-800/20 backdrop-blur-sm transition-opacity"/>
       </TransitionChild>
 
       <div
-        class="fixed z-10 inset-0 overflow-y-auto"
         :class="darkMode && 'dark'"
+        class="fixed z-10 inset-0 overflow-y-auto"
       >
         <div
           class="flex items-end sm:items-center justify-center min-h-full p-4 text-center sm:p-0"
@@ -42,8 +42,8 @@
               class="relative bg-gray-200 dark:bg-gray-900 rounded-lg text-left overflow-hidden shadow-xl transform transition-all sm:my-8 sm:max-w-lg w-full"
             >
               <form
-                @submit.prevent="onSubmit"
                 name="input-modal"
+                @submit.prevent="onSubmit"
               >
                 <div class="px-4 pt-5 pb-4 sm:p-6 sm:pb-4">
                   <div class="sm:flex sm:items-start">
@@ -55,7 +55,7 @@
                         {{ title }}
                       </DialogTitle>
                       <div class="mt-2 w-full space-y-6">
-                        <slot name="inputs" />
+                        <slot name="inputs"/>
                       </div>
                     </div>
                   </div>
@@ -63,8 +63,8 @@
                 <div
                   class="mt-5 sm:mt-4 px-4 sm:px-6 pb-4 sm:flex sm:flex-row-reverse sm:gap-x-2 space-y-3 sm:space-y-0"
                 >
-                  <slot name="submitButton" />
-                  <slot name="cancelButton" />
+                  <slot name="submitButton"/>
+                  <slot name="cancelButton"/>
                 </div>
               </form>
             </DialogPanel>
@@ -75,36 +75,20 @@
   </TransitionRoot>
 </template>
 
-<script>
+<script setup>
+import { computed, onBeforeUnmount } from 'vue'
+import { useStore } from 'vuex'
 import { Dialog, DialogPanel, DialogTitle, TransitionChild, TransitionRoot } from '@headlessui/vue'
-import { mapState } from 'vuex'
 
-export default {
-  components: {
-    Dialog,
-    DialogPanel,
-    DialogTitle,
-    TransitionChild,
-    TransitionRoot,
-  },
+const store = useStore()
+const props = defineProps(['name', 'title', 'onSubmit'])
+const darkMode = computed(() => store.state['nova-file-manager'].darkMode)
+const isOpen = computed(() => store.getters['nova-file-manager/allModals'].includes(props.name))
+const closeModal = () => store.dispatch('nova-file-manager/closeModal', props.name)
 
-  props: ['name', 'title', 'onSubmit'],
-
-  computed: {
-    ...mapState('nova-file-manager', ['darkMode']),
-    isOpen() {
-      return this.$store.getters['nova-file-manager/allModals'].includes(this.name)
-    },
-  },
-
-  methods: {
-    closeModal() {
-      this.$store.dispatch('nova-file-manager/closeModal', this.name)
-    },
-  },
-
-  beforeUnmount() {
-    if (this.isOpen) this.closeModal()
-  },
-}
+onBeforeUnmount(() => {
+  if (isOpen.value) {
+    closeModal()
+  }
+})
 </script>

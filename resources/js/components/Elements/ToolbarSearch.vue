@@ -25,8 +25,7 @@ import { SearchIcon } from '@heroicons/vue/outline'
 import debounce from 'lodash/debounce'
 
 const store = useStore()
-
-const search = computed(() => store.state['nova-file-manager/search'])
+const search = computed(() => store.state['nova-file-manager'].search)
 
 const setSearch = debounce(function ({ target: { value } }) {
   store.dispatch('nova-file-manager/setSearch', value)

@@ -73,8 +73,8 @@
       </Transition>
     </div>
 
-    <preview-modal
-      v-if="mode !== 'form'"
+    <PreviewModal
+      v-if="showPreviewModal && shouldShowPreviewModal"
       :file="file"
       :without-actions="true"
     />
@@ -82,9 +82,10 @@
 </template>
 
 <script setup>
-import { ref } from 'vue'
+import { computed, ref, watch } from 'vue'
 import { useStore } from 'vuex'
-import { TrashIcon} from '@heroicons/vue/outline'
+import { CheckIcon, ClipboardCopyIcon, DocumentIcon, TrashIcon } from '@heroicons/vue/outline'
+import PreviewModal from '@/components/Modals/PreviewModal'
 import { useClipboard } from '@/hooks'
 
 const store = useStore()
@@ -106,6 +107,15 @@ const props = defineProps({
 
 const { copyToClipboard } = useClipboard()
 const selected = ref(false)
+const showPreviewModal = computed(() => props.mode !== 'form')
+const preview = computed(() => store.state['nova-file-manager'].preview)
+const shouldShowPreviewModal = ref(false)
+
+watch(preview, () => {
+  if (preview.value === null) {
+    shouldShowPreviewModal.value = false
+  }
+})
 
 const copy = (file) => {
   selected.value = file
@@ -117,10 +127,11 @@ const copy = (file) => {
 }
 
 const setPreviewFile = (file) => {
-  if (props.mode === 'form') {
+  if (!showPreviewModal.value) {
     return
   }
 
+  shouldShowPreviewModal.value = true
   store.commit('nova-file-manager/previewFile', file)
 }
 

@@ -1,14 +1,14 @@
 <template>
   <TransitionRoot
-    as="template"
     :show="isOpen"
+    as="template"
     class="nova-file-manager"
   >
     <Dialog
+      :initial-focus="completeButtonRef"
       as="div"
       class="relative z-[60]"
       @close="closeModal"
-      :initial-focus="completeButtonRef"
     >
       <TransitionChild
         as="template"
@@ -19,12 +19,12 @@
         leave-from="opacity-100"
         leave-to="opacity-0"
       >
-        <div class="fixed inset-0 bg-gray-800/20 backdrop-blur-sm transition-opacity" />
+        <div class="fixed inset-0 bg-gray-800/20 backdrop-blur-sm transition-opacity"/>
       </TransitionChild>
 
       <div
-        class="fixed z-10 inset-0 overflow-y-auto"
         :class="darkMode && 'dark'"
+        class="fixed z-10 inset-0 overflow-y-auto"
       >
         <div class="flex items-center justify-center min-h-full p-4">
           <TransitionChild
@@ -47,35 +47,35 @@
                 </h2>
                 <div class="flex flex-row gap-2 justify-end">
                   <IconButton
+                    v-if="!withoutActions"
+                    tabindex="0"
                     variant="danger"
                     @click="openModal(`deleteFile-${file.id}`)"
-                    tabindex="0"
-                    v-if="!withoutActions"
                   >
-                    <TrashIcon class="w-5 h-5" />
+                    <TrashIcon class="w-5 h-5"/>
                   </IconButton>
                   <IconButton
-                    variant="secondary"
                     :as-anchor="true"
-                    :href="file.url"
                     :download="file.name"
+                    :href="file.url"
                     tabindex="1"
+                    variant="secondary"
                   >
-                    <cloud-download-icon class="w-5 h-5" />
+                    <cloud-download-icon class="w-5 h-5"/>
                   </IconButton>
                   <IconButton
+                    v-if="!withoutActions"
                     variant="secondary"
                     @click="openModal(`renameFile-${file.id}`)"
-                    v-if="!withoutActions"
                   >
-                    <pencil-alt-icon class="w-5 h-5" />
+                    <pencil-alt-icon class="w-5 h-5"/>
                   </IconButton>
                   <IconButton
-                    @click="closeModal"
-                    tabindex="1"
                     ref="completeButtonRef"
+                    tabindex="1"
+                    @click="closeModal"
                   >
-                    <x-icon class="w-5 h-5" />
+                    <x-icon class="w-5 h-5"/>
                   </IconButton>
                 </div>
               </div>
@@ -97,7 +97,7 @@
                       class="w-full max-w-screen max-h-screen"
                       controls="controls"
                     >
-                      <source :src="file.url" />
+                      <source :src="file.url"/>
                       Sorry, your browser doesn't support embedded videos.
                     </video>
                   </div>
@@ -163,17 +163,11 @@
   />
 </template>
 
-<script>
-import { Dialog, DialogPanel, DialogTitle, TransitionChild, TransitionRoot } from '@headlessui/vue'
-import {
-  CloudDownloadIcon,
-  DocumentIcon,
-  FolderAddIcon,
-  PencilAltIcon,
-  TrashIcon,
-  XIcon,
-} from '@heroicons/vue/outline'
-import { mapActions, mapMutations, mapState } from 'vuex'
+<script setup>
+import { computed, ref, watch } from 'vue'
+import { useStore } from 'vuex'
+import { Dialog, DialogPanel, TransitionChild, TransitionRoot } from '@headlessui/vue'
+import { CloudDownloadIcon, DocumentIcon, PencilAltIcon, TrashIcon, XIcon, } from '@heroicons/vue/outline'
 import IconButton from '@/components/Elements/IconButton'
 import DeleteFileModal from '@/components/Modals/DeleteFileModal'
 import RenameFileModal from '@/components/Modals/RenameFileModal'
@@ -181,68 +175,45 @@ import ImageCard from '@/components/Cards/ImageCard'
 import VideoCard from '@/components/Cards/VideoCard'
 import FileCard from '@/components/Cards/FileCard'
 
-export default {
-  components: {
-    IconButton,
-    Dialog,
-    DialogPanel,
-    DialogTitle,
-    TransitionChild,
-    TransitionRoot,
-    FolderAddIcon,
-    XIcon,
-    PencilAltIcon,
-    CloudDownloadIcon,
-    TrashIcon,
-    DeleteFileModal,
-    RenameFileModal,
-    DocumentIcon,
+const store = useStore()
+const props = defineProps({
+  file: {
+    type: Object,
+    required: true,
   },
-  props: {
-    file: {
-      type: Object,
-      required: true,
-    },
-    withoutActions: {
-      type: Boolean,
-      default: false,
-    },
+  withoutActions: {
+    type: Boolean,
+    default: false,
   },
-  computed: {
-    ...mapState('nova-file-manager', ['darkMode', 'preview']),
-    isOpen() {
-      return this.preview?.id === this.file?.id
-    },
-    fileCardComponent(file) {
-      switch (file.type) {
-        case 'image':
-          return ImageCard
-        case 'video':
-          return VideoCard
-        default:
-          return FileCard
-      }
-    },
-  },
-  methods: {
-    ...mapMutations('nova-file-manager', ['previewFile', 'openModal', 'fixPortal']),
-    ...mapActions('nova-file-manager', ['deleteFile', 'renameFile']),
-    closeModal() {
-      this.previewFile(null)
-      this.fixPortal()
-    },
-    onRename(value) {
-      this.renameFile({ id: this.file.id, oldPath: this.file.path, newPath: value })
-    },
-    onDelete() {
-      this.deleteFile({ id: this.file.id, path: this.file.path })
-    },
-  },
-}
-</script>
-
-<script setup>
-import { ref } from 'vue'
+})
 
 const completeButtonRef = ref(null)
+
+const darkMode = computed(() => store.state['nova-file-manager'].darkMode)
+const preview = computed(() => store.state['nova-file-manager'].preview)
+const isOpen = computed(() => preview.value?.id === props.file.id)
+
+const fileCardComponent = (file) => {
+  switch (file.type) {
+    case 'image':
+      return ImageCard
+    case 'video':
+      return VideoCard
+    default:
+      return FileCard
+  }
+}
+const openModal = (name) => store.dispatch('nova-file-manager/openModal', name)
+const closeModal = () => {
+  store.commit('nova-file-manager/previewFile', null)
+  store.commit('nova-file-manager/fixPortal')
+}
+
+const onRename = (value) => {
+  store.dispatch('nova-file-manager/renameFile', { id: props.file.id, oldPath: props.file.path, newPath: value })
+}
+
+const onDelete = () => {
+  store.dispatch('nova-file-manager/deleteFile', { id: props.file.id, path: props.file.path })
+}
 </script>

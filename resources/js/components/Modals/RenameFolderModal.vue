@@ -67,21 +67,19 @@
 </template>
 
 <script setup>
+import { computed, onMounted, ref } from 'vue'
+import { useStore } from 'vuex'
 import Button from '@/components/Elements/Button'
 import InputModal from '@/components/Modals/InputModal'
-import { useStore } from 'vuex'
-import { computed, onMounted, ref } from 'vue'
+import { useErrors } from '@/hooks'
 
 const store = useStore()
 const props = defineProps(['name', 'onSubmit', 'oldPath'])
 let value = ref(null)
 
 onMounted(() => value.value = props.oldPath)
+const { errors, hasErrors, errorsList } = useErrors('renameFolder')
 
-const errors = computed(() => store.state['nova-file-manager/errors'])
-console.log(errors.value)
-const hasErrors = computed(() => errors.value?.has('renameFolder'))
-const errorsList = computed(() => errors.value?.get('renameFolder'))
 const closeModal = (name) => store.dispatch('nova-file-manager/closeModal', name)
 const submit = () => props.onSubmit(value.value)
 </script>
