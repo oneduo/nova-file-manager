@@ -2,7 +2,6 @@
 /vendor
 /node_modules
 composer.phar
-phpunit.xml
 .phpunit.result.cache
 .DS_Store
 Thumbs.db
