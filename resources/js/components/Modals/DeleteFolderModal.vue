@@ -1,11 +1,9 @@
 <template>
   <ConfirmModal
-    :content="
-      __('This will will delete the folder from the storage. This action cannot be undone.')
-    "
+    :content="__('NovaFileManager.deleteFolderContent')"
     :icon="icon"
     :name="name"
-    :title="__('Are you sure you want to delete this folder?')"
+    :title="__('NovaFileManager.deleteFolderTitle')"
     variant="danger"
   >
     <template v-slot:confimButton>

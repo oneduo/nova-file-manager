@@ -52,7 +52,7 @@
                       class="relative cursor-pointer rounded-md font-medium text-blue-500 hover:underline focus-within:outline-"
                       for="file-upload"
                     >
-                      <span>{{ __('Upload a file') }}</span>
+                      <span>{{ __('NovaFileManager.upload') }}</span>
                       <input
                         id="file-upload"
                         class="sr-only"
@@ -62,7 +62,7 @@
                       />
                     </label>
                     <p class="pl-1 text-gray-500">
-                      {{ __('or drag and drop') }}
+                      {{ __('NovaFileManager.drag') }}
                     </p>
                   </div>
                 </div>

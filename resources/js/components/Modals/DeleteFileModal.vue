@@ -1,11 +1,11 @@
 <template>
   <ConfirmModal
-    :content="__('This will will delete the file from the storage. This action cannot be undone.')"
+    :content="__('NovaFileManager.deleteFileSubtitle')"
     :icon="icon"
     :is-open="isOpen"
     :name="name"
     :on-close="onClose"
-    :title="__('Are you sure you want to delete this file?')"
+    :title="__('deleteFileTitle')"
     variant="danger"
   >
     <template v-slot:confimButton>
