@@ -1,11 +1,11 @@
 <template>
   <ConfirmModal
-    :content="__('NovaFileManager.deleteFileSubtitle')"
+    :content="__('NovaFileManager.deleteFileContent')"
     :icon="icon"
     :is-open="isOpen"
     :name="name"
     :on-close="onClose"
-    :title="__('deleteFileTitle')"
+    :title="__('NovaFileManager.deleteFileTitle')"
     variant="danger"
   >
     <template v-slot:confimButton>
