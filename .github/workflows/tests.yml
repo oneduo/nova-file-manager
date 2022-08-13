@@ -14,9 +14,13 @@ jobs:
       matrix:
         php: [8.0, 8.1]
         laravel: [9.*, 8.*]
-        stability: [prefer-lowest, prefer-stable]
+        include:
+          - laravel: 9.*
+            testbench: ^7.0
+          - laravel: 8.*
+            testbench: ^6.0
 
-    name: "Test suite : P${{ matrix.php }} - L${{ matrix.laravel }} - ${{ matrix.stability }}"
+    name: "Test suite : P${{ matrix.php }} - L${{ matrix.laravel }}"
 
     steps:
       - name: Checkout code
@@ -37,9 +41,8 @@ jobs:
       - name: Install dependencies
         run: |
           composer config http-basic.nova.laravel.com ${{ secrets.NOVA_USERNAME }} ${{ secrets.NOVA_LICENSE_KEY }}
-          composer require "laravel/framework:${{ matrix.laravel }}" --no-interaction --no-update --dev
-          composer require orchestra/testbench --no-interaction --no-update --dev
-          composer update --${{ matrix.stability }} --prefer-dist --no-interaction --dev
+          composer require "laravel/framework:${{ matrix.laravel }}" "orchestra/testbench:${{ matrix.testbench }}" --no-interaction --no-update --dev
+          composer update --prefer-stable --prefer-dist --no-interaction
 
       - name: Execute tests
-        run: vendor/bin/pest
+        run: ./vendor/bin/pest
