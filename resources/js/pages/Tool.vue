@@ -15,7 +15,7 @@ import Browser from '@/components/Browser'
 import { computed, onMounted } from 'vue'
 
 const store = useStore()
-const props = defineProps({
+defineProps({
     config: {
         type: Object,
         required: true,

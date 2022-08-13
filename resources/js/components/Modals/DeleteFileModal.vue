@@ -45,7 +45,7 @@ import ConfirmModal from '@/components/Modals/ConfirmModal'
 import Button from '@/components/Elements/Button'
 
 const store = useStore()
-const props = defineProps({
+defineProps({
     isOpen: {
         type: Boolean,
         default: false,

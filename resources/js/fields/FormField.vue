@@ -48,7 +48,7 @@
     as="template"
     class="nova-file-manager w-full"
   >
-    <Dialog as="div" class="relative" @close="closeBrowser">
+    <DialogModal as="div" class="relative" @close="closeBrowser">
       <TransitionChild
         as="template"
         class="z-[60]"
@@ -82,23 +82,18 @@
             <DialogPanel
               class="relative bg-transparent rounded-lg overflow-hidden shadow-xl transition-all w-full border border-gray-500 dark:border-gray-600 md:m-8 m-0"
             >
-              <Browser class="w-full" />
+              <Browser class="w-full"/>
             </DialogPanel>
           </TransitionChild>
         </div>
       </div>
-    </Dialog>
+    </DialogModal>
   </TransitionRoot>
 </template>
 
 <script>
-import { CloudIcon, DocumentIcon, TrashIcon } from '@heroicons/vue/outline'
-import {
-    Dialog,
-    DialogPanel,
-    TransitionChild,
-    TransitionRoot,
-} from '@headlessui/vue'
+import { CloudIcon } from '@heroicons/vue/outline'
+import { Dialog as DialogModal, DialogPanel, TransitionChild, TransitionRoot, } from '@headlessui/vue'
 import Browser from '@/components/Browser'
 import { FormField, HandlesValidationErrors } from 'laravel-nova'
 import { mapActions, mapGetters, mapMutations, mapState } from 'vuex'
@@ -112,9 +107,7 @@ export default {
         FieldCard,
         Browser,
         CloudIcon,
-        DocumentIcon,
-        TrashIcon,
-        Dialog,
+        DialogModal,
         DialogPanel,
         TransitionChild,
         TransitionRoot,

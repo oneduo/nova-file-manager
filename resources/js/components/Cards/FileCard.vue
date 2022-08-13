@@ -12,5 +12,5 @@
 import { DocumentIcon } from '@heroicons/vue/outline'
 import EntityCard from '@/components/Elements/EntityCard'
 
-const props = defineProps(['file', 'checked', 'as'])
+defineProps(['file', 'checked', 'as'])
 </script>

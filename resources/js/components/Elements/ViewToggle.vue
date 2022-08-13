@@ -4,6 +4,7 @@
   >
     <button
       v-for="view in views"
+      :key="view.name"
       :class="current === view.name ? selectedClass : unselectedClass"
       type="button"
       @click.prevent="setView(view.name)"
@@ -17,7 +18,7 @@
 import { reactive, ref } from 'vue'
 import { ViewGridIcon, ViewListIcon } from '@heroicons/vue/outline'
 
-const props = defineProps(['current', 'setView'])
+defineProps(['current', 'setView'])
 
 const views = reactive([
     {

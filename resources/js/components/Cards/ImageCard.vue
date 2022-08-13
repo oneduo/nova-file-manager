@@ -11,5 +11,5 @@
 <script setup>
 import EntityCard from '@/components/Elements/EntityCard'
 
-const props = defineProps(['file', 'checked', 'as'])
+defineProps(['file', 'checked', 'as'])
 </script>

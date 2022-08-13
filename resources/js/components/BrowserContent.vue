@@ -6,7 +6,7 @@
         v-slot="{ open }"
         :default-open="true"
       >
-        <DisclosureButton v-slot="{ open }">
+        <DisclosureButton>
           <div class="flex flex-row w-full items-center gap-x-1">
             <span class="text-gray-500 text-xs">{{ __('Folders') }}</span>
             <ChevronDownIcon v-if="open" class="h-3 w-3 text-gray-600" />
@@ -54,7 +54,5 @@ import DirectoryGrid from '@/components/DirectoryGrid'
 import List from '@/components/List'
 import Empty from '@/components/Empty'
 
-const props = defineProps(['view', 'files', 'directories', 'filled'])
+defineProps(['view', 'files', 'directories', 'filled'])
 </script>
-
-<style scoped></style>

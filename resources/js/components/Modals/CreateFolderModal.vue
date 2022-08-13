@@ -31,8 +31,8 @@
         </div>
         <template v-if="hasErrors">
           <p
-            v-for="error in errorsList"
-            v-if="hasErrors"
+            v-for="(error, index) in errorsList"
+            :key="index"
             id="email-error"
             class="mt-2 text-sm text-red-600"
           >
@@ -67,7 +67,7 @@
 </template>
 
 <script setup>
-import { computed, onMounted, ref } from 'vue'
+import { onMounted, ref } from 'vue'
 import { useStore } from 'vuex'
 import Button from '@/components/Elements/Button'
 import InputModal from '@/components/Modals/InputModal'
@@ -79,7 +79,7 @@ const value = ref(null)
 
 onMounted(() => (value.value = null))
 
-const { errors, hasErrors, errorsList } = useErrors('createFolder')
+const { hasErrors, errorsList } = useErrors('createFolder')
 
 const closeModal = name => store.dispatch('nova-file-manager/closeModal', name)
 const submit = () => {

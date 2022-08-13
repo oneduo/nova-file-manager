@@ -5,5 +5,5 @@
 <script setup>
 import Select from '@/components/Elements/Select'
 
-const props = defineProps(['disk', 'disks', 'setDisk'])
+defineProps(['disk', 'disks', 'setDisk'])
 </script>

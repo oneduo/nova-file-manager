@@ -28,7 +28,5 @@
 <script setup>
 import { CheckCircleIcon } from '@heroicons/vue/solid'
 
-const props = defineProps(['file', 'checked', 'as'])
+defineProps(['file', 'checked', 'as'])
 </script>
-
-<style scoped></style>

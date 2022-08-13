@@ -75,7 +75,7 @@
                   </div>
                 </div>
                 <div v-else class="text-center">
-                  <Spinner class="mx-auto h-12 w-12" />
+                  <Spinner class="mx-auto h-12 w-12"/>
                 </div>
               </div>
             </DialogPanel>
@@ -87,14 +87,9 @@
 </template>
 
 <script setup>
-import { computed, onBeforeUnmount, reactive, ref, watch } from 'vue'
+import { computed, onBeforeUnmount, ref, watch } from 'vue'
 import { useStore } from 'vuex'
-import {
-    Dialog,
-    DialogPanel,
-    TransitionChild,
-    TransitionRoot,
-} from '@headlessui/vue'
+import { Dialog, DialogPanel, TransitionChild, TransitionRoot, } from '@headlessui/vue'
 import { CloudUploadIcon } from '@heroicons/vue/outline'
 import Spinner from '@/components/Elements/Spinner'
 
@@ -111,7 +106,6 @@ const file = ref(null)
 
 const closeModal = () =>
     store.dispatch('nova-file-manager/closeModal', props.name)
-const setFile = value => (file.value = value)
 const dragenter = () => (active.value = true)
 const dragleave = () => (active.value = false)
 const onDrop = e => (file.value = e.dataTransfer.files[0])

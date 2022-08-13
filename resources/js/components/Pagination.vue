@@ -52,7 +52,8 @@
             <ChevronLeftIcon aria-hidden="true" class="h-5 w-5" />
           </button>
           <button
-            v-for="link in links.slice(1, -1)"
+            v-for="(link, index) in links.slice(1, -1)"
+            :key="index"
             :class="{
               'z-10 bg-blue-50 dark:bg-blue-800/30 border-blue-500 text-blue-600 dark:text-blue-300 relative inline-flex items-center px-4 py-2 border text-sm font-medium':
                 link.active,
@@ -82,7 +83,7 @@ import { useStore } from 'vuex'
 import { ChevronLeftIcon, ChevronRightIcon } from '@heroicons/vue/solid'
 
 const store = useStore()
-const props = defineProps([
+defineProps([
     'currentPage',
     'from',
     'to',

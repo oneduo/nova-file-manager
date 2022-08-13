@@ -27,8 +27,8 @@
         </div>
         <template v-if="hasErrors">
           <p
-            v-for="error in errorsList"
-            v-if="hasErrors"
+            v-for="(error, index) in errorsList"
+            :key="index"
             id="email-error"
             class="mt-2 text-sm text-red-600"
           >
@@ -75,7 +75,7 @@ const value = ref(null)
 
 onMounted(() => (value.value = props.oldName))
 
-const { errors, hasErrors, errorsList } = useErrors('renameFile')
+const { hasErrors, errorsList } = useErrors('renameFile')
 
 const closeModal = name => store.dispatch('nova-file-manager/closeModal', name)
 const submit = () => props.onSubmit(value.value)

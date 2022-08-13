@@ -150,7 +150,9 @@ const store = {
                 return
             }
 
-            state.currentField.selection = [file, ...state.currentField?.selection]
+            if (state.currentField?.selection?.length) {
+                state.currentField.selection = [file, ...state.currentField.selection]
+            }
         },
 
         deselectFile(state, file) {
@@ -266,7 +268,7 @@ const store = {
         },
     },
     actions: {
-        setPath({ state, commit, dispatch }, path) {
+        setPath({ commit, dispatch }, path) {
             dispatch('reset')
             commit('setPath', path)
             dispatch('getData')
@@ -307,7 +309,7 @@ const store = {
                 dispatch('updateQueryString', { [key]: null })
             })
         },
-        async getDisks({ commit, state }) {
+        async getDisks({ commit }) {
             commit('setIsFetchingDisks', true)
 
             const { data } = await Nova.request().get(
@@ -424,9 +426,7 @@ const store = {
                 },
             })
 
-            uploader.on('fileAdded', (_file, _event) => {
-                uploader.upload()
-            })
+            uploader.on('fileAdded', () => uploader.upload())
 
             uploader.on('fileSuccess', (file, response) => {
                 const parsed = JSON.parse(response)

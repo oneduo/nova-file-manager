@@ -43,7 +43,7 @@ import ConfirmModal from '@/components/Modals/ConfirmModal'
 import Button from '@/components/Elements/Button'
 
 const store = useStore()
-const props = defineProps(['name', 'onConfirm'])
+defineProps(['name', 'onConfirm'])
 const icon = computed(() => ExclamationIcon)
 const closeModal = name => store.dispatch('nova-file-manager/closeModal', name)
 </script>
