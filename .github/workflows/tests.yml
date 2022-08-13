@@ -37,7 +37,8 @@ jobs:
       - name: Install dependencies
         run: |
           composer config http-basic.nova.laravel.com ${{ secrets.NOVA_USERNAME }} ${{ secrets.NOVA_LICENSE_KEY }}
-          composer require "laravel/framework:${{ matrix.laravel }}" "orchestra/testbench" --no-interaction --no-update --dev
+          composer require "laravel/framework:${{ matrix.laravel }}" --no-interaction --no-update --dev
+          composer require orchestra/testbench --no-interaction --no-update --dev
           composer update --${{ matrix.stability }} --prefer-dist --no-interaction --dev
 
       - name: Execute tests
