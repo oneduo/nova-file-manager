@@ -10,6 +10,7 @@ layout:home
 <img src="https://img.shields.io/badge/laravel%2Fnova-4-cyan.svg"/>
 <img src="https://img.shields.io/packagist/v/bbs-lab/nova-file-manager.svg"/>
 <img src="https://img.shields.io/packagist/dt/bbs-lab/nova-file-manager.svg"/>
+<img src="https://github.com/BBS-Lab/nova-file-manager/actions/workflows/tests.yml/badge.svg?branch=main"/>
 </div>
 
 

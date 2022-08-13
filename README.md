@@ -9,6 +9,7 @@
 ![Laravel Nova](https://img.shields.io/badge/laravel%2Fnova-4-cyan.svg)
 [![Latest Version on Packagist](https://img.shields.io/packagist/v/bbs-lab/nova-file-manager.svg?style=flat-square)](https://packagist.org/packages/bbs-lab/nova-file-manager)
 [![Total Downloads](https://img.shields.io/packagist/dt/bbs-lab/nova-file-manager.svg?style=flat-square)](https://packagist.org/packages/bbs-lab/nova-file-manager)
+[![Run tests](https://github.com/BBS-Lab/nova-file-manager/actions/workflows/tests.yml/badge.svg?branch=main)](https://github.com/BBS-Lab/nova-file-manager/actions/workflows/tests.yml)
 </div>
 
 ---
