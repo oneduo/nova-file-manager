@@ -3,11 +3,12 @@
 
 <div align="left">
 
-[![Status](https://img.shields.io/badge/status-active-success.svg)]()
+![Status](https://img.shields.io/badge/status-active-success.svg)
 [![License](https://img.shields.io/badge/license-MIT-blue.svg)](/LICENSE)
-[![PHP](https://img.shields.io/badge/PHP-8-blue.svg)]()
-[![Laravel Nova](https://img.shields.io/badge/laravel%2Fnova-4-cyan.svg)]()
-
+![PHP](https://img.shields.io/badge/PHP-8-blue.svg)
+![Laravel Nova](https://img.shields.io/badge/laravel%2Fnova-4-cyan.svg)
+[![Latest Version on Packagist](https://img.shields.io/packagist/v/bbs-lab/nova-file-manager.svg?style=flat-square)](https://packagist.org/packages/bbs-lab/nova-file-manager)
+[![Total Downloads](https://img.shields.io/packagist/dt/bbs-lab/nova-file-manager.svg?style=flat-square)](https://packagist.org/packages/bbs-lab/nova-file-manager)
 </div>
 
 ---
@@ -33,11 +34,22 @@ A file manager tool and field for Laravel Nova. Beautifully designed, and custom
 ## Table of Contents
 
 - [Getting Started](#getting_started)
+  - [Prerequisites](#prerequisites)
+  - [Installing](#installing)
+  - [Configuration](#configuration)
 - [Usage](#usage)
+  - [Advanced usage](#advanced-usage)
+    - [Multiple selection on the form field](#multiple-selection-on-the-form-field)
+    - [Validation](#validation)
+    - [Saving the disk name alongside the path](#saving-the-disk-name-alongside-the-path)
 - [Configuration](#configuration-file)
-- [Contributing](../CONTRIBUTING.md)
 - [Authors](#authors)
 - [Screenshots](#screenshots)
+- [Changelog](#changelog)
+- [Security](#security)
+- [Contributing](#contributing)
+- [Credits](#credits)
+- [License](#license)
 
 ## Getting Started <a name = "getting_started"></a>
 
@@ -124,7 +136,7 @@ You have now successfully added a File Manager field to your resource.
 
 ### Advanced usage
 
-### Multiple selection on the form field
+#### Multiple selection on the form field
 
 When using the `FileManager` field on your Nova resource, you can instruct the tool to allow multiple selection for your attribute.
 
@@ -176,7 +188,7 @@ class User extends Authenticatable
 
 ```
 
-### Validation
+#### Validation
 
 When using the field, you can specify the number of files that can be set a value for your resource's attribute.
 
