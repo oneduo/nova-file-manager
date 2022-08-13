@@ -5,9 +5,7 @@
       Sorry, your browser doesn't support embedded videos.
     </video>
 
-    <div
-      class="absolute m-auto flex items-center justify-center bg-transparent"
-    >
+    <div class="absolute m-auto flex items-center justify-center bg-transparent">
       <PlayIcon class="h-16 w-16 text-white/60" />
     </div>
   </EntityCard>

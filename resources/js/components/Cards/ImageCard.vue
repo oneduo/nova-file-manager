@@ -1,10 +1,6 @@
 <template>
   <EntityCard :as="as" :checked="checked" :file="file">
-    <img
-      :src="file.url"
-      alt=""
-      class="group-hover:opacity-75 pointer-events-none object-cover"
-    />
+    <img :src="file.url" alt="" class="group-hover:opacity-75 pointer-events-none object-cover" />
   </EntityCard>
 </template>
 

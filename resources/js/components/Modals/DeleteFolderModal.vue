@@ -1,9 +1,7 @@
 <template>
   <ConfirmModal
     :content="
-      __(
-        'This will will delete the folder from the storage. This action cannot be undone.'
-      )
+      __('This will will delete the folder from the storage. This action cannot be undone.')
     "
     :icon="icon"
     :name="name"

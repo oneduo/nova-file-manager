@@ -25,9 +25,7 @@
         {{ __('Next') }}
       </button>
     </div>
-    <div
-      class="hidden md:flex-1 md:flex md:items-center md:justify-between md:flex-wrap"
-    >
+    <div class="hidden md:flex-1 md:flex md:items-center md:justify-between md:flex-wrap">
       <div>
         <p class="text-sm text-gray-700 dark:text-gray-400 space-x-1">
           <span>{{ __('Showing') }}</span>
@@ -83,14 +81,7 @@ import { useStore } from 'vuex'
 import { ChevronLeftIcon, ChevronRightIcon } from '@heroicons/vue/solid'
 
 const store = useStore()
-defineProps([
-    'currentPage',
-    'from',
-    'to',
-    'total',
-    'lastPage',
-    'links',
-])
+defineProps(['currentPage', 'from', 'to', 'total', 'lastPage', 'links'])
 
 const setPage = page => store.dispatch('nova-file-manager/setPage', page)
 </script>

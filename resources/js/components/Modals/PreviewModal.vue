@@ -1,11 +1,6 @@
 <template>
   <TransitionRoot :show="isOpen" as="template" class="nova-file-manager">
-    <Dialog
-      :initial-focus="completeButtonRef"
-      as="div"
-      class="relative z-[60]"
-      @close="closeModal"
-    >
+    <Dialog :initial-focus="completeButtonRef" as="div" class="relative z-[60]" @close="closeModal">
       <TransitionChild
         as="template"
         enter="ease-out duration-300"
@@ -15,15 +10,10 @@
         leave-from="opacity-100"
         leave-to="opacity-0"
       >
-        <div
-          class="fixed inset-0 bg-gray-800/20 backdrop-blur-sm transition-opacity"
-        />
+        <div class="fixed inset-0 bg-gray-800/20 backdrop-blur-sm transition-opacity" />
       </TransitionChild>
 
-      <div
-        :class="darkMode && 'dark'"
-        class="fixed z-10 inset-0 overflow-y-auto"
-      >
+      <div :class="darkMode && 'dark'" class="fixed z-10 inset-0 overflow-y-auto">
         <div class="flex items-center justify-center min-h-full p-4">
           <TransitionChild
             as="template"
@@ -40,9 +30,7 @@
               <div
                 class="w-full flex flex-col flex-col-reverse gap-y-2 md:flex-row justify-between"
               >
-                <h2
-                  class="text-lg font-medium text-gray-900 dark:text-gray-400 break-all w-full"
-                >
+                <h2 class="text-lg font-medium text-gray-900 dark:text-gray-400 break-all w-full">
                   {{ file.name }}
                 </h2>
                 <div class="flex flex-row gap-2 justify-end">
@@ -52,7 +40,7 @@
                     variant="danger"
                     @click="openModal(`deleteFile-${file.id}`)"
                   >
-                    <TrashIcon class="w-5 h-5"/>
+                    <TrashIcon class="w-5 h-5" />
                   </IconButton>
                   <IconButton
                     :as-anchor="true"
@@ -61,47 +49,33 @@
                     tabindex="1"
                     variant="secondary"
                   >
-                    <cloud-download-icon class="w-5 h-5"/>
+                    <cloud-download-icon class="w-5 h-5" />
                   </IconButton>
                   <IconButton
                     v-if="!withoutActions"
                     variant="secondary"
                     @click="openModal(`renameFile-${file.id}`)"
                   >
-                    <pencil-alt-icon class="w-5 h-5"/>
+                    <pencil-alt-icon class="w-5 h-5" />
                   </IconButton>
-                  <IconButton
-                    ref="completeButtonRef"
-                    tabindex="1"
-                    @click="closeModal"
-                  >
-                    <x-icon class="w-5 h-5"/>
+                  <IconButton ref="completeButtonRef" tabindex="1" @click="closeModal">
+                    <x-icon class="w-5 h-5" />
                   </IconButton>
                 </div>
               </div>
-              <div
-                class="overflow-hidden flex flex-col md:flex-row gap-4 w-full"
-              >
+              <div class="overflow-hidden flex flex-col md:flex-row gap-4 w-full">
                 <div
                   class="block w-full md:w-4/6 overflow-hidden rounded-lg bg-gray-500/10 flex items-center justify-center"
                 >
-                  <img
-                    v-if="file.type === 'image'"
-                    :src="file.url"
-                    alt=""
-                    class="object-cover"
-                  />
+                  <img v-if="file.type === 'image'" :src="file.url" alt="" class="object-cover" />
                   <div v-else-if="file.type === 'video'" class="w-full h-full">
-                    <video
-                      class="w-full max-w-screen max-h-screen"
-                      controls="controls"
-                    >
-                      <source :src="file.url"/>
+                    <video class="w-full max-w-screen max-h-screen" controls="controls">
+                      <source :src="file.url" />
                       Sorry, your browser doesn't support embedded videos.
                     </video>
                   </div>
 
-                  <DocumentIcon v-else class="h-40 w-40 text-gray-500 m-12"/>
+                  <DocumentIcon v-else class="h-40 w-40 text-gray-500 m-12" />
                 </div>
                 <div class="w-full md:w-2/6">
                   <div>
@@ -111,9 +85,7 @@
                     <dl
                       class="mt-2 divide-y divide-gray-200 dark:divide-gray-800/40 border-t border-b border-gray-300 dark:border-gray-800/70"
                     >
-                      <div
-                        class="flex justify-between py-3 text-sm font-medium"
-                      >
+                      <div class="flex justify-between py-3 text-sm font-medium">
                         <dt class="text-gray-500">
                           {{ __('NovaFileManager.meta.size') }}
                         </dt>
@@ -121,9 +93,7 @@
                           {{ file.size }}
                         </dd>
                       </div>
-                      <div
-                        class="flex justify-between py-3 text-sm font-medium"
-                      >
+                      <div class="flex justify-between py-3 text-sm font-medium">
                         <dt class="text-gray-500">
                           {{ __('NovaFileManager.meta.mime') }}
                         </dt>
@@ -131,9 +101,7 @@
                           {{ file.mime }}
                         </dd>
                       </div>
-                      <div
-                        class="flex justify-between py-3 text-sm font-medium"
-                      >
+                      <div class="flex justify-between py-3 text-sm font-medium">
                         <dt class="text-gray-500">
                           {{ __('NovaFileManager.meta.lastModifiedAt') }}
                         </dt>
@@ -166,20 +134,22 @@
     </Dialog>
   </TransitionRoot>
 
-  <DeleteFileModal :name="`deleteFile-${file.id}`" :on-confirm="onDelete"/>
+  <DeleteFileModal :name="`deleteFile-${file.id}`" :on-confirm="onDelete" />
 
-  <RenameFileModal
-    :name="`renameFile-${file.id}`"
-    :old-name="file.name"
-    :on-submit="onRename"
-  />
+  <RenameFileModal :name="`renameFile-${file.id}`" :old-name="file.name" :on-submit="onRename" />
 </template>
 
 <script setup>
 import { computed, ref } from 'vue'
 import { useStore } from 'vuex'
-import { Dialog, DialogPanel, TransitionChild, TransitionRoot, } from '@headlessui/vue'
-import { CloudDownloadIcon, DocumentIcon, PencilAltIcon, TrashIcon, XIcon, } from '@heroicons/vue/outline'
+import { Dialog, DialogPanel, TransitionChild, TransitionRoot } from '@headlessui/vue'
+import {
+    CloudDownloadIcon,
+    DocumentIcon,
+    PencilAltIcon,
+    TrashIcon,
+    XIcon,
+} from '@heroicons/vue/outline'
 import IconButton from '@/components/Elements/IconButton'
 import DeleteFileModal from '@/components/Modals/DeleteFileModal'
 import RenameFileModal from '@/components/Modals/RenameFileModal'

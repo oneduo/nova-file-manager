@@ -54,9 +54,7 @@ const store = {
             this.commit('nova-file-manager/loadFromLocalStorage')
             this.commit('nova-file-manager/setFromQueryString')
 
-            state.csrfToken = document.head.querySelector(
-                'meta[name="csrf-token"]'
-            ).content
+            state.csrfToken = document.head.querySelector('meta[name="csrf-token"]').content
             state.ready = true
         },
 
@@ -101,12 +99,7 @@ const store = {
 
                 if (value) {
                     // and then trigger the corresponding setter mutation
-                    this.commit(
-                        `nova-file-manager/set${
-                            key.charAt(0).toUpperCase() + key.slice(1)
-                        }`,
-                        value
-                    )
+                    this.commit(`nova-file-manager/set${key.charAt(0).toUpperCase() + key.slice(1)}`, value)
                 }
             })
         },
@@ -126,12 +119,7 @@ const store = {
             for (const [key, value] of Object.entries(searchParams)) {
                 // if we match one of these keys, we trigger the setter mutation
                 if (['path', 'disk', 'page', 'perPage'].includes(key)) {
-                    this.commit(
-                        `nova-file-manager/set${
-                            key.charAt(0).toUpperCase() + key.slice(1)
-                        }`,
-                        value
-                    )
+                    this.commit(`nova-file-manager/set${key.charAt(0).toUpperCase() + key.slice(1)}`, value)
                 }
             }
 
@@ -312,9 +300,7 @@ const store = {
         async getDisks({ commit }) {
             commit('setIsFetchingDisks', true)
 
-            const { data } = await Nova.request().get(
-                '/nova-vendor/nova-file-manager/disks/available'
-            )
+            const { data } = await Nova.request().get('/nova-vendor/nova-file-manager/disks/available')
 
             commit('setDisks', data)
 
@@ -323,18 +309,15 @@ const store = {
         async getData({ state, commit }) {
             commit('setIsFetchingData', true)
 
-            const { data } = await Nova.request().get(
-                '/nova-vendor/nova-file-manager',
-                {
-                    params: {
-                        disk: state.disk,
-                        path: state.path,
-                        page: state.page,
-                        perPage: state.perPage,
-                        search: state.search,
-                    },
-                }
-            )
+            const { data } = await Nova.request().get('/nova-vendor/nova-file-manager', {
+                params: {
+                    disk: state.disk,
+                    path: state.path,
+                    page: state.page,
+                    perPage: state.perPage,
+                    search: state.search,
+                },
+            })
 
             commit('setDisk', data.disk)
             commit('setDirectories', data.directories)
@@ -448,15 +431,12 @@ const store = {
         },
         async renameFile({ dispatch, state, commit }, { id, oldPath, newPath }) {
             try {
-                const response = await Nova.request().post(
-                    '/nova-vendor/nova-file-manager/files/rename',
-                    {
-                        path: state.path,
-                        disk: state.disk,
-                        oldPath: sanitize(oldPath),
-                        newPath: sanitize(`${state.path ?? ''}/${newPath}`),
-                    }
-                )
+                const response = await Nova.request().post('/nova-vendor/nova-file-manager/files/rename', {
+                    path: state.path,
+                    disk: state.disk,
+                    oldPath: sanitize(oldPath),
+                    newPath: sanitize(`${state.path ?? ''}/${newPath}`),
+                })
 
                 Nova.success(response.data.message)
 
@@ -472,13 +452,10 @@ const store = {
         },
         async deleteFile({ dispatch, state, commit }, { id, path }) {
             try {
-                const response = await Nova.request().post(
-                    '/nova-vendor/nova-file-manager/files/delete',
-                    {
-                        path: path,
-                        disk: state.disk,
-                    }
-                )
+                const response = await Nova.request().post('/nova-vendor/nova-file-manager/files/delete', {
+                    path: path,
+                    disk: state.disk,
+                })
 
                 Nova.success(response.data.message)
 
@@ -513,11 +490,7 @@ const store = {
 
                 const separator = searchParams.toString().length > 0 ? '?' : ''
 
-                window.history.pushState(
-                    page,
-                    '',
-                    `${window.location.pathname}${separator}${searchParams}`
-                )
+                window.history.pushState(page, '', `${window.location.pathname}${separator}${searchParams}`)
             }
         },
 

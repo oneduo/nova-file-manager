@@ -70,12 +70,7 @@
 <script setup>
 import { computed, ref, watch } from 'vue'
 import { useStore } from 'vuex'
-import {
-    CheckIcon,
-    ClipboardCopyIcon,
-    DocumentIcon,
-    TrashIcon,
-} from '@heroicons/vue/outline'
+import { CheckIcon, ClipboardCopyIcon, DocumentIcon, TrashIcon } from '@heroicons/vue/outline'
 import PreviewModal from '@/components/Modals/PreviewModal'
 import { useClipboard } from '@/hooks'
 

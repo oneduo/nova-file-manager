@@ -16,10 +16,7 @@
       {{ file.size }}
     </p>
     <CheckCircleIcon
-      :class="[
-        !checked ? 'invisible' : '',
-        'absolute h-5 w-5 text-blue-500 top-1 right-1',
-      ]"
+      :class="[!checked ? 'invisible' : '', 'absolute h-5 w-5 text-blue-500 top-1 right-1']"
       aria-hidden="true"
     />
   </component>

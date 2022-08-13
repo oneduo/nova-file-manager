@@ -26,10 +26,7 @@
         />
       </TransitionChild>
 
-      <div
-        :class="darkMode && 'dark'"
-        class="fixed z-10 inset-0 overflow-y-auto"
-      >
+      <div :class="darkMode && 'dark'" class="fixed z-10 inset-0 overflow-y-auto">
         <div
           class="flex items-end sm:items-center justify-center min-h-full p-4 text-center sm:p-0"
         >
@@ -45,15 +42,10 @@
             <DialogPanel
               class="relative bg-white dark:bg-gray-900 rounded-lg text-left overflow-hidden shadow-xl transform transition-all sm:my-8 sm:max-w-lg sm:w-full"
             >
-              <div
-                class="max-w-lg flex justify-center px-6 pt-5 pb-6 rounded-md min-h-1/3"
-              >
+              <div class="max-w-lg flex justify-center px-6 pt-5 pb-6 rounded-md min-h-1/3">
                 <div v-if="!isUploading" class="space-y-1 text-center">
                   <CloudUploadIcon
-                    :class="[
-                      'mx-auto h-12 w-12 text-gray-400',
-                      active && 'animate-bounce',
-                    ]"
+                    :class="['mx-auto h-12 w-12 text-gray-400', active && 'animate-bounce']"
                   />
                   <div class="flex text-sm text-gray-600">
                     <label
@@ -75,7 +67,7 @@
                   </div>
                 </div>
                 <div v-else class="text-center">
-                  <Spinner class="mx-auto h-12 w-12"/>
+                  <Spinner class="mx-auto h-12 w-12" />
                 </div>
               </div>
             </DialogPanel>
@@ -89,7 +81,7 @@
 <script setup>
 import { computed, onBeforeUnmount, ref, watch } from 'vue'
 import { useStore } from 'vuex'
-import { Dialog, DialogPanel, TransitionChild, TransitionRoot, } from '@headlessui/vue'
+import { Dialog, DialogPanel, TransitionChild, TransitionRoot } from '@headlessui/vue'
 import { CloudUploadIcon } from '@heroicons/vue/outline'
 import Spinner from '@/components/Elements/Spinner'
 
@@ -97,15 +89,12 @@ const store = useStore()
 const props = defineProps(['name'])
 const darkMode = computed(() => store.state['nova-file-manager'].darkMode)
 const isUploading = computed(() => store.state['nova-file-manager'].isUploading)
-const isOpen = computed(() =>
-    store.getters['nova-file-manager/allModals'].includes(props.name)
-)
+const isOpen = computed(() => store.getters['nova-file-manager/allModals'].includes(props.name))
 
 const active = ref(false)
 const file = ref(null)
 
-const closeModal = () =>
-    store.dispatch('nova-file-manager/closeModal', props.name)
+const closeModal = () => store.dispatch('nova-file-manager/closeModal', props.name)
 const dragenter = () => (active.value = true)
 const dragleave = () => (active.value = false)
 const onDrop = e => (file.value = e.dataTransfer.files[0])

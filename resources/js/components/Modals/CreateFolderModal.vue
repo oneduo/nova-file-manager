@@ -1,9 +1,5 @@
 <template>
-  <InputModal
-    :name="name"
-    :on-submit="submit"
-    :title="__('Create a new folder')"
-  >
+  <InputModal :name="name" :on-submit="submit" :title="__('Create a new folder')">
     <template v-slot:inputs>
       <div>
         <div
@@ -14,10 +10,7 @@
               : 'border-red-400 dark:border-red-700',
           ]"
         >
-          <label
-            class="block text-xs font-medium text-gray-700 dark:text-gray-200"
-            for="name"
-          >
+          <label class="block text-xs font-medium text-gray-700 dark:text-gray-200" for="name">
             {{ __('Folder Name') }}
           </label>
           <input

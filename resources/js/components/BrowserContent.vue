@@ -1,11 +1,7 @@
 <template>
   <template v-if="view === 'grid'">
     <div class="space-y-2">
-      <Disclosure
-        v-if="directories?.length"
-        v-slot="{ open }"
-        :default-open="true"
-      >
+      <Disclosure v-if="directories?.length" v-slot="{ open }" :default-open="true">
         <DisclosureButton>
           <div class="flex flex-row w-full items-center gap-x-1">
             <span class="text-gray-500 text-xs">{{ __('Folders') }}</span>

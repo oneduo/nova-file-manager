@@ -10,10 +10,7 @@
               : 'border-red-400 dark:border-red-700',
           ]"
         >
-          <label
-            class="block text-xs font-medium text-gray-700 dark:text-gray-200"
-            for="name"
-          >
+          <label class="block text-xs font-medium text-gray-700 dark:text-gray-200" for="name">
             {{ __('File Name') }}
           </label>
           <input

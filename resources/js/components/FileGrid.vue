@@ -28,9 +28,7 @@ import { computed } from 'vue'
 const store = useStore()
 
 const files = computed(() => store.state['nova-file-manager'].files)
-const isFileSelected = computed(
-    () => store.getters['nova-file-manager/isFileSelected']
-)
+const isFileSelected = computed(() => store.getters['nova-file-manager/isFileSelected'])
 
 const fileCardComponent = file => {
     switch (file.type) {
