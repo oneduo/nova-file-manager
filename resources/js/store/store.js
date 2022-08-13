@@ -395,7 +395,7 @@ const store = {
 
             const uploader = new Resumable({
                 chunkSize: 20 * 1024 * 1024,
-                simultaneousUploads: 3,
+                simultaneousUploads: 1,
                 testChunks: false,
                 throttleProgressCallbacks: 1,
                 target: '/nova-vendor/nova-file-manager/files/upload',
