@@ -10,10 +10,7 @@
               : 'border-red-400 dark:border-red-700',
           ]"
         >
-          <label
-            class="block text-xs font-medium text-gray-700 dark:text-gray-200"
-            for="name"
-          >
+          <label class="block text-xs font-medium text-gray-700 dark:text-gray-200" for="name">
             {{ __('Folder Name') }}
           </label>
           <input
@@ -27,9 +24,9 @@
         </div>
         <template v-if="hasErrors">
           <p
-            v-for="error in errorsList"
-            v-if="hasErrors"
+            v-for="(error, index) in errorsList"
             id="email-error"
+            :key="index"
             class="mt-2 text-sm text-red-600"
           >
             {{ error }}
@@ -63,7 +60,7 @@
 </template>
 
 <script setup>
-import { computed, onMounted, ref } from 'vue'
+import { onMounted, ref } from 'vue'
 import { useStore } from 'vuex'
 import Button from '@/components/Elements/Button'
 import InputModal from '@/components/Modals/InputModal'
@@ -74,7 +71,7 @@ const props = defineProps(['name', 'onSubmit', 'oldPath'])
 let value = ref(null)
 
 onMounted(() => (value.value = props.oldPath))
-const { errors, hasErrors, errorsList } = useErrors('renameFolder')
+const { hasErrors, errorsList } = useErrors('renameFolder')
 
 const closeModal = name => store.dispatch('nova-file-manager/closeModal', name)
 const submit = () => props.onSubmit(value.value)

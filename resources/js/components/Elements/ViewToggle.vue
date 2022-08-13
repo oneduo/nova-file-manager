@@ -1,9 +1,8 @@
 <template>
-  <div
-    class="hidden items-center rounded-lg bg-gray-100 dark:bg-gray-700/40 p-0.5 sm:flex"
-  >
+  <div class="hidden items-center rounded-lg bg-gray-100 dark:bg-gray-700/40 p-0.5 sm:flex">
     <button
       v-for="view in views"
+      :key="view.name"
       :class="current === view.name ? selectedClass : unselectedClass"
       type="button"
       @click.prevent="setView(view.name)"
@@ -17,7 +16,7 @@
 import { reactive, ref } from 'vue'
 import { ViewGridIcon, ViewListIcon } from '@heroicons/vue/outline'
 
-const props = defineProps(['current', 'setView'])
+defineProps(['current', 'setView'])
 
 const views = reactive([
     {

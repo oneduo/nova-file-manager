@@ -1,9 +1,5 @@
 <template>
-  <InputModal
-    :name="name"
-    :on-submit="submit"
-    :title="__('Create a new folder')"
-  >
+  <InputModal :name="name" :on-submit="submit" :title="__('Create a new folder')">
     <template v-slot:inputs>
       <div>
         <div
@@ -14,10 +10,7 @@
               : 'border-red-400 dark:border-red-700',
           ]"
         >
-          <label
-            class="block text-xs font-medium text-gray-700 dark:text-gray-200"
-            for="name"
-          >
+          <label class="block text-xs font-medium text-gray-700 dark:text-gray-200" for="name">
             {{ __('Folder Name') }}
           </label>
           <input
@@ -31,8 +24,8 @@
         </div>
         <template v-if="hasErrors">
           <p
-            v-for="error in errorsList"
-            v-if="hasErrors"
+            v-for="(error, index) in errorsList"
+            :key="index"
             id="email-error"
             class="mt-2 text-sm text-red-600"
           >
@@ -67,7 +60,7 @@
 </template>
 
 <script setup>
-import { computed, onMounted, ref } from 'vue'
+import { onMounted, ref } from 'vue'
 import { useStore } from 'vuex'
 import Button from '@/components/Elements/Button'
 import InputModal from '@/components/Modals/InputModal'
@@ -79,7 +72,7 @@ const value = ref(null)
 
 onMounted(() => (value.value = null))
 
-const { errors, hasErrors, errorsList } = useErrors('createFolder')
+const { hasErrors, errorsList } = useErrors('createFolder')
 
 const closeModal = name => store.dispatch('nova-file-manager/closeModal', name)
 const submit = () => {

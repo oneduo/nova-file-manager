@@ -14,11 +14,7 @@
         <ToolbarSearch />
       </div>
       <div class="flex flex-row gap-x-2 justify-end w-full md:w-auto">
-        <IconButton
-          v-if="isFieldMode"
-          variant="transparent"
-          @click="closeBrowser"
-        >
+        <IconButton v-if="isFieldMode" variant="transparent" @click="closeBrowser">
           <XIcon class="w-5 h-5" />
         </IconButton>
         <IconButton @click="openModal('createFolder')">
@@ -43,12 +39,7 @@
 <script setup>
 import { computed } from 'vue'
 import { useStore } from 'vuex'
-import {
-    CheckIcon,
-    CloudUploadIcon,
-    FolderAddIcon,
-    XIcon,
-} from '@heroicons/vue/outline'
+import { CheckIcon, CloudUploadIcon, FolderAddIcon, XIcon } from '@heroicons/vue/outline'
 import DiskSelector from '@/components/DiskSelector'
 import PaginationSelector from '@/components/Elements/PaginationSelector'
 import Breadcrumbs from '@/components/Breadcrumbs'
@@ -60,24 +51,19 @@ import CreateFolderModal from '@/components/Modals/CreateFolderModal'
 
 const store = useStore()
 
-const path = computed(() => store.state['nova-file-manager'].path)
 const disk = computed(() => store.state['nova-file-manager'].disk)
 const disks = computed(() => store.state['nova-file-manager'].disks)
 const view = computed(() => store.state['nova-file-manager'].view)
 const perPage = computed(() => store.state['nova-file-manager'].perPage)
-const perPageOptions = computed(
-    () => store.state['nova-file-manager'].perPageOptions
-)
+const perPageOptions = computed(() => store.state['nova-file-manager'].perPageOptions)
 const isFieldMode = computed(() => store.state['nova-file-manager'].isFieldMode)
 const breadcrumbs = computed(() => store.state['nova-file-manager'].breadcrumbs)
 
 const setDisk = disk => store.dispatch('nova-file-manager/setDisk', disk)
-const setPerPage = perPage =>
-    store.dispatch('nova-file-manager/setPerPage', perPage)
+const setPerPage = perPage => store.dispatch('nova-file-manager/setPerPage', perPage)
 const setView = view => store.dispatch('nova-file-manager/setView', view)
 const closeBrowser = () => store.dispatch('nova-file-manager/closeBrowser')
 const openModal = name => store.dispatch('nova-file-manager/openModal', name)
 const setPath = path => store.dispatch('nova-file-manager/setPath', path)
-const createFolder = path =>
-    store.dispatch('nova-file-manager/createFolder', path)
+const createFolder = path => store.dispatch('nova-file-manager/createFolder', path)
 </script>

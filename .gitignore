@@ -8,3 +8,5 @@ phpunit.xml
 Thumbs.db
 auth.json
 .env
+/docs/node_modules
+/docs/.vitepress/dist

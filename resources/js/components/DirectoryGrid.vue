@@ -5,6 +5,7 @@
   >
     <DirectoryCard
       v-for="directory in directories"
+      :key="directory.id"
       :id="directory.id"
       :disk="directory.disk"
       :name="directory.name"
@@ -16,5 +17,5 @@
 <script setup>
 import DirectoryCard from '@/components/Cards/DirectoryCard'
 
-const props = defineProps(['directories'])
+defineProps(['directories'])
 </script>

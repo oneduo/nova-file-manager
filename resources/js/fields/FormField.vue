@@ -3,10 +3,7 @@
     <template #field>
       <div class="nova-file-manager">
         <div :class="darkMode && 'dark'">
-          <div
-            v-if="files?.length > 0"
-            class="flex flex-row gap-2 flex-wrap w-full"
-          >
+          <div v-if="files?.length > 0" class="flex flex-row gap-2 flex-wrap w-full">
             <draggable
               v-model="files"
               class="grid grid-cols-2 md:grid-cols-3 gap-2 mb-2 w-full"
@@ -16,12 +13,7 @@
               @start="drag = true"
             >
               <template #item="{ element }">
-                <FieldCard
-                  :field="field"
-                  :file="element"
-                  class="cursor-grab"
-                  mode="form"
-                />
+                <FieldCard :field="field" :file="element" class="cursor-grab" mode="form" />
               </template>
             </draggable>
           </div>
@@ -42,13 +34,8 @@
     </template>
   </DefaultField>
 
-  <TransitionRoot
-    v-if="displayModal"
-    :show="isOpen"
-    as="template"
-    class="nova-file-manager w-full"
-  >
-    <Dialog as="div" class="relative" @close="closeBrowser">
+  <TransitionRoot v-if="displayModal" :show="isOpen" as="template" class="nova-file-manager w-full">
+    <DialogModal as="div" class="relative" @close="closeBrowser">
       <TransitionChild
         as="template"
         class="z-[60]"
@@ -59,16 +46,10 @@
         leave-from="opacity-100"
         leave-to="opacity-0"
       >
-        <div
-          class="fixed inset-0 bg-gray-800/20 backdrop-blur-sm transition-opacity"
-        />
+        <div class="fixed inset-0 bg-gray-800/20 backdrop-blur-sm transition-opacity" />
       </TransitionChild>
 
-      <div
-        :class="`fixed z-[60] inset-0 overflow-y-auto w-full ${
-          darkMode && 'dark'
-        }`"
-      >
+      <div :class="`fixed z-[60] inset-0 overflow-y-auto w-full ${darkMode && 'dark'}`">
         <div class="flex items-start justify-center min-h-full">
           <TransitionChild
             as="template"
@@ -87,14 +68,14 @@
           </TransitionChild>
         </div>
       </div>
-    </Dialog>
+    </DialogModal>
   </TransitionRoot>
 </template>
 
 <script>
-import { CloudIcon, DocumentIcon, TrashIcon } from '@heroicons/vue/outline'
+import { CloudIcon } from '@heroicons/vue/outline'
 import {
-    Dialog,
+    Dialog as DialogModal,
     DialogPanel,
     TransitionChild,
     TransitionRoot,
@@ -112,9 +93,7 @@ export default {
         FieldCard,
         Browser,
         CloudIcon,
-        DocumentIcon,
-        TrashIcon,
-        Dialog,
+        DialogModal,
         DialogPanel,
         TransitionChild,
         TransitionRoot,

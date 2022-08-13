@@ -5,5 +5,5 @@
 <script setup>
 import Select from '@/components/Elements/Select'
 
-const props = defineProps(['perPage', 'perPageOptions', 'setPerPage'])
+defineProps(['perPage', 'perPageOptions', 'setPerPage'])
 </script>

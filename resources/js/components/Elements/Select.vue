@@ -25,7 +25,7 @@
         tabindex="-1"
       >
         <div class="py-1">
-          <MenuItem v-for="value in options">
+          <MenuItem v-for="value in options" :key="value">
             <div class="flex flex-row">
               <button
                 class="flex flex-row justify-between hover:bg-gray-50 dark:hover:bg-gray-800 block w-full text-left cursor-pointer py-2 px-3 focus:outline-none focus:ring-1 focus:ring-blue-500 rounded truncate whitespace-nowrap text-gray-500 dark:text-gray-500 dark:hover:text-gray-400 dark:active:text-gray-600"
@@ -50,5 +50,5 @@
 import { Menu, MenuButton, MenuItem, MenuItems } from '@headlessui/vue'
 import { CheckIcon, ChevronDownIcon } from '@heroicons/vue/solid'
 
-const props = defineProps(['current', 'options', 'onClick'])
+defineProps(['current', 'options', 'onClick'])
 </script>

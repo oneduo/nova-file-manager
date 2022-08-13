@@ -1,27 +1,15 @@
 <template>
   <table class="min-w-full divide-y divide-gray-300 dark:divide-gray-600/50">
     <tbody class="divide-y divide-gray-200 dark:divide-gray-900/20">
-      <tr
-        v-if="directories?.length"
-        class="border-t border-gray-200 dark:border-gray-700/50"
-      >
-        <th
-          class="py-2 text-left text-xs font-semibold text-gray-500"
-          colspan="2"
-          scope="colgroup"
-        >
+      <tr v-if="directories?.length" class="border-t border-gray-200 dark:border-gray-700/50">
+        <th class="py-2 text-left text-xs font-semibold text-gray-500" colspan="2" scope="colgroup">
           {{ __('Folders') }}
         </th>
       </tr>
       <template v-for="directory in directories" :key="directory.id">
         <tr class="cursor-pointer">
-          <td
-            class="whitespace-nowrap py-4 text-sm"
-            @click="setPath(directory.path)"
-          >
-            <div
-              class="flex items-center text-gray-500 dark:text-gray-300 hover:text-blue-500"
-            >
+          <td class="whitespace-nowrap py-4 text-sm" @click="setPath(directory.path)">
+            <div class="flex items-center text-gray-500 dark:text-gray-300 hover:text-blue-500">
               <FolderIcon class="w-5 h-5" />
               <div class="ml-4">
                 <div class="font-medium">
@@ -30,9 +18,7 @@
               </div>
             </div>
           </td>
-          <td
-            class="relative whitespace-nowrap py-4 text-right text-xs font-medium"
-          >
+          <td class="relative whitespace-nowrap py-4 text-right text-xs font-medium">
             <div class="inline-flex items-center">
               <div class="relative flex-1 flex items-center justify-end">
                 <Menu as="div" class="relative inline-block text-left">
@@ -77,29 +63,16 @@
         <RenameFolderModal
           :name="`renameFolder-${directory.id}`"
           :old-path="directory.name"
-          :on-submit="
-            value => onFolderRename(directory.id, directory.path, value)
-          "
+          :on-submit="value => onFolderRename(directory.id, directory.path, value)"
         />
       </template>
-      <tr
-        v-if="files?.length"
-        class="border-t border-gray-200 dark:border-gray-700"
-      >
-        <th
-          class="py-2 text-left text-xs font-semibold text-gray-500"
-          colspan="2"
-          scope="colgroup"
-        >
+      <tr v-if="files?.length" class="border-t border-gray-200 dark:border-gray-700">
+        <th class="py-2 text-left text-xs font-semibold text-gray-500" colspan="2" scope="colgroup">
           {{ __('Files') }}
         </th>
       </tr>
       <template v-for="file in files" :key="file.id">
-        <tr
-          class="cursor-pointer"
-          @click="toggleSelection(file)"
-          @dblclick="openPreview(file)"
-        >
+        <tr class="cursor-pointer" @click="toggleSelection(file)" @dblclick="openPreview(file)">
           <td class="whitespace-nowrap py-4 text-sm w-full" colspan="2">
             <div
               :class="[
@@ -111,9 +84,7 @@
             >
               <DocumentIcon class="w-5 h-5" />
               <div class="ml-4">
-                <div
-                  :class="[isFileSelected(file) ? 'font-bold' : 'font-medium']"
-                >
+                <div :class="[isFileSelected(file) ? 'font-bold' : 'font-medium']">
                   {{ file.name }}
                 </div>
               </div>
@@ -131,7 +102,6 @@ import { computed } from 'vue'
 import { useStore } from 'vuex'
 import { DocumentIcon, FolderIcon } from '@heroicons/vue/outline'
 import DeleteFolderModal from '@/components/Modals/DeleteFolderModal'
-import Button from '@/components/Elements/Button'
 import { DotsVerticalIcon } from '@heroicons/vue/solid'
 import { Menu, MenuButton, MenuItem, MenuItems } from '@headlessui/vue'
 import RenameFolderModal from '@/components/Modals/RenameFolderModal'
@@ -140,9 +110,7 @@ import PreviewModal from '@/components/Modals/PreviewModal'
 const store = useStore()
 const files = computed(() => store.state['nova-file-manager'].files)
 const directories = computed(() => store.state['nova-file-manager'].directories)
-const isFileSelected = computed(
-    () => store.getters['nova-file-manager/isFileSelected']
-)
+const isFileSelected = computed(() => store.getters['nova-file-manager/isFileSelected'])
 
 const onFolderRename = (id, oldPath, value) =>
     store.dispatch('nova-file-manager/renameFolder', {
@@ -150,8 +118,7 @@ const onFolderRename = (id, oldPath, value) =>
         oldPath,
         newPath: value,
     })
-const onFolderDelete = (id, path) =>
-    store.dispatch('nova-file-manager/deleteFolder', { id, path })
+const onFolderDelete = (id, path) => store.dispatch('nova-file-manager/deleteFolder', { id, path })
 
 const openPreview = file => store.commit('nova-file-manager/previewFile', file)
 const toggleSelection = file =>

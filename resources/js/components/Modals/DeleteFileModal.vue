@@ -1,10 +1,6 @@
 <template>
   <ConfirmModal
-    :content="
-      __(
-        'This will will delete the file from the storage. This action cannot be undone.'
-      )
-    "
+    :content="__('This will will delete the file from the storage. This action cannot be undone.')"
     :icon="icon"
     :is-open="isOpen"
     :name="name"
@@ -45,7 +41,7 @@ import ConfirmModal from '@/components/Modals/ConfirmModal'
 import Button from '@/components/Elements/Button'
 
 const store = useStore()
-const props = defineProps({
+defineProps({
     isOpen: {
         type: Boolean,
         default: false,

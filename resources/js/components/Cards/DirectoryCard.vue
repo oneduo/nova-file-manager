@@ -54,18 +54,14 @@
 
   <DeleteFolderModal :name="`deleteFolder-${id}`" :on-confirm="onDelete" />
 
-  <RenameFolderModal
-    :name="`renameFolder-${id}`"
-    :old-path="name"
-    :on-submit="onRename"
-  />
+  <RenameFolderModal :name="`renameFolder-${id}`" :old-path="name" :on-submit="onRename" />
 </template>
 
 <script setup>
 import { Menu, MenuButton, MenuItem, MenuItems } from '@headlessui/vue'
 import { FolderIcon } from '@heroicons/vue/outline'
 import { DotsVerticalIcon } from '@heroicons/vue/solid'
-import Button from '@/components/Elements/Button'
+// import Button from '@/components/Elements/Button'
 import RenameFolderModal from '@/components/Modals/RenameFolderModal'
 import DeleteFolderModal from '@/components/Modals/DeleteFolderModal'
 import { useStore } from 'vuex'
