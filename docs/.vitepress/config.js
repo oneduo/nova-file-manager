@@ -72,4 +72,5 @@ export default {
   lastUpdated: false,
   themeConfig: theme,
   ignoreDeadLinks: true,
+  base: 'https://bbs-lab.github.io/nova-file-manager/'
 };
