@@ -1,5 +1,5 @@
 <template>
-  <InputModal :name="name" :on-submit="submit" :title="__('Rename folder')">
+  <InputModal :name="name" :on-submit="submit" :title="__('NovaFileManager.renameFolderTitle')">
     <template v-slot:inputs>
       <div>
         <div

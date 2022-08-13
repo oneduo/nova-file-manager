@@ -1,3 +1,8 @@
+# Localization
+
+> Work in progress.
+
+```json
 {
   "NovaFileManager.meta.size": "Size",
   "NovaFileManager.meta.mime": "Mime type",
@@ -20,3 +25,5 @@
   "NovaFileManager.upload": "Upload a file",
   "NovaFileManager.drag": "or drag and drop"
 }
+
+```

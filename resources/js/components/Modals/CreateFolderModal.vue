@@ -1,5 +1,5 @@
 <template>
-  <InputModal :name="name" :on-submit="submit" :title="__('Create a new folder')">
+  <InputModal :name="name" :on-submit="submit" :title="__('NovaFileManager.createFolderTitle')">
     <template v-slot:inputs>
       <div>
         <div
@@ -11,7 +11,7 @@
           ]"
         >
           <label class="block text-xs font-medium text-gray-700 dark:text-gray-200" for="name">
-            {{ __('Folder Name') }}
+            {{ __('Name') }}
           </label>
           <input
             id="name"
@@ -42,7 +42,7 @@
         type="submit"
         variant="primary"
       >
-        {{ __('Create Folder') }}
+        {{ __('Create') }}
       </Button>
     </template>
     <template v-slot:cancelButton>

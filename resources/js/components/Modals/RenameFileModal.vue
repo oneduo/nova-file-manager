@@ -1,5 +1,5 @@
 <template>
-  <InputModal :name="name" :on-submit="submit" :title="__('Rename file')">
+  <InputModal :name="name" :on-submit="submit" :title="__('NovaFileManager.renameFileTitle')">
     <template v-slot:inputs>
       <div>
         <div
@@ -11,12 +11,12 @@
           ]"
         >
           <label class="block text-xs font-medium text-gray-700 dark:text-gray-200" for="name">
-            {{ __('File Name') }}
+            {{ __('Name') }}
           </label>
           <input
             id="name"
             v-model="value"
-            :placeholder="__('Type your file name here')"
+            :placeholder="__('Name')"
             class="block w-full border-0 p-0 bg-gray-100 dark:bg-gray-900 placeholder-gray-400 sm:text-sm text-black dark:text-white focus:outline-none focus:ring-0"
             name="name"
             type="text"
@@ -42,7 +42,7 @@
         type="submit"
         variant="primary"
       >
-        {{ __('Rename file') }}
+        {{ __('Submit') }}
       </Button>
     </template>
     <template v-slot:cancelButton>
