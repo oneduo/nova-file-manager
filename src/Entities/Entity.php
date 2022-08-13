@@ -105,7 +105,7 @@ abstract class Entity implements Arrayable
 
     public function type(): string
     {
-        return str($this->mime())->before('/')->toString();
+        return (string)str($this->mime())->before('/');
     }
 
     public function lastModifiedAt(): string

@@ -201,14 +201,14 @@ class FileManagerService implements FileManagerContract
     {
         try {
             $mime = $this->fileSystem->mimeType($path);
-            $type = str($mime)->before('/')->toString();
+            $type = str($mime)->before('/');
         } catch (UnableToRetrieveMetadata $e) {
             report($e);
 
             $type = 'default';
         }
 
-        return $this->entityClassForType($type)::make($this->disk, $path);
+        return $this->entityClassForType((string)$type)::make($this->disk, $path);
     }
 
     public static function make(
