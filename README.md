@@ -26,8 +26,10 @@ A file manager tool and field for Laravel Nova. Beautifully designed, and custom
 🔧 Various customization and configuration options  
 🔍 A performant local search feature  
 🤹‍ Allows to save multiple assets on the same field
-
 </p>
+
+**Documentation** is available here : https://bbs-lab.github.io/nova-file-manager/
+
 
 <img src="./docs/preview.png"/>
 
