@@ -36,41 +36,20 @@ let sidebar = [
 ];
 
 let head = [
-  ["meta", { property: "og:title", content: "Varnish" }],
+  ["meta", { property: "og:title", content: "Nova File Manager" }],
   [
     "meta",
     {
       property: "og:description",
-      content: "A library of UI components built using Vue.js and TailwindCSS.",
+      content: "A handy Laravel Nova tool for all your file management needs, with multi-disk and chunk uploads supports",
     },
   ],
-  ["meta", { property: "og:url", content: "https://varnish.caneara.com" }],
+  ["meta", { property: "og:url", content: "https://github.com/BBS-Lab/nova-file-manager" }],
   [
     "meta",
-    { property: "og:image", content: "https://varnish.caneara.com/card.png" },
-  ],
-  [
-    "meta",
-    {
-      property: "og:secure_url",
-      content: "https://varnish.caneara.com/card.png",
-    },
+    { property: "og:image", content: "https://raw.githubusercontent.com/BBS-Lab/nova-file-manager/main/docs/cover.png" },
   ],
   ["meta", { name: "twitter:card", content: "summary_large_image" }],
-  ["meta", { name: "twitter:title", content: "Varnish" }],
-  [
-    "meta",
-    {
-      name: "twitter:description",
-      content: "A library of UI components built using Vue.js and TailwindCSS.",
-    },
-  ],
-  [
-    "meta",
-    { name: "twitter:image", content: "https://varnish.caneara.com/card.png" },
-  ],
-  ["meta", { name: "twitter:creator", content: "@CanearaHQ" }],
-  ["meta", { name: "twitter:site", content: "@CanearaHQ" }],
 ];
 
 let theme = {
