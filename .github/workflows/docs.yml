@@ -14,11 +14,11 @@ jobs:
         with:
           node-version: 18
           cache: npm
-      - working-directory: /docs
+      - working-directory: docs
         run: npm install
 
       - name: Build
-        working-directory: /docs
+        working-directory: docs
         run: npm run docs:build
 
       - name: Deploy
