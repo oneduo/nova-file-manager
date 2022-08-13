@@ -262,7 +262,7 @@ const store = {
                 // @see https://github.com/tailwindlabs/headlessui/issues/1319
                 document.documentElement.style.removeProperty('overflow')
                 document.documentElement.style.removeProperty('padding-right')
-            }, 250)
+            }, 350)
         },
     },
     actions: {
@@ -453,13 +453,14 @@ const store = {
                     {
                         path: state.path,
                         disk: state.disk,
-                        oldPath: sanitize(`${state.path ?? ''}/${oldPath}`),
+                        oldPath: sanitize(oldPath),
                         newPath: sanitize(`${state.path ?? ''}/${newPath}`),
                     }
                 )
 
                 Nova.success(response.data.message)
 
+                commit('previewFile', null)
                 dispatch('closeModal', `renameFile-${id}`)
                 commit('setSelectedFile', null)
                 dispatch('getData')
