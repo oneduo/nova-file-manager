@@ -3,26 +3,26 @@ let sidebar = [
     text: "Getting Started",
     collapsible: true,
     items: [
-      { text: "Introduction", link: "/introduction" },
-      { text: "Requirements", link: "/requirements" },
-      { text: "Installation", link: "/installation" },
-      { text: "Authors & Credits", link: "/credits" },
+      { text: "Introduction", link: "introduction" },
+      { text: "Requirements", link: "requirements" },
+      { text: "Installation", link: "installation" },
+      { text: "Authors & Credits", link: "credits" },
     ],
   },
   {
     text: "Usage",
     collapsible: true,
     items: [
-      { text: "Tool", link: "/tool" },
-      { text: "Field", link: "/field" },
+      { text: "Tool", link: "tool" },
+      { text: "Field", link: "field" },
     ],
   },
   {
     text: "Misc",
     collapsible: true,
     items: [
-      { text: "Configuration file", link: "/configuration" },
-      { text: "Screenshots", link: "/screenshots" },
+      { text: "Configuration file", link: "configuration" },
+      { text: "Screenshots", link: "screenshots" },
     ],
   },
   {
@@ -72,5 +72,5 @@ export default {
   lastUpdated: false,
   themeConfig: theme,
   ignoreDeadLinks: true,
-  base: 'https://bbs-lab.github.io/nova-file-manager/'
+  base: '/nova-file-manager/'
 };
