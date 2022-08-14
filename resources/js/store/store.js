@@ -131,6 +131,7 @@ const store = {
 
         selectFile(state, file) {
             if (!state.isFieldMode) {
+                // temporary until we add support for multiple selection action in the tool
                 return
             }
 
@@ -138,9 +139,7 @@ const store = {
                 return
             }
 
-            if (state.currentField?.selection?.length) {
-                state.currentField.selection = [file, ...state.currentField.selection]
-            }
+            state.currentField.selection = [file, ...state.currentField.selection]
         },
 
         deselectFile(state, file) {
