@@ -36,6 +36,11 @@ let theme = {
     editLink: {
         text: "Edit page", pattern: "https://github.com/BBS-Lab/nova-file-manager/edit/main/docs/:path",
     },
+    algolia: {
+        apiKey: 'f9cb045fd7c64079aecb15f9e450cf29',
+        indexName: 'nova-file-manager',
+        appId: '3KZHHGDGMO',
+    }
 };
 
 export default {
