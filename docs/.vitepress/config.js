@@ -109,8 +109,8 @@ let head = [
   [
     'script',
     {
-      async: true,
-      href: 'https://app.tinyanalytics.io/pixel/APc0MxOmPizf2RZ',
+      defer: true,
+      src: 'https://app.tinyanalytics.io/pixel/APc0MxOmPizf2RZ',
     },
   ],
 ]
