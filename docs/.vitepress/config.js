@@ -109,8 +109,11 @@ let head = [
   [
     'script',
     {
-      defer: true,
-      src: 'https://app.tinyanalytics.io/pixel/APc0MxOmPizf2RZ',
+      async: true,
+      src: 'https://cdn.splitbee.io/sb.js',
+      "data-no-cookie": true,
+      "data-token": "FSBYOWYLYBPB",
+      "data-respect-dnt": true,
     },
   ],
 ]
