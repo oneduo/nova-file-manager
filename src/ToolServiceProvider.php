@@ -4,9 +4,12 @@ declare(strict_types=1);
 
 namespace BBSLab\NovaFileManager;
 
+use BBSLab\NovaFileManager\Contracts\FileManagerContract;
 use BBSLab\NovaFileManager\Contracts\Filesystem\Upload\Uploader as UploaderContract;
 use BBSLab\NovaFileManager\Filesystem\Upload\Uploader;
 use BBSLab\NovaFileManager\Http\Middleware\Authorize;
+use BBSLab\NovaFileManager\Services\FileManagerService;
+use Illuminate\Foundation\Application;
 use Illuminate\Support\Facades\Route;
 use Illuminate\Support\ServiceProvider;
 use Inertia\Inertia;
@@ -50,7 +53,7 @@ class ToolServiceProvider extends ServiceProvider
             return;
         }
 
-        Nova::router(['nova:api', Authorize::class], 'nova-file-manager')
+        Nova::router(['nova', Authorize::class], 'nova-file-manager')
             ->group(__DIR__.'/../routes/inertia.php');
 
         Route::middleware(['nova:api', Authorize::class])
@@ -61,6 +64,18 @@ class ToolServiceProvider extends ServiceProvider
     public function register(): void
     {
         $this->app->singleton(UploaderContract::class, Uploader::class);
+        $this->app->singleton(FileManagerContract::class, function (Application $app, array $args = []) {
+            /** @var \Illuminate\Http\Request $request */
+            $request = $app->make('request');
+
+            $disk = $args['disk'] ?? $request->input('disk');
+            $path = $args['path'] ?? $request->input('path', DIRECTORY_SEPARATOR);
+            $page = (int) ($args['page'] ?? $request->input('page', 1));
+            $perPage = (int) ($args['perPage'] ?? $request->input('perPage', 15));
+            $search = $args['search'] ?? $request->input('search');
+
+            return FileManagerService::make($disk, $path, $page, $perPage, $search);
+        });
     }
 
     public function publish(): void
