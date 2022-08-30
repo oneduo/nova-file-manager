@@ -22,14 +22,4 @@ class UploadRequest extends BaseRequest
             'file' => ['required', 'file'],
         ];
     }
-
-    /**
-     * todo: fix chunk upload validation
-     *
-     * @return string
-     */
-    private function mimes(): string
-    {
-        return implode(',', config('nova-file-manager.allowed_mimes'));
-    }
 }

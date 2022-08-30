@@ -17,6 +17,10 @@
         <include>
             <directory suffix=".php">src/</directory>
         </include>
+        <exclude>
+            <directory suffix=".php">src/Entities</directory>
+            <directory suffix=".php">src/Filesystem</directory>
+        </exclude>
     </coverage>
     <testsuites>
         <testsuite name="File manager Test suite">
@@ -24,7 +28,8 @@
         </testsuite>
     </testsuites>
     <php>
-        <env name="APP_ENV" value="testing"/>
+        <env name="APP_ENV" value="toto"/>
+        <env name="APP_KEY" value="base64:IiOzvjsOE18pPH+96mKNbE7ilEwkBg4pdayiOZrbRrs="/>
         <env name="BCRYPT_ROUNDS" value="4"/>
         <env name="CACHE_DRIVER" value="array"/>
         <!-- <env name="DB_CONNECTION" value="sqlite"/> -->

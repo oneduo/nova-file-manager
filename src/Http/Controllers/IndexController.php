@@ -9,9 +9,6 @@ use Illuminate\Routing\Controller;
 
 class IndexController extends Controller
 {
-    /**
-     * @throws \Illuminate\Contracts\Container\BindingResolutionException
-     */
     public function __invoke(IndexRequest $request)
     {
         $manager = $request->manager();
