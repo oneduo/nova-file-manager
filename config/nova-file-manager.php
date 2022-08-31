@@ -30,7 +30,7 @@ return [
     'available_disks' => [
         'public',
         // 's3',
-        //  'ftp',
+        // 'ftp',
         // ... more disks
     ],
 
@@ -83,7 +83,7 @@ return [
     */
 
     'file_analysis' => [
-        'enable' => env('NOVA_FILE_MANAGER_ENABLE_FILE_ANALYSIS', true),
+        'enabled' => env('NOVA_FILE_MANAGER_ENABLE_FILE_ANALYSIS', true),
         'cache' => [
             'enable' => env('NOVA_FILE_MANAGER_FILE_ANALYSIS_CACHE_ENABLE', true),
             'ttl_in_seconds' => env('NOVA_FILE_MANAGER_FILE_ANALYSIS_CACHE_TTL_IN_SECONDS', 60 * 60 * 24),
@@ -122,26 +122,5 @@ return [
         'enabled' => env('NOVA_FILE_MANAGER_ENABLED_URL_SIGNING', false),
         'unit' => 'minutes',
         'value' => 10,
-    ],
-
-    /*
-    |--------------------------------------------------------------------------
-    | Allowed mime types
-    |--------------------------------------------------------------------------
-    |
-    | Here you can specify the mime types that are allowed to be uploaded
-    | through the tool.
-    |
-    | Uses: Laravel `mimes` validation rule
-    */
-    'allowed_mimes' => [
-        'jpg',
-        'jpeg',
-        'png',
-        'gif',
-        'mp4',
-        'zip',
-        'pdf',
-        // ... more mimes
     ],
 ];
