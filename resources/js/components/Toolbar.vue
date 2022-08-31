@@ -3,7 +3,7 @@
     <div
       class="flex items-center justify-between flex-wrap sm:flex-nowrap gap-2 gap-y-2 flex-col-reverse sm:flex-row"
     >
-      <div class="flex flex-row items-center gap-x-2 w-full">
+      <div class="flex flex-row items-center gap-2 w-full flex-wrap sm:flex-nowrap">
         <DiskSelector :disk="disk" :disks="disks" :set-disk="setDisk" />
         <PaginationSelector
           :per-page="perPage"

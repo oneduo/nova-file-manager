@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace BBSLab\NovaFileManager\Services;
 
+use BBSLab\NovaFileManager\Contracts\Entity;
 use BBSLab\NovaFileManager\Contracts\FileManagerContract;
 use Closure;
 use Illuminate\Container\Container;
@@ -197,18 +198,18 @@ class FileManagerService implements FileManagerContract
         return fn (string $path) => $this->makeEntity($path);
     }
 
-    public function makeEntity(string $path)
+    public function makeEntity(string $path): Entity
     {
         try {
             $mime = $this->fileSystem->mimeType($path);
-            $type = str($mime)->before('/');
+            $type = Str::before($mime, DIRECTORY_SEPARATOR);
         } catch (UnableToRetrieveMetadata $e) {
             report($e);
 
             $type = 'default';
         }
 
-        return $this->entityClassForType((string)$type)::make($this->disk, $path);
+        return $this->entityClassForType($type)::make($this->disk, $path);
     }
 
     public static function make(
@@ -217,7 +218,7 @@ class FileManagerService implements FileManagerContract
         int $page = 1,
         int $perPage = 15,
         ?string $search = null
-    ): self {
+    ): static {
         return new self($disk, $path, $page, $perPage, $search);
     }
 

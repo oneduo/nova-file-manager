@@ -10,10 +10,9 @@ use BBSLab\NovaFileManager\Events\FolderRenamed;
 use BBSLab\NovaFileManager\Http\Requests\CreateFolderRequest;
 use BBSLab\NovaFileManager\Http\Requests\DeleteFolderRequest;
 use BBSLab\NovaFileManager\Http\Requests\RenameFolderRequest;
-use BBSLab\NovaFileManager\Services\FileManagerService;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Routing\Controller;
-use Symfony\Component\HttpFoundation\Response;
+use Illuminate\Validation\ValidationException;
 
 class FolderController extends Controller
 {
@@ -24,14 +23,9 @@ class FolderController extends Controller
         );
 
         if (!$result) {
-            return response()->json(
-                [
-                    'errors' => [
-                        'folder' => [__('Folder already exists !')],
-                    ],
-                ],
-                Response::HTTP_UNPROCESSABLE_ENTITY
-            );
+            throw ValidationException::withMessages([
+                'folder' => [__('Folder already exists !')],
+            ]);
         }
 
         event(new FolderCreated($request->manager()->disk, $path));
@@ -43,25 +37,18 @@ class FolderController extends Controller
 
     public function rename(RenameFolderRequest $request): JsonResponse
     {
-        $disk = $request->get('disk');
-        $path = $request->get('path');
         $oldPath = $request->get('oldPath');
         $newPath = $request->get('newPath');
 
-        $result = FileManagerService::make($disk, $path)->rename($oldPath, $newPath);
+        $result = $request->manager()->rename($oldPath, $newPath);
 
         if (!$result) {
-            return response()->json(
-                [
-                    'errors' => [
-                        'folder' => [__('Could not rename folder !')],
-                    ],
-                ],
-                Response::HTTP_UNPROCESSABLE_ENTITY
-            );
+            throw ValidationException::withMessages([
+                'folder' => [__('Could not rename folder !')],
+            ]);
         }
 
-        event(new FolderRenamed($disk, $oldPath, $newPath));
+        event(new FolderRenamed($request->manager()->disk, $oldPath, $newPath));
 
         return response()->json([
             'message' => __('Folder renamed successfully.'),
@@ -73,17 +60,12 @@ class FolderController extends Controller
         $path = $request->get('path');
         $disk = $request->get('disk');
 
-        $result = FileManagerService::make($disk, $path)->rmdir($path);
+        $result = $request->manager()->rmdir($request->path);
 
         if (!$result) {
-            return response()->json(
-                [
-                    'errors' => [
-                        'folder' => [__('Could not delete folder !')],
-                    ],
-                ],
-                Response::HTTP_UNPROCESSABLE_ENTITY
-            );
+            throw ValidationException::withMessages([
+                'folder' => [__('Could not delete folder !')],
+            ]);
         }
 
         event(new FolderDeleted($disk, $path));

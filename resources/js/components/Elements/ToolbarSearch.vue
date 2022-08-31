@@ -1,6 +1,6 @@
 <template>
   <div
-    class="relative rounded-md shadow-sm w-full md:w-1/3 md:focus-within:w-full md:duration-500 md:transition-all"
+    class="relative rounded-md w-full md:w-1/3 md:focus-within:w-full md:duration-500 md:transition-all"
   >
     <div class="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
       <SearchIcon aria-hidden="true" class="h-4 w-4 text-gray-400" />

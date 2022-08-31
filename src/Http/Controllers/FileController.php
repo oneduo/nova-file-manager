@@ -14,8 +14,8 @@ use BBSLab\NovaFileManager\Http\Requests\UploadRequest;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Routing\Controller;
 use Illuminate\Support\Facades\Storage;
+use Illuminate\Validation\ValidationException;
 use Symfony\Component\HttpFoundation\BinaryFileResponse;
-use Symfony\Component\HttpFoundation\Response;
 
 class FileController extends Controller
 {
@@ -28,23 +28,16 @@ class FileController extends Controller
 
     public function rename(RenameFileRequest $request): JsonResponse
     {
-        $oldPath = $request->get('oldPath');
-        $newPath = $request->get('newPath');
-
         $manager = $request->manager();
-
-        $result = $manager->rename($oldPath, $newPath);
+        $result = $manager->rename($request->oldPath, $request->newPath);
 
         if (!$result) {
-            return response()->json(
-                [
-                    'error' => __('Could not rename file !'),
-                ],
-                Response::HTTP_UNPROCESSABLE_ENTITY
-            );
+            throw ValidationException::withMessages([
+                'oldPath' => [__('Could not rename file !')],
+            ]);
         }
 
-        event(new FileRenamed($manager->disk, $oldPath, $newPath));
+        event(new FileRenamed($manager->disk, $request->oldPath, $request->newPath));
 
         return response()->json([
             'message' => __('File renamed successfully.'),
@@ -53,33 +46,25 @@ class FileController extends Controller
 
     public function delete(DeleteFileRequest $request): JsonResponse
     {
-        $path = $request->get('path');
-
         $manager = $request->manager();
 
-        $result = $manager->delete($path);
+        $result = $manager->delete($request->path);
 
         if (!$result) {
-            return response()->json(
-                [
-                    'error' => __('Could not delete file !'),
-                ],
-                Response::HTTP_UNPROCESSABLE_ENTITY
-            );
+            throw ValidationException::withMessages([
+                'path' => [__('Could not delete file !')],
+            ]);
         }
 
-        event(new FileDeleted($manager->disk, $path));
+        event(new FileDeleted($manager->disk, $request->path));
 
         return response()->json([
             'message' => __('File deleted successfully.'),
         ]);
     }
 
-    public function donwload(DownloadFileRequest $request): BinaryFileResponse
+    public function download(DownloadFileRequest $request): BinaryFileResponse
     {
-        $disk = $request->get('disk');
-        $path = $request->get('path');
-
-        return response()->download(Storage::disk($disk)->path($path));
+        return response()->download(Storage::disk($request->disk)->path($request->path));
     }
 }

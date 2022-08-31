@@ -7,6 +7,13 @@ namespace BBSLab\NovaFileManager\Http\Requests;
 use BBSLab\NovaFileManager\Rules\DiskExistsRule;
 use BBSLab\NovaFileManager\Rules\PathExistsInDiskRule;
 
+/**
+ * @property-read ?string $disk
+ * @property-read string $path
+ * @property-read ?int $page
+ * @property-read ?int $perPage
+ * @property-read ?string $search
+ */
 class IndexRequest extends BaseRequest
 {
     public function rules(): array
