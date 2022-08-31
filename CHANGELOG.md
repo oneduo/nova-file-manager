@@ -2,58 +2,68 @@
 
 All notable changes to `nova-file-manager` will be documented in this file
 
+## 0.2.7 - 2022-08-31
+
+### What's Changed
+
+- 💄 fixed some minor UI issues by @crezra in https://github.com/BBS-Lab/nova-file-manager/pull/43
+
+**Full Changelog**: https://github.com/BBS-Lab/nova-file-manager/compare/v0.2.6...v0.2.7
+
 ## 0.2.6 - 2022-08-31
 
 ## What's Changed
-* 🔧 added algolia docsearch by @crezra in https://github.com/BBS-Lab/nova-file-manager/pull/35
-* 📈 added tinyanalytics to docs by @crezra in https://github.com/BBS-Lab/nova-file-manager/pull/36
-* 📈 fixed tinyanalytics setup by @crezra in https://github.com/BBS-Lab/nova-file-manager/pull/37
-* 📈 replace tinyanalytics with splitbee by @crezra in https://github.com/BBS-Lab/nova-file-manager/pull/38
 
+- 🔧 added algolia docsearch by @crezra in https://github.com/BBS-Lab/nova-file-manager/pull/35
+- 📈 added tinyanalytics to docs by @crezra in https://github.com/BBS-Lab/nova-file-manager/pull/36
+- 📈 fixed tinyanalytics setup by @crezra in https://github.com/BBS-Lab/nova-file-manager/pull/37
+- 📈 replace tinyanalytics with splitbee by @crezra in https://github.com/BBS-Lab/nova-file-manager/pull/38
 
 **Full Changelog**: https://github.com/BBS-Lab/nova-file-manager/compare/v0.2.5...v0.2.6
 
 ## 0.2.5 - 2022-08-14
 
 ## What's Changed
-* 📝 updated docs by @crezra in https://github.com/BBS-Lab/nova-file-manager/pull/25
-* 👷 Add test workflow. by @mikaelpopowicz in https://github.com/BBS-Lab/nova-file-manager/pull/26
-* 👷 Update test workflow. by @mikaelpopowicz in https://github.com/BBS-Lab/nova-file-manager/pull/27
-* 👷 Update test workflow. by @mikaelpopowicz in https://github.com/BBS-Lab/nova-file-manager/pull/28
-* Develop by @mikaelpopowicz in https://github.com/BBS-Lab/nova-file-manager/pull/29
-* Develop by @mikaelpopowicz in https://github.com/BBS-Lab/nova-file-manager/pull/30
-* 👷 Update test workflow. by @mikaelpopowicz in https://github.com/BBS-Lab/nova-file-manager/pull/31
-* Update documentation by @mikaelpopowicz in https://github.com/BBS-Lab/nova-file-manager/pull/32
-* 🐛 fixed file selection in the form field by @crezra in https://github.com/BBS-Lab/nova-file-manager/pull/34
 
+- 📝 updated docs by @crezra in https://github.com/BBS-Lab/nova-file-manager/pull/25
+- 👷 Add test workflow. by @mikaelpopowicz in https://github.com/BBS-Lab/nova-file-manager/pull/26
+- 👷 Update test workflow. by @mikaelpopowicz in https://github.com/BBS-Lab/nova-file-manager/pull/27
+- 👷 Update test workflow. by @mikaelpopowicz in https://github.com/BBS-Lab/nova-file-manager/pull/28
+- Develop by @mikaelpopowicz in https://github.com/BBS-Lab/nova-file-manager/pull/29
+- Develop by @mikaelpopowicz in https://github.com/BBS-Lab/nova-file-manager/pull/30
+- 👷 Update test workflow. by @mikaelpopowicz in https://github.com/BBS-Lab/nova-file-manager/pull/31
+- Update documentation by @mikaelpopowicz in https://github.com/BBS-Lab/nova-file-manager/pull/32
+- 🐛 fixed file selection in the form field by @crezra in https://github.com/BBS-Lab/nova-file-manager/pull/34
 
 **Full Changelog**: https://github.com/BBS-Lab/nova-file-manager/compare/v0.2.4...v0.2.5
 
 ## 0.2.4 - 2022-08-13
 
 ## What's Changed
-* 📝 Update documentation. by @mikaelpopowicz in https://github.com/BBS-Lab/nova-file-manager/pull/18
-* Linted JS and added documentation by @crezra in https://github.com/BBS-Lab/nova-file-manager/pull/19
-* 💚 updated github workflow by @crezra in https://github.com/BBS-Lab/nova-file-manager/pull/20
-* updated vitepress config by @crezra in https://github.com/BBS-Lab/nova-file-manager/pull/21
-* 🔧 updated vitepress config with base url by @crezra in https://github.com/BBS-Lab/nova-file-manager/pull/22
-* 🔧 changed simultaneousUploads on chunk uploads by @crezra in https://github.com/BBS-Lab/nova-file-manager/pull/23
-* 🌐 updated localization keys by @crezra in https://github.com/BBS-Lab/nova-file-manager/pull/24
+
+- 📝 Update documentation. by @mikaelpopowicz in https://github.com/BBS-Lab/nova-file-manager/pull/18
+- Linted JS and added documentation by @crezra in https://github.com/BBS-Lab/nova-file-manager/pull/19
+- 💚 updated github workflow by @crezra in https://github.com/BBS-Lab/nova-file-manager/pull/20
+- updated vitepress config by @crezra in https://github.com/BBS-Lab/nova-file-manager/pull/21
+- 🔧 updated vitepress config with base url by @crezra in https://github.com/BBS-Lab/nova-file-manager/pull/22
+- 🔧 changed simultaneousUploads on chunk uploads by @crezra in https://github.com/BBS-Lab/nova-file-manager/pull/23
+- 🌐 updated localization keys by @crezra in https://github.com/BBS-Lab/nova-file-manager/pull/24
 
 ## New Contributors
-* @crezra made their first contribution in https://github.com/BBS-Lab/nova-file-manager/pull/19
+
+- @crezra made their first contribution in https://github.com/BBS-Lab/nova-file-manager/pull/19
 
 **Full Changelog**: https://github.com/BBS-Lab/nova-file-manager/compare/v0.2.3...v0.2.4
 
 ## 0.2.3 - 2022-08-13
 
 ## What's Changed
-* Fix str support and scroll issue by @mikaelpopowicz in https://github.com/BBS-Lab/nova-file-manager/pull/17
-* Fixed an issue with str on Laravel 8
-* Fixed an issue where overflow is set to hidden after renaming a file
-* Fixed an issue where the oldPath parameter was wrong
-* Fixed an issue with the `useError` composable
 
+- Fix str support and scroll issue by @mikaelpopowicz in https://github.com/BBS-Lab/nova-file-manager/pull/17
+- Fixed an issue with str on Laravel 8
+- Fixed an issue where overflow is set to hidden after renaming a file
+- Fixed an issue where the oldPath parameter was wrong
+- Fixed an issue with the `useError` composable
 
 **Full Changelog**: https://github.com/BBS-Lab/nova-file-manager/compare/v0.2.2...v0.2.3
 
@@ -69,17 +79,20 @@ All notable changes to `nova-file-manager` will be documented in this file
 ## 0.2.1 - 2022-08-11
 
 ## What's Changed
-* Fix incompatibility with `nova-flexible-content` by @milewski in https://github.com/BBS-Lab/nova-file-manager/pull/15
+
+- Fix incompatibility with `nova-flexible-content` by @milewski in https://github.com/BBS-Lab/nova-file-manager/pull/15
 
 ## New Contributors
-* @milewski made their first contribution in https://github.com/BBS-Lab/nova-file-manager/pull/15
+
+- @milewski made their first contribution in https://github.com/BBS-Lab/nova-file-manager/pull/15
 
 **Full Changelog**: https://github.com/BBS-Lab/nova-file-manager/compare/v0.2.0...v0.2.1
 
 ## 0.2.0 - 2022-08-10
 
 ## What's Changed
-* Develop by @mikaelpopowicz in https://github.com/BBS-Lab/nova-file-manager/pull/14
+
+- Develop by @mikaelpopowicz in https://github.com/BBS-Lab/nova-file-manager/pull/14
 
 **Full Changelog**: https://github.com/BBS-Lab/nova-file-manager/compare/v0.1.0...v0.2.0
 
