@@ -82,13 +82,18 @@ it('can rename a directory', function () {
     );
 });
 
-it('returns validation error when the filesystem can not move the directory', function () {
+it('returns validation error when the filesystem can not rename the directory', function () {
     Event::fake();
 
-    Storage::disk($this->disk)->makeDirectory($old = 'existing');
-    mkdir(Storage::disk($this->disk)->path('no-permission'), 444, true);
+    $mock = mock(FileManagerContract::class)->expect(
+        rename: fn ($path) => false,
+    );
 
-    $new = 'no-permission/renamed';
+    app()->instance(FileManagerContract::class, $mock);
+
+    Storage::disk($this->disk)->makeDirectory($old = 'existing');
+
+    $new = 'renamed';
 
     postJson(
         uri: route('nova-file-manager.folders.rename'),
