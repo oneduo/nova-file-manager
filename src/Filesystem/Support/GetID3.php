@@ -1,10 +1,8 @@
-<?php
-
-/** @noinspection ALL */
+<?php /** @noinspection ALL */
 
 declare(strict_types=1);
 
-namespace BBSLab\NovaFileManager\Filesystem\Metadata;
+namespace BBSLab\NovaFileManager\Filesystem\Support;
 
 use getID3 as BaseGetID3;
 use getid3_exception;
