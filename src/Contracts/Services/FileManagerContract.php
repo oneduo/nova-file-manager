@@ -2,8 +2,9 @@
 
 declare(strict_types=1);
 
-namespace BBSLab\NovaFileManager\Contracts;
+namespace BBSLab\NovaFileManager\Contracts\Services;
 
+use BBSLab\NovaFileManager\Entities\Entity;
 use Closure;
 use Illuminate\Contracts\Pagination\LengthAwarePaginator;
 use Illuminate\Support\Collection;
