@@ -9,13 +9,20 @@ use Illuminate\Routing\Controller;
 
 class IndexController extends Controller
 {
+    /**
+     * Get the data for the tool
+     *
+     * @param  \BBSLab\NovaFileManager\Http\Requests\IndexRequest  $request
+     * @return \Illuminate\Http\JsonResponse
+     */
     public function __invoke(IndexRequest $request)
     {
         $manager = $request->manager();
 
-        $paginator = $manager->paginate(
-            $manager->files()
-        )->onEachSide(1);
+        /** @var \Illuminate\Pagination\LengthAwarePaginator $paginator */
+        $paginator = $manager
+            ->paginate($manager->files())
+            ->onEachSide(1);
 
         return response()->json([
             'disk' => $manager->disk,

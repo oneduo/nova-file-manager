@@ -9,6 +9,11 @@ use Illuminate\Routing\Controller;
 
 class DiskController extends Controller
 {
+    /**
+     * Get the available disks
+     *
+     * @return \Illuminate\Http\JsonResponse
+     */
     public function available(): JsonResponse
     {
         return response()->json(config('nova-file-manager.available_disks', []));

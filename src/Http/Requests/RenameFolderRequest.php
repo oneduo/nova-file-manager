@@ -8,11 +8,6 @@ use BBSLab\NovaFileManager\Rules\DiskExistsRule;
 use BBSLab\NovaFileManager\Rules\PathDoesNotExistInDiskRule;
 use BBSLab\NovaFileManager\Rules\PathExistsInDiskRule;
 
-/**
- * @property-read string $disk
- * @property-read string $oldPath
- * @property-read string $newPath
- */
 class RenameFolderRequest extends BaseRequest
 {
     public function rules(): array
