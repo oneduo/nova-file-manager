@@ -202,7 +202,9 @@ class FileManagerService implements FileManagerContract
     {
         try {
             $mime = $this->fileSystem->mimeType($path);
-            $type = Str::before($mime, DIRECTORY_SEPARATOR);
+            $type = $mime
+                ? Str::before($mime, DIRECTORY_SEPARATOR)
+                : 'default';
         } catch (UnableToRetrieveMetadata $e) {
             report($e);
 
