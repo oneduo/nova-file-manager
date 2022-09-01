@@ -117,6 +117,11 @@ abstract class Entity implements Arrayable, EntityContract
         return $this->fileSystem->url($this->path);
     }
 
+    public function exists(): bool
+    {
+        return $this->fileSystem->exists($this->path);
+    }
+
     public function signedExpirationTime(): Carbon
     {
         return now()->add(

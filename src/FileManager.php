@@ -160,12 +160,20 @@ class FileManager extends Field
                 return null;
             }
 
-            $entities->push($manager->makeEntity($value));
+            $entity = $manager->makeEntity($value);
+
+            if ($entity->exists()) {
+                $entities->push($entity);
+            }
         }
 
         if (is_iterable($value)) {
             foreach ($value as $file) {
-                $entities->push($manager->makeEntity($file));
+                $entity = $manager->makeEntity($file);
+
+                if ($entity->exists()) {
+                    $entities->push($entity);
+                }
             }
         }
 
