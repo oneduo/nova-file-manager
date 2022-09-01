@@ -1,6 +1,6 @@
 <template>
   <TransitionRoot :show="isOpen" as="template" class="nova-file-manager">
-    <Dialog :initial-focus="completeButtonRef" as="div" class="relative z-[60]" @close="closeModal">
+    <Dialog :initial-focus="buttonRef" as="div" class="relative z-[60]" @close="closeModal">
       <TransitionChild
         as="template"
         enter="ease-out duration-300"
@@ -13,7 +13,7 @@
         <div class="fixed inset-0 bg-gray-800/20 backdrop-blur-sm transition-opacity" />
       </TransitionChild>
 
-      <div :class="darkMode && 'dark'" class="fixed z-10 inset-0 overflow-y-auto">
+      <div :class="['fixed z-10 inset-0 overflow-y-auto', darkMode ? 'dark' : '']">
         <div class="flex items-center justify-center min-h-full p-4">
           <TransitionChild
             as="template"
@@ -33,41 +33,66 @@
                 <h2 class="text-lg font-medium text-gray-900 dark:text-gray-400 break-all w-full">
                   {{ file.name }}
                 </h2>
+
                 <div class="flex flex-row gap-2 justify-end">
                   <IconButton
-                    v-if="!withoutActions"
-                    tabindex="0"
+                    v-if="!readOnly"
                     variant="danger"
-                    @click="openModal(`deleteFile-${file.id}`)"
+                    @click="openModal(`delete-file-${file.id}`)"
+                    :title="__('NovaFileManager.actions.delete')"
                   >
                     <TrashIcon class="w-5 h-5" />
                   </IconButton>
+
+                  <IconButton
+                    v-if="readOnly"
+                    @click="copy(file)"
+                    variant="secondary"
+                    :title="__('NovaFileManager.actions.copy')"
+                  >
+                    <ClipboardDocumentIcon class="w-5 h-5" />
+                  </IconButton>
+
                   <IconButton
                     :as-anchor="true"
                     :download="file.name"
                     :href="file.url"
-                    tabindex="1"
                     variant="secondary"
+                    :title="__('NovaFileManager.actions.download')"
                   >
-                    <cloud-download-icon class="w-5 h-5" />
+                    <CloudArrowDownIcon class="w-5 h-5" />
                   </IconButton>
+
                   <IconButton
-                    v-if="!withoutActions"
+                    v-if="!readOnly"
                     variant="secondary"
-                    @click="openModal(`renameFile-${file.id}`)"
+                    @click="openModal(`rename-file-${file.id}`)"
+                    :title="__('NovaFileManager.actions.rename')"
                   >
-                    <pencil-alt-icon class="w-5 h-5" />
+                    <PencilSquareIcon class="w-5 h-5" />
                   </IconButton>
-                  <IconButton ref="completeButtonRef" tabindex="1" @click="closeModal">
-                    <x-icon class="w-5 h-5" />
+
+                  <IconButton
+                    ref="buttonRef"
+                    @click="closeModal"
+                    :title="__('NovaFileManager.actions.close')"
+                  >
+                    <XMarkIcon class="w-5 h-5" />
                   </IconButton>
                 </div>
               </div>
+
               <div class="overflow-hidden flex flex-col md:flex-row gap-4 w-full">
                 <div
                   class="block w-full md:w-4/6 overflow-hidden rounded-lg bg-gray-500/10 flex items-center justify-center"
                 >
-                  <img v-if="file.type === 'image'" :src="file.url" alt="" class="object-cover" />
+                  <img
+                    v-if="file.type === 'image'"
+                    :src="file.url"
+                    :alt="file.name"
+                    class="object-cover"
+                  />
+
                   <div v-else-if="file.type === 'video'" class="w-full h-full">
                     <video class="w-full max-w-screen max-h-screen" controls="controls">
                       <source :src="file.url" />
@@ -77,10 +102,11 @@
 
                   <DocumentIcon v-else class="h-40 w-40 text-gray-500 m-12" />
                 </div>
+
                 <div class="w-full md:w-2/6">
                   <div>
                     <h3 class="font-medium text-gray-800 dark:text-gray-100">
-                      {{ __('Information') }}
+                      {{ __('NovaFileManager.preview.information') }}
                     </h3>
                     <dl
                       class="mt-2 divide-y divide-gray-200 dark:divide-gray-800/40 border-t border-b border-gray-300 dark:border-gray-800/70"
@@ -93,6 +119,7 @@
                           {{ file.size }}
                         </dd>
                       </div>
+
                       <div class="flex justify-between py-3 text-sm font-medium">
                         <dt class="text-gray-500">
                           {{ __('NovaFileManager.meta.mime') }}
@@ -101,6 +128,7 @@
                           {{ file.mime }}
                         </dd>
                       </div>
+
                       <div class="flex justify-between py-3 text-sm font-medium">
                         <dt class="text-gray-500">
                           {{ __('NovaFileManager.meta.lastModifiedAt') }}
@@ -109,6 +137,7 @@
                           {{ file.lastModifiedAt }}
                         </dd>
                       </div>
+
                       <template v-for="(value, key) in file.meta">
                         <div
                           v-if="value"
@@ -134,9 +163,9 @@
     </Dialog>
   </TransitionRoot>
 
-  <DeleteFileModal :name="`deleteFile-${file.id}`" :on-confirm="onDelete" />
+  <DeleteFileModal :name="`delete-file-${file.id}`" :on-confirm="onDelete" />
 
-  <RenameFileModal :name="`renameFile-${file.id}`" :old-name="file.name" :on-submit="onRename" />
+  <RenameFileModal :name="`rename-file-${file.id}`" :old-name="file.name" :on-submit="onRename" />
 </template>
 
 <script setup>
@@ -144,35 +173,42 @@ import { computed, ref } from 'vue'
 import { useStore } from 'vuex'
 import { Dialog, DialogPanel, TransitionChild, TransitionRoot } from '@headlessui/vue'
 import {
-    CloudDownloadIcon,
+    ClipboardDocumentIcon,
+    CloudArrowDownIcon,
     DocumentIcon,
-    PencilAltIcon,
+    PencilSquareIcon,
     TrashIcon,
-    XIcon,
-} from '@heroicons/vue/outline'
+    XMarkIcon,
+} from '@heroicons/vue/24/outline'
 import IconButton from '@/components/Elements/IconButton'
 import DeleteFileModal from '@/components/Modals/DeleteFileModal'
 import RenameFileModal from '@/components/Modals/RenameFileModal'
+import Entity from '@/types/Entity'
+import { useClipboard } from '@/hooks'
 
-const store = useStore()
 const props = defineProps({
     file: {
-        type: Object,
+        type: Entity,
         required: true,
     },
-    withoutActions: {
+    readOnly: {
         type: Boolean,
         default: false,
     },
 })
 
-const completeButtonRef = ref(null)
+const store = useStore()
+const { copyToClipboard } = useClipboard()
+const buttonRef = ref(null)
 
 const darkMode = computed(() => store.state['nova-file-manager'].darkMode)
 const preview = computed(() => store.state['nova-file-manager'].preview)
 const isOpen = computed(() => preview.value?.id === props.file.id)
 
-const openModal = name => store.dispatch('nova-file-manager/openModal', name)
+const openModal = name => {
+    return store.dispatch('nova-file-manager/openModal', name)
+}
+
 const closeModal = () => {
     store.commit('nova-file-manager/previewFile', null)
     store.commit('nova-file-manager/fixPortal')
@@ -191,5 +227,11 @@ const onDelete = () => {
         id: props.file.id,
         path: props.file.path,
     })
+}
+
+const copy = file => {
+    copyToClipboard(file.url)
+
+    Nova.success('Copied !')
 }
 </script>

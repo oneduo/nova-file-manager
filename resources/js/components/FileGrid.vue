@@ -1,49 +1,54 @@
 <template>
   <ul
     class="grid grid-cols-2 gap-x-4 gap-y-4 sm:grid-cols-3 sm:gap-x-6 md:grid-cols-4 md:grid-cols-4 xl:grid-cols-6 xl:gap-x-4"
-    role="list"
+    role="group"
   >
-    <li v-for="file in files" :key="file.id">
-      <component
-        :is="fileCardComponent(file)"
-        :checked="isFileSelected(file) ?? false"
-        :file="file"
+    <template v-for="file in files" :key="file.id">
+      <File
+        :selected="isFileSelected(file) ?? false"
+        :file="mapEntity(file)"
         @click="toggleSelection(file)"
         @dblclick="openPreview(file)"
       />
 
-      <PreviewModal :file="file" />
-    </li>
+      <PreviewModal
+        :file="mapEntity(file)"
+        v-if="!!preview && preview?.id === mapEntity(file)?.id"
+      />
+    </template>
   </ul>
 </template>
 
 <script setup>
-import ImageCard from './Cards/ImageCard.vue'
-import VideoCard from './Cards/VideoCard.vue'
-import FileCard from './Cards/FileCard.vue'
+import { computed } from 'vue'
 import { useStore } from 'vuex'
 import PreviewModal from '@/components/Modals/PreviewModal'
-import { computed } from 'vue'
+import File from '@/components/Cards/File'
+import Entity from '@/types/Entity'
 
 const store = useStore()
 
 const files = computed(() => store.state['nova-file-manager'].files)
 const isFileSelected = computed(() => store.getters['nova-file-manager/isFileSelected'])
+const preview = computed(() => store.state['nova-file-manager'].preview)
 
-const fileCardComponent = file => {
-    switch (file.type) {
-    case 'image':
-        return ImageCard
-    case 'video':
-        return VideoCard
-    default:
-        return FileCard
-    }
-}
-
-const openPreview = file => store.commit('nova-file-manager/previewFile', file)
 const toggleSelection = file =>
     store.getters['nova-file-manager/isFileSelected'](file)
         ? store.commit('nova-file-manager/deselectFile', file)
         : store.commit('nova-file-manager/selectFile', file)
+
+const openPreview = file => store.commit('nova-file-manager/previewFile', file)
+
+const mapEntity = file =>
+    new Entity(
+        file.id,
+        file.name,
+        file.path,
+        file.size,
+        file.extension,
+        file.mime,
+        file.url,
+        file.lastModifiedAt,
+        file.type
+    )
 </script>

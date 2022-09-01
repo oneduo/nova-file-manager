@@ -1,6 +1,6 @@
 <template>
   <template v-if="view === 'grid'">
-    <div class="space-y-2">
+    <div class="space-y-2 mb-2">
       <Disclosure v-if="directories?.length" v-slot="{ open }" :default-open="true">
         <DisclosureButton>
           <div class="flex flex-row w-full items-center gap-x-1">
@@ -44,7 +44,7 @@
 
 <script setup>
 import { Disclosure, DisclosureButton, DisclosurePanel } from '@headlessui/vue'
-import { ChevronDownIcon, ChevronRightIcon } from '@heroicons/vue/outline'
+import { ChevronDownIcon, ChevronRightIcon } from '@heroicons/vue/24/outline'
 import FileGrid from '@/components/FileGrid'
 import DirectoryGrid from '@/components/DirectoryGrid'
 import List from '@/components/List'

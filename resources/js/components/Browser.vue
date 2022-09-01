@@ -8,9 +8,19 @@
           <Spinner class="w-16 h-16" />
         </div>
 
-        <template v-else>
+        <div v-else @dragover.prevent.stop="dragenter" @drop.prevent="onDrop" class="relative">
+          <div
+            v-if="isDragging"
+            @dragleave.prevent.self="dragleave"
+            class="absolute inset-0 z-50 bg-gray-100/90 dark:bg-gray-700/80 rounded-md backdrop-blur-sm w-full h-full flex justify-center flex-col items-center border-2 border-double border-blue-500"
+          >
+            <CloudArrowUpIcon class="w-16 h-16 text-blue-500 animate-bounce" />
+            <p class="font-bold text-gray-900 dark:text-gray-50 p-2 rounded-md">
+              {{ __('NovaFileManager.dropzone.prompt') }}
+            </p>
+          </div>
           <BrowserContent :directories="directories" :files="files" :filled="filled" :view="view" />
-        </template>
+        </div>
       </div>
 
       <Pagination
@@ -25,16 +35,20 @@
       />
     </main>
   </div>
+
+  <UploadQueueModal name="upload-queue" />
   <div id="modals"></div>
 </template>
 
 <script setup>
-import { computed, onBeforeUnmount, onMounted } from 'vue'
+import { computed, onBeforeUnmount, onMounted, ref, watch } from 'vue'
 import { useStore } from 'vuex'
 import Toolbar from '@/components/Toolbar'
 import Pagination from '@/components/Pagination'
 import Spinner from '@/components/Elements/Spinner'
 import BrowserContent from '@/components/BrowserContent'
+import { CloudArrowUpIcon } from '@heroicons/vue/24/outline'
+import UploadQueueModal from '@/components/Modals/UploadQueueModal'
 
 const store = useStore()
 const files = computed(() => store.state['nova-file-manager'].files)
@@ -53,4 +67,23 @@ onMounted(() => {
 onBeforeUnmount(() => {
     store.commit('nova-file-manager/destroy')
 })
+
+const isDragging = ref(false)
+const draggedFiles = ref([])
+
+const dragenter = () => (isDragging.value = true)
+const dragleave = () => (isDragging.value = false)
+const onDrop = e => (draggedFiles.value = e.dataTransfer.files)
+
+const submit = () => {
+    if (draggedFiles.value.length) {
+        store.dispatch('nova-file-manager/upload', draggedFiles.value)
+
+        store.dispatch('nova-file-manager/openModal', 'upload-queue')
+
+        isDragging.value = false
+    }
+}
+
+watch(draggedFiles, () => submit())
 </script>

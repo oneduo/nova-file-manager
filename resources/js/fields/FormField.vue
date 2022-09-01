@@ -6,29 +6,37 @@
           <div v-if="files?.length > 0" class="flex flex-row gap-2 flex-wrap w-full">
             <draggable
               v-model="files"
-              class="grid grid-cols-2 md:grid-cols-3 gap-2 mb-2 w-full"
+              class="grid grid-cols-2 md:grid-cols-4 gap-2 mb-2 w-full"
               ghost-class="opacity-0"
               item-key="id"
               @end="drag = false"
               @start="drag = true"
+              tag="ul"
             >
               <template #item="{ element }">
-                <FieldCard :field="field" :file="element" class="cursor-grab" mode="form" />
+                <FieldCard
+                  :field="field"
+                  :file="element"
+                  class="cursor-grab"
+                  :on-deselect="deselectFile"
+                />
               </template>
             </draggable>
           </div>
 
-          <button
-            class="relative flex flex-row shrink-0 items-center px-4 py-2 rounded-md border border-gray-300 dark:hover:border-blue-500 dark:border-gray-600 bg-white dark:bg-gray-700 text-sm font-medium text-gray-700 dark:text-gray-200 focus:z-10 focus:outline-none"
-            type="button"
-            @click="openBrowser"
-          >
-            <CloudIcon
-              aria-hidden="true"
-              class="-ml-1 mr-2 h-5 w-5 text-gray-400 dark:text-gray-200"
-            />
-            {{ __('NovaFileManager.openBrowser') }}
-          </button>
+          <div class="flex flex-row gap-2">
+            <button
+              class="relative flex flex-row shrink-0 items-center px-4 py-2 rounded-md border border-gray-300 dark:hover:border-blue-500 dark:border-gray-600 bg-white dark:bg-gray-700 text-sm font-medium text-gray-700 dark:text-gray-200 focus:z-10 focus:outline-none"
+              type="button"
+              @click="openBrowser"
+            >
+              <CloudIcon
+                aria-hidden="true"
+                class="-ml-1 mr-2 h-5 w-5 text-gray-400 dark:text-gray-200"
+              />
+              {{ __('NovaFileManager.openBrowser') }}
+            </button>
+          </div>
         </div>
       </div>
     </template>
@@ -61,7 +69,7 @@
             leave-to="opacity-0 translate-y-4 sm:translate-y-0 sm:scale-95"
           >
             <DialogPanel
-              class="relative bg-transparent rounded-lg overflow-hidden shadow-xl transition-all w-full border border-gray-500 dark:border-gray-600 md:m-8 m-0"
+              class="relative bg-transparent rounded-lg overflow-hidden shadow-xl transition-all w-full border border-gray-300 dark:border-gray-600 md:m-8 m-0"
             >
               <Browser class="w-full" />
             </DialogPanel>
@@ -73,7 +81,7 @@
 </template>
 
 <script>
-import { CloudIcon } from '@heroicons/vue/outline'
+import { CloudIcon } from '@heroicons/vue/24/outline'
 import {
     Dialog as DialogModal,
     DialogPanel,
@@ -124,6 +132,7 @@ export default {
     computed: {
         ...mapState('nova-file-manager', ['darkMode', 'disk', 'currentField']),
         ...mapGetters('nova-file-manager', ['fieldByAttribute', 'allModals']),
+
         isOpen() {
             return this.allModals?.includes('browser')
         },
@@ -156,6 +165,7 @@ export default {
             'setIsFieldMode',
             'setValue',
             'deselectFieldFile',
+            'setFieldSelection',
         ]),
         fill(formData) {
             if (this.files?.length) {
@@ -179,6 +189,13 @@ export default {
             this.displayModal = false
             this.setCurrentField(null)
             this.closeModal('browser')
+        },
+
+        deselectFile(file) {
+            this.deselectFieldFile({
+                field: this.field.attribute,
+                file,
+            })
         },
     },
 
