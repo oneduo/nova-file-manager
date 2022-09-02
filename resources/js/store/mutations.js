@@ -85,19 +85,19 @@ const mutations = {
     },
 
     /*
-  |--------------------------------------------------------------------------
-  | File selection handlers
-  |--------------------------------------------------------------------------
-  |
-  | These mutations handle the selection of the tool
-  | 
-  | mutations:
-  |   - selectFile
-  |   - deselectFile
-  |   - setSelection
-  |   - clearSelection
-  |   - toggleSelection
-  */
+    |--------------------------------------------------------------------------
+    | File selection handlers
+    |--------------------------------------------------------------------------
+    |
+    | These mutations handle the selection of the tool
+    |
+    | mutations:
+    |   - selectFile
+    |   - deselectFile
+    |   - setSelection
+    |   - clearSelection
+    |   - toggleSelection
+    */
 
     /**
    * Select a file
@@ -152,23 +152,23 @@ const mutations = {
         const exists = !!state.selection?.find(item => item.id === file.id)
 
         if (exists) {
-            state.selection = state.selection.filter(item => item.id !== file.id)
+            this.commit('nova-file-manager/deselectFile', file)
 
             return
         }
-
-        if (state.selection === null) {
-            state.selection = []
+        console.log(state.multiple)
+        if (!state.multiple) {
+            this.commit('nova-file-manager/setSelection', [])
         }
 
-        state.selection.push(file)
+        this.commit('nova-file-manager/selectFile', file)
     },
 
     /*
-  |--------------------------------------------------------------------------
-  | Field mutations
-  |--------------------------------------------------------------------------
-  */
+    |--------------------------------------------------------------------------
+    | Field mutations
+    |--------------------------------------------------------------------------
+    */
 
     /**
    * Add a new field entry to the state
@@ -215,10 +215,10 @@ const mutations = {
     },
 
     /*
-  |--------------------------------------------------------------------------
-  | Setters
-  |--------------------------------------------------------------------------
-  */
+    |--------------------------------------------------------------------------
+    | Setters
+    |--------------------------------------------------------------------------
+    */
     previewFile(state, file) {
         state.preview = file
     },
@@ -271,6 +271,9 @@ const mutations = {
     },
     setSearch(state, value) {
         state.search = value?.length ? value : null
+    },
+    setMultiple(state, multiple) {
+        state.multiple = multiple
     },
     setLimit(state, limit) {
         state.limit = limit

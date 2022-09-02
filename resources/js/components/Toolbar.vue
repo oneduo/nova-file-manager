@@ -39,7 +39,7 @@
           v-if="isFieldMode"
           variant="success"
           @click="submitFieldSelection"
-          :disabled="selection?.length > limit"
+          :disabled="!!limit && selection?.length > limit"
         >
           <CheckIcon class="h-5 w-5" />
         </IconButton>

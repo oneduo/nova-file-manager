@@ -23,6 +23,7 @@ const store = {
             errors: null,
             selection: null,
             preview: null,
+            multiple: false,
             limit: 1,
             queue: [],
 

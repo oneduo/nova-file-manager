@@ -155,6 +155,7 @@ export default {
 
             this.openBrowser({
                 initialFiles: this.value,
+                multiple: this.field.multiple ?? false,
                 limit: this.field.limit ?? null,
                 callback: selection => {
                     this.value = selection

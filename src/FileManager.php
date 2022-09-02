@@ -114,11 +114,11 @@ class FileManager extends Field
 
             $files = collect($payload['files'] ?? []);
 
-            $value = match ($files->count()) {
-                0 => null,
-                1 => $files->first()['path'],
-                default => $files->pluck('path')->toArray(),
-            };
+            if ($this->multiple) {
+                $value = $files->isNotEmpty() ? $files->pluck('path')->toArray() : null;
+            } else {
+                $value = data_get($files->first(), 'path');
+            }
 
             $values = [
                 $attribute => $value,
