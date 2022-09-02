@@ -20,7 +20,7 @@
       <div class="relative flex-1 flex items-center justify-between">
         <Menu as="div" class="relative inline-block text-left">
           <MenuButton
-            class="flex items-center text-gray-500 hover:text-blue-500 hover:bg-gray-50 dark:hover:bg-gray-600/50 rounded-full focus:outline-none mr-2 p-0.5"
+            class="flex items-center text-gray-500 hover:text-blue-500 hover:bg-gray-50 dark:hover:bg-gray-600/50 rounded-full mr-2 p-0.5"
           >
             <EllipsisVerticalIcon class="h-4 w-4" />
           </MenuButton>

@@ -1,5 +1,8 @@
 <template>
-  <li class="relative cursor-pointer" :title="name">
+  <button
+    class="relative cursor-pointer focus:outline-none focus:ring-1 focus:outline-offset-4 focus:outline-blue-500 focus:rounded-md"
+    :title="name"
+  >
     <div
       :class="[
         'relative block aspect-square w-full overflow-hidden rounded-lg hover:shadow-md hover:opacity-75 border border-gray-200/50 dark:border-gray-700/50',
@@ -98,7 +101,7 @@
     <span class="absolute top-1 right-1" v-if="selected">
       <CheckCircleIcon class="h-5 w-5 text-blue-500" aria-hidden="true" />
     </span>
-  </li>
+  </button>
 </template>
 
 <script setup>
