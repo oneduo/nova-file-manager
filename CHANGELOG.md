@@ -2,6 +2,14 @@
 
 All notable changes to `nova-file-manager` will be documented in this file
 
+## 0.3.1 - 2022-09-02
+
+### What's Changed
+
+- Improve selection and accessibility by @mikaelpopowicz in https://github.com/BBS-Lab/nova-file-manager/pull/46
+
+**Full Changelog**: https://github.com/BBS-Lab/nova-file-manager/compare/v0.3.0...v0.3.1
+
 ## 0.3.0 - 2022-09-02
 
 ### What's Changed
