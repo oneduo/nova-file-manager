@@ -385,9 +385,10 @@ const actions = {
         commit('fixPortal')
     },
 
-    openBrowser: ({ commit, dispatch }, { initialFiles, limit, callback }) => {
+    openBrowser: ({ commit, dispatch }, { initialFiles, multiple, limit, callback }) => {
         commit('setIsFieldMode', true)
 
+        commit('setMultiple', multiple)
         commit('setLimit', limit)
 
         commit('setCallback', callback)
@@ -405,6 +406,7 @@ const actions = {
 
         commit('setIsFieldMode', false)
 
+        commit('setMultiple', false)
         commit('setLimit', null)
 
         commit('setSelection', null)
