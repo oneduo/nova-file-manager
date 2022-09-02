@@ -12,7 +12,8 @@ abstract class Analyzer implements AnalyzerContract
 {
     public function __construct(
         public Filesystem $disk,
-    ) {}
+    ) {
+    }
 
     public function analyze(string $path): array|object
     {

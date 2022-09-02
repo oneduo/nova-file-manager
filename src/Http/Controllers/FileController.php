@@ -30,7 +30,7 @@ class FileController extends Controller
     {
         if (!$request->canUploadFile()) {
             throw ValidationException::withMessages([
-                'file' => [__("Sorry! You are not authorized to perform this action.")],
+                'file' => [__('Sorry! You are not authorized to perform this action.')],
             ]);
         }
 
@@ -49,7 +49,7 @@ class FileController extends Controller
     {
         if (!$request->canDeleteFile()) {
             throw ValidationException::withMessages([
-                'oldPath' => [__("Sorry! You are not authorized to perform this action.")],
+                'oldPath' => [__('Sorry! You are not authorized to perform this action.')],
             ]);
         }
 
@@ -79,7 +79,7 @@ class FileController extends Controller
     {
         if (!$request->canDeleteFile()) {
             throw ValidationException::withMessages([
-                'path' => [__("Sorry! You are not authorized to perform this action.")],
+                'path' => [__('Sorry! You are not authorized to perform this action.')],
             ]);
         }
 

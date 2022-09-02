@@ -18,14 +18,14 @@ abstract class Entity implements Arrayable, EntityContract
     public function __construct(
         public Filesystem $fileSystem,
         public string $path,
-    ) {}
+    ) {
+    }
 
     /**
      * Static helper
      *
      * @param  \Illuminate\Contracts\Filesystem\Filesystem  $fileSystem
      * @param  string  $path
-     *
      * @return static
      */
     public static function make(Filesystem $fileSystem, string $path): static

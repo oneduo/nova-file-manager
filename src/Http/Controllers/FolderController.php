@@ -26,7 +26,7 @@ class FolderController extends Controller
     {
         if (!$request->canCreateFolder()) {
             throw ValidationException::withMessages([
-                'folder' => [__("Sorry! You are not authorized to perform this action.")],
+                'folder' => [__('Sorry! You are not authorized to perform this action.')],
             ]);
         }
 
@@ -57,7 +57,7 @@ class FolderController extends Controller
     {
         if (!$request->canRenameFolder()) {
             throw ValidationException::withMessages([
-                'folder' => [__("Sorry! You are not authorized to perform this action.")],
+                'folder' => [__('Sorry! You are not authorized to perform this action.')],
             ]);
         }
 
@@ -89,7 +89,7 @@ class FolderController extends Controller
     {
         if (!$request->canDeleteFolder()) {
             throw ValidationException::withMessages([
-                'folder' => [__("Sorry! You are not authorized to perform this action.")],
+                'folder' => [__('Sorry! You are not authorized to perform this action.')],
             ]);
         }
 

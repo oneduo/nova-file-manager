@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace BBSLab\NovaFileManager;
 
 use Closure;
@@ -8,22 +10,30 @@ use Laravel\Nova\Http\Requests\NovaRequest;
 
 trait InteractsWithFilesystem
 {
-    protected ?Closure $filesystemCallback  = null;
+    protected ?Closure $filesystemCallback = null;
 
     protected ?Closure $showCreateFolder = null;
+
     protected ?Closure $showRenameFolder = null;
+
     protected ?Closure $showDeleteFolder = null;
 
     protected ?Closure $showUploadFile = null;
+
     protected ?Closure $showRenameFile = null;
+
     protected ?Closure $showDeleteFile = null;
 
     protected ?Closure $canCreateFolder = null;
+
     protected ?Closure $canRenameFolder = null;
+
     protected ?Closure $canDeleteFolder = null;
 
     protected ?Closure $canUploadFile = null;
+
     protected ?Closure $canRenameFile = null;
+
     protected ?Closure $canDeleteFile = null;
 
     public function filesystem(Closure $callback): static

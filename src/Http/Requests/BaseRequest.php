@@ -24,7 +24,7 @@ class BaseRequest extends NovaRequest
 {
     public function manager(): FileManagerContract
     {
-        if (! $filesystem = $this->onDemandFilesystem()) {
+        if (!$filesystem = $this->onDemandFilesystem()) {
             return app(FileManagerContract::class);
         }
 
@@ -43,7 +43,7 @@ class BaseRequest extends NovaRequest
         return $this->fieldMode ? $this->resolveField() : $this->resolveTool();
     }
 
-    public  function resolveField(): ?InteractsWithFilesystem
+    public function resolveField(): ?InteractsWithFilesystem
     {
         $resource = $this->resourceId ? $this->findResourceOrFail() : $this->newResource();
 
