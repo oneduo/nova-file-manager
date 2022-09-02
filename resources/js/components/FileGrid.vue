@@ -49,6 +49,7 @@ const mapEntity = file =>
         file.mime,
         file.url,
         file.lastModifiedAt,
-        file.type
+        file.type,
+        file.exists
     )
 </script>

@@ -2,7 +2,7 @@
   <File
     :file="mapEntity(file)"
     :selected="false"
-    @click="detail && openPreview(file)"
+    @click="detail && file.exists && openPreview(file)"
     :on-deselect="onDeselect"
   />
 </template>
@@ -44,6 +44,7 @@ const mapEntity = file =>
         file.mime,
         file.url,
         file.lastModifiedAt,
-        file.type
+        file.type,
+        file.exists
     )
 </script>

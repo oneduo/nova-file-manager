@@ -1,5 +1,5 @@
 <template>
-  <li class="relative cursor-pointer">
+  <li class="relative cursor-pointer" :title="name">
     <div
       :class="[
         'relative block aspect-square w-full overflow-hidden rounded-lg hover:shadow-md hover:opacity-75 border border-gray-200/50 dark:border-gray-700/50',
@@ -29,32 +29,41 @@
       </div>
 
       <div class="m-auto z-20 flex h-full items-center justify-center select-none">
-        <div
-          class="m-auto flex h-full w-full items-center justify-center bg-gray-50 dark:bg-gray-900 text-gray-600"
-          v-if="isFile"
-        >
-          <DocumentIcon class="w-16 h-16" v-if="!isUploading" />
-        </div>
-
-        <img
-          v-if="isImage"
-          :src="file.url"
-          :alt="file.name"
-          class="pointer-events-none object-cover w-full h-full"
-        />
-
-        <template v-if="isVideo">
-          <video class="pointer-events-none object-cover w-full h-full">
-            <source :src="file.url" />
-            Sorry, your browser doesn't support embedded videos.
-          </video>
-
+        <template v-if="missing">
           <div
-            class="absolute m-auto flex items-center justify-center bg-transparent"
-            v-if="!isUploading"
+            class="m-auto flex h-full w-full items-center justify-center bg-gray-50 dark:bg-gray-900 text-red-500"
           >
-            <PlayIcon class="h-16 w-16 text-white/60" />
+            <ExclamationTriangleIcon class="w-16 h-16" />
           </div>
+        </template>
+        <template v-else>
+          <div
+            class="m-auto flex h-full w-full items-center justify-center bg-gray-50 dark:bg-gray-900 text-gray-600"
+            v-if="isFile"
+          >
+            <DocumentIcon class="w-16 h-16" v-if="!isUploading" />
+          </div>
+
+          <img
+            v-if="isImage"
+            :src="file.url"
+            :alt="file.name"
+            class="pointer-events-none object-cover w-full h-full"
+          />
+
+          <template v-if="isVideo">
+            <video class="pointer-events-none object-cover w-full h-full">
+              <source :src="file.url" />
+              Sorry, your browser doesn't support embedded videos.
+            </video>
+
+            <div
+              class="absolute m-auto flex items-center justify-center bg-transparent"
+              v-if="!isUploading"
+            >
+              <PlayIcon class="h-16 w-16 text-white/60" />
+            </div>
+          </template>
         </template>
       </div>
 
@@ -65,12 +74,17 @@
       </div>
     </div>
     <p
+      v-if="!missing"
       :class="[
         'pointer-events-none mt-2 block truncate font-medium text-gray-900 dark:text-gray-50',
         isUploading || onDeselect ? 'text-xs' : 'text-sm',
       ]"
+      :title="name"
     >
-      {{ file.name }}
+      {{ name }}
+    </p>
+    <p v-if="missing" class="text-sm text-red-500 font-semibold">
+      {{ __('NovaFileManager.fileMissing', { path: file.path }) }}
     </p>
     <p
       :class="[
@@ -90,6 +104,7 @@
 <script setup>
 import { computed } from 'vue'
 import { DocumentIcon } from '@heroicons/vue/24/outline'
+import { ExclamationTriangleIcon } from '@heroicons/vue/24/solid'
 import {
     CheckCircleIcon,
     ExclamationCircleIcon,
@@ -128,4 +143,6 @@ const props = defineProps({
 const isImage = computed(() => props.file.type === 'image')
 const isVideo = computed(() => props.file.type === 'video')
 const isFile = computed(() => props.file.type !== 'image' && props.file.type !== 'video')
+const missing = computed(() => !props.file.exists)
+const name = computed(() => (missing.value ? props.file.path : props.file.name))
 </script>

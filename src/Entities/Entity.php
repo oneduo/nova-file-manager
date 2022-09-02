@@ -50,22 +50,31 @@ abstract class Entity implements Arrayable, EntityContract
         if (empty($this->data)) {
             $shouldAnalyze = config('nova-file-manager.file_analysis.enable');
 
-            $this->data = array_merge(
-                [
+            if ($this->fileSystem->exists($this->path)) {
+                $this->data = array_merge(
+                    [
+                        'id' => $this->id(),
+                        'name' => $this->name(),
+                        'path' => $this->path,
+                        'size' => $this->size(),
+                        'extension' => $this->extension(),
+                        'mime' => $this->mime(),
+                        'url' => $this->url(),
+                        'lastModifiedAt' => $this->lastModifiedAt(),
+                        'type' => $this->type(),
+                        'exists' => true,
+                    ],
+                    [
+                        'meta' => $shouldAnalyze ? $this->meta() : []
+                    ],
+                );
+            } else {
+                $this->data = array_merge([
                     'id' => $this->id(),
-                    'name' => $this->name(),
                     'path' => $this->path,
-                    'size' => $this->size(),
-                    'extension' => $this->extension(),
-                    'mime' => $this->mime(),
-                    'url' => $this->url(),
-                    'lastModifiedAt' => $this->lastModifiedAt(),
-                    'type' => $this->type(),
-                ],
-                [
-                    'meta' => $shouldAnalyze ? $this->meta() : []
-                ],
-            );
+                    'exists' => false,
+                ]);
+            }
         }
 
         return $this->data;

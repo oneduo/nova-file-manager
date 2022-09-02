@@ -31,5 +31,6 @@
   "NovaFileManager.title": "File Manager",
   "NovaFileManager.toolbar.selection": "assets are selected",
   "NovaFileManager.totalFilesCount": ":count files",
-  "NovaFileManager.upload": "Upload a file"
+  "NovaFileManager.upload": "Upload a file",
+  "NovaFileManager.fileMissing": "File missing at path :path."
 }

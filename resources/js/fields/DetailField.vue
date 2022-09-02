@@ -80,7 +80,8 @@ export default {
                 file.mime,
                 file.url,
                 file.lastModifiedAt,
-                file.type
+                file.type,
+                file.exists
             ),
     },
 }
