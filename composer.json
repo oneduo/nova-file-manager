@@ -76,7 +76,8 @@
   "config": {
     "sort-packages": true,
     "allow-plugins": {
-      "pestphp/pest-plugin": true
+      "pestphp/pest-plugin": true,
+      "infection/extension-installer": false
     }
   },
   "minimum-stability": "dev",

@@ -19,6 +19,13 @@ use Symfony\Component\HttpFoundation\BinaryFileResponse;
 
 class FileController extends Controller
 {
+    /**
+     * Upload a file from the tool
+     *
+     * @param  \BBSLab\NovaFileManager\Http\Requests\UploadRequest  $request
+     * @param  \BBSLab\NovaFileManager\Contracts\Filesystem\Upload\Uploader  $uploader
+     * @return \Illuminate\Http\JsonResponse
+     */
     public function upload(UploadRequest $request, Uploader $uploader): JsonResponse
     {
         return response()->json(
@@ -26,6 +33,12 @@ class FileController extends Controller
         );
     }
 
+    /**
+     * Rename a file
+     *
+     * @param  \BBSLab\NovaFileManager\Http\Requests\RenameFileRequest  $request
+     * @return \Illuminate\Http\JsonResponse
+     */
     public function rename(RenameFileRequest $request): JsonResponse
     {
         $manager = $request->manager();
@@ -44,6 +57,12 @@ class FileController extends Controller
         ]);
     }
 
+    /**
+     * Delete a file
+     *
+     * @param  \BBSLab\NovaFileManager\Http\Requests\DeleteFileRequest  $request
+     * @return \Illuminate\Http\JsonResponse
+     */
     public function delete(DeleteFileRequest $request): JsonResponse
     {
         $manager = $request->manager();
@@ -63,6 +82,12 @@ class FileController extends Controller
         ]);
     }
 
+    /**
+     * Download a file
+     *
+     * @param  \BBSLab\NovaFileManager\Http\Requests\DownloadFileRequest  $request
+     * @return \Symfony\Component\HttpFoundation\BinaryFileResponse
+     */
     public function download(DownloadFileRequest $request): BinaryFileResponse
     {
         return response()->download(Storage::disk($request->disk)->path($request->path));

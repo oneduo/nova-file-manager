@@ -6,10 +6,6 @@ namespace BBSLab\NovaFileManager\Http\Requests;
 
 use BBSLab\NovaFileManager\Rules\DiskExistsRule;
 
-/**
- * @property-read ?string $disk
- * @property-read string $path
- */
 class CreateFolderRequest extends BaseRequest
 {
     public function rules(): array

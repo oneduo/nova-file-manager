@@ -7,8 +7,8 @@
 [![License](https://img.shields.io/badge/license-MIT-blue.svg)](/LICENSE)
 ![PHP](https://img.shields.io/badge/PHP-8-blue.svg)
 ![Laravel Nova](https://img.shields.io/badge/laravel%2Fnova-4-cyan.svg)
-[![Latest Version on Packagist](https://img.shields.io/packagist/v/bbs-lab/nova-file-manager.svg?style=flat-square)](https://packagist.org/packages/bbs-lab/nova-file-manager)
-[![Total Downloads](https://img.shields.io/packagist/dt/bbs-lab/nova-file-manager.svg?style=flat-square)](https://packagist.org/packages/bbs-lab/nova-file-manager)
+[![Latest Version on Packagist](https://img.shields.io/packagist/v/bbs-lab/nova-file-manager.svg)](https://packagist.org/packages/bbs-lab/nova-file-manager)
+[![Total Downloads](https://img.shields.io/packagist/dt/bbs-lab/nova-file-manager.svg)](https://packagist.org/packages/bbs-lab/nova-file-manager)
 [![Run tests](https://github.com/BBS-Lab/nova-file-manager/actions/workflows/tests.yml/badge.svg?branch=main)](https://github.com/BBS-Lab/nova-file-manager/actions/workflows/tests.yml)
 </div>
 
@@ -29,10 +29,11 @@ A file manager tool and field for Laravel Nova. Beautifully designed, and custom
 🤹‍ Allows to save multiple assets on the same field
 </p>
 
-**Documentation** is available here : https://bbs-lab.github.io/nova-file-manager/
 
 
-<img src="./docs/preview.png"/>
+<a href="https://bbs-lab.github.io/nova-file-manager/"><img src="./docs/images/documentation_banner.png"/></a>
+
+<img src="./docs/subbanner.png"/>
 
 ## Table of Contents
 

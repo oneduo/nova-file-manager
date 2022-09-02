@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace BBSLab\NovaFileManager\Contracts;
+namespace BBSLab\NovaFileManager\Contracts\Entities;
 
 use Illuminate\Support\Carbon;
 

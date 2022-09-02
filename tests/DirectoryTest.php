@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-use BBSLab\NovaFileManager\Contracts\FileManagerContract;
+use BBSLab\NovaFileManager\Contracts\Services\FileManagerContract;
 use BBSLab\NovaFileManager\Events\FolderCreated;
 use BBSLab\NovaFileManager\Events\FolderDeleted;
 use BBSLab\NovaFileManager\Events\FolderRenamed;

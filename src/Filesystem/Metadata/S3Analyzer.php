@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace BBSLab\NovaFileManager\Filesystem\Metadata;
 
+use BBSLab\NovaFileManager\Filesystem\Support\GetID3;
 use Illuminate\Support\Facades\Storage;
 
 class S3Analyzer extends Analyzer

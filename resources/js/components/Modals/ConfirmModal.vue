@@ -63,26 +63,52 @@
   </TransitionRoot>
 </template>
 
-<script setup>
-import { computed, onBeforeUnmount } from 'vue'
-import { useStore } from 'vuex'
-import { Dialog, DialogPanel, DialogTitle, TransitionChild, TransitionRoot } from '@headlessui/vue'
-
+<script>
 const variants = {
     danger: {
         iconBackground: 'bg-red-100 dark:bg-red-800/30',
         iconColor: 'text-red-600 dark:text-red-500',
     },
 }
+</script>
+
+<script setup>
+import { computed, onBeforeUnmount } from 'vue'
+import { useStore } from 'vuex'
+import { Dialog, DialogPanel, DialogTitle, TransitionChild, TransitionRoot } from '@headlessui/vue'
 
 const store = useStore()
-const props = defineProps(['name', 'title', 'content', 'icon', 'variant'])
+
+const props = defineProps({
+    name: {
+        type: String,
+        required: true,
+    },
+    title: {
+        type: String,
+        required: true,
+    },
+    content: {
+        type: String,
+        required: true,
+    },
+    icon: {
+        type: Object,
+    },
+    variant: {
+        type: String,
+        default: 'danger',
+    },
+})
+
 const darkMode = computed(() => store.state['nova-file-manager'].darkMode)
 const isOpen = computed(() => store.getters['nova-file-manager/allModals'].includes(props.name))
-const iconBackgroundClass = computed(() =>
-    props.variant ? variants[props.variant].iconBackground : null
-)
 const iconColorClass = computed(() => (props.variant ? variants[props.variant].iconColor : null))
+
+const iconBackgroundClass = computed(() =>
+    props.variant ? variants[props.variant].iconBackground : ''
+)
+
 const closeModal = () => store.dispatch('nova-file-manager/closeModal', props.name)
 
 onBeforeUnmount(() => {

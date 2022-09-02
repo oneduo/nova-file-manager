@@ -25,7 +25,7 @@
                   <MenuButton
                     class="flex items-center text-gray-500 hover:text-blue-500 hover:bg-gray-50 dark:hover:bg-gray-600/50 rounded-full focus:outline-none mr-2 p-0.5"
                   >
-                    <DotsVerticalIcon class="h-3 w-3" />
+                    <EllipsisHorizontalIcon class="h-3 w-3" />
                   </MenuButton>
 
                   <MenuItems
@@ -35,7 +35,7 @@
                       <MenuItem>
                         <button
                           class="hover:bg-gray-50 dark:hover:bg-gray-800 block w-full text-left cursor-pointer py-2 px-3 focus:outline-none focus:ring rounded truncate whitespace-nowrap text-gray-500 active:text-gray-600 dark:text-gray-500 dark:hover:text-gray-400 dark:active:text-gray-600"
-                          @click="openModal(`renameFolder-${directory.id}`)"
+                          @click="openModal(`rename-folder-${directory.id}`)"
                         >
                           {{ __('Rename') }}
                         </button>
@@ -43,7 +43,7 @@
                       <MenuItem>
                         <button
                           class="hover:bg-red-50 dark:hover:bg-red-600/20 block w-full text-left cursor-pointer py-2 px-3 focus:outline-none focus:ring rounded truncate whitespace-nowrap text-red-500 dark:text-red-500 dark:hover:text-red-700"
-                          @click="openModal(`deleteFolder-${directory.id}`)"
+                          @click="openModal(`delete-folder-${directory.id}`)"
                         >
                           {{ __('Delete') }}
                         </button>
@@ -56,12 +56,12 @@
           </td>
         </tr>
         <DeleteFolderModal
-          :name="`deleteFolder-${directory.id}`"
+          :name="`delete-folder-${directory.id}`"
           :on-confirm="() => onFolderDelete(directory.id, directory.path)"
         />
 
         <RenameFolderModal
-          :name="`renameFolder-${directory.id}`"
+          :name="`rename-folder-${directory.id}`"
           :old-path="directory.name"
           :on-submit="value => onFolderRename(directory.id, directory.path, value)"
         />
@@ -100,9 +100,9 @@
 <script setup>
 import { computed } from 'vue'
 import { useStore } from 'vuex'
-import { DocumentIcon, FolderIcon } from '@heroicons/vue/outline'
+import { DocumentIcon, FolderIcon } from '@heroicons/vue/24/outline'
 import DeleteFolderModal from '@/components/Modals/DeleteFolderModal'
-import { DotsVerticalIcon } from '@heroicons/vue/solid'
+import { EllipsisHorizontalIcon } from '@heroicons/vue/24/solid'
 import { Menu, MenuButton, MenuItem, MenuItems } from '@headlessui/vue'
 import RenameFolderModal from '@/components/Modals/RenameFolderModal'
 import PreviewModal from '@/components/Modals/PreviewModal'
@@ -118,9 +118,11 @@ const onFolderRename = (id, oldPath, value) =>
         oldPath,
         newPath: value,
     })
+
 const onFolderDelete = (id, path) => store.dispatch('nova-file-manager/deleteFolder', { id, path })
 
 const openPreview = file => store.commit('nova-file-manager/previewFile', file)
+
 const toggleSelection = file =>
     store.getters['nova-file-manager/isFileSelected'](file)
         ? store.commit('nova-file-manager/deselectFile', file)

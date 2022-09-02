@@ -3,7 +3,10 @@
     <button
       v-for="view in views"
       :key="view.name"
-      :class="current === view.name ? selectedClass : unselectedClass"
+      :class="[
+        'rounded-md p-1.5 focus:outline-none focus:ring-1 focus:outline-blue-500',
+        current === view.name ? selectedClass : unselectedClass,
+      ]"
       type="button"
       @click.prevent="setView(view.name)"
     >
@@ -13,25 +16,32 @@
 </template>
 
 <script setup>
-import { reactive, ref } from 'vue'
-import { ViewGridIcon, ViewListIcon } from '@heroicons/vue/outline'
+import { reactive } from 'vue'
+import { QueueListIcon, Squares2X2Icon } from '@heroicons/vue/24/outline'
 
-defineProps(['current', 'setView'])
+defineProps({
+    current: {
+        type: String,
+        required: true,
+    },
+    setView: {
+        type: Function,
+        required: true,
+    },
+})
 
 const views = reactive([
     {
         name: 'list',
-        icon: ViewListIcon,
+        icon: QueueListIcon,
     },
     {
         name: 'grid',
-        icon: ViewGridIcon,
+        icon: Squares2X2Icon,
     },
 ])
-const selectedClass = ref(
-    'rounded-md bg-white dark:bg-gray-700 p-1.5 text-blue-500 shadow-sm focus:outline-none focus:ring-1 focus:ring-blue-500'
-)
-const unselectedClass = ref(
-    'rounded-md p-1.5 text-gray-400 dark:hover:text-white hover:text-black focus:outline-none focus:ring-1 focus:ring-blue-500'
-)
+
+const selectedClass = 'bg-white dark:bg-gray-700 text-blue-500 shadow-sm '
+
+const unselectedClass = 'text-gray-400 dark:hover:text-white hover:text-black'
 </script>

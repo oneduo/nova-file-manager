@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace BBSLab\NovaFileManager\Http\Requests;
 
-use BBSLab\NovaFileManager\Contracts\FileManagerContract;
+use BBSLab\NovaFileManager\Contracts\Services\FileManagerContract;
 use Illuminate\Foundation\Http\FormRequest;
 
 class BaseRequest extends FormRequest

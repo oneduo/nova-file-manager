@@ -27,3 +27,5 @@ play solution for your file management needs.
 - 🔧 Various customization and configuration options
 - 🔍 A performant local search feature
 - 🤹‍ Allows to save multiple assets on the same field
+
+<img src="./subbanner.png"/>

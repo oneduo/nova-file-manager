@@ -33,6 +33,10 @@ let sidebar = [
         text: 'Field',
         link: '/field',
       },
+      {
+        text: 'Events',
+        link: '/events',
+      }
     ],
   },
   {
@@ -51,6 +55,10 @@ let sidebar = [
         text: 'Screenshots',
         link: '/screenshots',
       },
+      {
+        text: 'Contributing',
+        link: '/contributing',
+      }
     ],
   },
   {
