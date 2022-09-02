@@ -4,8 +4,8 @@ declare(strict_types=1);
 
 namespace BBSLab\NovaFileManager;
 
-use BBSLab\NovaFileManager\Contracts\Services\FileManagerContract;
 use BBSLab\NovaFileManager\Contracts\Filesystem\Upload\Uploader as UploaderContract;
+use BBSLab\NovaFileManager\Contracts\Services\FileManagerContract;
 use BBSLab\NovaFileManager\Filesystem\Upload\Uploader;
 use BBSLab\NovaFileManager\Http\Middleware\Authorize;
 use BBSLab\NovaFileManager\Services\FileManagerService;

@@ -65,7 +65,7 @@ abstract class Entity implements Arrayable, EntityContract
                         'exists' => true,
                     ],
                     [
-                        'meta' => $shouldAnalyze ? $this->meta() : []
+                        'meta' => $shouldAnalyze ? $this->meta() : [],
                     ],
                 );
             } else {
