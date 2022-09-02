@@ -52,9 +52,14 @@
     </div>
   </li>
 
-  <DeleteFolderModal :name="`delete-folder-${id}`" :on-confirm="onDelete" />
+  <DeleteFolderModal v-if="showDeleteFolder" :name="`delete-folder-${id}`" :on-confirm="onDelete" />
 
-  <RenameFolderModal :name="`rename-folder-${id}`" :old-path="name" :on-submit="onRename" />
+  <RenameFolderModal
+    v-if="showRenameFolder"
+    :name="`rename-folder-${id}`"
+    :old-path="name"
+    :on-submit="onRename"
+  />
 </template>
 
 <script setup>

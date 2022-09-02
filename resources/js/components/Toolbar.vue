@@ -48,7 +48,7 @@
     <Breadcrumbs :items="breadcrumbs" :set-path="setPath" />
   </div>
 
-  <UploadModal name="upload" />
+  <UploadModal v-if="showUploadFile" name="upload" />
 
   <CreateFolderModal v-if="showCreateFolder" :on-submit="createFolder" name="create-folder" />
 </template>

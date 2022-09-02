@@ -59,11 +59,13 @@
           </td>
         </tr>
         <DeleteFolderModal
+          v-if="showDeleteFolder"
           :name="`delete-folder-${directory.id}`"
           :on-confirm="() => onFolderDelete(directory.id, directory.path)"
         />
 
         <RenameFolderModal
+          v-if="showRenameFolder"
           :name="`rename-folder-${directory.id}`"
           :old-path="directory.name"
           :on-submit="value => onFolderRename(directory.id, directory.path, value)"

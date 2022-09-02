@@ -163,9 +163,14 @@
     </Dialog>
   </TransitionRoot>
 
-  <DeleteFileModal :name="`delete-file-${file.id}`" :on-confirm="onDelete" />
+  <DeleteFileModal v-if="showDeleteFile" :name="`delete-file-${file.id}`" :on-confirm="onDelete" />
 
-  <RenameFileModal :name="`rename-file-${file.id}`" :old-name="file.name" :on-submit="onRename" />
+  <RenameFileModal
+    v-if="showRenameFile"
+    :name="`rename-file-${file.id}`"
+    :old-name="file.name"
+    :on-submit="onRename"
+  />
 </template>
 
 <script setup>
