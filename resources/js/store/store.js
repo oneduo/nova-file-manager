@@ -43,9 +43,18 @@ const store = {
             csrfToken: null,
 
             // field specific state
+            resource: null,
+            resourceId: null,
             attribute: null,
-            current: null,
-            fields: {},
+            customDisk: false,
+
+            // permissions
+            showCreateFolder: true,
+            showRenameFolder: true,
+            showDeleteFolder: true,
+            showUploadFile: true,
+            showRenameFile: true,
+            showDeleteFile: true,
 
             callback: null,
         }

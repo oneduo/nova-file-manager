@@ -1,8 +1,5 @@
 <template>
-  <button
-    class="relative cursor-pointer focus:rounded-md group focus:outline-none"
-    :title="name"
-  >
+  <button class="relative cursor-pointer focus:rounded-md group focus:outline-none" :title="name">
     <div
       :class="[
         'relative block aspect-square w-full overflow-hidden rounded-lg hover:shadow-md hover:opacity-75 border border-gray-200/50 dark:border-gray-700/50',
@@ -108,39 +105,39 @@
 import { computed } from 'vue'
 import { DocumentIcon } from '@heroicons/vue/24/outline'
 import {
-  CheckCircleIcon,
-  ExclamationCircleIcon,
-  ExclamationTriangleIcon,
-  PlayIcon,
-  XCircleIcon,
+    CheckCircleIcon,
+    ExclamationCircleIcon,
+    ExclamationTriangleIcon,
+    PlayIcon,
+    XCircleIcon,
 } from '@heroicons/vue/24/solid'
 import Spinner from '@/components/Elements/Spinner'
 import Entity from '@/types/Entity'
 
 const props = defineProps({
-  file: {
-    type: Entity,
-    default: null,
-  },
-  isUploading: {
-    type: Boolean,
-    default: false,
-  },
-  isUploaded: {
-    type: Boolean,
-    default: null,
-  },
-  uploadRatio: {
-    type: Number,
-    default: null,
-  },
-  selected: {
-    type: Boolean,
-    default: true,
-  },
-  onDeselect: {
-    type: Function,
-  },
+    file: {
+        type: Entity,
+        default: null,
+    },
+    isUploading: {
+        type: Boolean,
+        default: false,
+    },
+    isUploaded: {
+        type: Boolean,
+        default: null,
+    },
+    uploadRatio: {
+        type: Number,
+        default: null,
+    },
+    selected: {
+        type: Boolean,
+        default: true,
+    },
+    onDeselect: {
+        type: Function,
+    },
 })
 
 const isImage = computed(() => props.file.type === 'image')

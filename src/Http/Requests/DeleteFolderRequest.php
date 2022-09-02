@@ -7,6 +7,9 @@ namespace BBSLab\NovaFileManager\Http\Requests;
 use BBSLab\NovaFileManager\Rules\DiskExistsRule;
 use BBSLab\NovaFileManager\Rules\PathExistsInDiskRule;
 
+/**
+ * @property-read string $path
+ */
 class DeleteFolderRequest extends BaseRequest
 {
     public function rules(): array

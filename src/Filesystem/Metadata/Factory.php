@@ -5,17 +5,18 @@ declare(strict_types=1);
 namespace BBSLab\NovaFileManager\Filesystem\Metadata;
 
 use BBSLab\NovaFileManager\Contracts\Filesystem\Metadata\Analyzer;
+use Illuminate\Contracts\Filesystem\Filesystem;
 
 class Factory
 {
-    public static function build(string $disk): ?Analyzer
+    public static function build(Filesystem $fileSystem): ?Analyzer
     {
-        $driver = config('filesystems.disks.'.$disk.'.driver');
+        $driver = data_get($fileSystem->getConfig(), 'driver');
 
         return match ($driver) {
-            'local' => new LocalAnalyzer($disk),
-            's3' => new S3Analyzer($disk),
-            'ftp' => new FTPAnalyzer($disk),
+            'local' => new LocalAnalyzer($fileSystem),
+            's3' => new S3Analyzer($fileSystem),
+            'ftp' => new FTPAnalyzer($fileSystem),
             default => null,
         };
     }

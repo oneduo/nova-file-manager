@@ -5,37 +5,33 @@ declare(strict_types=1);
 namespace BBSLab\NovaFileManager\Entities;
 
 use BBSLab\NovaFileManager\Contracts\Entities\Entity as EntityContract;
-use Illuminate\Contracts\Filesystem\Filesystem;
+use Illuminate\Contracts\fileSystem\Filesystem;
 use Illuminate\Contracts\Support\Arrayable;
-use Illuminate\Filesystem\AwsS3V3Adapter;
+use Illuminate\fileSystem\AwsS3V3Adapter;
 use Illuminate\Support\Carbon;
-use Illuminate\Support\Facades\Storage;
 use League\Flysystem\UnableToRetrieveMetadata;
 
 abstract class Entity implements Arrayable, EntityContract
 {
     protected array $data = [];
 
-    protected Filesystem $fileSystem;
-
     public function __construct(
-        public string $disk,
+        public Filesystem $fileSystem,
         public string $path,
-    ) {
-        $this->fileSystem = Storage::disk($disk);
-    }
+    ) {}
 
     /**
      * Static helper
      *
-     * @param  string  $disk
+     * @param  \Illuminate\Contracts\Filesystem\Filesystem  $fileSystem
      * @param  string  $path
+     *
      * @return static
      */
-    public static function make(string $disk, string $path): static
+    public static function make(Filesystem $fileSystem, string $path): static
     {
         return new static(
-            $disk,
+            $fileSystem,
             $path,
         );
     }

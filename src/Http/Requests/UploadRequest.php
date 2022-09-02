@@ -7,12 +7,16 @@ namespace BBSLab\NovaFileManager\Http\Requests;
 use BBSLab\NovaFileManager\Rules\DiskExistsRule;
 use BBSLab\NovaFileManager\Rules\PathExistsInDiskRule;
 
+/**
+ * @property-read string $path
+ * @property-read string $file
+ */
 class UploadRequest extends BaseRequest
 {
     public function rules(): array
     {
         return [
-            'disk' => ['required', 'string', new DiskExistsRule()],
+            'disk' => ['sometimes', 'string', new DiskExistsRule()],
             'path' => ['required', 'string', new PathExistsInDiskRule($this->get('disk'))],
             'file' => ['required', 'file'],
         ];

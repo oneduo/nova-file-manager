@@ -2,6 +2,19 @@ import sanitize from '../helpers/sanitize'
 import errors from '@/helpers/errors'
 import Resumable from 'resumablejs'
 
+const buildPayload = (state, params) => {
+    return {
+        ...params,
+        attribute: state.attribute,
+        resource: state.resource,
+        resourceId: state.resourceId,
+        fieldMode: state.isFieldMode ? 1 : 0,
+        ...(!state.customDisk && {
+            disk: state.disk,
+        }),
+    }
+}
+
 const actions = {
     /**
    * Set the current path
@@ -120,10 +133,12 @@ const actions = {
    * @param commit
    * @returns {Promise<void>}
    */
-    async getDisks({ commit }) {
+    async getDisks({ commit, state }) {
         commit('setIsFetchingDisks', true)
 
-        const { data } = await Nova.request().get('/nova-vendor/nova-file-manager/disks/available')
+        const { data } = await Nova.request().get('/nova-vendor/nova-file-manager/disks/available', {
+            params: buildPayload(state, {}),
+        })
 
         commit('setDisks', data)
 
@@ -141,13 +156,12 @@ const actions = {
         commit('setIsFetchingData', true)
 
         const { data } = await Nova.request().get('/nova-vendor/nova-file-manager', {
-            params: {
-                disk: state.disk,
+            params: buildPayload(state, {
                 path: state.path,
                 page: state.page,
                 perPage: state.perPage,
                 search: state.search,
-            },
+            }),
         })
 
         commit('setDisk', data.disk)
@@ -164,14 +178,16 @@ const actions = {
     },
     async createFolder({ dispatch, state, commit }, path) {
         try {
-            const response = await Nova.request().post('/nova-vendor/nova-file-manager/folders/create', {
-                path: sanitize(`${state.path ?? ''}/${path}`),
-                disk: state.disk,
-            })
+            const response = await Nova.request().post(
+                '/nova-vendor/nova-file-manager/folders/create',
+                buildPayload(state, {
+                    path: sanitize(`${state.path ?? ''}/${path}`),
+                })
+            )
 
             Nova.success(response.data.message)
 
-            dispatch('closeModal', 'createFolder')
+            dispatch('closeModal', 'create-folder')
             dispatch('getData')
         } catch (error) {
             commit('setErrors', {
@@ -181,12 +197,14 @@ const actions = {
     },
     async renameFolder({ dispatch, state, commit }, { id, oldPath, newPath }) {
         try {
-            const response = await Nova.request().post('/nova-vendor/nova-file-manager/folders/rename', {
-                path: state.path,
-                disk: state.disk,
-                oldPath: sanitize(`${state.path ?? ''}/${oldPath}`),
-                newPath: sanitize(`${state.path ?? ''}/${newPath}`),
-            })
+            const response = await Nova.request().post(
+                '/nova-vendor/nova-file-manager/folders/rename',
+                buildPayload(state, {
+                    path: state.path,
+                    oldPath: sanitize(`${state.path ?? ''}/${oldPath}`),
+                    newPath: sanitize(`${state.path ?? ''}/${newPath}`),
+                })
+            )
 
             Nova.success(response.data.message)
 
@@ -200,10 +218,12 @@ const actions = {
     },
     async deleteFolder({ dispatch, state, commit }, { id, path }) {
         try {
-            const response = await Nova.request().post('/nova-vendor/nova-file-manager/folders/delete', {
-                path: path,
-                disk: state.disk,
-            })
+            const response = await Nova.request().post(
+                '/nova-vendor/nova-file-manager/folders/delete',
+                buildPayload(state, {
+                    path: path,
+                })
+            )
 
             Nova.success(response.data.message)
 
@@ -211,7 +231,7 @@ const actions = {
             dispatch('getData')
         } catch (error) {
             commit('setErrors', {
-                renameFolder: errors(error.response?.data?.errors),
+                deleteFolder: errors(error.response?.data?.errors),
             })
         }
     },
@@ -255,14 +275,14 @@ const actions = {
             testChunks: false,
             throttleProgressCallbacks: 1,
             target: '/nova-vendor/nova-file-manager/files/upload',
-            query: {
-                disk: state.disk,
+            query: buildPayload(state, {
                 path: state.path ?? '/',
-            },
+            }),
             headers: {
                 Accept: 'application/json',
                 'X-CSRF-TOKEN': state.csrfToken,
             },
+            permanentErrors: [400, 404, 409, 415, 422, 500, 501],
         })
 
         files.forEach(file => {
@@ -290,18 +310,20 @@ const actions = {
                 status: false,
             })
 
-            Nova.error(message)
+            Nova.error(JSON.parse(message).message)
         })
     },
 
     async renameFile({ dispatch, state, commit }, { id, oldPath, newPath }) {
         try {
-            const response = await Nova.request().post('/nova-vendor/nova-file-manager/files/rename', {
-                path: state.path,
-                disk: state.disk,
-                oldPath: sanitize(oldPath),
-                newPath: sanitize(`${state.path ?? ''}/${newPath}`),
-            })
+            const response = await Nova.request().post(
+                '/nova-vendor/nova-file-manager/files/rename',
+                buildPayload(state, {
+                    path: state.path,
+                    oldPath: sanitize(oldPath),
+                    newPath: sanitize(`${state.path ?? ''}/${newPath}`),
+                })
+            )
 
             Nova.success(response.data.message)
 
@@ -318,10 +340,12 @@ const actions = {
     },
     async deleteFile({ dispatch, state, commit }, { id, path }) {
         try {
-            const response = await Nova.request().post('/nova-vendor/nova-file-manager/files/delete', {
-                path: path,
-                disk: state.disk,
-            })
+            const response = await Nova.request().post(
+                '/nova-vendor/nova-file-manager/files/delete',
+                buildPayload(state, {
+                    path: path,
+                })
+            )
 
             Nova.success(response.data.message)
 
@@ -385,15 +409,30 @@ const actions = {
         commit('fixPortal')
     },
 
-    openBrowser: ({ commit, dispatch }, { initialFiles, multiple, limit, callback }) => {
+    openBrowser: (
+        { commit, dispatch },
+        {
+            initialFiles,
+            multiple,
+            limit,
+            resource,
+            resourceId,
+            attribute,
+            customDisk,
+            permissions,
+            callback,
+        }
+    ) => {
         commit('setIsFieldMode', true)
-
         commit('setMultiple', multiple)
         commit('setLimit', limit)
-
+        commit('setResource', resource)
+        commit('setResourceId', resourceId)
+        commit('setAttribute', attribute)
+        commit('setCustomDisk', customDisk)
         commit('setCallback', callback)
-
         commit('setSelection', [...initialFiles])
+        dispatch('setPermissions', permissions)
 
         dispatch('openModal', 'browser')
     },
@@ -408,6 +447,10 @@ const actions = {
 
         commit('setMultiple', false)
         commit('setLimit', null)
+        commit('setResource', null)
+        commit('setResourceId', null)
+        commit('setAttribute', null)
+        commit('setCustomDisk', false)
 
         commit('setSelection', null)
 
@@ -418,6 +461,25 @@ const actions = {
         state.callback(state.selection)
 
         dispatch('closeBrowser')
+    },
+
+    setPermissions: (
+        { commit },
+        {
+            showCreateFolder,
+            showRenameFolder,
+            showDeleteFolder,
+            showUploadFile,
+            showRenameFile,
+            showDeleteFile,
+        }
+    ) => {
+        commit('setShowCreateFolder', showCreateFolder)
+        commit('setShowRenameFolder', showRenameFolder)
+        commit('setShowDeleteFolder', showDeleteFolder)
+        commit('setshowUploadFile', showUploadFile)
+        commit('setshowRenameFile', showRenameFile)
+        commit('setshowDeleteFile', showDeleteFile)
     },
 }
 

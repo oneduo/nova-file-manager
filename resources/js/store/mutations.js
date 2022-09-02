@@ -170,48 +170,20 @@ const mutations = {
     |--------------------------------------------------------------------------
     */
 
-    /**
-   * Add a new field entry to the state
-   *
-   * @param state
-   * @param {string} attribute
-   * @param {number|null} limit
-   * @param {Entity[]|null}selection
-   */
-    initField: (state, { attribute, limit, selection }) => {
-        state.fields[attribute] = { limit, selection }
+    setResource(state, resource) {
+        state.resource = resource
     },
 
-    /**
-   * Set the current field
-   *
-   * @param state
-   * @param {string|null}attribute
-   */
-    setCurrent: (state, attribute) => {
+    setResourceId(state, resourceId) {
+        state.resourceId = resourceId
+    },
+
+    setAttribute(state, attribute) {
         state.attribute = attribute
-        state.current = attribute !== null ? state.fields[attribute] ?? null : null
     },
 
-    /**
-   * Set the field's value
-   *
-   * @param state
-   * @param {string|null} attribute
-   * @param {Entity[]|null} files
-   */
-    setFieldSelection(state, { attribute, files }) {
-        if (attribute === null) {
-            return
-        }
-
-        state.fields[attribute].selection = files
-    },
-
-    deselectFieldFile(state, { field, file }) {
-        state.fields[field].selection = state.fields[field].selection.filter(
-            _file => _file.id !== file.id
-        )
+    setCustomDisk(state, customDisk) {
+        state.customDisk = customDisk
     },
 
     /*
@@ -280,6 +252,25 @@ const mutations = {
     },
     setCallback(state, callback) {
         state.callback = callback
+    },
+
+    setShowCreateFolder(state, value) {
+        state.showCreateFolder = value
+    },
+    setShowRenameFolder(state, value) {
+        state.showRenameFolder = value
+    },
+    setShowDeleteFolder(state, value) {
+        state.showDeleteFolder = value
+    },
+    setshowUploadFile(state, value) {
+        state.showUploadFile = value
+    },
+    setshowRenameFile(state, value) {
+        state.showRenameFile = value
+    },
+    setshowDeleteFile(state, value) {
+        state.showDeleteFile = value
     },
 
     openModal: (state, payload) => {

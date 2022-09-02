@@ -38,6 +38,8 @@ class ToolServiceProvider extends ServiceProvider
 
         Nova::serving(static function (ServingNova $event) {
             Nova::translations(__DIR__.'/../lang/en.json');
+            Nova::script('nova-file-manager', __DIR__.'/../dist/js/tool.js');
+            Nova::style('nova-file-manager', __DIR__.'/../dist/css/tool.css');
         });
 
         Inertia::version(static function () {

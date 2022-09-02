@@ -6,11 +6,20 @@ namespace BBSLab\NovaFileManager\Contracts\Services;
 
 use BBSLab\NovaFileManager\Entities\Entity;
 use Closure;
+use Illuminate\Contracts\Filesystem\Filesystem;
 use Illuminate\Contracts\Pagination\LengthAwarePaginator;
 use Illuminate\Support\Collection;
 
 interface FileManagerContract
 {
+    public static function make(
+        ?string $disk = null,
+        ?string $path = null,
+        int $page = 1,
+        int $perPage = 15,
+        ?string $search = null
+    ): self;
+
     public function applyFilterCallbacks(string $value): bool;
 
     public function applySearchCallback(): void;
@@ -21,7 +30,7 @@ interface FileManagerContract
 
     public function directories(): Collection;
 
-    public function disk(string $disk): self;
+    public function disk(string|Filesystem $disk): self;
 
     public function entityClassForType(string $type): string;
 
@@ -47,11 +56,5 @@ interface FileManagerContract
 
     public function showHiddenFiles(bool $show = true): self;
 
-    public static function make(
-        ?string $disk = null,
-        ?string $path = null,
-        int $page = 1,
-        int $perPage = 15,
-        ?string $search = null
-    ): self;
+    public function filesystem(): Filesystem;
 }

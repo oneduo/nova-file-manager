@@ -12,10 +12,10 @@
 <script setup>
 import { useStore } from 'vuex'
 import Browser from '@/components/Browser'
-import { computed, onMounted } from 'vue'
+import { computed, onBeforeMount } from 'vue'
 
 const store = useStore()
-defineProps({
+const props = defineProps({
     config: {
         type: Object,
         required: true,
@@ -24,10 +24,13 @@ defineProps({
 
 const darkMode = computed(() => store.state['nova-file-manager'].darkMode)
 
-onMounted(() => {
+onBeforeMount(() => {
     store.commit('nova-file-manager/setSelection', [])
     store.commit('nova-file-manager/setLimit', null)
     store.commit('nova-file-manager/init')
     store.commit('nova-file-manager/setIsFieldMode', false)
+    store.commit('nova-file-manager/setMultiple', true)
+    store.commit('nova-file-manager/setCustomDisk', props.config.customDisk)
+    store.dispatch('nova-file-manager/setPermissions', props.config.permissions)
 })
 </script>
