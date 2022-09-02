@@ -3,11 +3,22 @@
     <template v-if="field.value?.files" v-slot:value>
       <div class="nova-file-manager">
         <div :class="darkMode && 'dark'">
-          <div class="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-2 mb-2">
+          <ul class="grid grid-cols-2 md:grid-cols-4 gap-2 mb-2 w-full" role="group">
             <template v-for="file in field.value?.files" :key="file.id">
-              <FieldCard :field="field" :file="file" />
+              <FieldCard
+                :field="field"
+                :file="file"
+                :attribute="field.attribute"
+                :detail="true"
+                :on-copy="copy"
+              />
+              <PreviewModal
+                :file="mapEntity(file)"
+                v-if="!!preview && preview?.id === mapEntity(file)?.id"
+                :read-only="true"
+              />
             </template>
-          </div>
+          </ul>
         </div>
       </div>
     </template>
@@ -18,18 +29,21 @@
 import { CopiesToClipboard } from 'laravel-nova'
 import { mapMutations, mapState } from 'vuex'
 import FieldCard from '@/components/Cards/FieldCard'
+import Entity from '@/types/Entity'
+import PreviewModal from '@/components/Modals/PreviewModal'
 
 export default {
     mixins: [CopiesToClipboard],
 
     components: {
+        PreviewModal,
         FieldCard,
     },
 
     props: ['field', 'index'],
 
     computed: {
-        ...mapState('nova-file-manager', ['darkMode']),
+        ...mapState('nova-file-manager', ['darkMode', 'preview']),
     },
 
     mounted() {
@@ -55,17 +69,19 @@ export default {
         openPreview(file) {
             this.previewFile(file)
         },
+
+        mapEntity: file =>
+            new Entity(
+                file.id,
+                file.name,
+                file.path,
+                file.size,
+                file.extension,
+                file.mime,
+                file.url,
+                file.lastModifiedAt,
+                file.type
+            ),
     },
 }
 </script>
-<style>
-.fade-enter-active,
-.fade-leave-active {
-  transition: opacity 0.3s ease;
-}
-
-.fade-enter-from,
-.fade-leave-to {
-  opacity: 0;
-}
-</style>

@@ -1,11 +1,12 @@
 <template>
-  <span v-if="field.value?.files.length === 1">
+  <span v-if="!field.value?.files">&mdash;</span>
+  <span v-else-if="field.value?.files.length === 1">
     {{ field.value.files[0].path }}
   </span>
   <span v-else>
     {{
       __('NovaFileManager.totalFilesCount', {
-        count: field.value?.files.length,
+        count: field.value?.files.length ?? 0,
       })
     }}
   </span>
@@ -13,6 +14,9 @@
 
 <script setup>
 defineProps({
-    field: null,
+    field: {
+        type: Object,
+        required: true,
+    },
 })
 </script>

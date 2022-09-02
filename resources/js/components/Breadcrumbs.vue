@@ -34,7 +34,7 @@
 </template>
 
 <script setup>
-import { ChevronRightIcon, HomeIcon } from '@heroicons/vue/outline'
+import { ChevronRightIcon, HomeIcon } from '@heroicons/vue/24/outline'
 
 defineProps({
     items: null,

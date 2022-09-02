@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace BBSLab\NovaFileManager\Entities;
 
-use BBSLab\NovaFileManager\Contracts\Entity as EntityContract;
+use BBSLab\NovaFileManager\Contracts\Entities\Entity as EntityContract;
 use Illuminate\Contracts\Filesystem\Filesystem;
 use Illuminate\Contracts\Support\Arrayable;
 use Illuminate\Filesystem\AwsS3V3Adapter;
@@ -25,6 +25,13 @@ abstract class Entity implements Arrayable, EntityContract
         $this->fileSystem = Storage::disk($disk);
     }
 
+    /**
+     * Static helper
+     *
+     * @param  string  $disk
+     * @param  string  $path
+     * @return static
+     */
     public static function make(string $disk, string $path): static
     {
         return new static(
@@ -33,37 +40,62 @@ abstract class Entity implements Arrayable, EntityContract
         );
     }
 
+    /**
+     * Return the entity's data as array
+     *
+     * @return array
+     */
     public function toArray(): array
     {
         if (empty($this->data)) {
-            $shouldAnalyze = config('nova-file-manager.enable_file_analysis');
+            $shouldAnalyze = config('nova-file-manager.file_analysis.enable');
 
-            $this->data = array_merge([
-                'id' => $this->id(),
-                'name' => $this->name(),
-                'path' => $this->path,
-                'size' => $this->size(),
-                'extension' => $this->extension(),
-                'mime' => $this->mime(),
-                'url' => $this->url(),
-                'lastModifiedAt' => $this->lastModifiedAt(),
-                'type' => $this->type(),
-            ], ['meta' => $shouldAnalyze ? $this->meta() : []]);
+            $this->data = array_merge(
+                [
+                    'id' => $this->id(),
+                    'name' => $this->name(),
+                    'path' => $this->path,
+                    'size' => $this->size(),
+                    'extension' => $this->extension(),
+                    'mime' => $this->mime(),
+                    'url' => $this->url(),
+                    'lastModifiedAt' => $this->lastModifiedAt(),
+                    'type' => $this->type(),
+                ],
+                [
+                    'meta' => $shouldAnalyze ? $this->meta() : []
+                ],
+            );
         }
 
         return $this->data;
     }
 
+    /**
+     * Generate a unique identifier for the entity
+     *
+     * @return string
+     */
     public function id(): string
     {
         return sha1($this->fileSystem->path($this->path));
     }
 
+    /**
+     * Get the name of the entity
+     *
+     * @return string
+     */
     public function name(): string
     {
         return pathinfo($this->path, PATHINFO_BASENAME);
     }
 
+    /**
+     * Compute the size of the entity
+     *
+     * @return int|string
+     */
     public function size(): int|string
     {
         $value = $this->fileSystem->size($this->path);
@@ -81,11 +113,21 @@ abstract class Entity implements Arrayable, EntityContract
         return round($value, 2).' '.$units[$i];
     }
 
+    /**
+     * Get the file extension of the entity
+     *
+     * @return string
+     */
     public function extension(): string
     {
         return pathinfo($this->path, PATHINFO_EXTENSION);
     }
 
+    /**
+     * Get the mime type of the entity
+     *
+     * @return string
+     */
     public function mime(): string
     {
         try {
@@ -103,10 +145,16 @@ abstract class Entity implements Arrayable, EntityContract
         }
     }
 
+    /**
+     * Build an url for the entity based on the disk
+     *
+     * @return string
+     */
     public function url(): string
     {
         $supportsSignedUrls = $this->fileSystem instanceof AwsS3V3Adapter;
 
+        // signed urls are only supported on S3 disks
         if ($supportsSignedUrls && config('nova-file-manager.url_signing.enabled')) {
             return $this->fileSystem->temporaryUrl(
                 $this->path,
@@ -114,14 +162,25 @@ abstract class Entity implements Arrayable, EntityContract
             );
         }
 
+        // we fallback to the regular url builder
         return $this->fileSystem->url($this->path);
     }
 
+    /**
+     * Determine if the file exists on the file system.
+     *
+     * @return bool
+     */
     public function exists(): bool
     {
         return $this->fileSystem->exists($this->path);
     }
 
+    /**
+     * Get the expiration time from the user defined config
+     *
+     * @return \Illuminate\Support\Carbon
+     */
     public function signedExpirationTime(): Carbon
     {
         return now()->add(
@@ -130,6 +189,11 @@ abstract class Entity implements Arrayable, EntityContract
         );
     }
 
+    /**
+     * Get the last modified time of the entity as string
+     *
+     * @return string
+     */
     public function lastModifiedAt(): string
     {
         if (!config('nova-file-manager.human_readable_datetime')) {
@@ -139,11 +203,21 @@ abstract class Entity implements Arrayable, EntityContract
         return $this->lastModifiedAtTimestamp()->diffForHumans();
     }
 
+    /**
+     * Get the last modified time of the entity as a Carbon instance
+     *
+     * @return \Illuminate\Support\Carbon
+     */
     public function lastModifiedAtTimestamp(): Carbon
     {
         return Carbon::createFromTimestamp($this->fileSystem->lastModified($this->path));
     }
 
+    /**
+     * Define the type of the entity
+     *
+     * @return string
+     */
     public function type(): string
     {
         return (string) str($this->mime())->before('/');

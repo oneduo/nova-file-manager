@@ -7,11 +7,6 @@ namespace BBSLab\NovaFileManager\Http\Requests;
 use BBSLab\NovaFileManager\Rules\DiskExistsRule;
 use BBSLab\NovaFileManager\Rules\PathExistsInDiskRule;
 
-/**
- * @property string $disk
- * @property string $path
- * @property \Illuminate\Http\UploadedFile $file
- */
 class UploadRequest extends BaseRequest
 {
     public function rules(): array

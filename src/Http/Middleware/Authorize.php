@@ -5,7 +5,13 @@ declare(strict_types=1);
 namespace BBSLab\NovaFileManager\Http\Middleware;
 
 use BBSLab\NovaFileManager\NovaFileManager;
+use Closure;
+use Illuminate\Http\JsonResponse;
+use Illuminate\Http\Request;
+use Illuminate\Http\Response;
 use Laravel\Nova\Nova;
+use Laravel\Nova\Tool;
+use Symfony\Component\HttpFoundation\BinaryFileResponse;
 
 class Authorize
 {
@@ -14,9 +20,9 @@ class Authorize
      *
      * @param  \Illuminate\Http\Request  $request
      * @param  \Closure(\Illuminate\Http\Request):mixed  $next
-     * @return \Illuminate\Http\Response
+     * @return \Illuminate\Http\Response|\Illuminate\Http\JsonResponse
      */
-    public function handle($request, $next)
+    public function handle(Request $request, Closure $next): Response|JsonResponse|BinaryFileResponse
     {
         $tool = collect(Nova::registeredTools())->first([$this, 'matchesTool']);
 
@@ -29,7 +35,7 @@ class Authorize
      * @param  \Laravel\Nova\Tool  $tool
      * @return bool
      */
-    public function matchesTool($tool)
+    public function matchesTool(Tool $tool): bool
     {
         return $tool instanceof NovaFileManager;
     }

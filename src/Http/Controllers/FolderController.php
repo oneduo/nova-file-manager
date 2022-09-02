@@ -16,6 +16,12 @@ use Illuminate\Validation\ValidationException;
 
 class FolderController extends Controller
 {
+    /**
+     * Create a new folder
+     *
+     * @param  \BBSLab\NovaFileManager\Http\Requests\CreateFolderRequest  $request
+     * @return \Illuminate\Http\JsonResponse
+     */
     public function create(CreateFolderRequest $request): JsonResponse
     {
         $result = $request->manager()->mkdir(
@@ -35,6 +41,12 @@ class FolderController extends Controller
         ]);
     }
 
+    /**
+     * Rename a folder
+     *
+     * @param  \BBSLab\NovaFileManager\Http\Requests\RenameFolderRequest  $request
+     * @return \Illuminate\Http\JsonResponse
+     */
     public function rename(RenameFolderRequest $request): JsonResponse
     {
         $oldPath = $request->get('oldPath');
@@ -55,6 +67,12 @@ class FolderController extends Controller
         ]);
     }
 
+    /**
+     * Delete a folder
+     *
+     * @param  \BBSLab\NovaFileManager\Http\Requests\DeleteFolderRequest  $request
+     * @return \Illuminate\Http\JsonResponse
+     */
     public function delete(DeleteFolderRequest $request): JsonResponse
     {
         $path = $request->get('path');

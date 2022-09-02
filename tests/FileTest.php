@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-use BBSLab\NovaFileManager\Contracts\FileManagerContract;
+use BBSLab\NovaFileManager\Contracts\Services\FileManagerContract;
 use BBSLab\NovaFileManager\Events\FileDeleted;
 use BBSLab\NovaFileManager\Events\FileRenamed;
 use BBSLab\NovaFileManager\Events\FileUploaded;

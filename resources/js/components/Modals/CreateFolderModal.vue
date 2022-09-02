@@ -35,24 +35,12 @@
       </div>
     </template>
     <template v-slot:submitButton>
-      <Button
-        :disabled="!value"
-        :icon="false"
-        class="w-full sm:w-auto"
-        type="submit"
-        variant="primary"
-      >
+      <Button :disabled="!value" class="w-full sm:w-auto" type="submit" variant="primary">
         {{ __('Create') }}
       </Button>
     </template>
     <template v-slot:cancelButton>
-      <Button
-        :icon="false"
-        class="w-full sm:w-auto"
-        type="reset"
-        variant="secondary"
-        @click="closeModal(name)"
-      >
+      <Button class="w-full sm:w-auto" type="reset" variant="secondary" @click="closeModal(name)">
         {{ __('Cancel') }}
       </Button>
     </template>

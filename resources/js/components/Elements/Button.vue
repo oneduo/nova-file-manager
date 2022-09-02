@@ -1,29 +1,46 @@
 <template>
   <component
     :is="href ? 'a' : 'button'"
-    :class="buttonClass"
+    :class="[
+      'inline-flex items-center py-2 px-4 border-0 uppercase rounded-md shadow-sm text-xs font-medium text-white hover:shadow-md hover:opacity-75 disabled:opacity-50 focus:outline-none focus:ring-1',
+      style,
+    ]"
     :href="href"
     :type="type"
-    class="inline-flex items-center py-2 rounded-md shadow-sm text-sm font-medium text-white hover:shadow-md"
   >
-    <slot></slot>
+    <slot />
   </component>
 </template>
 
+<script>
+const variants = {
+    primary: 'bg-blue-500 dark:bg-blue-600/50 focus:outline-blue-500',
+    secondary: 'bg-gray-600 dark:bg-gray-600/50 focus:outline-gray-600',
+    success: 'bg-green-500 dark:bg-green-600/50 focus:outline-green-500',
+    warning: 'bg-orange-400 dark:bg-orange-600/50 focus:outline-orange-400',
+    danger: 'bg-red-500 dark:bg-red-600/50 focus:outline-red-500',
+    transparent: 'bg-transparent',
+}
+</script>
 <script setup>
 import { computed } from 'vue'
 
-const variants = {
-    primary: 'bg-blue-500 dark:bg-blue-600/50 hover:bg-blue-500 dark:hover:bg-blue-600',
-    secondary: 'bg-gray-400 dark:bg-gray-600/50 hover:bg-gray-500 dark:hover:bg-gray-600',
-    success: 'bg-green-400 dark:bg-green-600/50 hover:bg-green-500 dark:hover:bg-green-600',
-    warning: 'bg-orange-400 dark:bg-orange-600/50 hover:bg-orange-500 dark:hover:bg-orange-600',
-    danger: 'bg-red-500 dark:bg-red-600/50 hover:bg-red-700 dark:hover:bg-red-600',
-    transparent: 'bg-transparent',
-}
+const props = defineProps({
+    variant: {
+        type: String,
+        default: 'secondary',
+        validator: value => Object.keys(variants).includes(value),
+    },
+    type: {
+        type: String,
+        default: 'button',
+        validator: value => ['button', 'submit', 'reset'].includes(value),
+    },
+    href: {
+        type: String,
+        default: null,
+    },
+})
 
-const props = defineProps(['id', 'type', 'variant', 'icon', 'href'])
-const paddingClass = computed(() => (props.icon ? 'px-3' : 'px-4'))
-const colorClass = computed(() => variants[props.variant] || variants.primary)
-const buttonClass = computed(() => `${colorClass.value} ${paddingClass.value}`)
+const style = computed(() => variants[props.variant] || variants.primary)
 </script>
