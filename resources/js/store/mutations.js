@@ -1,4 +1,4 @@
-import { Errors } from 'form-backend-validation'
+import {Errors} from 'form-backend-validation'
 
 const mutations = {
     // This is the main mutation that is being evaluated when the browser is mounted
@@ -85,37 +85,29 @@ const mutations = {
     },
 
     selectFile(state, file) {
-    // if we are in tool mode, we push the file to the tool selection array
-        if (!state.isFieldMode) {
-            if (state.toolSelection === null) {
-                state.toolSelection = []
-            }
-
-            state.toolSelection.push(file)
-
-            return
+        if (state.toolSelection === null) {
+            state.toolSelection = []
         }
 
-        // otherwise we push to the field's selection array
-        state.currentField.selection = [file, ...state.currentField.selection]
+        state.toolSelection.push(file)
     },
 
     deselectFile(state, file) {
-        if (!state.isFieldMode) {
-            state.toolSelection = state.toolSelection.filter(_file => _file.id !== file.id)
+        state.toolSelection = state.toolSelection.filter(_file => _file.id !== file.id)
+    },
 
-            return
-        }
-
-        state.currentField.selection = state.currentField?.selection.filter(
+    deselectFieldFile(state, {field, file}) {
+        state.fields[field].selection = state.fields[field].selection.filter(
             _file => _file.id !== file.id
         )
     },
 
-    deselectFieldFile(state, { field, file }) {
-        state.fields[field].selection = state.fields[field].selection.filter(
-            _file => _file.id !== file.id
-        )
+    clearSelection(state) {
+        state.toolSelection = []
+    },
+
+    setSelectionForField(state, attribute) {
+        state.fields[attribute].selection = state.toolSelection
     },
 
     previewFile(state, file) {
@@ -187,9 +179,11 @@ const mutations = {
         state.selection = value
     },
     setToolSelection(state, value) {
-        state.toolSelection = value
+        if (state.toolSelection === null) {
+            state.toolSelection = value
+        }
     },
-    setFieldSelection(state, { attribute, value }) {
+    setFieldSelection(state, {attribute, value}) {
         state.fields[attribute].selection = value
     },
     openModal: (state, payload) => {
@@ -200,10 +194,10 @@ const mutations = {
     },
 
     /**
-   *
-   * @param state
-   * @param {File} file
-   */
+     *
+     * @param state
+     * @param {File} file
+     */
     addFileToUploadQueue: (state, file) => {
         state.uploadQueue.push({
             id: file.name,
@@ -218,11 +212,14 @@ const mutations = {
         state.uploadQueue = []
     },
 
-    initField: (state, { attribute, limit, selection }) => {
-        state.fields[attribute] = { limit, selection }
+    initField: (state, {attribute, limit, selection}) => {
+        state.fields[attribute] = {limit, selection}
     },
     setCurrentField: (state, field) => {
         state.currentField = field ? state.fields[field] : null
+    },
+    setCurrentFieldAttribute: (state, attribute) => {
+        state.currentFieldAttribute = attribute
     },
     fixPortal: state => {
         if (state.toolModals.length || !!state.preview) {

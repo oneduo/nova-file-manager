@@ -15,13 +15,15 @@
       </div>
       <div class="flex flex-row gap-x-2 justify-end w-full md:w-auto flex-shrink-0">
         <div class="p-2 rounded-md font-semibold text-xs text-gray-400" v-if="selection?.length">
-          <span class="text-blue-500">{{ selection.length }}</span>
+          <span :class="[selection.length <= limit ? 'text-blue-500' : 'text-red-500']">
+            {{ selection.length }}
+          </span>
           <template v-if="!!limit">/{{ limit }}</template>
           {{ __('NovaFileManager.toolbar.selection') }}
+          <button @click="clearSelection" class="underline">
+            {{ __('NovaFileManager.toolbar.clear') }}
+          </button>
         </div>
-        <IconButton v-if="isFieldMode" variant="transparent" @click="closeBrowser">
-          <XMarkIcon class="w-5 h-5" />
-        </IconButton>
         <IconButton @click="openModal('create-folder')">
           <FolderPlusIcon class="w-5 h-5" />
         </IconButton>
@@ -49,7 +51,7 @@
 <script setup>
 import { computed } from 'vue'
 import { useStore } from 'vuex'
-import { CheckIcon, CloudArrowUpIcon, FolderPlusIcon, XMarkIcon } from '@heroicons/vue/24/outline'
+import { CheckIcon, CloudArrowUpIcon, FolderPlusIcon } from '@heroicons/vue/24/outline'
 import DiskSelector from '@/components/DiskSelector'
 import PaginationSelector from '@/components/Elements/PaginationSelector'
 import Breadcrumbs from '@/components/Breadcrumbs'
@@ -78,4 +80,5 @@ const closeBrowser = () => store.dispatch('nova-file-manager/closeBrowser')
 const openModal = name => store.dispatch('nova-file-manager/openModal', name)
 const setPath = path => store.dispatch('nova-file-manager/setPath', path)
 const createFolder = path => store.dispatch('nova-file-manager/createFolder', path)
+const clearSelection = () => store.commit('nova-file-manager/clearSelection')
 </script>

@@ -288,7 +288,7 @@ const actions = {
     },
 
     closeBrowser: ({ state, dispatch, commit }) => {
-        commit('setValue', state.selectedFile)
+        commit('setSelectionForField', state.currentFieldAttribute)
         commit('setSelectedFile', null)
         dispatch('closeModal', 'browser')
     },

@@ -49,6 +49,7 @@ const store = {
             uploadQueue: [],
 
             currentField: null,
+            currentFieldAttribute: null,
             fields: {},
         }
     },
