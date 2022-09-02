@@ -14,8 +14,7 @@ if (!function_exists('str')) {
     function str($string = null)
     {
         if (func_num_args() === 0) {
-            return new class
-            {
+            return new class {
                 public function __call($method, $parameters)
                 {
                     return Str::$method(...$parameters);
