@@ -36,6 +36,10 @@ let sidebar = [
       {
         text: 'Events',
         link: '/events',
+      },
+      {
+        text: 'Permissions',
+        link: '/permissions',
       }
     ],
   },
