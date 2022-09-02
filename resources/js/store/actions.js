@@ -385,7 +385,7 @@ const actions = {
         commit('fixPortal')
     },
 
-    openBrowser: ({ state, commit, dispatch }, { initialFiles, limit, callback }) => {
+    openBrowser: ({ commit, dispatch }, { initialFiles, limit, callback }) => {
         commit('setIsFieldMode', true)
 
         commit('setLimit', limit)
@@ -397,7 +397,7 @@ const actions = {
         dispatch('openModal', 'browser')
     },
 
-    closeBrowser: ({ state, dispatch, commit }) => {
+    closeBrowser: ({ dispatch, commit }) => {
         commit('setCallback', null)
 
         commit('setPage', null)
@@ -412,7 +412,7 @@ const actions = {
         dispatch('closeModal', 'browser')
     },
 
-    submitFieldSelection: ({ state, dispatch, commit }) => {
+    submitFieldSelection: ({ state, dispatch }) => {
         state.callback(state.selection)
 
         dispatch('closeBrowser')
