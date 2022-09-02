@@ -1,7 +1,7 @@
 const path = require('path')
 
 module.exports = () => {
-  const prefix = process.env.MIX_NOVA_PREFIX || 'vendor'
+  const prefix = process.env.MIX_NOVA_PREFIX || '../..'
 
   return {
     externals: {
