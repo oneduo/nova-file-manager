@@ -33,7 +33,7 @@
         <IconButton
           v-if="isFieldMode"
           variant="success"
-          @click="closeBrowser"
+          @click="submitFieldSelection"
           :disabled="selection?.length > limit"
         >
           <CheckIcon class="h-5 w-5" />
@@ -70,13 +70,13 @@ const perPage = computed(() => store.state['nova-file-manager'].perPage)
 const perPageOptions = computed(() => store.state['nova-file-manager'].perPageOptions)
 const isFieldMode = computed(() => store.state['nova-file-manager'].isFieldMode)
 const breadcrumbs = computed(() => store.state['nova-file-manager'].breadcrumbs)
+const limit = computed(() => store.state['nova-file-manager'].limit)
 const selection = computed(() => store.getters['nova-file-manager/selection'])
-const limit = computed(() => store.getters['nova-file-manager/limit'])
 
 const setDisk = disk => store.dispatch('nova-file-manager/setDisk', disk)
 const setPerPage = perPage => store.dispatch('nova-file-manager/setPerPage', perPage)
 const setView = view => store.dispatch('nova-file-manager/setView', view)
-const closeBrowser = () => store.dispatch('nova-file-manager/closeBrowser')
+const submitFieldSelection = () => store.dispatch('nova-file-manager/submitFieldSelection')
 const openModal = name => store.dispatch('nova-file-manager/openModal', name)
 const setPath = path => store.dispatch('nova-file-manager/setPath', path)
 const createFolder = path => store.dispatch('nova-file-manager/createFolder', path)

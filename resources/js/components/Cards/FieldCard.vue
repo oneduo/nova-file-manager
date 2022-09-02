@@ -1,8 +1,8 @@
 <template>
   <File
-    :file="mapEntity(file)"
+    :file="entity"
     :selected="false"
-    @click="detail && file.exists && openPreview(file)"
+    @click="detail && entity.exists && openPreview(entity)"
     :on-deselect="onDeselect"
   />
 </template>
@@ -10,11 +10,12 @@
 <script setup>
 import { useStore } from 'vuex'
 import File from '@/components/Cards/File'
-import Entity from '@/types/Entity'
+import { computed } from 'vue'
+import { entity as mapEntity } from '@/transformers/entityTransformer'
 
 const store = useStore()
 
-defineProps({
+const props = defineProps({
     file: {
         type: Object,
         required: true,
@@ -34,17 +35,5 @@ defineProps({
 
 const openPreview = file => store.commit('nova-file-manager/previewFile', file)
 
-const mapEntity = file =>
-    new Entity(
-        file.id,
-        file.name,
-        file.path,
-        file.size,
-        file.extension,
-        file.mime,
-        file.url,
-        file.lastModifiedAt,
-        file.type,
-        file.exists
-    )
+const entity = computed(() => mapEntity(props.file))
 </script>

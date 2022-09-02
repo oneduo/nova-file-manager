@@ -20,16 +20,11 @@ const store = {
             directories: null,
             breadcrumbs: null,
             pagination: null,
-            selectedFile: null,
-            fieldValue: null,
             errors: null,
-            selection: [],
+            selection: null,
             preview: null,
             limit: 1,
-
-            // tool mode state
-            isToolMode: true,
-            toolSelection: null,
+            queue: [],
 
             // status
             ready: false,
@@ -46,11 +41,12 @@ const store = {
             toolModals: [],
             csrfToken: null,
 
-            uploadQueue: [],
-
-            currentField: null,
-            currentFieldAttribute: null,
+            // field specific state
+            attribute: null,
+            current: null,
             fields: {},
+
+            callback: null,
         }
     },
     mutations: {

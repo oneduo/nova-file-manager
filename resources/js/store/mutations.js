@@ -84,16 +84,128 @@ const mutations = {
         }
     },
 
+    /*
+  |--------------------------------------------------------------------------
+  | File selection handlers
+  |--------------------------------------------------------------------------
+  |
+  | These mutations handle the selection of the tool
+  | 
+  | mutations:
+  |   - selectFile
+  |   - deselectFile
+  |   - setSelection
+  |   - clearSelection
+  |   - toggleSelection
+  */
+
+    /**
+   * Select a file
+   *
+   * @param state
+   * @param {Entity} file
+   */
     selectFile(state, file) {
-        if (state.toolSelection === null) {
-            state.toolSelection = []
+        if (state.selection === null) {
+            state.selection = []
         }
 
-        state.toolSelection.push(file)
+        state.selection.push(file)
     },
 
+    /**
+   * Deselect a file
+   *
+   * @param state
+   * @param {Entity} file
+   */
     deselectFile(state, file) {
-        state.toolSelection = state.toolSelection.filter(_file => _file.id !== file.id)
+        state.selection = state.selection.filter(item => item.id !== file.id)
+    },
+
+    /**
+   * Set selection
+   *
+   * @param state
+   * @param {Entity[]|null} files
+   */
+    setSelection(state, files) {
+        state.selection = files
+    },
+
+    /**
+   * Clear selection
+   *
+   * @param state
+   */
+    clearSelection(state) {
+        state.selection = []
+    },
+
+    /**
+   * Toggle selection status for a file
+   *
+   * @param state
+   * @param {Entity} file
+   */
+    toggleSelection(state, file) {
+        const exists = !!state.selection?.find(item => item.id === file.id)
+
+        if (exists) {
+            state.selection = state.selection.filter(item => item.id !== file.id)
+
+            return
+        }
+
+        if (state.selection === null) {
+            state.selection = []
+        }
+
+        state.selection.push(file)
+    },
+
+    /*
+  |--------------------------------------------------------------------------
+  | Field mutations
+  |--------------------------------------------------------------------------
+  */
+
+    /**
+   * Add a new field entry to the state
+   *
+   * @param state
+   * @param {string} attribute
+   * @param {number|null} limit
+   * @param {Entity[]|null}selection
+   */
+    initField: (state, { attribute, limit, selection }) => {
+        state.fields[attribute] = { limit, selection }
+    },
+
+    /**
+   * Set the current field
+   *
+   * @param state
+   * @param {string|null}attribute
+   */
+    setCurrent: (state, attribute) => {
+        state.attribute = attribute
+        state.current = attribute !== null ? state.fields[attribute] ?? null : null
+    },
+
+    /**
+   * Set the field's value
+   *
+   * @param state
+   * @param {string|null} attribute
+   * @param {Entity[]|null} files
+   */
+    setFieldSelection(state, { attribute, files }) {
+        if (attribute === null) {
+            return
+        }
+
+        state.fields[attribute].selection = files
     },
 
     deselectFieldFile(state, { field, file }) {
@@ -102,14 +214,11 @@ const mutations = {
         )
     },
 
-    clearSelection(state) {
-        state.toolSelection = []
-    },
-
-    setSelectionForField(state, attribute) {
-        state.fields[attribute].selection = state.toolSelection
-    },
-
+    /*
+  |--------------------------------------------------------------------------
+  | Setters
+  |--------------------------------------------------------------------------
+  */
     previewFile(state, file) {
         state.preview = file
     },
@@ -136,9 +245,6 @@ const mutations = {
     setPerPage(state, perPage) {
         state.perPage = perPage
     },
-    setSelectedFile(state, file) {
-        state.selectedFile = file
-    },
     setFiles(state, files) {
         state.files = files
     },
@@ -163,29 +269,16 @@ const mutations = {
     setErrors(state, errors) {
         state.errors = new Errors(errors)
     },
-    toggleIsPreviewOpen(state) {
-        state.isPreviewOpen = !state.isPreviewOpen
-    },
-    setValue(state, value) {
-        state.fieldValue = value
-    },
     setSearch(state, value) {
         state.search = value?.length ? value : null
     },
     setLimit(state, limit) {
         state.limit = limit
     },
-    setSelection(state, value) {
-        state.selection = value
+    setCallback(state, callback) {
+        state.callback = callback
     },
-    setToolSelection(state, value) {
-        if (state.toolSelection === null) {
-            state.toolSelection = value
-        }
-    },
-    setFieldSelection(state, { attribute, value }) {
-        state.fields[attribute].selection = value
-    },
+
     openModal: (state, payload) => {
         state.toolModals.unshift(payload)
     },
@@ -194,12 +287,12 @@ const mutations = {
     },
 
     /**
-   *
+   * Add a file to upload queue
    * @param state
    * @param {File} file
    */
-    addFileToUploadQueue: (state, file) => {
-        state.uploadQueue.push({
+    addToQueue: (state, file) => {
+        state.queue.push({
             id: file.name,
             isImage: file.type.includes('image') ?? false,
             ratio: 0,
@@ -208,19 +301,15 @@ const mutations = {
         })
     },
 
-    clearUploadQueue: state => {
-        state.uploadQueue = []
+    /**
+   * Clear the upload queue
+   *
+   * @param state
+   */
+    clearQueue: state => {
+        state.queue = []
     },
 
-    initField: (state, { attribute, limit, selection }) => {
-        state.fields[attribute] = { limit, selection }
-    },
-    setCurrentField: (state, field) => {
-        state.currentField = field ? state.fields[field] : null
-    },
-    setCurrentFieldAttribute: (state, attribute) => {
-        state.currentFieldAttribute = attribute
-    },
     fixPortal: state => {
         if (state.toolModals.length || !!state.preview) {
             return

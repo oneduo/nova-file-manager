@@ -29,7 +29,7 @@
       </div>
 
       <div class="m-auto z-20 flex h-full items-center justify-center select-none">
-        <template v-if="missing">
+        <template v-if="missing && !isUploading">
           <div
             class="m-auto flex h-full w-full items-center justify-center bg-gray-50 dark:bg-gray-900 text-red-500"
           >
@@ -74,16 +74,16 @@
       </div>
     </div>
     <p
-      v-if="!missing"
+      v-if="!missing || isUploading"
       :class="[
         'pointer-events-none mt-2 block truncate font-medium text-gray-900 dark:text-gray-50',
         isUploading || onDeselect ? 'text-xs' : 'text-sm',
       ]"
-      :title="name"
+      :title="!isUploading ? name : file.name"
     >
-      {{ name }}
+      {{ !isUploading ? name : file.name }}
     </p>
-    <p v-if="missing" class="text-sm text-red-500 font-semibold">
+    <p v-if="missing && !isUploading" class="text-sm text-red-500 font-semibold">
       {{ __('NovaFileManager.fileMissing', { path: file.path }) }}
     </p>
     <p
@@ -104,10 +104,10 @@
 <script setup>
 import { computed } from 'vue'
 import { DocumentIcon } from '@heroicons/vue/24/outline'
-import { ExclamationTriangleIcon } from '@heroicons/vue/24/solid'
 import {
     CheckCircleIcon,
     ExclamationCircleIcon,
+    ExclamationTriangleIcon,
     PlayIcon,
     XCircleIcon,
 } from '@heroicons/vue/24/solid'

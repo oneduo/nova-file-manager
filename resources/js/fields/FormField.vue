@@ -2,10 +2,10 @@
   <DefaultField :errors="errors" :field="field" :show-help-text="showHelpText">
     <template #field>
       <div class="nova-file-manager">
-        <div :class="darkMode && 'dark'">
-          <div v-if="files?.length > 0" class="flex flex-row gap-2 flex-wrap w-full">
+        <div :class="darkMode ? 'dark' : ''">
+          <div v-if="value?.length > 0" class="flex flex-row gap-2 flex-wrap w-full">
             <draggable
-              v-model="files"
+              v-model="value"
               class="grid grid-cols-2 md:grid-cols-4 gap-2 mb-2 w-full"
               ghost-class="opacity-0"
               item-key="id"
@@ -28,7 +28,7 @@
             <button
               class="relative flex flex-row shrink-0 items-center px-4 py-2 rounded-md border border-gray-300 dark:hover:border-blue-500 dark:border-gray-600 bg-white dark:bg-gray-700 text-sm font-medium text-gray-700 dark:text-gray-200 focus:z-10 focus:outline-none"
               type="button"
-              @click="openBrowser"
+              @click="openBrowserModal"
             >
               <CloudIcon
                 aria-hidden="true"
@@ -43,7 +43,7 @@
   </DefaultField>
 
   <TransitionRoot v-if="displayModal" :show="isOpen" as="template" class="nova-file-manager w-full">
-    <DialogModal as="div" class="relative" @close="closeBrowser">
+    <DialogModal as="div" class="relative" @close="closeBrowserModal">
       <TransitionChild
         as="template"
         class="z-[60]"
@@ -57,7 +57,7 @@
         <div class="fixed inset-0 bg-gray-800/20 backdrop-blur-sm transition-opacity" />
       </TransitionChild>
 
-      <div :class="`fixed z-[60] inset-0 overflow-y-auto w-full ${darkMode && 'dark'}`">
+      <div :class="['fixed z-[60] inset-0 overflow-y-auto w-full', darkMode ? 'dark' : '']">
         <div class="flex items-start justify-center min-h-full">
           <TransitionChild
             as="template"
@@ -69,7 +69,7 @@
             leave-to="opacity-0 translate-y-4 sm:translate-y-0 sm:scale-95"
           >
             <DialogPanel
-              class="relative bg-transparent rounded-lg overflow-hidden shadow-xl transition-all w-full border border-gray-300 dark:border-gray-600 md:m-8 m-0"
+              class="relative bg-transparent rounded-lg overflow-hidden shadow-xl transition-all w-full border border-gray-300 dark:border-gray-800 md:m-8 m-0"
             >
               <Browser class="w-full" />
             </DialogPanel>
@@ -113,16 +113,13 @@ export default {
     data: () => ({
         drag: false,
         displayModal: false,
+        value: [],
     }),
 
     mounted() {
         this.init()
-        this.setIsFieldMode(true)
-        this.initField({
-            attribute: this.field.attribute,
-            limit: this.field.limit || null,
-            selection: this.field.value?.files || [],
-        })
+
+        this.value = this.field.value?.files || []
     },
 
     beforeUnmount() {
@@ -130,76 +127,48 @@ export default {
     },
 
     computed: {
-        ...mapState('nova-file-manager', ['darkMode', 'disk', 'currentField']),
-        ...mapGetters('nova-file-manager', ['fieldByAttribute', 'allModals']),
+        ...mapState('nova-file-manager', ['darkMode', 'disk']),
+        ...mapGetters('nova-file-manager', ['allModals']),
 
         isOpen() {
             return this.allModals?.includes('browser')
         },
-
-        files: {
-            get() {
-                return this.fieldByAttribute(this.field.attribute)?.selection
-            },
-            set(value) {
-                this.setFieldSelection({
-                    attribute: this.field.attribute,
-                    value,
-                })
-            },
-        },
-
-        maxWidth() {
-            return this.field.maxWidth || 320
-        },
     },
 
     methods: {
-        ...mapActions('nova-file-manager', ['openModal', 'closeModal']),
-        ...mapMutations('nova-file-manager', [
-            'init',
-            'initField',
-            'setCurrentField',
-            'destroy',
-            'setSelectedFile',
-            'setIsFieldMode',
-            'setValue',
-            'deselectFieldFile',
-            'setFieldSelection',
-            'setToolSelection',
-            'setCurrentFieldAttribute',
-        ]),
+        ...mapActions('nova-file-manager', ['closeBrowser', 'openBrowser']),
+        ...mapMutations('nova-file-manager', ['init', 'destroy']),
         fill(formData) {
-            if (this.files?.length) {
+            if (this.value?.length) {
                 formData.append(
                     this.field.attribute,
                     JSON.stringify({
                         disk: this.disk,
-                        files: this.files || [],
+                        files: this.value || [],
                     })
                 )
             }
         },
 
-        openBrowser() {
+        openBrowserModal() {
             this.displayModal = true
-            this.setCurrentField(this.field.attribute)
-            this.setCurrentFieldAttribute(this.field.attribute)
-            this.setToolSelection(this.field.value?.files ?? [])
-            this.openModal('browser')
+
+            this.openBrowser({
+                initialFiles: this.value,
+                limit: this.field.limit ?? null,
+                callback: selection => {
+                    this.value = selection
+                },
+            })
         },
 
-        closeBrowser() {
+        closeBrowserModal() {
             this.displayModal = false
-            this.setCurrentField(null)
-            this.closeModal('browser')
+            this.closeBrowser()
         },
 
         deselectFile(file) {
-            this.deselectFieldFile({
-                field: this.field.attribute,
-                file,
-            })
+            this.value = this.value.filter(f => f.id !== file.id)
         },
     },
 

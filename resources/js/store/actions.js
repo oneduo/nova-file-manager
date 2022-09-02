@@ -3,47 +3,123 @@ import errors from '@/helpers/errors'
 import Resumable from 'resumablejs'
 
 const actions = {
+    /**
+   * Set the current path
+   *
+   * @param commit
+   * @param dispatch
+   * @param {string|null} path
+   */
     setPath({ commit, dispatch }, path) {
         dispatch('reset')
+
         commit('setPath', path)
+
         dispatch('getData')
+
         dispatch('updateQueryString', { path })
     },
+
+    /**
+   * Set the current disk
+   *
+   * @param commit
+   * @param dispatch
+   * @param {string|null} disk
+   */
     setDisk({ commit, dispatch }, disk) {
         dispatch('reset')
+
         commit('setDisk', disk)
+
         dispatch('getData')
+
         dispatch('updateQueryString', { disk })
+
         dispatch('saveToLocalStorage', { disk })
     },
+
+    /**
+   * Set the pagination's per page value
+   *
+   * @param commit
+   * @param dispatch
+   * @param {number|null} perPage
+   */
     setPerPage({ commit, dispatch }, perPage) {
         commit('setPerPage', perPage)
+
         dispatch('getData')
+
         dispatch('updateQueryString', { perPage })
+
         dispatch('saveToLocalStorage', { perPage })
     },
+
+    /**
+   * Set the pagination's page
+   *
+   * @param commit
+   * @param dispatch
+   * @param {number|null} page
+   */
     setPage({ commit, dispatch }, page) {
         commit('setPage', page)
+
         dispatch('getData')
+
         dispatch('updateQueryString', { page })
     },
+
+    /**
+   * Set the tool view mode
+   *
+   * @param commit
+   * @param dispatch
+   * @param {string|null} view
+   */
     setView({ commit, dispatch }, view) {
         commit('setView', view)
         dispatch('saveToLocalStorage', { view })
     },
+
+    /**
+   * Set the search query
+   *
+   * @param commit
+   * @param dispatch
+   * @param {search|null} search
+   */
     setSearch({ commit, dispatch }, search) {
         commit('setSearch', search)
+
         dispatch('getData')
+
         dispatch('updateQueryString', { search })
     },
+
+    /**
+   * Reset the tool
+   *
+   * @param commit
+   * @param dispatch
+   */
     reset({ commit, dispatch }) {
         const keys = ['page', 'search']
 
         keys.forEach(key => {
             commit(`set${key.charAt(0).toUpperCase() + key.slice(1)}`, null)
+
             dispatch('updateQueryString', { [key]: null })
         })
     },
+
+    /**
+   * Get the disks from the API
+   *
+   * @param commit
+   * @returns {Promise<void>}
+   */
     async getDisks({ commit }) {
         commit('setIsFetchingDisks', true)
 
@@ -53,6 +129,14 @@ const actions = {
 
         commit('setIsFetchingDisks', false)
     },
+
+    /**
+   * Get the files and directories from the API
+   *
+   * @param state
+   * @param commit
+   * @returns {Promise<void>}
+   */
     async getData({ state, commit }) {
         commit('setIsFetchingData', true)
 
@@ -67,9 +151,13 @@ const actions = {
         })
 
         commit('setDisk', data.disk)
+
         commit('setDirectories', data.directories)
+
         commit('setBreadcrumbs', data.breadcrumbs)
+
         commit('setFiles', data.files)
+
         commit('setPagination', data.pagination)
 
         commit('setIsFetchingData', false)
@@ -128,8 +216,8 @@ const actions = {
         }
     },
 
-    updateUploadQueue: ({ dispatch, state, commit }, { id, ratio = 100, status = null }) => {
-        state.uploadQueue = state.uploadQueue.map(item => {
+    updateQueue: ({ dispatch, state, commit }, { id, ratio = 100, status = null }) => {
+        state.queue = state.queue.map(item => {
             if (item.id === id) {
                 return {
                     ...item,
@@ -141,14 +229,18 @@ const actions = {
             return item
         })
 
-        const done = state.uploadQueue.reduce((carry, item) => carry && item.ratio === 100, true)
+        const done = state.queue.reduce((carry, item) => carry && item.ratio === 100, true)
 
-        if (done && state.uploadQueue.length) {
+        if (done && state.queue.length) {
             setTimeout(() => {
                 dispatch('closeModal', 'upload')
+
                 dispatch('closeModal', 'upload-queue')
-                commit('clearUploadQueue')
+
+                commit('clearQueue')
+
                 commit('setIsUploading', false)
+
                 dispatch('getData')
             }, 1000)
         }
@@ -176,24 +268,24 @@ const actions = {
         files.forEach(file => {
             uploader.addFile(file)
 
-            commit('addFileToUploadQueue', file)
+            commit('addToQueue', file)
         })
 
         uploader.on('fileAdded', () => uploader.upload())
 
         uploader.on('fileSuccess', file => {
-            dispatch('updateUploadQueue', {
+            dispatch('updateQueue', {
                 id: file.fileName,
                 status: true,
             })
         })
 
         uploader.on('fileProgress', file => {
-            dispatch('updateUploadQueue', { id: file.fileName, ratio: Math.floor(file.progress() * 100) })
+            dispatch('updateQueue', { id: file.fileName, ratio: Math.floor(file.progress() * 100) })
         })
 
         uploader.on('fileError', (file, message) => {
-            dispatch('updateUploadQueue', {
+            dispatch('updateQueue', {
                 id: file.fileName,
                 status: false,
             })
@@ -214,8 +306,9 @@ const actions = {
             Nova.success(response.data.message)
 
             commit('previewFile', null)
+
             dispatch('closeModal', `rename-file-${id}`)
-            commit('setSelectedFile', null)
+
             dispatch('getData')
         } catch (error) {
             commit('setErrors', {
@@ -233,8 +326,11 @@ const actions = {
             Nova.success(response.data.message)
 
             dispatch('closeModal', `delete-file-${id}`)
+
             commit('previewFile', null)
-            commit('setToolSelection', [])
+
+            commit('setSelection', [])
+
             dispatch('getData')
         } catch (error) {
             commit('setErrors', {
@@ -242,6 +338,7 @@ const actions = {
             })
         }
     },
+
     updateQueryString({ state }, values) {
         if (state.isFieldMode) {
             return
@@ -284,13 +381,41 @@ const actions = {
 
     closeModal: ({ commit }, payload) => {
         commit('closeModal', payload)
+
         commit('fixPortal')
     },
 
+    openBrowser: ({ state, commit, dispatch }, { initialFiles, limit, callback }) => {
+        commit('setIsFieldMode', true)
+
+        commit('setLimit', limit)
+
+        commit('setCallback', callback)
+
+        commit('setSelection', [...initialFiles])
+
+        dispatch('openModal', 'browser')
+    },
+
     closeBrowser: ({ state, dispatch, commit }) => {
-        commit('setSelectionForField', state.currentFieldAttribute)
-        commit('setSelectedFile', null)
+        commit('setCallback', null)
+
+        commit('setPage', null)
+        commit('setPath', null)
+
+        commit('setIsFieldMode', false)
+
+        commit('setLimit', null)
+
+        commit('setSelection', null)
+
         dispatch('closeModal', 'browser')
+    },
+
+    submitFieldSelection: ({ state, dispatch, commit }) => {
+        state.callback(state.selection)
+
+        dispatch('closeBrowser')
     },
 }
 

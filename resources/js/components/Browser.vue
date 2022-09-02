@@ -12,7 +12,7 @@
           <div
             v-if="isDragging"
             @dragleave.prevent.self="dragleave"
-            class="absolute inset-0 z-50 bg-gray-100/90 dark:bg-gray-700/80 rounded-md backdrop-blur-sm w-full h-full flex justify-center flex-col items-center border-2 border-double border-blue-500"
+            class="absolute inset-0 z-50 pt-16 bg-gray-100/90 dark:bg-gray-700/80 rounded-md backdrop-blur-sm w-full h-full flex justify-start flex-col items-center border-2 border-blue-500"
           >
             <CloudArrowUpIcon class="w-16 h-16 text-blue-500 animate-bounce" />
             <p class="font-bold text-gray-900 dark:text-gray-50 p-2 rounded-md">
@@ -36,7 +36,7 @@
     </main>
   </div>
 
-  <UploadQueueModal name="upload-queue" />
+  <UploadQueueModal name="upload-queue" v-if="queue.length" />
   <div id="modals"></div>
 </template>
 
@@ -57,6 +57,7 @@ const filled = computed(() => files.value?.length || directories.value?.length)
 const pagination = computed(() => store.state['nova-file-manager'].pagination)
 const view = computed(() => store.state['nova-file-manager'].view)
 const isFetchingData = computed(() => store.state['nova-file-manager'].isFetchingData)
+const queue = computed(() => store.state['nova-file-manager'].queue)
 
 onMounted(() => {
     store.commit('nova-file-manager/init')

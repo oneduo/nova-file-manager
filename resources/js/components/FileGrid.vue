@@ -6,15 +6,12 @@
     <template v-for="file in files" :key="file.id">
       <File
         :selected="isFileSelected(file) ?? false"
-        :file="mapEntity(file)"
+        :file="entity(file)"
         @click="toggleSelection(file)"
         @dblclick="openPreview(file)"
       />
 
-      <PreviewModal
-        :file="mapEntity(file)"
-        v-if="!!preview && preview?.id === mapEntity(file)?.id"
-      />
+      <PreviewModal :file="entity(file)" v-if="!!preview && preview?.id === entity(file)?.id" />
     </template>
   </ul>
 </template>
@@ -24,7 +21,7 @@ import { computed } from 'vue'
 import { useStore } from 'vuex'
 import PreviewModal from '@/components/Modals/PreviewModal'
 import File from '@/components/Cards/File'
-import Entity from '@/types/Entity'
+import { entity } from '@/transformers/entityTransformer'
 
 const store = useStore()
 
@@ -32,24 +29,6 @@ const files = computed(() => store.state['nova-file-manager'].files)
 const isFileSelected = computed(() => store.getters['nova-file-manager/isFileSelected'])
 const preview = computed(() => store.state['nova-file-manager'].preview)
 
-const toggleSelection = file =>
-    store.getters['nova-file-manager/isFileSelected'](file)
-        ? store.commit('nova-file-manager/deselectFile', file)
-        : store.commit('nova-file-manager/selectFile', file)
-
 const openPreview = file => store.commit('nova-file-manager/previewFile', file)
-
-const mapEntity = file =>
-    new Entity(
-        file.id,
-        file.name,
-        file.path,
-        file.size,
-        file.extension,
-        file.mime,
-        file.url,
-        file.lastModifiedAt,
-        file.type,
-        file.exists
-    )
+const toggleSelection = file => store.commit('nova-file-manager/toggleSelection', file)
 </script>

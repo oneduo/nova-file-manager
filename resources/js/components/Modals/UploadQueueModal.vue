@@ -69,7 +69,7 @@ const props = defineProps({
 const darkMode = computed(() => store.state['nova-file-manager'].darkMode)
 const isOpen = computed(() => store.getters['nova-file-manager/allModals'].includes(props.name))
 
-const queue = computed(() => store.state['nova-file-manager'].uploadQueue)
+const queue = computed(() => store.state['nova-file-manager'].queue)
 
 const closeModal = () => store.dispatch('nova-file-manager/closeModal', props.name)
 

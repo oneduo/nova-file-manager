@@ -106,7 +106,7 @@ const props = defineProps(['name'])
 const darkMode = computed(() => store.state['nova-file-manager'].darkMode)
 const isOpen = computed(() => store.getters['nova-file-manager/allModals'].includes(props.name))
 
-const queue = computed(() => store.state['nova-file-manager'].uploadQueue)
+const queue = computed(() => store.state['nova-file-manager'].queue)
 
 const active = ref(false)
 const files = ref([])
