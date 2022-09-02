@@ -2,6 +2,15 @@
 
 All notable changes to `nova-file-manager` will be documented in this file
 
+## 0.3.2 - 2022-09-02
+
+### What's Changed
+
+- sync by @crezra in https://github.com/BBS-Lab/nova-file-manager/pull/47
+- ♿️ fixed focus styles for better accessibility  by @crezra in https://github.com/BBS-Lab/nova-file-manager/pull/48
+
+**Full Changelog**: https://github.com/BBS-Lab/nova-file-manager/compare/v0.3.1...v0.3.2
+
 ## 0.3.1 - 2022-09-02
 
 ### What's Changed
