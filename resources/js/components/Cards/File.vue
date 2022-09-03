@@ -2,7 +2,7 @@
   <button class="relative cursor-pointer focus:rounded-md group focus:outline-none" :title="name">
     <div
       :class="[
-        'relative block aspect-square w-full overflow-hidden rounded-lg hover:shadow-md hover:opacity-75 border border-gray-200/50 dark:border-gray-700/50',
+        'relative block aspect-square w-full overflow-hidden rounded-lg hover:shadow-md hover:opacity-75 border border-gray-200/50 dark:border-gray-700/50 text-left',
         'group-focus-visible:outline group-focus-visible:outline-2 group-focus-visible:outline-blue-500/50',
         selected ? 'outline outline-2 outline-blue-500 group-focus-visible:outline-blue-500' : '',
       ]"
@@ -88,7 +88,7 @@
     </p>
     <p
       :class="[
-        'pointer-events-none block font-medium text-gray-500',
+        'pointer-events-none block font-medium text-gray-500 text-left',
         isUploading || onDeselect ? 'text-xs' : 'text-sm',
       ]"
       v-if="file.size"
