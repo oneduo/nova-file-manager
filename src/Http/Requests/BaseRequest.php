@@ -50,7 +50,7 @@ class BaseRequest extends NovaRequest
         return $resource->availableFields($this)
             ->whereInstanceOf(FileManager::class)
             ->findFieldByAttribute($this->attribute, function () {
-                return null;
+                abort(404);
             });
     }
 
