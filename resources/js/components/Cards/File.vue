@@ -76,7 +76,7 @@
     <p
       v-if="!missing || isUploading"
       :class="[
-        'pointer-events-none mt-2 block truncate font-medium text-gray-900 dark:text-gray-50',
+        'pointer-events-none mt-2 block truncate font-medium text-gray-900 dark:text-gray-50 text-left',
         isUploading || onDeselect ? 'text-xs' : 'text-sm',
       ]"
       :title="!isUploading ? name : file.name"
@@ -102,7 +102,7 @@
 </template>
 
 <script setup>
-import { computed } from 'vue'
+import { computed, onMounted } from 'vue'
 import { DocumentIcon } from '@heroicons/vue/24/outline'
 import {
     CheckCircleIcon,
@@ -140,6 +140,9 @@ const props = defineProps({
     },
 })
 
+onMounted(() => {
+    console.log(props.file)
+})
 const isImage = computed(() => props.file.type === 'image')
 const isVideo = computed(() => props.file.type === 'video')
 const isFile = computed(() => props.file.type !== 'image' && props.file.type !== 'video')
