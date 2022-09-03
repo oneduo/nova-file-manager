@@ -47,7 +47,7 @@ class FileController extends Controller
      */
     public function rename(RenameFileRequest $request): JsonResponse
     {
-        if (!$request->canDeleteFile()) {
+        if (!$request->canRenameFile()) {
             throw ValidationException::withMessages([
                 'oldPath' => [__('Sorry! You are not authorized to perform this action.')],
             ]);

@@ -160,8 +160,7 @@ it('can delete a directory', function () {
     Event::fake();
 
     Storage::disk($this->disk)->makeDirectory($path = 'directory');
-
-    expect(Storage::disk($this->disk)->allDirectories())->toContain($path);
+    Storage::disk($this->disk)->assertExists($path);
 
     postJson(
         uri: route('nova-file-manager.folders.delete'),
@@ -172,7 +171,7 @@ it('can delete a directory', function () {
     )
         ->assertOk();
 
-    expect(Storage::disk($this->disk)->exists($path))->toBeFalse();
+    Storage::disk($this->disk)->assertMissing($path);
 
     Event::assertDispatched(
         event: FolderDeleted::class,
@@ -185,7 +184,7 @@ it('cannot delete a directory which doesnt exist', function () {
 
     $path = 'directory';
 
-    expect(Storage::disk($this->disk)->exists($path))->toBeFalse();
+    Storage::disk($this->disk)->assertMissing($path);
 
     postJson(
         uri: route('nova-file-manager.folders.delete'),

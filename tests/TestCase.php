@@ -6,9 +6,9 @@ namespace BBSLab\NovaFileManager\Tests;
 
 use BBSLab\NovaFileManager\NovaFileManager;
 use BBSLab\NovaFileManager\ToolServiceProvider;
-use Illuminate\Support\Facades\Gate;
 use Illuminate\Support\Facades\Route;
 use Laravel\Nova\Nova;
+use Laravel\Nova\NovaServiceProvider;
 use Orchestra\Testbench\TestCase as Orchestra;
 use Pion\Laravel\ChunkUpload\Providers\ChunkUploadServiceProvider;
 
@@ -17,9 +17,8 @@ class TestCase extends Orchestra
     protected function getPackageProviders($app): array
     {
         return [
-            'Inertia\ServiceProvider',
-            //            'Laravel\Nova\NovaCoreServiceProvider',
             ChunkUploadServiceProvider::class,
+            NovaServiceProvider::class,
             ToolServiceProvider::class,
         ];
     }
@@ -30,11 +29,7 @@ class TestCase extends Orchestra
 
         Route::middlewareGroup('nova', []);
         Route::middlewareGroup('nova:api', []);
-//
-        Gate::define('viewNova', function ($user) {
-            return true;
-        });
-//
+
         Nova::tools([
             NovaFileManager::make(),
         ]);

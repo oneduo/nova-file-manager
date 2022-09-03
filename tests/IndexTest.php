@@ -26,9 +26,6 @@ it('can retrieve files', function () {
 
     $response = getJson(uri: route('nova-file-manager.data').'?'.Arr::query(['disk' => $this->disk]));
 
-    ray()->clearAll();
-    ray($response);
-
     $response
         ->assertOk()
         ->assertJson([
