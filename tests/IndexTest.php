@@ -110,7 +110,7 @@ it('can retrieve files from field with a custom filesystem', function () {
                             'url' => env('APP_URL').'/storage/users/'.$request->user()->getKey(),
                             'visibility' => 'public',
                         ]);
-                    })
+                    }),
             ];
         }
     }
