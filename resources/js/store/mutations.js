@@ -156,7 +156,7 @@ const mutations = {
 
             return
         }
-        console.log(state.multiple)
+
         if (!state.multiple) {
             this.commit('nova-file-manager/setSelection', [])
         }
