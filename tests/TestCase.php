@@ -29,9 +29,5 @@ class TestCase extends Orchestra
 
         Route::middlewareGroup('nova', []);
         Route::middlewareGroup('nova:api', []);
-
-        Nova::tools([
-            NovaFileManager::make(),
-        ]);
     }
 }

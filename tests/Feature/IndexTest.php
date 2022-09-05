@@ -81,7 +81,6 @@ it('can retrieve files from tool with a custom filesystem', function () {
             'files' => [
                 [
                     'path' => $path,
-                    'url' => "/storage/users/42/{$path}",
                 ],
             ],
             'pagination' => [

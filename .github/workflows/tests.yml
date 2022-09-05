@@ -22,6 +22,16 @@ jobs:
 
     name: "Test suite : P${{ matrix.php }} - L${{ matrix.laravel }}"
 
+    services:
+      mysql:
+        image: mysql:8
+        env:
+          MYSQL_ALLOW_EMPTY_PASSWORD: yes
+          MYSQL_DATABASE: nova_file_manager
+        ports:
+          - 33306:3306
+        options: --health-cmd="mysqladmin ping" --health-interval=10s --health-timeout=5s --health-retries=3
+
     steps:
       - name: Checkout code
         uses: actions/checkout@v2
@@ -41,8 +51,15 @@ jobs:
       - name: Install dependencies
         run: |
           composer config http-basic.nova.laravel.com ${{ secrets.NOVA_USERNAME }} ${{ secrets.NOVA_LICENSE_KEY }}
-          composer require "laravel/framework:${{ matrix.laravel }}" "orchestra/testbench:${{ matrix.testbench }}" --no-interaction --no-update --dev
+          composer require "laravel/framework:${{ matrix.laravel }}" "orchestra/testbench:${{ matrix.testbench }}" "orchestra/testbench-dusk:${{ matrix.testbench }}" --no-interaction --no-update --dev
           composer update --prefer-stable --prefer-dist --no-interaction
 
       - name: Execute tests
-        run: ./vendor/bin/pest
+        run: |
+          ./vendor/bin/dusk-updater detect --auto-update
+          ./vendor/bin/testbench-dusk nova:publish
+          ./vendor/bin/pest
+        env:
+          CI: true
+          DB_PORT: ${{ job.services.mysql.ports[3306] }}
+          DB_USERNAME: root

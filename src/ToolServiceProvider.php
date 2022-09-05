@@ -29,24 +29,14 @@ class ToolServiceProvider extends ServiceProvider
             $this->routes();
         });
 
-        $this->loadTranslationsFrom(__DIR__.'/../resources/lang', 'nova-file-manager');
-        $this->mergeConfigFrom(__DIR__.'/../config/nova-file-manager.php', 'nova-file-manager');
-
-        $this->publishes([
-            __DIR__.'/../config/nova-file-manager.php' => config_path('nova-file-manager.php'),
-        ], 'config');
+        $this->config();
+        $this->translations();
 
         Nova::serving(static function (ServingNova $event) {
             Nova::translations(__DIR__.'/../lang/en.json');
             Nova::script('nova-file-manager', __DIR__.'/../dist/js/tool.js');
             Nova::style('nova-file-manager', __DIR__.'/../dist/css/tool.css');
         });
-
-        Inertia::version(static function () {
-            return md5_file(__DIR__.'../dist/mix-manifest.json');
-        });
-
-        $this->publish();
     }
 
     protected function routes(): void
@@ -80,17 +70,21 @@ class ToolServiceProvider extends ServiceProvider
         });
     }
 
-    public function publish(): void
+    public function config(): void
     {
-        if ($this->app->runningInConsole()) {
-            $this->mergeConfigFrom(__DIR__.'/../config/nova-file-manager.php', 'nova-file-manager');
+        $this->mergeConfigFrom(__DIR__.'/../config/nova-file-manager.php', 'nova-file-manager');
 
-            $this->publishes(
-                [
-                    __DIR__.'/../config' => config_path(),
-                ],
-                'nova-file-manager-config'
-            );
-        }
+        $this->publishes(
+            [
+                __DIR__.'/../config' => config_path(),
+            ],
+            'nova-file-manager-config'
+        );
+    }
+
+    protected function translations(): void
+    {
+        $this->loadTranslationsFrom(__DIR__.'/../lang', 'nova-file-manager');
+        $this->loadJsonTranslationsFrom(__DIR__.'/../lang');
     }
 }

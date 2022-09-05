@@ -1,0 +1,6 @@
+providers:
+  - BBSLab\NovaFileManager\ToolServiceProvider
+  - Inertia\ServiceProvider
+  - Laravel\Nova\NovaServiceProvider
+  - Laravel\Nova\NovaApplicationServiceProvider
+  - Laravel\Nova\NovaCoreServiceProvider

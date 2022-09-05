@@ -24,19 +24,27 @@
     </coverage>
     <testsuites>
         <testsuite name="File manager Test suite">
-            <directory suffix="Test.php">./tests</directory>
+            <directory suffix="Test.php">./tests/Feature</directory>
+        </testsuite>
+        <testsuite name="Browser Test suite">
+            <directory suffix="Test.php">./tests/Browser</directory>
         </testsuite>
     </testsuites>
     <php>
-        <env name="APP_ENV" value="toto"/>
+        <env name="APP_ENV" value="testing"/>
         <env name="APP_KEY" value="base64:IiOzvjsOE18pPH+96mKNbE7ilEwkBg4pdayiOZrbRrs="/>
         <env name="BCRYPT_ROUNDS" value="4"/>
         <env name="CACHE_DRIVER" value="array"/>
-        <!-- <env name="DB_CONNECTION" value="sqlite"/> -->
-        <!-- <env name="DB_DATABASE" value=":memory:"/> -->
+        <env name="DB_CONNECTION" value="mysql"/>
+        <env name="DB_DATABASE" value="nova_file_manager"/>
+        <env name="DB_USERNAME" value="root"/>
+        <env name="DB_PASSWORD" value=""/>
         <env name="MAIL_MAILER" value="array"/>
         <env name="QUEUE_CONNECTION" value="sync"/>
         <env name="SESSION_DRIVER" value="array"/>
         <env name="TELESCOPE_ENABLED" value="false"/>
+        <env name="DUSK_TIMEZONE" value="Europe/Paris"/>
+        <env name="DUSK_WIDTH" value="1920"/>
+        <env name="DUSK_HEIGHT" value="1080"/>
     </php>
 </phpunit>
