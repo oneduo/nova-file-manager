@@ -118,7 +118,7 @@ const actions = {
    * @param dispatch
    */
     reset({ commit, dispatch }) {
-        const keys = ['page', 'search']
+        const keys = ['page', 'search', 'path']
 
         keys.forEach(key => {
             commit(`set${key.charAt(0).toUpperCase() + key.slice(1)}`, null)
