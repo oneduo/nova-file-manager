@@ -54,11 +54,14 @@ jobs:
           composer require "laravel/framework:${{ matrix.laravel }}" "orchestra/testbench:${{ matrix.testbench }}" "orchestra/testbench-dusk:${{ matrix.testbench }}" --no-interaction --no-update --dev
           composer update --prefer-stable --prefer-dist --no-interaction
 
+      - name: Install Chromium
+        run: ./vendor/bin/dusk-updater detect --auto-update
+
+      - name: Prepare Dusk
+        run: ./vendor/bin/testbench-dusk nova:publish
+
       - name: Execute tests
-        run: |
-          ./vendor/bin/dusk-updater detect --auto-update
-          ./vendor/bin/testbench-dusk nova:publish
-          ./vendor/bin/pest
+        run: ./vendor/bin/pest
         env:
           CI: true
           DB_PORT: ${{ job.services.mysql.ports[3306] }}
