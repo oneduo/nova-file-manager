@@ -157,6 +157,11 @@ export default {
                 initialFiles: this.value,
                 multiple: this.field.multiple ?? false,
                 limit: this.field.limit ?? null,
+                resource: this.resourceName,
+                resourceId: this.resourceId,
+                attribute: this.field.attribute,
+                customDisk: this.field.customDisk,
+                permissions: this.field.permissions,
                 callback: selection => {
                     this.value = selection
                 },

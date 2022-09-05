@@ -10,7 +10,7 @@ class Video extends Entity
 {
     public function meta(): array
     {
-        $data = Factory::build($this->disk)?->analyze($this->path);
+        $data = Factory::build($this->fileSystem)?->analyze($this->path);
 
         return [
             'type' => 'video',

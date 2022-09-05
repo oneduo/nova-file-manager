@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace BBSLab\NovaFileManager\Contracts\Entities;
 
+use Illuminate\Contracts\Filesystem\Filesystem;
 use Illuminate\Support\Carbon;
 
 interface Entity
@@ -32,5 +33,5 @@ interface Entity
 
     public function url(): string;
 
-    public static function make(string $disk, string $path): self;
+    public static function make(Filesystem $fileSystem, string $path): self;
 }

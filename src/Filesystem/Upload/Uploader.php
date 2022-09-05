@@ -42,15 +42,13 @@ class Uploader implements UploaderContract
 
     public function saveFile(UploadRequest $request, UploadedFile $file): array
     {
-        $path = $file->storeAs(
-            $request->path,
-            $file->getClientOriginalName(),
-            [
-                'disk' => $request->disk,
-            ],
+        $path = $request->manager()->filesystem()->putFileAs(
+            path: $request->path,
+            file: $file,
+            name: $file->getClientOriginalName(),
         );
 
-        event(new FileUploaded($request->disk, $path));
+        event(new FileUploaded($request->manager()->disk, $path));
 
         return [
             'message' => __('Uploaded successfully'),

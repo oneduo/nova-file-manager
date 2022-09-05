@@ -5,12 +5,13 @@ declare(strict_types=1);
 namespace BBSLab\NovaFileManager\Filesystem\Metadata;
 
 use BBSLab\NovaFileManager\Contracts\Filesystem\Metadata\Analyzer as AnalyzerContract;
+use Illuminate\Contracts\Filesystem\Filesystem;
 use Illuminate\Support\Facades\Cache;
 
 abstract class Analyzer implements AnalyzerContract
 {
     public function __construct(
-        public string $disk,
+        public Filesystem $disk,
     ) {
     }
 

@@ -47,6 +47,16 @@
                       {{ content }}
                     </p>
                   </div>
+                  <template v-if="hasErrors">
+                    <p
+                      v-for="(error, index) in errorsList"
+                      :key="index"
+                      id="email-error"
+                      class="mt-2 text-sm text-red-600"
+                    >
+                      {{ error }}
+                    </p>
+                  </template>
                 </div>
               </div>
               <div
@@ -76,11 +86,16 @@ const variants = {
 import { computed, onBeforeUnmount } from 'vue'
 import { useStore } from 'vuex'
 import { Dialog, DialogPanel, DialogTitle, TransitionChild, TransitionRoot } from '@headlessui/vue'
+import { useErrors } from '@/hooks'
 
 const store = useStore()
 
 const props = defineProps({
     name: {
+        type: String,
+        required: true,
+    },
+    attribute: {
         type: String,
         required: true,
     },
@@ -100,6 +115,8 @@ const props = defineProps({
         default: 'danger',
     },
 })
+
+const { hasErrors, errorsList } = useErrors(props.attribute)
 
 const darkMode = computed(() => store.state['nova-file-manager'].darkMode)
 const isOpen = computed(() => store.getters['nova-file-manager/allModals'].includes(props.name))

@@ -1,11 +1,8 @@
 <template>
-  <button
-    class="relative cursor-pointer focus:rounded-md group focus:outline-none"
-    :title="name"
-  >
+  <button class="relative cursor-pointer focus:rounded-md group focus:outline-none" :title="name">
     <div
       :class="[
-        'relative block aspect-square w-full overflow-hidden rounded-lg hover:shadow-md hover:opacity-75 border border-gray-200/50 dark:border-gray-700/50',
+        'relative block aspect-square w-full overflow-hidden rounded-lg hover:shadow-md hover:opacity-75 border border-gray-200/50 dark:border-gray-700/50 text-left',
         'group-focus-visible:outline group-focus-visible:outline-2 group-focus-visible:outline-blue-500/50',
         selected ? 'outline outline-2 outline-blue-500 group-focus-visible:outline-blue-500' : '',
       ]"
@@ -79,7 +76,7 @@
     <p
       v-if="!missing || isUploading"
       :class="[
-        'pointer-events-none mt-2 block truncate font-medium text-gray-900 dark:text-gray-50',
+        'pointer-events-none mt-2 block truncate font-medium text-gray-900 dark:text-gray-50 text-left',
         isUploading || onDeselect ? 'text-xs' : 'text-sm',
       ]"
       :title="!isUploading ? name : file.name"
@@ -91,7 +88,7 @@
     </p>
     <p
       :class="[
-        'pointer-events-none block font-medium text-gray-500',
+        'pointer-events-none block font-medium text-gray-500 text-left',
         isUploading || onDeselect ? 'text-xs' : 'text-sm',
       ]"
       v-if="file.size"
@@ -105,44 +102,47 @@
 </template>
 
 <script setup>
-import { computed } from 'vue'
+import { computed, onMounted } from 'vue'
 import { DocumentIcon } from '@heroicons/vue/24/outline'
 import {
-  CheckCircleIcon,
-  ExclamationCircleIcon,
-  ExclamationTriangleIcon,
-  PlayIcon,
-  XCircleIcon,
+    CheckCircleIcon,
+    ExclamationCircleIcon,
+    ExclamationTriangleIcon,
+    PlayIcon,
+    XCircleIcon,
 } from '@heroicons/vue/24/solid'
 import Spinner from '@/components/Elements/Spinner'
 import Entity from '@/types/Entity'
 
 const props = defineProps({
-  file: {
-    type: Entity,
-    default: null,
-  },
-  isUploading: {
-    type: Boolean,
-    default: false,
-  },
-  isUploaded: {
-    type: Boolean,
-    default: null,
-  },
-  uploadRatio: {
-    type: Number,
-    default: null,
-  },
-  selected: {
-    type: Boolean,
-    default: true,
-  },
-  onDeselect: {
-    type: Function,
-  },
+    file: {
+        type: Entity,
+        default: null,
+    },
+    isUploading: {
+        type: Boolean,
+        default: false,
+    },
+    isUploaded: {
+        type: Boolean,
+        default: null,
+    },
+    uploadRatio: {
+        type: Number,
+        default: null,
+    },
+    selected: {
+        type: Boolean,
+        default: true,
+    },
+    onDeselect: {
+        type: Function,
+    },
 })
 
+onMounted(() => {
+    console.log(props.file)
+})
 const isImage = computed(() => props.file.type === 'image')
 const isVideo = computed(() => props.file.type === 'video')
 const isFile = computed(() => props.file.type !== 'image' && props.file.type !== 'video')

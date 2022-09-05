@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace BBSLab\NovaFileManager;
 
+use BBSLab\NovaFileManager\Contracts\InteractsWithFilesystem as InteractsWithFilesystemContract;
 use BBSLab\NovaFileManager\Services\FileManagerService;
 use Closure;
 use JsonException;
@@ -11,8 +12,9 @@ use Laravel\Nova\Fields\Field;
 use Laravel\Nova\Fields\PresentsImages;
 use Laravel\Nova\Http\Requests\NovaRequest;
 
-class FileManager extends Field
+class FileManager extends Field implements InteractsWithFilesystemContract
 {
+    use InteractsWithFilesystem;
     use PresentsImages;
 
     public $component = 'nova-file-manager-field';
@@ -149,8 +151,14 @@ class FileManager extends Field
             $disk = parent::resolveAttribute($resource, $this->diskColumn);
         }
 
-        if (isset($disk)) {
+        if (isset($disk) && !is_callable($this->filesystemCallback)) {
             $manager->disk($disk);
+        }
+
+        if (is_callable($this->filesystemCallback)) {
+            $manager->disk(
+                disk: $this->resolveFilesystem(app(NovaRequest::class))
+            );
         }
 
         $entities = collect();
@@ -184,7 +192,8 @@ class FileManager extends Field
                 'copyable' => $this->copyable,
                 'multiple' => $this->multiple,
                 'limit' => $this->multiple ? $this->limit : 1,
-            ]
+            ],
+            $this->options(),
         );
     }
 }

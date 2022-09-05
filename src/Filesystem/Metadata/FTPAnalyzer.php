@@ -5,14 +5,13 @@ declare(strict_types=1);
 namespace BBSLab\NovaFileManager\Filesystem\Metadata;
 
 use BBSLab\NovaFileManager\Filesystem\Support\GetID3;
-use Illuminate\Support\Facades\Storage;
 
 class FTPAnalyzer extends Analyzer
 {
     protected function rawAnalyze(string $path): array
     {
         /** @var \Illuminate\Filesystem\FilesystemAdapter $filesystem */
-        $filesystem = Storage::disk($this->disk);
+        $filesystem = $this->disk;
 
         $config = $filesystem->getConfig();
         $host = data_get($config, 'host');

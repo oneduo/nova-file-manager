@@ -18,38 +18,44 @@ use League\Flysystem\UnableToRetrieveMetadata;
 
 class FileManagerService implements FileManagerContract
 {
-    public FileSystem $fileSystem;
+    public string $disk;
+
+    public FileSystem $filesystem;
 
     public bool $shouldShowHiddenFiles;
 
     public array $filterCallbacks = [];
 
     public function __construct(
-        public ?string $disk = null,
+        string|Filesystem|null $disk = null,
         public ?string $path = DIRECTORY_SEPARATOR,
         public int $page = 1,
         public int $perPage = 15,
         public ?string $search = null,
     ) {
-        $this->disk ??= config('nova-file-manager.default_disk');
+        $this->disk($disk ?? config('nova-file-manager.default_disk'));
 
         $this->shouldShowHiddenFiles = config('nova-file-manager.show_hidden_files');
-
-        $this->fileSystem = Storage::disk($this->disk);
     }
 
     /**
      * Set the current disk used by the service
      *
-     * @param  string  $disk
+     * @param  string|\Illuminate\Contracts\Filesystem\Filesystem  $disk
      * @return $this
      */
-    public function disk(string $disk): self
+    public function disk(string|Filesystem $disk): self
     {
-        $this->disk = $disk;
+        if ($disk instanceof Filesystem) {
+            $this->disk = 'default';
 
-        // create a new Filesystem instance based on the given disk
-        $this->fileSystem = Storage::disk($this->disk);
+            $this->filesystem = $disk;
+        } else {
+            $this->disk = $disk;
+
+            // create a new Filesystem instance based on the given disk
+            $this->filesystem = Storage::disk($this->disk);
+        }
 
         return $this;
     }
@@ -93,7 +99,7 @@ class FileManagerService implements FileManagerContract
         // register the search callback
         $this->applySearchCallback();
 
-        return collect($this->fileSystem->files($this->path))
+        return collect($this->filesystem->files($this->path))
             ->filter(fn (string $file) => $this->applyFilterCallbacks($file));
     }
 
@@ -106,7 +112,7 @@ class FileManagerService implements FileManagerContract
     {
         $this->omitHiddenFilesAndDirectories();
 
-        return collect($this->fileSystem->directories($this->path))
+        return collect($this->filesystem->directories($this->path))
             ->filter(fn (string $folder) => $this->applyFilterCallbacks($folder))
             // we map the folder to an array with an id, path and name
             ->map(fn (string $path) => [
@@ -206,8 +212,8 @@ class FileManagerService implements FileManagerContract
      */
     public function mkdir(string $path): bool
     {
-        if (!$this->fileSystem->exists($path)) {
-            return $this->fileSystem->makeDirectory($path);
+        if (!$this->filesystem->exists($path)) {
+            return $this->filesystem->makeDirectory($path);
         }
 
         return false;
@@ -221,7 +227,7 @@ class FileManagerService implements FileManagerContract
      */
     public function rmdir(string $path): bool
     {
-        return $this->fileSystem->deleteDirectory($path);
+        return $this->filesystem->deleteDirectory($path);
     }
 
     /**
@@ -233,7 +239,7 @@ class FileManagerService implements FileManagerContract
      */
     public function rename(string $oldPath, string $newPath): bool
     {
-        return $this->fileSystem->move($oldPath, $newPath);
+        return $this->filesystem->move($oldPath, $newPath);
     }
 
     /**
@@ -244,7 +250,7 @@ class FileManagerService implements FileManagerContract
      */
     public function delete(string $path): bool
     {
-        return $this->fileSystem->delete($path);
+        return $this->filesystem->delete($path);
     }
 
     /**
@@ -305,7 +311,7 @@ class FileManagerService implements FileManagerContract
     public function makeEntity(string $path): Entity
     {
         try {
-            $mime = $this->fileSystem->mimeType($path);
+            $mime = $this->filesystem->mimeType($path);
             $type = $mime ? Str::before($mime, DIRECTORY_SEPARATOR) : 'default';
         } catch (UnableToRetrieveMetadata $e) {
             report($e);
@@ -313,7 +319,7 @@ class FileManagerService implements FileManagerContract
             $type = 'default';
         }
 
-        return $this->entityClassForType($type)::make($this->disk, $path);
+        return $this->entityClassForType($type)::make($this->filesystem, $path);
     }
 
     /**
@@ -330,7 +336,7 @@ class FileManagerService implements FileManagerContract
     /**
      * Static helper
      *
-     * @param  string|null  $disk
+     * @param  string|\Illuminate\Contracts\Filesystem\Filesystem|null  $disk
      * @param  string|null  $path
      * @param  int  $page
      * @param  int  $perPage
@@ -338,12 +344,17 @@ class FileManagerService implements FileManagerContract
      * @return static
      */
     public static function make(
-        ?string $disk = null,
+        string|Filesystem|null $disk = null,
         ?string $path = null,
         int $page = 1,
         int $perPage = 15,
         ?string $search = null
     ): static {
         return new self($disk, $path, $page, $perPage, $search);
+    }
+
+    public function filesystem(): Filesystem
+    {
+        return $this->filesystem;
     }
 }

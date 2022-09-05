@@ -4,7 +4,7 @@
       class="flex items-center justify-between flex-wrap sm:flex-nowrap gap-2 gap-y-2 flex-col-reverse sm:flex-row"
     >
       <div class="flex flex-row items-center gap-2 w-full flex-wrap sm:flex-nowrap">
-        <DiskSelector :disk="disk" :disks="disks" :set-disk="setDisk" />
+        <DiskSelector v-if="!customDisk" :disk="disk" :disks="disks" :set-disk="setDisk" />
         <PaginationSelector
           :per-page="Number(perPage)"
           :per-page-options="perPageOptions"
@@ -29,10 +29,10 @@
             {{ __('NovaFileManager.toolbar.clear') }}
           </button>
         </div>
-        <IconButton @click="openModal('create-folder')">
+        <IconButton v-if="showCreateFolder" @click="openModal('create-folder')">
           <FolderPlusIcon class="w-5 h-5" />
         </IconButton>
-        <IconButton variant="primary" @click="openModal('upload')">
+        <IconButton v-if="showUploadFile" variant="primary" @click="openModal('upload')">
           <CloudArrowUpIcon class="h-5 w-5" />
         </IconButton>
         <IconButton
@@ -48,9 +48,9 @@
     <Breadcrumbs :items="breadcrumbs" :set-path="setPath" />
   </div>
 
-  <UploadModal name="upload" />
+  <UploadModal v-if="showUploadFile" name="upload" />
 
-  <CreateFolderModal :on-submit="createFolder" name="create-folder" />
+  <CreateFolderModal v-if="showCreateFolder" :on-submit="createFolder" name="create-folder" />
 </template>
 
 <script setup>
@@ -65,8 +65,11 @@ import ToolbarSearch from '@/components/Elements/ToolbarSearch'
 import ViewToggle from '@/components/Elements/ViewToggle'
 import UploadModal from '@/components/Modals/UploadModal'
 import CreateFolderModal from '@/components/Modals/CreateFolderModal'
+import { usePermissions } from '@/hooks'
 
 const store = useStore()
+
+const { showCreateFolder, showUploadFile } = usePermissions()
 
 const disk = computed(() => store.state['nova-file-manager'].disk)
 const disks = computed(() => store.state['nova-file-manager'].disks)
@@ -76,6 +79,7 @@ const perPageOptions = computed(() => store.state['nova-file-manager'].perPageOp
 const isFieldMode = computed(() => store.state['nova-file-manager'].isFieldMode)
 const breadcrumbs = computed(() => store.state['nova-file-manager'].breadcrumbs)
 const limit = computed(() => store.state['nova-file-manager'].limit)
+const customDisk = computed(() => store.state['nova-file-manager'].customDisk)
 const selection = computed(() => store.getters['nova-file-manager/selection'])
 
 const setDisk = disk => store.dispatch('nova-file-manager/setDisk', disk)

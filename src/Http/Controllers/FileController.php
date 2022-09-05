@@ -28,6 +28,12 @@ class FileController extends Controller
      */
     public function upload(UploadRequest $request, Uploader $uploader): JsonResponse
     {
+        if (!$request->canUploadFile()) {
+            throw ValidationException::withMessages([
+                'file' => [__('Sorry! You are not authorized to perform this action.')],
+            ]);
+        }
+
         return response()->json(
             $uploader->handle($request)
         );
@@ -41,6 +47,12 @@ class FileController extends Controller
      */
     public function rename(RenameFileRequest $request): JsonResponse
     {
+        if (!$request->canRenameFile()) {
+            throw ValidationException::withMessages([
+                'oldPath' => [__('Sorry! You are not authorized to perform this action.')],
+            ]);
+        }
+
         $manager = $request->manager();
         $result = $manager->rename($request->oldPath, $request->newPath);
 
@@ -65,6 +77,12 @@ class FileController extends Controller
      */
     public function delete(DeleteFileRequest $request): JsonResponse
     {
+        if (!$request->canDeleteFile()) {
+            throw ValidationException::withMessages([
+                'path' => [__('Sorry! You are not authorized to perform this action.')],
+            ]);
+        }
+
         $manager = $request->manager();
 
         $result = $manager->delete($request->path);

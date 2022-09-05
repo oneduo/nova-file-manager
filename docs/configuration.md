@@ -44,7 +44,7 @@
 |--------|---------|
 | `bool` | `true`  |
 
-## `file_analysis.enable`
+## `file_analysis.enabled`
 
 > When set to true, the package will use getID3 to parse metadata from the files
 

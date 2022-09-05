@@ -24,8 +24,14 @@ class FolderController extends Controller
      */
     public function create(CreateFolderRequest $request): JsonResponse
     {
+        if (!$request->canCreateFolder()) {
+            throw ValidationException::withMessages([
+                'folder' => [__('Sorry! You are not authorized to perform this action.')],
+            ]);
+        }
+
         $result = $request->manager()->mkdir(
-            $path = trim($request->get('path'))
+            $path = trim($request->path)
         );
 
         if (!$result) {
@@ -49,8 +55,14 @@ class FolderController extends Controller
      */
     public function rename(RenameFolderRequest $request): JsonResponse
     {
-        $oldPath = $request->get('oldPath');
-        $newPath = $request->get('newPath');
+        if (!$request->canRenameFolder()) {
+            throw ValidationException::withMessages([
+                'folder' => [__('Sorry! You are not authorized to perform this action.')],
+            ]);
+        }
+
+        $oldPath = $request->oldPath;
+        $newPath = $request->newPath;
 
         $result = $request->manager()->rename($oldPath, $newPath);
 
@@ -75,10 +87,15 @@ class FolderController extends Controller
      */
     public function delete(DeleteFolderRequest $request): JsonResponse
     {
-        $path = $request->get('path');
-        $disk = $request->get('disk');
+        if (!$request->canDeleteFolder()) {
+            throw ValidationException::withMessages([
+                'folder' => [__('Sorry! You are not authorized to perform this action.')],
+            ]);
+        }
 
-        $result = $request->manager()->rmdir($request->path);
+        $path = $request->path;
+
+        $result = $request->manager()->rmdir($path);
 
         if (!$result) {
             throw ValidationException::withMessages([
@@ -86,7 +103,7 @@ class FolderController extends Controller
             ]);
         }
 
-        event(new FolderDeleted($disk, $path));
+        event(new FolderDeleted($request->manager()->disk, $path));
 
         return response()->json([
             'message' => __('Folder deleted successfully.'),

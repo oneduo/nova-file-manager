@@ -6,6 +6,7 @@
     :name="name"
     :title="__('NovaFileManager.deleteFileTitle')"
     variant="danger"
+    attribute="deleteFile"
   >
     <template v-slot:confimButton>
       <Button class="w-full sm:w-auto" type="button" variant="danger" @click="onConfirm">

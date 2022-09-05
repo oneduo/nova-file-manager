@@ -55,7 +55,7 @@ import InputModal from '@/components/Modals/InputModal'
 import { useErrors } from '@/hooks'
 
 const store = useStore()
-const props = defineProps(['name', 'onSubmit'])
+const props = defineProps(['name', 'onSubmit', 'attribute'])
 const value = ref(null)
 
 onMounted(() => (value.value = null))

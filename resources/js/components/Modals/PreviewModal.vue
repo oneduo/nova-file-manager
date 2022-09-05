@@ -36,7 +36,7 @@
 
                 <div class="flex flex-row gap-2 justify-end">
                   <IconButton
-                    v-if="!readOnly"
+                    v-if="!readOnly && showDeleteFile"
                     variant="danger"
                     @click="openModal(`delete-file-${file.id}`)"
                     :title="__('NovaFileManager.actions.delete')"
@@ -64,7 +64,7 @@
                   </IconButton>
 
                   <IconButton
-                    v-if="!readOnly"
+                    v-if="!readOnly && showRenameFile"
                     variant="secondary"
                     @click="openModal(`rename-file-${file.id}`)"
                     :title="__('NovaFileManager.actions.rename')"
@@ -163,9 +163,14 @@
     </Dialog>
   </TransitionRoot>
 
-  <DeleteFileModal :name="`delete-file-${file.id}`" :on-confirm="onDelete" />
+  <DeleteFileModal v-if="showDeleteFile" :name="`delete-file-${file.id}`" :on-confirm="onDelete" />
 
-  <RenameFileModal :name="`rename-file-${file.id}`" :old-name="file.name" :on-submit="onRename" />
+  <RenameFileModal
+    v-if="showRenameFile"
+    :name="`rename-file-${file.id}`"
+    :old-name="file.name"
+    :on-submit="onRename"
+  />
 </template>
 
 <script setup>
@@ -184,7 +189,7 @@ import IconButton from '@/components/Elements/IconButton'
 import DeleteFileModal from '@/components/Modals/DeleteFileModal'
 import RenameFileModal from '@/components/Modals/RenameFileModal'
 import Entity from '@/types/Entity'
-import { useClipboard } from '@/hooks'
+import { useClipboard, usePermissions } from '@/hooks'
 
 const props = defineProps({
     file: {
@@ -204,6 +209,8 @@ const buttonRef = ref(null)
 const darkMode = computed(() => store.state['nova-file-manager'].darkMode)
 const preview = computed(() => store.state['nova-file-manager'].preview)
 const isOpen = computed(() => preview.value?.id === props.file.id)
+
+const { showRenameFile, showDeleteFile } = usePermissions()
 
 const openModal = name => {
     return store.dispatch('nova-file-manager/openModal', name)

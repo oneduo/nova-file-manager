@@ -18,7 +18,10 @@
               </div>
             </div>
           </td>
-          <td class="relative whitespace-nowrap py-4 text-right text-xs font-medium">
+          <td
+            class="relative whitespace-nowrap py-4 text-right text-xs font-medium"
+            v-if="showRenameFolder || showDeleteFolder"
+          >
             <div class="inline-flex items-center">
               <div class="relative flex-1 flex items-center justify-end">
                 <Menu as="div" class="relative inline-block text-left">
@@ -32,7 +35,7 @@
                     class="z-50 origin-top-right absolute right-0 mt-2 w-36 select-none overflow-hidden bg-white dark:bg-gray-900 rounded-md border border-gray-200 dark:border-gray-700 px-1"
                   >
                     <div class="py-1">
-                      <MenuItem>
+                      <MenuItem v-if="showRenameFolder">
                         <button
                           class="hover:bg-gray-50 dark:hover:bg-gray-800 block w-full text-left cursor-pointer py-2 px-3 focus:outline-none focus:ring rounded truncate whitespace-nowrap text-gray-500 active:text-gray-600 dark:text-gray-500 dark:hover:text-gray-400 dark:active:text-gray-600"
                           @click="openModal(`rename-folder-${directory.id}`)"
@@ -40,7 +43,7 @@
                           {{ __('Rename') }}
                         </button>
                       </MenuItem>
-                      <MenuItem>
+                      <MenuItem v-if="showDeleteFolder">
                         <button
                           class="hover:bg-red-50 dark:hover:bg-red-600/20 block w-full text-left cursor-pointer py-2 px-3 focus:outline-none focus:ring rounded truncate whitespace-nowrap text-red-500 dark:text-red-500 dark:hover:text-red-700"
                           @click="openModal(`delete-folder-${directory.id}`)"
@@ -56,11 +59,13 @@
           </td>
         </tr>
         <DeleteFolderModal
+          v-if="showDeleteFolder"
           :name="`delete-folder-${directory.id}`"
           :on-confirm="() => onFolderDelete(directory.id, directory.path)"
         />
 
         <RenameFolderModal
+          v-if="showRenameFolder"
           :name="`rename-folder-${directory.id}`"
           :old-path="directory.name"
           :on-submit="value => onFolderRename(directory.id, directory.path, value)"
@@ -106,11 +111,14 @@ import { EllipsisHorizontalIcon } from '@heroicons/vue/24/solid'
 import { Menu, MenuButton, MenuItem, MenuItems } from '@headlessui/vue'
 import RenameFolderModal from '@/components/Modals/RenameFolderModal'
 import PreviewModal from '@/components/Modals/PreviewModal'
+import { usePermissions } from '@/hooks'
 
 const store = useStore()
 const files = computed(() => store.state['nova-file-manager'].files)
 const directories = computed(() => store.state['nova-file-manager'].directories)
 const isFileSelected = computed(() => store.getters['nova-file-manager/isFileSelected'])
+
+const { showRenameFolder, showDeleteFolder } = usePermissions()
 
 const onFolderRename = (id, oldPath, value) =>
     store.dispatch('nova-file-manager/renameFolder', {
