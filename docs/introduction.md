@@ -3,7 +3,7 @@ layout:home
 ---
 # Nova File Manager
 
-<div style="display: inline-flex; gap: 5px; margin-top:10px;">
+<div style="display: inline-flex; gap: 5px; margin-top:10px;flex-wrap: wrap">
 <img  src="https://img.shields.io/badge/status-active-success.svg"/>
 <img src="https://img.shields.io/badge/license-MIT-blue.svg"/>
 <img src="https://img.shields.io/badge/PHP-8-blue.svg"/>

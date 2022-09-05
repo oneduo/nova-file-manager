@@ -1,9 +1,9 @@
-# Screeshots
+# Screenshots
 
-<div style="margin-top:20px;display: flex; flex-direction:column; gap:1rem;">
-<img src="./images/browser-dark.png"/>
-<img src="./images/preview-modal.png"/>
-<img src="./images/upload-modal.png"/>
-<img src="./images/field.png"/>
-<img src="./images/create-folder-modal.png"/>
-</div>
+<template v-for="i in 15">
+<br/>
+<img :src="`./screenshots/screenshot-${i}.png`"/>
+</template>
+
+
+Images and videos courtesy of [Unsplash](https://unsplash.com/) and [Pexels](https://www.pexels.com/).

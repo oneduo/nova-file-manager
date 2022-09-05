@@ -38,8 +38,8 @@ let sidebar = [
         link: '/events',
       },
       {
-        text: 'Permissions',
-        link: '/permissions',
+        text: 'Access control',
+        link: '/access-control',
       }
     ],
   },
