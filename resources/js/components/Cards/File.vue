@@ -1,5 +1,8 @@
 <template>
-  <button class="relative cursor-pointer focus:rounded-md group focus:outline-none" :title="name">
+  <button
+    class="relative cursor-pointer focus:rounded-md group focus:outline-none flex flex-col items-start"
+    :title="name"
+  >
     <div
       :class="[
         'relative block aspect-square w-full overflow-hidden rounded-lg hover:shadow-md hover:opacity-75 border border-gray-200/50 dark:border-gray-700/50 text-left',
@@ -83,7 +86,10 @@
     >
       {{ !isUploading ? name : file.name }}
     </p>
-    <p v-if="missing && !isUploading" class="text-sm text-red-500 font-semibold">
+    <p
+      v-if="missing && !isUploading"
+      class="text-sm text-red-500 font-semibold text-left break-all"
+    >
       {{ __('NovaFileManager.fileMissing', { path: file.path }) }}
     </p>
     <p
