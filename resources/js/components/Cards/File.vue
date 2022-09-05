@@ -76,25 +76,28 @@
         </button>
       </div>
     </div>
+
     <p
       v-if="!missing || isUploading"
       :class="[
-        'pointer-events-none mt-2 block truncate font-medium text-gray-900 dark:text-gray-50 text-left',
+        'pointer-events-none mt-2 block truncate font-medium text-gray-900 dark:text-gray-50 text-left w-full',
         isUploading || onDeselect ? 'text-xs' : 'text-sm',
       ]"
       :title="!isUploading ? name : file.name"
     >
       {{ !isUploading ? name : file.name }}
     </p>
+
     <p
       v-if="missing && !isUploading"
       class="text-sm text-red-500 font-semibold text-left break-all"
     >
       {{ __('NovaFileManager.fileMissing', { path: file.path }) }}
     </p>
+
     <p
       :class="[
-        'pointer-events-none block font-medium text-gray-500 text-left',
+        'pointer-events-none block font-medium text-gray-500 text-left break-all',
         isUploading || onDeselect ? 'text-xs' : 'text-sm',
       ]"
       v-if="file.size"
@@ -108,7 +111,7 @@
 </template>
 
 <script setup>
-import { computed, onMounted } from 'vue'
+import { computed } from 'vue'
 import { DocumentIcon } from '@heroicons/vue/24/outline'
 import {
     CheckCircleIcon,
@@ -146,9 +149,6 @@ const props = defineProps({
     },
 })
 
-onMounted(() => {
-    console.log(props.file)
-})
 const isImage = computed(() => props.file.type === 'image')
 const isVideo = computed(() => props.file.type === 'video')
 const isFile = computed(() => props.file.type !== 'image' && props.file.type !== 'video')

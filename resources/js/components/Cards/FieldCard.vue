@@ -2,7 +2,7 @@
   <File
     :file="entity"
     :selected="false"
-    @click="detail && entity.exists && openPreview(entity)"
+    @click.prevent.stop="preview(entity)"
     :on-deselect="onDeselect"
   />
 </template>
@@ -36,4 +36,12 @@ const props = defineProps({
 const openPreview = file => store.commit('nova-file-manager/previewFile', file)
 
 const entity = computed(() => mapEntity(props.file))
+
+const preview = file => {
+    if (!props.detail) {
+        return
+    }
+
+    props.detail && file.exists && openPreview(file)
+}
 </script>
