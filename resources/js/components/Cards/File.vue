@@ -51,11 +51,12 @@
             v-if="isImage"
             :src="file.url"
             :alt="file.name"
-            class="pointer-events-none object-cover w-full h-full"
+            class="pointer-events-none w-full h-full"
+            :class="objectFit"
           />
 
           <template v-if="isVideo">
-            <video class="pointer-events-none object-cover w-full h-full">
+            <video class="pointer-events-none w-full h-full" :class="objectFit">
               <source :src="file.url" />
               Sorry, your browser doesn't support embedded videos.
             </video>
@@ -147,6 +148,10 @@ const props = defineProps({
     onDeselect: {
         type: Function,
     },
+    objectFit: {
+      type: String,
+      default: 'object-cover'
+    }
 })
 
 const isImage = computed(() => props.file.type === 'image')

@@ -43,6 +43,14 @@
                   >
                     <TrashIcon class="w-5 h-5" />
                   </IconButton>
+                  <IconButton
+                    v-if="!readOnly && file.type === 'image'"
+                    variant="secondary"
+                    @click="openModal(`crop-image-${file.id}`)"
+                    :title="__('NovaFileManager.actions.cropImage', { image: file.name })"
+                  >
+                    <SparklesIcon class="w-5 h-5" />
+                  </IconButton>
 
                   <IconButton
                     v-if="readOnly"
@@ -164,6 +172,7 @@
   </TransitionRoot>
 
   <DeleteFileModal v-if="showDeleteFile" :name="`delete-file-${file.id}`" :on-confirm="onDelete" />
+  <CropImageModal :name="`crop-image-${file.id}`" :file="file" :on-confirm="onEditImage" />
 
   <RenameFileModal
     v-if="showRenameFile"
@@ -184,10 +193,12 @@ import {
     PencilSquareIcon,
     TrashIcon,
     XMarkIcon,
+    SparklesIcon,
 } from '@heroicons/vue/24/outline'
 import IconButton from '@/components/Elements/IconButton'
 import DeleteFileModal from '@/components/Modals/DeleteFileModal'
 import RenameFileModal from '@/components/Modals/RenameFileModal'
+import CropImageModal from '@/components/Modals/CropImageModal'
 import Entity from '@/types/Entity'
 import { useClipboard, usePermissions } from '@/hooks'
 
@@ -236,9 +247,14 @@ const onDelete = () => {
     })
 }
 
+const onEditImage = (e) => {
+  console.log(e)
+}
+
 const copy = file => {
     copyToClipboard(file.url)
 
     Nova.success('Copied !')
 }
+
 </script>
