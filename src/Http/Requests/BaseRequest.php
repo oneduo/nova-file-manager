@@ -8,7 +8,6 @@ use BBSLab\NovaFileManager\Contracts\InteractsWithFilesystem;
 use BBSLab\NovaFileManager\Contracts\Services\FileManagerContract;
 use BBSLab\NovaFileManager\FileManager;
 use BBSLab\NovaFileManager\NovaFileManager;
-use Illuminate\Contracts\Filesystem\Filesystem;
 use Laravel\Nova\Http\Requests\NovaRequest;
 use Laravel\Nova\Nova;
 use Laravel\Nova\Tool;
@@ -24,18 +23,14 @@ class BaseRequest extends NovaRequest
 {
     public function manager(): FileManagerContract
     {
-        if (!$filesystem = $this->onDemandFilesystem()) {
-            return app(FileManagerContract::class);
-        }
+        return once(function () {
+            $element = $this->element();
 
-        return app(FileManagerContract::class, [
-            'disk' => $filesystem,
-        ]);
-    }
-
-    public function onDemandFilesystem(): ?Filesystem
-    {
-        return $this->element()?->resolveFilesystem($this);
+            return app(
+                abstract: FileManagerContract::class,
+                parameters: $element->hasCustomFilesystem() ? ['disk' => $element->resolveFilesystem($this)] : [],
+            );
+        });
     }
 
     public function element(): ?InteractsWithFilesystem
@@ -56,7 +51,11 @@ class BaseRequest extends NovaRequest
 
     public function resolveTool(): ?InteractsWithFilesystem
     {
-        return collect(Nova::registeredTools())->first(fn (Tool $tool) => $tool instanceof NovaFileManager);
+        return tap(once(function () {
+            return collect(Nova::registeredTools())->first(fn (Tool $tool) => $tool instanceof NovaFileManager);
+        }), function (?NovaFileManager $tool) {
+            abort_if(is_null($tool), 404);
+        });
     }
 
     public function resource()
@@ -64,7 +63,7 @@ class BaseRequest extends NovaRequest
         return tap(once(function () {
             return Nova::resourceForKey($this->input('resource'));
         }), function ($resource) {
-            return null;
+            abort_if(is_null($resource), 404);
         });
     }
 

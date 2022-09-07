@@ -5,7 +5,7 @@ declare(strict_types=1);
 namespace BBSLab\NovaFileManager\Http\Requests;
 
 use BBSLab\NovaFileManager\Rules\DiskExistsRule;
-use BBSLab\NovaFileManager\Rules\PathExistsInDiskRule;
+use BBSLab\NovaFileManager\Rules\ExistsInFilesystem;
 
 class DownloadFileRequest extends BaseRequest
 {
@@ -13,7 +13,7 @@ class DownloadFileRequest extends BaseRequest
     {
         return [
             'disk' => ['sometimes', 'string', new DiskExistsRule()],
-            'path' => ['required', 'string', new PathExistsInDiskRule($this->get('disk'))],
+            'path' => ['required', 'string', new ExistsInFilesystem($this)],
         ];
     }
 }
