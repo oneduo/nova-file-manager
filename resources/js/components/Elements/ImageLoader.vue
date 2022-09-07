@@ -42,7 +42,6 @@ const cardClasses = computed(() => {
 })
 
 onMounted(() => {
-    console.log('onMounted')
     new Promise((resolve, reject) => {
         let image = new Image()
 
@@ -52,7 +51,6 @@ onMounted(() => {
         image.src = props.src
     })
         .then(image => {
-            console.log('then', image)
             image.className = 'pointer-events-none w-full h-full'
             if (!props.isThumbnail) {
                 image.classList.add('object-contain')
@@ -62,13 +60,11 @@ onMounted(() => {
             card.value.appendChild(image)
         })
         .catch(e => {
-            console.log('catch', e)
             missing.value = true
 
             emit('missing', true)
         })
         .finally(() => {
-            console.log('finally')
             loading.value = false
         })
 })

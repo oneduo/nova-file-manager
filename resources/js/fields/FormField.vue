@@ -124,8 +124,6 @@ export default {
 
     beforeUnmount() {
         this.destroy()
-
-        console.log('destroyed')
     },
 
     computed: {

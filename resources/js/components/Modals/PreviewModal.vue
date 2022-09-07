@@ -94,7 +94,7 @@
                 <div
                   class="block relative w-full md:w-4/6 overflow-hidden rounded-lg bg-gray-500/10 flex items-center justify-center"
                 >
-                  <div class="absolute inset-0 opacity-50 bg-stripes bg-stripes-gray-400"></div>
+                  <div class="absolute inset-0 opacity-50 bg-stripes bg-stripes-gray-300 dark:bg-stripes-gray-700"></div>
                   <ImageLoader
                     v-if="file?.type === 'image'"
                     :src="file.url"
@@ -103,12 +103,14 @@
                     class="relative"
                   />
 
-                  <div v-else-if="file?.type === 'video'" class="w-full h-full">
-                    <video class="w-full max-w-screen max-h-screen" controls="controls">
-                      <source :src="file?.url" />
-                      Sorry, your browser doesn't support embedded videos.
-                    </video>
-                  </div>
+                  <video
+                    v-else-if="file?.type === 'video'"
+                    class="w-full max-w-screen max-h-[80vh] relative"
+                    controls="controls"
+                  >
+                    <source :src="file?.url" />
+                    Sorry, your browser doesn't support embedded videos.
+                  </video>
 
                   <DocumentIcon v-else class="h-40 w-40 text-gray-500 m-12" />
                 </div>
