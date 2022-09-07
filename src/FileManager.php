@@ -10,19 +10,13 @@ use BBSLab\NovaFileManager\ValueObjects\Asset;
 use Closure;
 use JsonException;
 use Laravel\Nova\Fields\Field;
-use Laravel\Nova\Fields\PresentsImages;
 use Laravel\Nova\Http\Requests\NovaRequest;
 
 class FileManager extends Field implements InteractsWithFilesystemContract
 {
     use InteractsWithFilesystem;
-    use PresentsImages;
 
     public $component = 'nova-file-manager-field';
-
-    public string $diskColumn;
-
-    public bool $copyable = false;
 
     public bool $multiple = false;
 
@@ -35,20 +29,6 @@ class FileManager extends Field implements InteractsWithFilesystemContract
         parent::__construct($name, $attribute);
 
         $this->prepareStorageCallback($storageCallback);
-    }
-
-    public function copyable(): static
-    {
-        $this->copyable = true;
-
-        return $this;
-    }
-
-    public function storeDisk(string $column): static
-    {
-        $this->diskColumn = $column;
-
-        return $this;
     }
 
     public function multiple(bool $multiple = true): static
@@ -119,21 +99,8 @@ class FileManager extends Field implements InteractsWithFilesystemContract
                 $value = $files->isNotEmpty() ? new Asset(...$files->first()) : null;
             }
 
-            $values = [
-                $attribute => $value,
-            ];
-
-            return $this->mergeExtraStorageColumns($payload, $values);
+            return [$attribute => $value];
         };
-    }
-
-    protected function mergeExtraStorageColumns(array $payload, array $attributes): array
-    {
-        if (isset($this->diskColumn)) {
-            $attributes[$this->diskColumn] = $payload['disk'] ?? null;
-        }
-
-        return $attributes;
     }
 
     protected function resolveAttribute($resource, $attribute = null): ?array
@@ -160,9 +127,7 @@ class FileManager extends Field implements InteractsWithFilesystemContract
     {
         return array_merge(
             parent::jsonSerialize(),
-            $this->imageAttributes(),
             [
-                'copyable' => $this->copyable,
                 'multiple' => $this->multiple,
                 'limit' => $this->multiple ? $this->limit : 1,
             ],
