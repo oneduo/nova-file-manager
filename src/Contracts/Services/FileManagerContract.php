@@ -38,7 +38,7 @@ interface FileManagerContract
 
     public function forPage(int $page, int $perPage): self;
 
-    public function makeEntity(string $path): Entity;
+    public function makeEntity(string $path, string $disk): Entity;
 
     public function mapIntoEntity(): Closure;
 

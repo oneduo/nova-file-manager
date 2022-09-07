@@ -14,9 +14,9 @@
         class="absolute z-40 inset-0 flex justify-center items-center w-full h-full"
         v-if="isUploading"
       >
-        <Spinner class="w-16 h-16" v-if="isUploaded === null" />
-        <ExclamationCircleIcon class="w-16 h-16 text-red-500" v-else-if="isUploaded === false" />
-        <CheckCircleIcon class="w-16 h-16 text-green-500" v-else-if="isUploaded === true" />
+        <Spinner class="w-16 h-16" v-if="isUploaded === null"/>
+        <ExclamationCircleIcon class="w-16 h-16 text-red-500" v-else-if="isUploaded === false"/>
+        <CheckCircleIcon class="w-16 h-16 text-green-500" v-else-if="isUploaded === true"/>
       </div>
 
       <div
@@ -36,7 +36,7 @@
           <div
             class="m-auto flex h-full w-full items-center justify-center bg-gray-50 dark:bg-gray-900 text-red-500"
           >
-            <ExclamationTriangleIcon class="w-16 h-16" />
+            <ExclamationTriangleIcon class="w-16 h-16"/>
           </div>
         </template>
         <template v-else>
@@ -44,7 +44,7 @@
             class="m-auto flex h-full w-full items-center justify-center bg-gray-50 dark:bg-gray-900 text-gray-600"
             v-if="isFile"
           >
-            <DocumentIcon class="w-16 h-16" v-if="!isUploading" />
+            <DocumentIcon class="w-16 h-16" v-if="!isUploading"/>
           </div>
 
           <img
@@ -56,7 +56,7 @@
 
           <template v-if="isVideo">
             <video class="pointer-events-none object-cover w-full h-full">
-              <source :src="file.url" />
+              <source :src="file.url"/>
               Sorry, your browser doesn't support embedded videos.
             </video>
 
@@ -64,7 +64,7 @@
               class="absolute m-auto flex items-center justify-center bg-transparent"
               v-if="!isUploading"
             >
-              <PlayIcon class="h-16 w-16 text-white/60" />
+              <PlayIcon class="h-16 w-16 text-white/60"/>
             </div>
           </template>
         </template>
@@ -72,7 +72,7 @@
 
       <div class="absolute right-1 top-1" v-if="onDeselect">
         <button v-if="onDeselect" @click="onDeselect(file)" class="text-red-500">
-          <XCircleIcon class="h-4 w-4" />
+          <XCircleIcon class="h-4 w-4"/>
         </button>
       </div>
     </div>
@@ -92,61 +92,65 @@
       v-if="missing && !isUploading"
       class="text-sm text-red-500 font-semibold text-left break-all"
     >
-      {{ __('NovaFileManager.fileMissing', { path: file.path }) }}
+      {{ __('NovaFileManager.fileMissing', {path: file.path}) }}
     </p>
 
-    <p
-      :class="[
-        'pointer-events-none block font-medium text-gray-500 text-left break-all',
-        isUploading || onDeselect ? 'text-xs' : 'text-sm',
-      ]"
-      v-if="file.size"
-    >
-      {{ file.size }}
-    </p>
+    <div
+      class="gap-x-0.5 inline-flex flex-wrap items-center text-xs pointer-events-none block font-medium text-gray-500 text-left break-all">
+      <span v-if="file.size">{{ file.size }}</span>
+      <span v-if="!hasCustomDisk && file.disk?.length > 0" class="ml-0.5">&centerdot; {{ file.disk }}</span>
+    </div>
+
+
     <span class="absolute top-1 right-1" v-if="selected">
-      <CheckCircleIcon class="h-5 w-5 text-blue-500" aria-hidden="true" />
+      <CheckCircleIcon class="h-5 w-5 text-blue-500" aria-hidden="true"/>
     </span>
+
+
   </button>
 </template>
 
 <script setup>
-import { computed } from 'vue'
-import { DocumentIcon } from '@heroicons/vue/24/outline'
+import {computed} from 'vue'
+import {DocumentIcon} from '@heroicons/vue/24/outline'
 import {
-    CheckCircleIcon,
-    ExclamationCircleIcon,
-    ExclamationTriangleIcon,
-    PlayIcon,
-    XCircleIcon,
+  CheckCircleIcon,
+  ExclamationCircleIcon,
+  ExclamationTriangleIcon,
+  PlayIcon,
+  XCircleIcon,
 } from '@heroicons/vue/24/solid'
 import Spinner from '@/components/Elements/Spinner'
 import Entity from '@/types/Entity'
 
 const props = defineProps({
-    file: {
-        type: Entity,
-        default: null,
-    },
-    isUploading: {
-        type: Boolean,
-        default: false,
-    },
-    isUploaded: {
-        type: Boolean,
-        default: null,
-    },
-    uploadRatio: {
-        type: Number,
-        default: null,
-    },
-    selected: {
-        type: Boolean,
-        default: true,
-    },
-    onDeselect: {
-        type: Function,
-    },
+  file: {
+    type: Entity,
+    default: null,
+  },
+  isUploading: {
+    type: Boolean,
+    default: false,
+  },
+  isUploaded: {
+    type: Boolean,
+    default: null,
+  },
+  uploadRatio: {
+    type: Number,
+    default: null,
+  },
+  selected: {
+    type: Boolean,
+    default: true,
+  },
+  onDeselect: {
+    type: Function,
+  },
+  hasCustomDisk: {
+    type: Boolean,
+    default: false,
+  }
 })
 
 const isImage = computed(() => props.file.type === 'image')

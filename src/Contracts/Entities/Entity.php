@@ -33,5 +33,5 @@ interface Entity
 
     public function url(): string;
 
-    public static function make(Filesystem $fileSystem, string $path): self;
+    public static function make(Filesystem $fileSystem, string $path, string $disk): self;
 }

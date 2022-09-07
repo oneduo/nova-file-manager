@@ -18,6 +18,7 @@ abstract class Entity implements Arrayable, EntityContract
     public function __construct(
         public Filesystem $fileSystem,
         public string $path,
+        public string $disk,
     ) {
     }
 
@@ -28,11 +29,12 @@ abstract class Entity implements Arrayable, EntityContract
      * @param  string  $path
      * @return static
      */
-    public static function make(Filesystem $fileSystem, string $path): static
+    public static function make(Filesystem $fileSystem, string $path, string $disk): static
     {
         return new static(
             $fileSystem,
             $path,
+            $disk,
         );
     }
 
@@ -50,6 +52,7 @@ abstract class Entity implements Arrayable, EntityContract
                 $this->data = array_merge(
                     [
                         'id' => $this->id(),
+                        'disk' => $this->disk,
                         'name' => $this->name(),
                         'path' => $this->path,
                         'size' => $this->size(),
@@ -67,6 +70,7 @@ abstract class Entity implements Arrayable, EntityContract
             } else {
                 $this->data = array_merge([
                     'id' => $this->id(),
+                    'disk' => $this->disk,
                     'path' => $this->path,
                     'exists' => false,
                 ]);

@@ -5,7 +5,8 @@ declare(strict_types=1);
 namespace BBSLab\NovaFileManager;
 
 use BBSLab\NovaFileManager\Contracts\InteractsWithFilesystem as InteractsWithFilesystemContract;
-use BBSLab\NovaFileManager\Services\FileManagerService;
+use BBSLab\NovaFileManager\Contracts\Services\FileManagerContract;
+use BBSLab\NovaFileManager\ValueObjects\Asset;
 use Closure;
 use JsonException;
 use Laravel\Nova\Fields\Field;
@@ -94,10 +95,6 @@ class FileManager extends Field implements InteractsWithFilesystemContract
         }
     }
 
-    public function asJson(string $column)
-    {
-    }
-
     protected function prepareStorageCallback(Closure $storageCallback = null): void
     {
         $this->storageCallback = $storageCallback ?? function (
@@ -114,12 +111,12 @@ class FileManager extends Field implements InteractsWithFilesystemContract
                 $payload = [];
             }
 
-            $files = collect($payload['files'] ?? []);
+            $files = collect($payload);
 
             if ($this->multiple) {
-                $value = $files->isNotEmpty() ? $files->pluck('path')->toArray() : null;
+                $value = collect($files)->map(fn(array $file) => new Asset(...$file));
             } else {
-                $value = data_get($files->first(), 'path');
+                $value = $files->isNotEmpty() ? new Asset(...$files->first()) : null;
             }
 
             $values = [
@@ -145,42 +142,18 @@ class FileManager extends Field implements InteractsWithFilesystemContract
             return null;
         }
 
-        $manager = FileManagerService::make();
-
-        if (isset($this->diskColumn)) {
-            $disk = parent::resolveAttribute($resource, $this->diskColumn);
+        if ($value instanceof Asset) {
+            $value = collect($value);
         }
 
-        if (isset($disk) && !is_callable($this->filesystemCallback)) {
-            $manager->disk($disk);
-        }
+        return $value
+            ->map(function (Asset $asset) {
+                $manager = $this->resolveFilesystem(app(NovaRequest::class))
+                    ?? app(FileManagerContract::class, ['disk' => $asset->disk]);
 
-        if (is_callable($this->filesystemCallback)) {
-            $manager->disk(
-                disk: $this->resolveFilesystem(app(NovaRequest::class))
-            );
-        }
-
-        $entities = collect();
-
-        if (is_string($value)) {
-            if (empty($value)) {
-                return null;
-            }
-
-            $entities->push($manager->makeEntity($value));
-        }
-
-        if (is_iterable($value)) {
-            foreach ($value as $file) {
-                $entities->push($manager->makeEntity($file));
-            }
-        }
-
-        return [
-            'disk' => $manager->disk,
-            'files' => $entities->toArray(),
-        ];
+                return $manager->makeEntity($asset->path, $asset->disk);
+            })
+            ->toArray();
     }
 
     public function jsonSerialize(): array

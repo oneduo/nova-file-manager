@@ -299,7 +299,7 @@ class FileManagerService implements FileManagerContract
      */
     public function mapIntoEntity(): Closure
     {
-        return fn (string $path) => $this->makeEntity($path);
+        return fn (string $path) => $this->makeEntity($path, $this->disk);
     }
 
     /**
@@ -308,7 +308,7 @@ class FileManagerService implements FileManagerContract
      * @param  string  $path
      * @return \BBSLab\NovaFileManager\Entities\Entity
      */
-    public function makeEntity(string $path): Entity
+    public function makeEntity(string $path, string $disk): Entity
     {
         try {
             $mime = $this->filesystem->mimeType($path);
@@ -319,7 +319,7 @@ class FileManagerService implements FileManagerContract
             $type = 'default';
         }
 
-        return $this->entityClassForType($type)::make($this->filesystem, $path);
+        return $this->entityClassForType($type)::make($this->filesystem, $path, $disk);
     }
 
     /**

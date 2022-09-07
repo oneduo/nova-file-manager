@@ -54,7 +54,7 @@
         leave-from="opacity-100"
         leave-to="opacity-0"
       >
-        <div class="fixed inset-0 bg-gray-800/20 backdrop-blur-sm transition-opacity" />
+        <div class="fixed inset-0 bg-gray-800/20 backdrop-blur-sm transition-opacity"/>
       </TransitionChild>
 
       <div :class="['fixed z-[60] inset-0 overflow-y-auto w-full', darkMode ? 'dark' : '']">
@@ -71,7 +71,7 @@
             <DialogPanel
               class="relative bg-transparent rounded-lg overflow-hidden shadow-xl transition-all w-full border border-gray-300 dark:border-gray-800 md:m-8 m-0"
             >
-              <Browser class="w-full" />
+              <Browser class="w-full"/>
             </DialogPanel>
           </TransitionChild>
         </div>
@@ -81,109 +81,106 @@
 </template>
 
 <script>
-import { CloudIcon } from '@heroicons/vue/24/outline'
-import {
-    Dialog as DialogModal,
-    DialogPanel,
-    TransitionChild,
-    TransitionRoot,
-} from '@headlessui/vue'
+import {CloudIcon} from '@heroicons/vue/24/outline'
+import {Dialog as DialogModal, DialogPanel, TransitionChild, TransitionRoot,} from '@headlessui/vue'
 import Browser from '@/components/Browser'
-import { FormField, HandlesValidationErrors } from 'laravel-nova'
-import { mapActions, mapGetters, mapMutations, mapState } from 'vuex'
+import {FormField, HandlesValidationErrors} from 'laravel-nova'
+import {mapActions, mapGetters, mapMutations, mapState} from 'vuex'
 import draggable from 'vuedraggable'
 import FieldCard from '@/components/Cards/FieldCard'
 
 export default {
-    mixins: [FormField, HandlesValidationErrors],
+  mixins: [FormField, HandlesValidationErrors],
 
-    components: {
-        FieldCard,
-        Browser,
-        CloudIcon,
-        DialogModal,
-        DialogPanel,
-        TransitionChild,
-        TransitionRoot,
-        draggable,
+  components: {
+    FieldCard,
+    Browser,
+    CloudIcon,
+    DialogModal,
+    DialogPanel,
+    TransitionChild,
+    TransitionRoot,
+    draggable,
+  },
+
+  props: ['resourceName', 'resourceId', 'field'],
+
+  data: () => ({
+    drag: false,
+    displayModal: false,
+    value: [],
+  }),
+
+  mounted() {
+    this.init()
+
+    this.value = this.field.value || []
+  },
+
+  beforeUnmount() {
+    this.destroy()
+
+    console.log('destroyed')
+  },
+
+  computed: {
+    ...mapState('nova-file-manager', ['darkMode', 'disk']),
+    ...mapGetters('nova-file-manager', ['allModals']),
+
+    isOpen() {
+      return this.allModals?.includes('browser')
+    },
+  },
+
+  methods: {
+    ...mapActions('nova-file-manager', ['closeBrowser', 'openBrowser']),
+    ...mapMutations('nova-file-manager', ['init', 'destroy']),
+    fill(formData) {
+      if (this.value?.length) {
+        formData.append(
+          this.field.attribute,
+          JSON.stringify(this.value?.map((file) => ({
+            path: file.path,
+            disk: file.disk
+          })))
+        )
+      }
     },
 
-    props: ['resourceName', 'resourceId', 'field'],
+    openBrowserModal() {
+      this.displayModal = true
 
-    data: () => ({
-        drag: false,
-        displayModal: false,
-        value: [],
-    }),
-
-    mounted() {
-        this.init()
-
-        this.value = this.field.value?.files || []
+      this.openBrowser({
+        initialFiles: this.value,
+        multiple: this.field.multiple ?? false,
+        limit: this.field.limit ?? null,
+        resource: this.resourceName,
+        resourceId: this.resourceId,
+        attribute: this.field.attribute,
+        customDisk: this.field.customDisk,
+        permissions: this.field.permissions,
+        callback: selection => {
+          this.value = selection
+        },
+      })
     },
 
-    beforeUnmount() {
-        this.destroy()
+    closeBrowserModal() {
+      this.displayModal = false
+      this.closeBrowser()
     },
 
-    computed: {
-        ...mapState('nova-file-manager', ['darkMode', 'disk']),
-        ...mapGetters('nova-file-manager', ['allModals']),
-
-        isOpen() {
-            return this.allModals?.includes('browser')
-        },
+    deselectFile(file) {
+      this.value = this.value.filter(f => f.id !== file.id)
     },
+  },
 
-    methods: {
-        ...mapActions('nova-file-manager', ['closeBrowser', 'openBrowser']),
-        ...mapMutations('nova-file-manager', ['init', 'destroy']),
-        fill(formData) {
-            if (this.value?.length) {
-                formData.append(
-                    this.field.attribute,
-                    JSON.stringify({
-                        disk: this.disk,
-                        files: this.value || [],
-                    })
-                )
-            }
-        },
-
-        openBrowserModal() {
-            this.displayModal = true
-
-            this.openBrowser({
-                initialFiles: this.value,
-                multiple: this.field.multiple ?? false,
-                limit: this.field.limit ?? null,
-                resource: this.resourceName,
-                resourceId: this.resourceId,
-                attribute: this.field.attribute,
-                customDisk: this.field.customDisk,
-                permissions: this.field.permissions,
-                callback: selection => {
-                    this.value = selection
-                },
-            })
-        },
-
-        closeBrowserModal() {
-            this.displayModal = false
-            this.closeBrowser()
-        },
-
-        deselectFile(file) {
-            this.value = this.value.filter(f => f.id !== file.id)
-        },
+  watch: {
+    isOpen(newValue, oldValue) {
+      if (!newValue && oldValue) {
+        this.displayModal = false
+      }
     },
-
-    watch: {
-        isOpen(newValue, oldValue) {
-            if (!newValue && oldValue) {
-                this.displayModal = false
-            }
-        },
-    },
+  },
 }
 </script>
