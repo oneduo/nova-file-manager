@@ -47,16 +47,13 @@
             <DocumentIcon class="w-16 h-16" v-if="!isUploading" />
           </div>
 
-          <img
+          <ImageLoader
             v-if="isImage"
             :src="file.url"
-            :alt="file.name"
-            class="pointer-events-none w-full h-full"
-            :class="objectFit"
           />
 
           <template v-if="isVideo">
-            <video class="pointer-events-none w-full h-full" :class="objectFit">
+            <video class="pointer-events-none w-full h-full object-cover">
               <source :src="file.url" />
               Sorry, your browser doesn't support embedded videos.
             </video>
@@ -123,6 +120,7 @@ import {
 } from '@heroicons/vue/24/solid'
 import Spinner from '@/components/Elements/Spinner'
 import Entity from '@/types/Entity'
+import ImageLoader from '@/components/Elements/ImageLoader'
 
 const props = defineProps({
     file: {
@@ -147,10 +145,6 @@ const props = defineProps({
     },
     onDeselect: {
         type: Function,
-    },
-    objectFit: {
-      type: String,
-      default: 'object-cover'
     }
 })
 

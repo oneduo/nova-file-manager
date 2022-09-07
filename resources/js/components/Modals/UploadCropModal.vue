@@ -1,29 +1,9 @@
 <template>
   <InputModal :name="name" :on-submit="submit" :title="__('NovaFileManager.uploadCropTitle')">
     <template v-slot:inputs>
-      <div class="rounded-xl overflow-auto py-4">
-        <div class="relative rounded-lg text-center overflow-hidden w-full">
-          <div class="absolute inset-0 opacity-50 bg-stripes bg-stripes-gray-700"></div>
-          <div
-            v-if="item"
-            class="absolute z-40 inset-0 flex justify-center items-center w-full h-full"
-          >
-            <Spinner class="w-16 h-16" v-if="item.status === null" />
-            <ExclamationCircleIcon class="w-16 h-16 text-red-500" v-else-if="item.status === false" />
-            <CheckCircleIcon class="w-16 h-16 text-green-500" v-else-if="item.status === true" />
-          </div>
-
-          <div
-            class="absolute inset-0 w-full h-full bg-gray-100/50 dark:bg-gray-800/50"
-            v-if="item"
-          />
-
-          <div
-            class="absolute inset-0 flex flex-row items-center justify-center text-sm font-bold text-gray-600 dark:text-gray-100"
-            v-if="item"
-          >
-            <span>{{ item.ratio }}%</span>
-          </div>
+      <div class="rounded-md overflow-auto">
+        <div class="relative rounded-md text-center overflow-hidden w-full">
+          <div class="absolute inset-0 opacity-50 bg-stripes bg-stripes-gray-400"></div>
           <img class="relative z-10 object-contain h-48 w-full" :src="image">
         </div>
       </div>
@@ -91,11 +71,8 @@ import entityTransformer from '@/transformers/entityTransformer'
 import File from '@/components/Cards/File'
 
 const store = useStore()
-const props = defineProps(['file', 'name', 'onSubmit', 'data'])
+const props = defineProps(['name', 'onSubmit', 'data'])
 const value = ref(null)
-const item = computed(() => {
-  return store.state['nova-file-manager'].queue.find((file) => file.id === props.file.id)
-})
 
 onMounted(() => {
   value.value = props.data?.name
