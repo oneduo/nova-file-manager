@@ -16,6 +16,10 @@ class Asset implements CastsAttributes
      */
     public function get($model, string $key, $value, array $attributes)
     {
+        if ($value === null) {
+            return null;
+        }
+
         return new AssetValueObject(...json_decode($value, true, 512, JSON_THROW_ON_ERROR));
     }
 

@@ -143,13 +143,13 @@ class FileManager extends Field implements InteractsWithFilesystemContract
         }
 
         if ($value instanceof Asset) {
-            $value = collect($value);
+            $value = collect([$value]);
         }
 
         return $value
             ->map(function (Asset $asset) {
-                $manager = $this->resolveFilesystem(app(NovaRequest::class))
-                    ?? app(FileManagerContract::class, ['disk' => $asset->disk]);
+                $disk = $this->resolveFilesystem(app(NovaRequest::class)) ?? $asset->disk;
+                $manager = app(FileManagerContract::class, ['disk' => $disk]);
 
                 return $manager->makeEntity($asset->path, $asset->disk);
             })
