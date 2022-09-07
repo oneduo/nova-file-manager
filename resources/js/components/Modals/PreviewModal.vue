@@ -28,20 +28,28 @@
               class="relative bg-gray-100 dark:bg-gray-900 rounded-lg overflow-hidden shadow-xl transform transition-all w-full max-w-7xl p-4 flex flex-col gap-4"
             >
               <div
-                class="w-full flex flex-col flex-col-reverse gap-y-2 md:flex-row justify-between"
+                class="w-full flex flex-col flex-col-reverse gap-y-2 md:flex-row justify-between items-start"
               >
                 <h2 class="text-lg font-medium text-gray-900 dark:text-gray-400 break-all w-full">
-                  {{ file.name }}
+                  {{ file?.name }}
                 </h2>
 
-                <div class="flex flex-row gap-2 justify-end">
+                <div class="flex flex-row gap-2 justify-end flex-shrink-0">
                   <IconButton
                     v-if="!readOnly && showDeleteFile"
                     variant="danger"
-                    @click="openModal(`delete-file-${file.id}`)"
+                    @click="openModal(`delete-file-${file?.id}`)"
                     :title="__('NovaFileManager.actions.delete')"
                   >
                     <TrashIcon class="w-5 h-5" />
+                  </IconButton>
+                  <IconButton
+                    v-if="!readOnly && file?.type === 'image'"
+                    variant="secondary"
+                    @click="openModal(`crop-image-${file?.id}`)"
+                    :title="__('NovaFileManager.actions.cropImage', { image: file?.name })"
+                  >
+                    <CropIcon class="w-5 h-5" />
                   </IconButton>
 
                   <IconButton
@@ -55,8 +63,8 @@
 
                   <IconButton
                     :as-anchor="true"
-                    :download="file.name"
-                    :href="file.url"
+                    :download="file?.name"
+                    :href="file?.url"
                     variant="secondary"
                     :title="__('NovaFileManager.actions.download')"
                   >
@@ -66,7 +74,7 @@
                   <IconButton
                     v-if="!readOnly && showRenameFile"
                     variant="secondary"
-                    @click="openModal(`rename-file-${file.id}`)"
+                    @click="openModal(`rename-file-${file?.id}`)"
                     :title="__('NovaFileManager.actions.rename')"
                   >
                     <PencilSquareIcon class="w-5 h-5" />
@@ -84,18 +92,20 @@
 
               <div class="overflow-hidden flex flex-col md:flex-row gap-4 w-full">
                 <div
-                  class="block w-full md:w-4/6 overflow-hidden rounded-lg bg-gray-500/10 flex items-center justify-center"
+                  class="block relative w-full md:w-4/6 overflow-hidden rounded-lg bg-gray-500/10 flex items-center justify-center"
                 >
-                  <img
-                    v-if="file.type === 'image'"
+                  <div class="absolute inset-0 opacity-50 bg-stripes bg-stripes-gray-400"></div>
+                  <ImageLoader
+                    v-if="file?.type === 'image'"
                     :src="file.url"
-                    :alt="file.name"
-                    class="object-cover"
+                    :is-thumbnail="false"
+                    :full-width="false"
+                    class="relative"
                   />
 
-                  <div v-else-if="file.type === 'video'" class="w-full h-full">
+                  <div v-else-if="file?.type === 'video'" class="w-full h-full">
                     <video class="w-full max-w-screen max-h-screen" controls="controls">
-                      <source :src="file.url" />
+                      <source :src="file?.url" />
                       Sorry, your browser doesn't support embedded videos.
                     </video>
                   </div>
@@ -116,7 +126,7 @@
                           {{ __('NovaFileManager.meta.size') }}
                         </dt>
                         <dd class="text-gray-400 dark:text-gray-600">
-                          {{ file.size }}
+                          {{ file?.size }}
                         </dd>
                       </div>
 
@@ -125,7 +135,7 @@
                           {{ __('NovaFileManager.meta.mime') }}
                         </dt>
                         <dd class="text-gray-400 dark:text-gray-600">
-                          {{ file.mime }}
+                          {{ file?.mime }}
                         </dd>
                       </div>
 
@@ -134,11 +144,11 @@
                           {{ __('NovaFileManager.meta.lastModifiedAt') }}
                         </dt>
                         <dd class="text-gray-400 dark:text-gray-600">
-                          {{ file.lastModifiedAt }}
+                          {{ file?.lastModifiedAt }}
                         </dd>
                       </div>
 
-                      <template v-for="(value, key) in file.meta">
+                      <template v-for="(value, key) in file?.meta">
                         <div
                           v-if="value"
                           :key="key"
@@ -163,12 +173,13 @@
     </Dialog>
   </TransitionRoot>
 
-  <DeleteFileModal v-if="showDeleteFile" :name="`delete-file-${file.id}`" :on-confirm="onDelete" />
+  <DeleteFileModal v-if="showDeleteFile" :name="`delete-file-${file?.id}`" :on-confirm="onDelete" />
+  <CropImageModal :name="`crop-image-${file?.id}`" :file="file" :on-confirm="onCropImage" />
 
   <RenameFileModal
     v-if="showRenameFile"
-    :name="`rename-file-${file.id}`"
-    :old-name="file.name"
+    :name="`rename-file-${file?.id}`"
+    :old-name="file?.name"
     :on-submit="onRename"
   />
 </template>
@@ -184,12 +195,16 @@ import {
     PencilSquareIcon,
     TrashIcon,
     XMarkIcon,
+    SparklesIcon,
 } from '@heroicons/vue/24/outline'
 import IconButton from '@/components/Elements/IconButton'
 import DeleteFileModal from '@/components/Modals/DeleteFileModal'
 import RenameFileModal from '@/components/Modals/RenameFileModal'
+import CropImageModal from '@/components/Modals/CropImageModal'
 import Entity from '@/types/Entity'
 import { useClipboard, usePermissions } from '@/hooks'
+import CropIcon from '@/components/Elements/CropIcon'
+import ImageLoader from '@/components/Elements/ImageLoader'
 
 const props = defineProps({
     file: {
@@ -208,7 +223,7 @@ const buttonRef = ref(null)
 
 const darkMode = computed(() => store.state['nova-file-manager'].darkMode)
 const preview = computed(() => store.state['nova-file-manager'].preview)
-const isOpen = computed(() => preview.value?.id === props.file.id)
+const isOpen = computed(() => !!preview.value)
 
 const { showRenameFile, showDeleteFile } = usePermissions()
 
@@ -236,9 +251,17 @@ const onDelete = () => {
     })
 }
 
+const onCropImage = (file) => {
+  closeModal()
+  openModal('upload-queue')
+  store.dispatch('nova-file-manager/upload', [file])
+}
+
+
 const copy = file => {
     copyToClipboard(file.url)
 
     Nova.success('Copied !')
 }
+
 </script>

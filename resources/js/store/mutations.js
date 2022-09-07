@@ -314,7 +314,7 @@ const mutations = {
             // @see https://github.com/tailwindlabs/headlessui/issues/1319
             document.documentElement.style.removeProperty('overflow')
             document.documentElement.style.removeProperty('padding-right')
-        }, 350)
+        }, 200)
     },
 }
 
