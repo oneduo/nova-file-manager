@@ -12,6 +12,7 @@
               @end="drag = false"
               @start="drag = true"
               tag="ul"
+              v-bind="dragOptions"
             >
               <template #item="{ element }">
                 <FieldCard
@@ -133,6 +134,14 @@ export default {
         isOpen() {
             return this.allModals?.includes('browser')
         },
+
+        dragOptions() {
+            return {
+                animation: 200,
+                disabled: !this.field?.multiple,
+                ghostClass: "ghost"
+            };
+        }
     },
 
     methods: {
