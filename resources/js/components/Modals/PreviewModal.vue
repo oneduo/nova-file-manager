@@ -195,7 +195,6 @@ import {
     PencilSquareIcon,
     TrashIcon,
     XMarkIcon,
-    SparklesIcon,
 } from '@heroicons/vue/24/outline'
 import IconButton from '@/components/Elements/IconButton'
 import DeleteFileModal from '@/components/Modals/DeleteFileModal'
@@ -251,17 +250,15 @@ const onDelete = () => {
     })
 }
 
-const onCropImage = (file) => {
-  closeModal()
-  openModal('upload-queue')
-  store.dispatch('nova-file-manager/upload', [file])
+const onCropImage = file => {
+    closeModal()
+    openModal('upload-queue')
+    store.dispatch('nova-file-manager/upload', [file])
 }
-
 
 const copy = file => {
     copyToClipboard(file.url)
 
     Nova.success('Copied !')
 }
-
 </script>
