@@ -25,7 +25,7 @@
             leave-to="opacity-0 translate-y-4 sm:translate-y-0 sm:scale-95"
           >
             <DialogPanel
-              class="relative bg-gray-100 dark:bg-gray-900 rounded-lg overflow-hidden shadow-xl transform transition-all w-full max-w-7xl p-4 flex flex-col gap-4 min-h-[80vh]"
+              class="relative bg-gray-100 dark:bg-gray-900 rounded-lg overflow-hidden shadow-xl transform transition-all w-full max-w-7xl p-4 flex flex-col gap-4 h-[80vh] max-h-[80vh]"
             >
               <div
                 class="w-full flex flex-col flex-col-reverse gap-2 md:flex-row justify-between items-start"
@@ -49,7 +49,7 @@
                 </div>
               </div>
 
-              <div class="h-full">
+              <div class="h-full max-h-[70vh]">
                 <vue-cropper
                   ref="cropper"
                   :containerStyle="containerStyle"
