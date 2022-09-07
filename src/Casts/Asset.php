@@ -29,6 +29,10 @@ class Asset implements CastsAttributes
      */
     public function set($model, string $key, $value, array $attributes)
     {
+        if ($value === null) {
+            return null;
+        }
+
         if ($value instanceof AssetValueObject) {
             return json_encode($value, JSON_THROW_ON_ERROR);
         }
