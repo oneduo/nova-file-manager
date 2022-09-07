@@ -55,6 +55,7 @@ const store = {
             showUploadFile: true,
             showRenameFile: true,
             showDeleteFile: true,
+            showCropImage: true,
 
             callback: null,
         }

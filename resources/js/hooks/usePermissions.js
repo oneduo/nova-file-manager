@@ -10,6 +10,7 @@ export function usePermissions() {
     const showUploadFile = computed(() => store.state['nova-file-manager'].showUploadFile)
     const showRenameFile = computed(() => store.state['nova-file-manager'].showRenameFile)
     const showDeleteFile = computed(() => store.state['nova-file-manager'].showDeleteFile)
+    const showCropImage = computed(() => store.state['nova-file-manager'].showCropImage)
 
     return {
         showCreateFolder,
@@ -18,5 +19,6 @@ export function usePermissions() {
         showUploadFile,
         showRenameFile,
         showDeleteFile,
+      showCropImage,
     }
 }

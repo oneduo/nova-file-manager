@@ -62,6 +62,8 @@ const actions = {
     setPerPage({ commit, dispatch }, perPage) {
         commit('setPerPage', perPage)
 
+        dispatch('setPage', 1)
+
         dispatch('getData')
 
         dispatch('updateQueryString', { perPage })
@@ -474,6 +476,7 @@ const actions = {
             showUploadFile,
             showRenameFile,
             showDeleteFile,
+            showCropImage,
         }
     ) => {
         commit('setShowCreateFolder', showCreateFolder)
@@ -482,6 +485,7 @@ const actions = {
         commit('setshowUploadFile', showUploadFile)
         commit('setshowRenameFile', showRenameFile)
         commit('setshowDeleteFile', showDeleteFile)
+        commit('setshowCropImage', showCropImage)
     },
 }
 

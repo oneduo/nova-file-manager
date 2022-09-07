@@ -276,6 +276,9 @@ const mutations = {
     setshowDeleteFile(state, value) {
         state.showDeleteFile = value
     },
+    setshowCropImage(state, value) {
+        state.showCropImage = value
+    },
 
     openModal: (state, payload) => {
         state.toolModals.unshift(payload)

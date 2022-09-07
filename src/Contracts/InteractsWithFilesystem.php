@@ -43,6 +43,10 @@ interface InteractsWithFilesystem
 
     public function shouldShowDeleteFile(NovaRequest $request): bool;
 
+    public function showCropImage(Closure $callback): static;
+
+    public function shouldShowCropImage(NovaRequest $request): bool;
+
     public function canCreateFolder(Closure $callback): static;
 
     public function resolveCanCreateFolder(NovaRequest $request): bool;

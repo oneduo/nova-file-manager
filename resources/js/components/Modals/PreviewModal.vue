@@ -44,7 +44,7 @@
                     <TrashIcon class="w-5 h-5" />
                   </IconButton>
                   <IconButton
-                    v-if="!readOnly && file?.type === 'image'"
+                    v-if="!readOnly && showCropImage && file?.type === 'image'"
                     variant="secondary"
                     @click="openModal(`crop-image-${file?.id}`)"
                     :title="__('NovaFileManager.actions.cropImage', { image: file?.name })"
@@ -53,7 +53,6 @@
                   </IconButton>
 
                   <IconButton
-                    v-if="readOnly"
                     @click="copy(file)"
                     variant="secondary"
                     :title="__('NovaFileManager.actions.copy')"
@@ -176,7 +175,7 @@
   </TransitionRoot>
 
   <DeleteFileModal v-if="showDeleteFile" :name="`delete-file-${file?.id}`" :on-confirm="onDelete" />
-  <CropImageModal :name="`crop-image-${file?.id}`" :file="file" :on-confirm="onCropImage" />
+  <CropImageModal v-if="showCropImage" :name="`crop-image-${file?.id}`" :file="file" :on-confirm="onCropImage" />
 
   <RenameFileModal
     v-if="showRenameFile"
@@ -226,7 +225,7 @@ const darkMode = computed(() => store.state['nova-file-manager'].darkMode)
 const preview = computed(() => store.state['nova-file-manager'].preview)
 const isOpen = computed(() => !!preview.value)
 
-const { showRenameFile, showDeleteFile } = usePermissions()
+const { showRenameFile, showDeleteFile, showCropImage } = usePermissions()
 
 const openModal = name => {
     return store.dispatch('nova-file-manager/openModal', name)
