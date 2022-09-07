@@ -21,6 +21,10 @@ const mutations = {
         state.darkModeObserver = null
     },
 
+    setDarkMode(state, value) {
+        state.darkMode = value
+    },
+
     // this cool function will allow us to listen to any color scheme change so as to sync the browser's dark mode with nova's
     detectDarkMode(state) {
         state.darkMode = document.documentElement.classList.contains('dark')
@@ -28,7 +32,7 @@ const mutations = {
         if (state.darkModeObserver === null) {
             state.darkModeObserver = new MutationObserver(records => {
                 records.forEach(record => {
-                    state.darkMode = record.target?.classList.contains('dark')
+                    this.commit('nova-file-manager/setDarkMode', record.target?.classList.contains('dark'))
                 })
             })
 
