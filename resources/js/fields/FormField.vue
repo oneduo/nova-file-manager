@@ -139,9 +139,9 @@ export default {
             return {
                 animation: 200,
                 disabled: !this.field?.multiple,
-                ghostClass: "ghost"
-            };
-        }
+                ghostClass: 'ghost',
+            }
+        },
     },
 
     methods: {

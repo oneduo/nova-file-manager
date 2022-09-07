@@ -11,7 +11,8 @@ class FileMissingInFilesystem implements Rule
 {
     public function __construct(
         public BaseRequest $request,
-    ) {}
+    ) {
+    }
 
     public function passes($attribute, $value): bool
     {

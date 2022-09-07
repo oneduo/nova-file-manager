@@ -12,7 +12,6 @@ use BBSLab\NovaFileManager\Services\FileManagerService;
 use Illuminate\Foundation\Application;
 use Illuminate\Support\Facades\Route;
 use Illuminate\Support\ServiceProvider;
-use Inertia\Inertia;
 use Laravel\Nova\Events\ServingNova;
 use Laravel\Nova\Nova;
 

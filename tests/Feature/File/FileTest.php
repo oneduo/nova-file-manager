@@ -136,6 +136,7 @@ it('throws an exception if the filesystem cannot rename the file', function () {
 
     $mock = mock(FileManagerContract::class)->expect(
         rename: fn (string $oldPath, string $newPath) => false,
+        filesystem: fn () => Storage::disk($this->disk),
     );
 
     app()->instance(FileManagerContract::class, $mock);
@@ -225,6 +226,7 @@ it('throw an exception if the filesystem cannot delete the file', function () {
 
     $mock = mock(FileManagerContract::class)->expect(
         delete: fn (string $path) => false,
+        filesystem: fn () => Storage::disk($this->disk),
     );
 
     app()->instance(FileManagerContract::class, $mock);

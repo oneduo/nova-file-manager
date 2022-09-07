@@ -4,10 +4,8 @@ declare(strict_types=1);
 
 namespace BBSLab\NovaFileManager\Tests;
 
-use BBSLab\NovaFileManager\NovaFileManager;
 use BBSLab\NovaFileManager\ToolServiceProvider;
 use Illuminate\Support\Facades\Route;
-use Laravel\Nova\Nova;
 use Laravel\Nova\NovaServiceProvider;
 use Orchestra\Testbench\TestCase as Orchestra;
 use Pion\Laravel\ChunkUpload\Providers\ChunkUploadServiceProvider;

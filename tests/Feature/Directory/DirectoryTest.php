@@ -48,8 +48,8 @@ it('cannot create a directory with an existing name', function () {
         ],
     )
         ->assertJsonValidationErrors([
-            'folder' => [
-                __('Folder already exists !'),
+            'path' => [
+                trans('validation.exists', ['attribute' => 'path']),
             ],
         ]);
 });
@@ -71,8 +71,8 @@ it('can rename a directory', function () {
     )
         ->assertOk();
 
-    expect(Storage::disk($this->disk)->exists($old))->toBeFalse();
-    expect(Storage::disk($this->disk)->exists($new))->toBeTrue();
+    Storage::disk($this->disk)->assertMissing($old);
+    Storage::disk($this->disk)->assertExists($new);
 
     Event::assertDispatched(
         event: FolderRenamed::class,
@@ -87,6 +87,7 @@ it('returns validation error when the filesystem can not rename the directory', 
 
     $mock = mock(FileManagerContract::class)->expect(
         rename: fn ($path) => false,
+        filesystem: fn () => Storage::disk($this->disk),
     );
 
     app()->instance(FileManagerContract::class, $mock);
@@ -210,6 +211,7 @@ it('throws an exception if the filesystem cannot delete the directory', function
 
     $mock = mock(FileManagerContract::class)->expect(
         rmdir: fn ($path) => false,
+        filesystem: fn () => Storage::disk($this->disk),
     );
 
     app()->instance(FileManagerContract::class, $mock);

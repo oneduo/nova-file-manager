@@ -93,7 +93,9 @@
                 <div
                   class="block relative w-full md:w-4/6 overflow-hidden rounded-lg bg-gray-500/10 flex items-center justify-center"
                 >
-                  <div class="absolute inset-0 opacity-50 bg-stripes bg-stripes-gray-300 dark:bg-stripes-gray-700"></div>
+                  <div
+                    class="absolute inset-0 opacity-50 bg-stripes bg-stripes-gray-300 dark:bg-stripes-gray-700"
+                  ></div>
                   <ImageLoader
                     v-if="file?.type === 'image'"
                     :src="file.url"
@@ -175,7 +177,12 @@
   </TransitionRoot>
 
   <DeleteFileModal v-if="showDeleteFile" :name="`delete-file-${file?.id}`" :on-confirm="onDelete" />
-  <CropImageModal v-if="showCropImage" :name="`crop-image-${file?.id}`" :file="file" :on-confirm="onCropImage" />
+  <CropImageModal
+    v-if="showCropImage"
+    :name="`crop-image-${file?.id}`"
+    :file="file"
+    :on-confirm="onCropImage"
+  />
 
   <RenameFileModal
     v-if="showRenameFile"

@@ -19,6 +19,6 @@ export function usePermissions() {
         showUploadFile,
         showRenameFile,
         showDeleteFile,
-      showCropImage,
+        showCropImage,
     }
 }

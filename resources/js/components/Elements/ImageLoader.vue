@@ -57,7 +57,7 @@ onMounted(() => {
 
             card.value.appendChild(image)
         })
-        .catch(e => {
+        .catch(() => {
             missing.value = true
 
             emit('missing', true)
@@ -67,9 +67,3 @@ onMounted(() => {
         })
 })
 </script>
-
-<style scoped>
-.card {
-  padding: 0 !important;
-}
-</style>

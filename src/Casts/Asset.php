@@ -12,6 +12,7 @@ class Asset implements CastsAttributes
 {
     /**
      * @inheritDoc
+     *
      * @throws \JsonException
      */
     public function get($model, string $key, $value, array $attributes)
@@ -25,6 +26,7 @@ class Asset implements CastsAttributes
 
     /**
      * @inheritDoc
+     *
      * @throws \JsonException
      */
     public function set($model, string $key, $value, array $attributes)
@@ -37,7 +39,7 @@ class Asset implements CastsAttributes
             return json_encode($value, JSON_THROW_ON_ERROR);
         }
 
-        if(is_array($value)){
+        if (is_array($value)) {
             return json_encode($value, JSON_THROW_ON_ERROR);
         }
 

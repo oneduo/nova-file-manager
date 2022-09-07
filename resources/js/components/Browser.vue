@@ -41,7 +41,7 @@
 </template>
 
 <script setup>
-import { computed, onBeforeUnmount, onMounted, ref, watch } from 'vue'
+import { computed, onMounted, ref, watch } from 'vue'
 import { useStore } from 'vuex'
 import Toolbar from '@/components/Toolbar'
 import Pagination from '@/components/Pagination'

@@ -5,8 +5,8 @@ declare(strict_types=1);
 namespace BBSLab\NovaFileManager\Http\Requests;
 
 use BBSLab\NovaFileManager\Rules\DiskExistsRule;
-use BBSLab\NovaFileManager\Rules\MissingInFilesystem;
 use BBSLab\NovaFileManager\Rules\ExistsInFilesystem;
+use BBSLab\NovaFileManager\Rules\MissingInFilesystem;
 
 /**
  * @property-read string $oldPath
@@ -18,7 +18,7 @@ class RenameFileRequest extends BaseRequest
     {
         return [
             'disk' => ['sometimes', 'string', new DiskExistsRule()],
-            'oldPath' => [ 'required', 'string', new ExistsInFilesystem($this)],
+            'oldPath' => ['required', 'string', new ExistsInFilesystem($this)],
             'newPath' => ['required', 'string', new MissingInFilesystem($this)],
         ];
     }
