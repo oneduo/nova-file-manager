@@ -36,7 +36,7 @@ class FolderController extends Controller
 
         if (!$result) {
             throw ValidationException::withMessages([
-                'folder' => [__('Folder already exists !')],
+                'folder' => [__('Could not create folder !')],
             ]);
         }
 

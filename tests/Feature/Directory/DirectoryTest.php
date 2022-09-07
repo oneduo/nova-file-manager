@@ -29,11 +29,42 @@ it('can create a directory', function () {
     )
         ->assertOk();
 
-    expect(Storage::disk($this->disk)->exists($path))->toBeTrue();
+    Storage::disk($this->disk)->assertExists($path);
 
     Event::assertDispatched(
         event: FolderCreated::class,
         callback: fn (FolderCreated $event) => $event->disk === $this->disk && $event->path === $path,
+    );
+});
+
+it('throws an exception if the filesystem cannot create the directory', function () {
+    Event::fake();
+
+    $mock = mock(FileManagerContract::class)->expect(
+        mkdir: fn ($path) => false,
+        filesystem: fn () => Storage::disk($this->disk),
+    );
+
+    app()->instance(FileManagerContract::class, $mock);
+
+    $path = 'new folder';
+
+    postJson(
+        uri: route('nova-file-manager.folders.create'),
+        data: [
+            'disk' => $this->disk,
+            'path' => $path,
+        ],
+    )
+        ->assertJsonValidationErrors([
+            'folder' => [
+                __('Could not create folder !'),
+            ],
+        ]);
+
+    Event::assertNotDispatched(
+        event: FolderCreated::class,
+        callback: fn (FolderDeleted $event) => $event->disk === $this->disk && $event->path === $path,
     );
 });
 
