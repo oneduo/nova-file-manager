@@ -8,7 +8,7 @@
       >
         <FolderIcon class="h-4 w-4" />
       </span>
-      <span class="shrink px-2 py-2 truncate">
+      <span class="shrink px-2 py-2 truncate text-left">
         <span
           class="whitespace-normal text-left break-all text-gray-800 dark:text-gray-200 font-medium text-sm hover:text-gray-900 dark:hover:text-gray-100"
         >

@@ -2,6 +2,26 @@
 
 All notable changes to `nova-file-manager` will be documented in this file
 
+## 0.4.0 - 2022-09-05
+
+### What's Changed
+
+- Add field and tool permissions. by @mikaelpopowicz in https://github.com/BBS-Lab/nova-file-manager/pull/49
+- fix(file-card): fixed missing file label spacing and alignment by @crezra in https://github.com/BBS-Lab/nova-file-manager/pull/56
+- fix(file-card): fixed file card submitting the form by @crezra in https://github.com/BBS-Lab/nova-file-manager/pull/57
+- fix(disks): fixed path not resetting when changing disks by @crezra in https://github.com/BBS-Lab/nova-file-manager/pull/58
+
+**Full Changelog**: https://github.com/BBS-Lab/nova-file-manager/compare/v0.3.2...v0.4.0
+
+## 0.3.2 - 2022-09-02
+
+### What's Changed
+
+- sync by @crezra in https://github.com/BBS-Lab/nova-file-manager/pull/47
+- ♿️ fixed focus styles for better accessibility  by @crezra in https://github.com/BBS-Lab/nova-file-manager/pull/48
+
+**Full Changelog**: https://github.com/BBS-Lab/nova-file-manager/compare/v0.3.1...v0.3.2
+
 ## 0.3.1 - 2022-09-02
 
 ### What's Changed

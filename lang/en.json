@@ -5,6 +5,7 @@
   "NovaFileManager.actions.copy": "Copy",
   "NovaFileManager.actions.copy.success": "Copied path to clipboard !",
   "NovaFileManager.actions.createFolder": "Create folder",
+  "NovaFileManager.actions.cropImage": "Crop image : :image",
   "NovaFileManager.actions.download": "Download",
   "NovaFileManager.actions.rename": "Rename",
   "NovaFileManager.actions.submit": "Submit",
@@ -33,5 +34,6 @@
   "NovaFileManager.toolbar.clear": "clear",
   "NovaFileManager.totalFilesCount": ":count files",
   "NovaFileManager.upload": "Upload a file",
+  "NovaFileManager.uploadCropTitle": "Upload cropped file",
   "NovaFileManager.fileMissing": "File missing at path :path."
 }
