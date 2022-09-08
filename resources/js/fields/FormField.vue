@@ -70,9 +70,9 @@
             leave-to="opacity-0 translate-y-4 sm:translate-y-0 sm:scale-95"
           >
             <DialogPanel
-              class="relative bg-transparent rounded-lg overflow-hidden shadow-xl transition-all w-full border border-gray-300 dark:border-gray-800 md:m-8 m-0"
+              class="relative bg-transparent md:rounded-lg overflow-hidden shadow-xl transition-all w-full border border-gray-300 dark:border-gray-800 md:m-8 m-0"
             >
-              <Browser class="w-full" />
+              <Browser />
             </DialogPanel>
           </TransitionChild>
         </div>
@@ -94,6 +94,7 @@ import { FormField, HandlesValidationErrors } from 'laravel-nova'
 import { mapActions, mapGetters, mapMutations, mapState } from 'vuex'
 import draggable from 'vuedraggable'
 import FieldCard from '@/components/Cards/FieldCard'
+import Entity from '@/types/Entity'
 
 export default {
     mixins: [FormField, HandlesValidationErrors],
@@ -120,11 +121,7 @@ export default {
     mounted() {
         this.init()
 
-        this.value = this.field.value || []
-    },
-
-    beforeUnmount() {
-        this.destroy()
+        this.value = (this.field.value || []).map((file) => this.mapEntity(file))
     },
 
     computed: {
@@ -174,7 +171,7 @@ export default {
                 customDisk: this.field.customDisk,
                 permissions: this.field.permissions,
                 callback: selection => {
-                    this.value = selection
+                    this.value = selection.map(f => this.mapEntity(f))
                 },
             })
         },
@@ -187,6 +184,21 @@ export default {
         deselectFile(file) {
             this.value = this.value.filter(f => f.id !== file.id)
         },
+
+        mapEntity: file =>
+            new Entity(
+                file.id,
+                file.name,
+                file.path,
+                file.size,
+                file.extension,
+                file.mime,
+                file.url,
+                file.lastModifiedAt,
+                file.type,
+                file.exists,
+                file.disk
+            ),
     },
 
     watch: {

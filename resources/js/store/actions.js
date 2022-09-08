@@ -437,6 +437,7 @@ const actions = {
         commit('setCallback', callback)
         commit('setSelection', [...initialFiles])
         dispatch('setPermissions', permissions)
+        commit('setDisk', null)
 
         dispatch('openModal', 'browser')
     },
@@ -455,7 +456,7 @@ const actions = {
         commit('setResourceId', null)
         commit('setAttribute', null)
         commit('setCustomDisk', false)
-
+        commit('setDisk', null)
         commit('setSelection', null)
 
         dispatch('closeModal', 'browser')
