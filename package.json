@@ -9,8 +9,6 @@
     "hot": "mix watch --hot",
     "prod": "npm run production",
     "production": "mix --production",
-    "nova:install": "npm --prefix='vendor/laravel/nova' ci",
-    "nova:install:dependency": "npm --prefix='../../laravel/nova' ci",
     "check-format": "prettier --list-different 'resources/**/*.{css,js,vue}'",
     "format": "prettier --write 'resources/js/**/*.{css,js,vue}'",
     "lint": "eslint resources/js --fix --ext js,vue",
