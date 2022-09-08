@@ -1,5 +1,5 @@
 <template>
-  <div class="flex flex-1 items-stretch overflow-hidden rounded-md w-full min-h-[30vh]">
+  <div class="flex flex-1 items-stretch overflow-hidden rounded-md w-full min-h-[50vh]">
     <main class="relative flex-1 overflow-y-auto bg-gray-50 dark:bg-gray-800">
       <div class="w-full px-4 space-y-4 mb-4">
         <Toolbar />

@@ -1,15 +1,15 @@
 <template>
-  <span v-if="!field.value?.files">&mdash;</span>
-  <span v-else-if="field.value?.files.length === 1">
-    {{ field.value.files[0].path }}
-  </span>
-  <span v-else>
-    {{
-      __('NovaFileManager.totalFilesCount', {
-        count: field.value?.files.length ?? 0,
-      })
-    }}
-  </span>
+  <div :class="`text-${field.textAlign}`">
+    <span class="text-90 whitespace-nowrap" v-if="!field.value || !field.value?.length"
+      >&mdash;
+    </span>
+    <span class="text-90 whitespace-nowrap" v-else-if="field.value?.length === 1">
+      {{ field.value[0].path }}
+    </span>
+    <span class="text-90 whitespace-nowrap" v-else>
+      {{ __('NovaFileManager.totalFilesCount', { count: field.value?.length ?? 0 }) }}
+    </span>
+  </div>
 </template>
 
 <script setup>

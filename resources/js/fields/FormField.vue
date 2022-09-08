@@ -121,7 +121,7 @@ export default {
     mounted() {
         this.init()
 
-        this.value = (this.field.value || []).map((file) => this.mapEntity(file))
+        this.value = (this.field.value || []).map(file => this.mapEntity(file))
     },
 
     computed: {
