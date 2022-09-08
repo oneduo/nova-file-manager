@@ -2,6 +2,44 @@
 
 All notable changes to `nova-file-manager` will be documented in this file
 
+## 0.5.0 - 2022-09-08
+
+### 🚨 BREAKING CHANGE
+
+> **Warning**
+
+Existing assets saved with the field will not work anymore once you update the tool, please migrate your existing data when updating the package.
+
+This PR introduces a major breaking changing related to how the data is saved in the database, initially we tried to follow Laravel Nova's built-in fields as much as possible by having a two column set up to save the asset's path and then the asset's disk if needed. However, this approach isn't as reliable as we hoped for it to be. There was indeed a particular use case that wasn't in our scope when building the field, when saving multiple assets from different disks, only the one disk was to be saved in the disk column and that makes the tool behaves in unintended ways.
+
+We have moved forward with a JSON schema to save the field's data.
+
+Starting from the next 0.5 release, the data will change from :
+
+| image                | image_disk    |
+|----------------------|---------------|
+| `<image-path-value>` | `<disk-name>` |
+
+TO
+
+| image                                                                |
+|----------------------------------------------------------------------|
+| `{"path": "<image-path-value>",   "disk": "<disk-name>" } ` |
+
+So in other words, each asset that will saved with its corresponding disk.
+
+We regret to introduce such a change so early, but it is a change that needs to be done unfortunately.
+
+To migrate your existing data, you may defined a command or action to transform your data to the required schema.
+
+#### What's Changed
+
+- fix(docs): updated screenshots in docs by @crezra in https://github.com/BBS-Lab/nova-file-manager/pull/59
+- Add crop image feature by @mikaelpopowicz in https://github.com/BBS-Lab/nova-file-manager/pull/60
+- [0.5.x] Improved multi disk support, added image cropping by @mikaelpopowicz in https://github.com/BBS-Lab/nova-file-manager/pull/63
+
+**Full Changelog**: https://github.com/BBS-Lab/nova-file-manager/compare/v0.4.0...v0.5.0
+
 ## 0.4.0 - 2022-09-05
 
 ### What's Changed
