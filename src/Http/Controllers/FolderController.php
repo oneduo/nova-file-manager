@@ -24,26 +24,20 @@ class FolderController extends Controller
      */
     public function create(CreateFolderRequest $request): JsonResponse
     {
-        if (!$request->canCreateFolder()) {
-            throw ValidationException::withMessages([
-                'folder' => [__('Sorry! You are not authorized to perform this action.')],
-            ]);
-        }
-
         $result = $request->manager()->mkdir(
             $path = trim($request->path)
         );
 
         if (!$result) {
             throw ValidationException::withMessages([
-                'folder' => [__('Could not create folder !')],
+                'folder' => [__('nova-file-manager::errors.folder.create')],
             ]);
         }
 
         event(new FolderCreated($request->manager()->disk, $path));
 
         return response()->json([
-            'message' => __('Folder created successfully.'),
+            'message' => __('nova-file-manager::messages.folder.create'),
         ]);
     }
 
@@ -55,12 +49,6 @@ class FolderController extends Controller
      */
     public function rename(RenameFolderRequest $request): JsonResponse
     {
-        if (!$request->canRenameFolder()) {
-            throw ValidationException::withMessages([
-                'folder' => [__('Sorry! You are not authorized to perform this action.')],
-            ]);
-        }
-
         $oldPath = $request->oldPath;
         $newPath = $request->newPath;
 
@@ -68,14 +56,14 @@ class FolderController extends Controller
 
         if (!$result) {
             throw ValidationException::withMessages([
-                'folder' => [__('Could not rename folder !')],
+                'folder' => [__('nova-file-manager::errors.folder.rename')],
             ]);
         }
 
         event(new FolderRenamed($request->manager()->disk, $oldPath, $newPath));
 
         return response()->json([
-            'message' => __('Folder renamed successfully.'),
+            'message' => __('nova-file-manager::messages.folder.rename'),
         ]);
     }
 
@@ -87,26 +75,20 @@ class FolderController extends Controller
      */
     public function delete(DeleteFolderRequest $request): JsonResponse
     {
-        if (!$request->canDeleteFolder()) {
-            throw ValidationException::withMessages([
-                'folder' => [__('Sorry! You are not authorized to perform this action.')],
-            ]);
-        }
-
         $path = $request->path;
 
         $result = $request->manager()->rmdir($path);
 
         if (!$result) {
             throw ValidationException::withMessages([
-                'folder' => [__('Could not delete folder !')],
+                'folder' => [__('nova-file-manager::errors.folder.delete')],
             ]);
         }
 
         event(new FolderDeleted($request->manager()->disk, $path));
 
         return response()->json([
-            'message' => __('Folder deleted successfully.'),
+            'message' => __('nova-file-manager::messages.folder.delete'),
         ]);
     }
 }

@@ -4,17 +4,19 @@ declare(strict_types=1);
 
 namespace BBSLab\NovaFileManager;
 
-use BBSLab\NovaFileManager\Contracts\InteractsWithFilesystem as InteractsWithFilesystemContract;
 use BBSLab\NovaFileManager\Contracts\Services\FileManagerContract;
-use BBSLab\NovaFileManager\ValueObjects\Asset;
+use BBSLab\NovaFileManager\Contracts\Support\InteractsWithFilesystem;
+use BBSLab\NovaFileManager\Contracts\Support\ResolvesUrl;
+use BBSLab\NovaFileManager\Support\Asset;
 use Closure;
 use JsonException;
 use Laravel\Nova\Fields\Field;
 use Laravel\Nova\Http\Requests\NovaRequest;
 
-class FileManager extends Field implements InteractsWithFilesystemContract
+class FileManager extends Field implements InteractsWithFilesystem, ResolvesUrl
 {
-    use InteractsWithFilesystem;
+    use Traits\Support\InteractsWithFilesystem;
+    use Traits\Support\ResolvesUrl;
 
     public $component = 'nova-file-manager-field';
 
@@ -94,7 +96,7 @@ class FileManager extends Field implements InteractsWithFilesystemContract
             $files = collect($payload);
 
             if ($this->multiple) {
-                $value = collect($files)->map(fn (array $file) => new Asset(...$file));
+                $value = collect($files)->map(fn(array $file) => new Asset(...$file));
             } else {
                 $value = $files->isNotEmpty() ? new Asset(...$files->first()) : null;
             }
@@ -116,7 +118,13 @@ class FileManager extends Field implements InteractsWithFilesystemContract
         return $value
             ->map(function (Asset $asset) {
                 $disk = $this->resolveFilesystem(app(NovaRequest::class)) ?? $asset->disk;
+
+                /** @var \BBSLab\NovaFileManager\Services\FileManagerService $manager */
                 $manager = app(FileManagerContract::class, ['disk' => $disk]);
+
+                if ($this->hasUrlResolver()) {
+                    $manager->resolveUrlUsing($this->getUrlResolver());
+                }
 
                 return $manager->makeEntity($asset->path, $asset->disk);
             })

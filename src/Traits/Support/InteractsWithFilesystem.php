@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace BBSLab\NovaFileManager;
+namespace BBSLab\NovaFileManager\Traits\Support;
 
 use Closure;
 use Illuminate\Contracts\Filesystem\Filesystem;

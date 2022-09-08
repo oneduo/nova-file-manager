@@ -9,14 +9,20 @@ use Illuminate\Contracts\Validation\Rule;
 
 class FileMissingInFilesystem implements Rule
 {
-    public function __construct(
-        public BaseRequest $request,
-    ) {
+    public ?string $path = null;
+
+    public function __construct(public BaseRequest $request)
+    {
     }
 
+    /**
+     * @param $attribute
+     * @param  \Illuminate\Http\UploadedFile  $value
+     * @return bool
+     */
     public function passes($attribute, $value): bool
     {
-        /** @var \Illuminate\Http\UploadedFile $value */
+        $this->path = $value->getClientOriginalName();
 
         return $this->request
             ->manager()
@@ -26,6 +32,6 @@ class FileMissingInFilesystem implements Rule
 
     public function message(): string
     {
-        return __('validation.exists');
+        return __('nova-file-manager::validation.path.missing', ['path' => $this->path]);
     }
 }

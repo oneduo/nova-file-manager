@@ -23,7 +23,7 @@ class FileLimit implements Rule
 
         $value = collect(json_decode($value, true, 512, JSON_THROW_ON_ERROR));
 
-        $total = count($value->get('files', []));
+        $total = $value->count();
 
         return max($this->min, 0) <= $total && max($this->max, 0) >= $total;
     }

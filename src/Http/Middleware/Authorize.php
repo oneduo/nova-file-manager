@@ -11,7 +11,6 @@ use Illuminate\Http\Request;
 use Illuminate\Http\Response;
 use Laravel\Nova\Nova;
 use Laravel\Nova\Tool;
-use Symfony\Component\HttpFoundation\BinaryFileResponse;
 
 class Authorize
 {
@@ -22,7 +21,7 @@ class Authorize
      * @param  \Closure(\Illuminate\Http\Request):mixed  $next
      * @return \Illuminate\Http\Response|\Illuminate\Http\JsonResponse
      */
-    public function handle(Request $request, Closure $next): Response|JsonResponse|BinaryFileResponse
+    public function handle(Request $request, Closure $next): Response|JsonResponse
     {
         $tool = collect(Nova::registeredTools())->first([$this, 'matchesTool']);
 

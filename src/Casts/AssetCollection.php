@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace BBSLab\NovaFileManager\Casts;
 
-use BBSLab\NovaFileManager\ValueObjects\Asset;
+use BBSLab\NovaFileManager\Support\Asset;
 use Illuminate\Contracts\Database\Eloquent\CastsAttributes;
 use Illuminate\Support\Collection;
 use InvalidArgumentException;
@@ -16,7 +16,7 @@ class AssetCollection implements CastsAttributes
      * @param  string  $key
      * @param  string  $value
      * @param  array  $attributes
-     * @return \Illuminate\Support\Collection<\BBSLab\NovaFileManager\ValueObjects\Asset>
+     * @return \Illuminate\Support\Collection<\BBSLab\NovaFileManager\Support\Asset>
      *
      * @throws \JsonException
      */
@@ -33,7 +33,7 @@ class AssetCollection implements CastsAttributes
     /**
      * @param  \Illuminate\Database\Eloquent\Model  $model
      * @param  string  $key
-     * @param  \Illuminate\Support\Collection<\BBSLab\NovaFileManager\ValueObjects\Asset>  $value
+     * @param  \Illuminate\Support\Collection<\BBSLab\NovaFileManager\Support\Asset>  $value
      * @param  array  $attributes
      * @return string
      */

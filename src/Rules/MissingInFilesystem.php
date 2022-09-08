@@ -9,13 +9,16 @@ use Illuminate\Contracts\Validation\Rule;
 
 class MissingInFilesystem implements Rule
 {
-    public function __construct(
-        public BaseRequest $request,
-    ) {
+    public ?string $path = null;
+
+    public function __construct(public BaseRequest $request)
+    {
     }
 
     public function passes($attribute, $value): bool
     {
+        $this->path = $value;
+
         return $this->request
             ->manager()
             ->filesystem()
@@ -24,6 +27,6 @@ class MissingInFilesystem implements Rule
 
     public function message(): string
     {
-        return __('validation.exists');
+        return __('nova-file-manager::validation.path.exists', ['path' => $this->path]);
     }
 }

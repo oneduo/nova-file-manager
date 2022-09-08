@@ -83,9 +83,9 @@ return [
     */
 
     'file_analysis' => [
-        'enabled' => env('NOVA_FILE_MANAGER_ENABLE_FILE_ANALYSIS', true),
+        'enabled' => env('NOVA_FILE_MANAGER_FILE_ANALYSIS_ENABLED', true),
         'cache' => [
-            'enable' => env('NOVA_FILE_MANAGER_FILE_ANALYSIS_CACHE_ENABLE', true),
+            'enabled' => env('NOVA_FILE_MANAGER_FILE_ANALYSIS_CACHE_ENABLED', true),
             'ttl_in_seconds' => env('NOVA_FILE_MANAGER_FILE_ANALYSIS_CACHE_TTL_IN_SECONDS', 60 * 60 * 24),
         ],
     ],
@@ -119,7 +119,7 @@ return [
     | Uses: Storage::temporaryUrl()
     */
     'url_signing' => [
-        'enabled' => env('NOVA_FILE_MANAGER_ENABLED_URL_SIGNING', false),
+        'enabled' => env('NOVA_FILE_MANAGER_URL_SIGNING_ENABLED', false),
         'unit' => 'minutes',
         'value' => 10,
     ],

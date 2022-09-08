@@ -14,6 +14,11 @@ use BBSLab\NovaFileManager\Rules\MissingInFilesystem;
  */
 class RenameFolderRequest extends BaseRequest
 {
+    public function authorize(): bool
+    {
+        return $this->canRenameFolder();
+    }
+
     public function rules(): array
     {
         return [

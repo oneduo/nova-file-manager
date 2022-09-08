@@ -9,11 +9,17 @@ use BBSLab\NovaFileManager\Rules\ExistsInFilesystem;
 use BBSLab\NovaFileManager\Rules\FileMissingInFilesystem;
 
 /**
+ * @property-read string|null $disk
  * @property-read string $path
  * @property-read string $file
  */
-class UploadRequest extends BaseRequest
+class UploadFileRequest extends BaseRequest
 {
+    public function authorize(): bool
+    {
+        return $this->canUploadFile();
+    }
+
     public function rules(): array
     {
         return [

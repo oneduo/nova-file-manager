@@ -12,6 +12,11 @@ use BBSLab\NovaFileManager\Rules\ExistsInFilesystem;
  */
 class DeleteFolderRequest extends BaseRequest
 {
+    public function authorize(): bool
+    {
+        return $this->canDeleteFolder();
+    }
+
     public function rules(): array
     {
         return [

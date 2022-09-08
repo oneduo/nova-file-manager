@@ -12,6 +12,11 @@ use BBSLab\NovaFileManager\Rules\ExistsInFilesystem;
  */
 class DeleteFileRequest extends BaseRequest
 {
+    public function authorize(): bool
+    {
+        return $this->canDeleteFile();
+    }
+
     public function rules(): array
     {
         return [

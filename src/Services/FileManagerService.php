@@ -5,7 +5,9 @@ declare(strict_types=1);
 namespace BBSLab\NovaFileManager\Services;
 
 use BBSLab\NovaFileManager\Contracts\Services\FileManagerContract;
+use BBSLab\NovaFileManager\Contracts\Support\ResolvesUrl as ResolvesUrlContract;
 use BBSLab\NovaFileManager\Entities\Entity;
+use BBSLab\NovaFileManager\Traits\Support\ResolvesUrl;
 use Closure;
 use Illuminate\Container\Container;
 use Illuminate\Contracts\Filesystem\Filesystem;
@@ -16,8 +18,10 @@ use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Str;
 use League\Flysystem\UnableToRetrieveMetadata;
 
-class FileManagerService implements FileManagerContract
+class FileManagerService implements FileManagerContract, ResolvesUrlContract
 {
+    use ResolvesUrl;
+
     public string $disk;
 
     public FileSystem $filesystem;
@@ -100,7 +104,7 @@ class FileManagerService implements FileManagerContract
         $this->applySearchCallback();
 
         return collect($this->filesystem->files($this->path))
-            ->filter(fn (string $file) => $this->applyFilterCallbacks($file));
+            ->filter(fn(string $file) => $this->applyFilterCallbacks($file));
     }
 
     /**
@@ -113,9 +117,9 @@ class FileManagerService implements FileManagerContract
         $this->omitHiddenFilesAndDirectories();
 
         return collect($this->filesystem->directories($this->path))
-            ->filter(fn (string $folder) => $this->applyFilterCallbacks($folder))
+            ->filter(fn(string $folder) => $this->applyFilterCallbacks($folder))
             // we map the folder to an array with an id, path and name
-            ->map(fn (string $path) => [
+            ->map(fn(string $path) => [
                 'id' => sha1($path),
                 'path' => str($path)->start(DIRECTORY_SEPARATOR),
                 'name' => pathinfo($path, PATHINFO_BASENAME),
@@ -132,8 +136,8 @@ class FileManagerService implements FileManagerContract
     public function omitHiddenFilesAndDirectories(): void
     {
         $this->filterCallbacks[] = $this->shouldShowHiddenFiles
-            ? static fn () => true
-            : static fn (string $path) => !str($path)->startsWith('.');
+            ? static fn() => true
+            : static fn(string $path) => !str($path)->startsWith('.');
     }
 
     /**
@@ -154,7 +158,7 @@ class FileManagerService implements FileManagerContract
             }
 
             // join words with .* expression
-            $words = implode('.*', array_map(fn (string $word) => preg_quote($word, '/'), $words));
+            $words = implode('.*', array_map(fn(string $word) => preg_quote($word, '/'), $words));
 
             return preg_match("/(.*{$words}.*)/i", $path);
         };
@@ -190,13 +194,13 @@ class FileManagerService implements FileManagerContract
         str($this->path)
             ->ltrim(DIRECTORY_SEPARATOR)
             ->explode(DIRECTORY_SEPARATOR)
-            ->filter(fn (string $item) => !blank($item))
+            ->filter(fn(string $item) => !blank($item))
             ->each(function (string $item) use ($paths) {
                 return $paths->push($paths->last().DIRECTORY_SEPARATOR.$item);
             });
 
         // we map the folders to match the breadcrumbs format
-        return $paths->map(fn (string $item) => [
+        return $paths->map(fn(string $item) => [
             'id' => sha1($item),
             'path' => $item,
             'name' => str($item)->afterLast('/'),
@@ -299,7 +303,7 @@ class FileManagerService implements FileManagerContract
      */
     public function mapIntoEntity(): Closure
     {
-        return fn (string $path) => $this->makeEntity($path, $this->disk);
+        return fn(string $path) => $this->makeEntity($path, $this->disk);
     }
 
     /**
@@ -319,7 +323,7 @@ class FileManagerService implements FileManagerContract
             $type = 'default';
         }
 
-        return $this->entityClassForType($type)::make($this->filesystem, $path, $disk);
+        return $this->entityClassForType($type)::make($this, $path, $disk);
     }
 
     /**

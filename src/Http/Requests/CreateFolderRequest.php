@@ -8,10 +8,16 @@ use BBSLab\NovaFileManager\Rules\DiskExistsRule;
 use BBSLab\NovaFileManager\Rules\MissingInFilesystem;
 
 /**
+ * @property-read string|null $disk
  * @property-read string $path
  */
 class CreateFolderRequest extends BaseRequest
 {
+    public function authorize(): bool
+    {
+        return $this->canCreateFolder();
+    }
+
     public function rules(): array
     {
         return [

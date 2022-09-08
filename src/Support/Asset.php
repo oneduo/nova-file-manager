@@ -2,24 +2,26 @@
 
 declare(strict_types=1);
 
-namespace BBSLab\NovaFileManager\ValueObjects;
+namespace BBSLab\NovaFileManager\Support;
 
 use Illuminate\Contracts\Filesystem\Filesystem;
 use Illuminate\Contracts\Support\Arrayable;
 use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Traits\ForwardsCalls;
+use JsonSerializable;
 
 /**
  * @mixin \Illuminate\Contracts\Filesystem\Filesystem
  */
-class Asset implements Arrayable, \JsonSerializable
+class Asset implements Arrayable, JsonSerializable
 {
     use ForwardsCalls;
 
-    protected ?Filesystem $filesystem = null;
-
-    public function __construct(public string $disk, public string $path)
-    {
+    public function __construct(
+        public string $disk,
+        public string $path,
+        public ?Filesystem $filesystem = null,
+    ) {
     }
 
     public function __call(string $name, array $arguments)
