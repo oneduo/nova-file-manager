@@ -203,7 +203,7 @@ const actions = {
                 '/nova-vendor/nova-file-manager/folders/rename',
                 buildPayload(state, {
                     path: state.path,
-                    oldPath: sanitize(`${state.path ?? ''}/${oldPath}`),
+                    oldPath: sanitize(oldPath),
                     newPath: sanitize(`${state.path ?? ''}/${newPath}`),
                 })
             )
