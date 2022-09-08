@@ -6,7 +6,7 @@ namespace BBSLab\NovaFileManager\Filesystem\Upload;
 
 use BBSLab\NovaFileManager\Contracts\Filesystem\Upload\Uploader as UploaderContract;
 use BBSLab\NovaFileManager\Events\FileUploaded;
-use BBSLab\NovaFileManager\Http\Requests\UploadRequest;
+use BBSLab\NovaFileManager\Http\Requests\UploadFileRequest;
 use Illuminate\Http\UploadedFile;
 use Pion\Laravel\ChunkUpload\Exceptions\UploadMissingFileException;
 use Pion\Laravel\ChunkUpload\Handler\HandlerFactory;
@@ -18,7 +18,7 @@ class Uploader implements UploaderContract
      * @throws \Pion\Laravel\ChunkUpload\Exceptions\UploadMissingFileException
      * @throws \Pion\Laravel\ChunkUpload\Exceptions\UploadFailedException
      */
-    public function handle(UploadRequest $request, string $index = 'file'): array
+    public function handle(UploadFileRequest $request, string $index = 'file'): array
     {
         $receiver = new FileReceiver($index, $request, HandlerFactory::classFromRequest($request));
 
@@ -40,7 +40,7 @@ class Uploader implements UploaderContract
         ];
     }
 
-    public function saveFile(UploadRequest $request, UploadedFile $file): array
+    public function saveFile(UploadFileRequest $request, UploadedFile $file): array
     {
         $path = $request->manager()->filesystem()->putFileAs(
             path: $request->path,

@@ -1,9 +1,10 @@
 <template>
   <File
-    :file="entity"
+    :file="file"
     :selected="false"
-    @click.prevent.stop="preview(entity)"
+    @click.prevent.stop="preview(file)"
     :on-deselect="onDeselect"
+    :has-custom-disk="hasCustomDisk"
   />
 </template>
 
@@ -11,13 +12,13 @@
 import { useStore } from 'vuex'
 import File from '@/components/Cards/File'
 import { computed } from 'vue'
-import { entity as mapEntity } from '@/transformers/entityTransformer'
+import Entity from '@/types/Entity'
 
 const store = useStore()
 
 const props = defineProps({
     file: {
-        type: Object,
+        type: Entity,
         required: true,
     },
     detail: {
@@ -33,9 +34,9 @@ const props = defineProps({
     },
 })
 
-const openPreview = file => store.commit('nova-file-manager/previewFile', file)
+const hasCustomDisk = computed(() => store.state['nova-file-manager'].customDisk)
 
-const entity = computed(() => mapEntity(props.file))
+const openPreview = file => store.commit('nova-file-manager/previewFile', file)
 
 const preview = file => {
     if (!props.detail) {

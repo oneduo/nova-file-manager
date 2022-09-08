@@ -12,6 +12,7 @@
               @end="drag = false"
               @start="drag = true"
               tag="ul"
+              v-bind="dragOptions"
             >
               <template #item="{ element }">
                 <FieldCard
@@ -119,7 +120,7 @@ export default {
     mounted() {
         this.init()
 
-        this.value = this.field.value?.files || []
+        this.value = this.field.value || []
     },
 
     beforeUnmount() {
@@ -133,6 +134,14 @@ export default {
         isOpen() {
             return this.allModals?.includes('browser')
         },
+
+        dragOptions() {
+            return {
+                animation: 200,
+                disabled: !this.field?.multiple,
+                ghostClass: 'ghost',
+            }
+        },
     },
 
     methods: {
@@ -142,10 +151,12 @@ export default {
             if (this.value?.length) {
                 formData.append(
                     this.field.attribute,
-                    JSON.stringify({
-                        disk: this.disk,
-                        files: this.value || [],
-                    })
+                    JSON.stringify(
+                        this.value?.map(file => ({
+                            path: file.path,
+                            disk: file.disk,
+                        }))
+                    )
                 )
             }
         },

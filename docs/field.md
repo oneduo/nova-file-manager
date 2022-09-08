@@ -29,11 +29,13 @@ class Project extends Resource
 
 ## Multiple selection on the form field
 
-When using the `FileManager` field on your Nova resource, you can tell the tool to allow multiple selection for your attribute.
+When using the `FileManager` field on your Nova resource, you can tell the tool to allow multiple selection for your
+attribute.
 
 By default, the tool will only allow single selection.
 
-You can allow multiple selection by using the `multiple` method to the field. You may limit the number of selected field by using the `limit` method.
+You can allow multiple selection by using the `multiple` method to the field. You may limit the number of selected field
+by using the `limit` method.
 
 ```php
 // app/Nova/Project.php
@@ -56,7 +58,9 @@ class Project extends Resource
 }
 ```
 
-> **Note** If the limit is set to 1, the field saves the value as a plain string containing the file's path in the specified storage disk. For any value greater than 1, the field saves the value as an array of file paths. You can access these paths easily by setting a cast on your attribute.
+> **Note** If the limit is set to 1, the field saves the value as a plain string containing the file's path in the
+> specified storage disk. For any value greater than 1, the field saves the value as an array of file paths. You can
+> access these paths easily by setting a cast on your attribute.
 
 ```php
 // app/Models/Project.php
@@ -108,29 +112,45 @@ class Project extends Resource
 }
 ```
 
-> **Note** You need to set up your field with `multiple` if you plan on having a minimum value greater than one, and if you expect your field to have more than one file.
+> **Note** You need to set up your field with `multiple` if you plan on having a minimum value greater than one, and if
+> you expect your field to have more than one file.
 
-## Saving the disk name alongside the path
+## Registering a custom URL resolver for your fields
 
-When using a multi-disk setup, you may want to save the disk from which the file has been picked and save it into your
-resource, so that, for instance, you can generate a valid url depending on the disk.
+When using a multi-disk setup, the disk is saved alongside the path of your asset, however, if these two files come from
+different filesystems, you may want to generate an URL with your own custom business logic.
 
-To save the disk, you'll need to add a new column to your model, to store the value.
+For instance, having a `User` resource, to which you have references for `pictures` and the selection was as follows :
 
-For instance, having a `User` model to which we want to add an avatar, you can run a migration like the following :
+- my-picture.jpg (from the `public` disk)
+- avatar.png (from the `s3`disk)
+
+You may then use the `resolveUrlUsing` method to customize how the file URL is generated.
 
 ```php
-public function up(): void
+// app/Nova/User.php
+
+use BBSLab\NovaFileManager\FileManager;
+use BBSLab\NovaFileManager\Rules\FileLimit;
+
+class User extends Resource
 {
-    Schema::table('users', function (Blueprint $table) {
-        $table->string('avatar')->nullable();
-        $table->string('avatar_disk')->nullable();
-    });
+    // ...
+
+    public function fields(NovaRequest $request): array
+    {
+        return [
+            // ... any other fields
+            FileManager::make(__('Pictures'), 'pictures')
+                ->resolveUrlUsing(function (NovaRequest $request, string $path, string $disk, Filesystem $filesystem) {
+                    if ($disk === 's3') {
+                        return $filesystem->temporaryUrl($path, now()->addMinutes(5));
+                    }
+
+                    return $filesystem->url($path);
+                })
+                ->limit(3),
+        ];
+    }
 }
-```
-
-And then set up the field :
-
-```php
-FileManager::make(__('Avatar'), 'avatar')->storeDisk('avatar_disk')
 ```

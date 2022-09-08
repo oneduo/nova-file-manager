@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace BBSLab\NovaFileManager;
+namespace BBSLab\NovaFileManager\Traits\Support;
 
 use Closure;
 use Illuminate\Contracts\Filesystem\Filesystem;
@@ -23,6 +23,8 @@ trait InteractsWithFilesystem
     protected ?Closure $showRenameFile = null;
 
     protected ?Closure $showDeleteFile = null;
+
+    protected ?Closure $showCropImage = null;
 
     protected ?Closure $canCreateFolder = null;
 
@@ -139,6 +141,20 @@ trait InteractsWithFilesystem
             : true;
     }
 
+    public function showCropImage(Closure $callback): static
+    {
+        $this->showCropImage = $callback;
+
+        return $this;
+    }
+
+    public function shouldShowCropImage(NovaRequest $request): bool
+    {
+        return is_callable($this->showCropImage)
+            ? call_user_func($this->showCropImage, $request)
+            : true;
+    }
+
     public function canCreateFolder(Closure $callback): static
     {
         $this->canCreateFolder = $callback;
@@ -235,6 +251,7 @@ trait InteractsWithFilesystem
                     'showUploadFile' => $this->shouldShowUploadFile($request),
                     'showRenameFile' => $this->shouldShowRenameFile($request),
                     'showDeleteFile' => $this->shouldShowDeleteFile($request),
+                    'showCropImage' => $this->shouldShowCropImage($request),
                 ],
             ];
         });

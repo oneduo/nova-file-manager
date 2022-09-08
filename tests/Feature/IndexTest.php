@@ -2,15 +2,15 @@
 
 declare(strict_types=1);
 
-use BBSLab\NovaFileManager\FileManager;
 use BBSLab\NovaFileManager\NovaFileManager;
+use BBSLab\NovaFileManager\Tests\Fixture\TestResource;
+use BBSLab\NovaFileManager\Tests\Fixture\TestResourceWithOnDemandFilesystem;
 use Illuminate\Foundation\Auth\User;
 use Illuminate\Support\Arr;
 use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Str;
 use Laravel\Nova\Http\Requests\NovaRequest;
 use Laravel\Nova\Nova;
-use Laravel\Nova\Resource;
 use function Pest\Laravel\actingAs;
 use function Pest\Laravel\getJson;
 
@@ -24,7 +24,7 @@ it('cannot retrieve files of undefined disk', function () {
     getJson(uri: route('nova-file-manager.data').'?'.Arr::query(['disk' => 'unknown']))
         ->assertJsonValidationErrors([
             'disk' => [
-                __('validation.exists', ['attribute' => 'disk']),
+                __('nova-file-manager::validation.disk.missing', ['disk' => 'unknown']),
             ],
         ]);
 });
@@ -94,35 +94,15 @@ it('can retrieve files from tool with a custom filesystem', function () {
 });
 
 it('can retrieve files from field with a custom filesystem', function () {
-    class TestResource extends Resource
-    {
-        public static $model = User::class;
-
-        public function fields(NovaRequest $request): array
-        {
-            return [
-                FileManager::make('Image')
-                    ->filesystem(function (NovaRequest $request) {
-                        return Storage::build([
-                            'driver' => 'local',
-                            'root' => storage_path('framework/testing/disks/public/users/'.$request->user()->getKey()),
-                            'url' => env('APP_URL').'/storage/users/'.$request->user()->getKey(),
-                            'visibility' => 'public',
-                        ]);
-                    }),
-            ];
-        }
-    }
-
     Nova::resources([
-        TestResource::class,
+        TestResourceWithOnDemandFilesystem::class,
     ]);
 
     Storage::disk($this->disk)->put('users/42/'.($path = Str::random().'.txt'), Str::random());
     Storage::disk($this->disk)->put('users/84/'.(Str::random().'.txt'), Str::random());
 
     $query = Arr::query([
-        'resource' => TestResource::uriKey(),
+        'resource' => TestResourceWithOnDemandFilesystem::uriKey(),
         'resourceId' => null,
         'attribute' => 'image',
         'fieldMode' => 1,
@@ -148,4 +128,20 @@ it('can retrieve files from field with a custom filesystem', function () {
                 'total' => 1,
             ],
         ]);
+});
+it('cannot retrieve files from field with the wrong attribute', function () {
+    Nova::resources([
+        TestResource::class,
+    ]);
+
+    $query = Arr::query([
+        'resource' => TestResource::uriKey(),
+        'resourceId' => null,
+        'attribute' => 'images',
+        'fieldMode' => 1,
+    ]);
+
+    actingAs($this->user)
+        ->getJson(uri: route('nova-file-manager.data')."?{$query}")
+        ->assertNotFound();
 });

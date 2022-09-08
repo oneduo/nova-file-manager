@@ -78,7 +78,7 @@ it('can throw a custom validation message using canRenameFile', function () {
             ->canRenameFile(function (RenameFileRequest $request) use ($message) {
                 if (!str_contains($request->newPath, 'foo')) {
                     throw ValidationException::withMessages([
-                        'oldPath' => [$message],
+                        'file' => [$message],
                     ]);
                 }
 

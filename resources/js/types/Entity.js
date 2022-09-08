@@ -1,5 +1,5 @@
 export default class Entity {
-    constructor(id, name, path, size, extension, mime, url, lastModifiedAt, type, exists) {
+    constructor(id, name, path, size, extension, mime, url, lastModifiedAt, type, exists, disk) {
         this.id = id
         this.name = name
         this.path = path
@@ -10,5 +10,6 @@ export default class Entity {
         this.lastModifiedAt = lastModifiedAt
         this.type = type
         this.exists = exists
+        this.disk = disk
     }
 }

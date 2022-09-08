@@ -25,6 +25,7 @@ const props = defineProps({
 const darkMode = computed(() => store.state['nova-file-manager'].darkMode)
 
 onBeforeMount(() => {
+    store.commit('nova-file-manager/destroy')
     store.commit('nova-file-manager/setSelection', [])
     store.commit('nova-file-manager/setLimit', null)
     store.commit('nova-file-manager/init')

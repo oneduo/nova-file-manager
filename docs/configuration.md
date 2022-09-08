@@ -52,7 +52,7 @@
 |--------|---------|
 | `bool` | `true`  |
 
-## `file_analysis.cache.enable`
+## `file_analysis.cache.enabled`
 
 > When set to true, the package will cache the file analysis result
 

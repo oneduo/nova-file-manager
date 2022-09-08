@@ -4,10 +4,8 @@ declare(strict_types=1);
 
 namespace BBSLab\NovaFileManager\Tests\Browser;
 
-use BBSLab\NovaFileManager\NovaFileManager;
 use BBSLab\NovaFileManager\Tests\DuskTestCase;
 use Laravel\Dusk\Browser;
-use Laravel\Nova\Nova;
 
 /**
  * @group browser

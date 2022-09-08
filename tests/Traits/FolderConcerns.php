@@ -48,7 +48,9 @@ trait FolderConcerns
                 )
                 ->assertUnprocessable()
                 ->assertJsonValidationErrors([
-                    'folder' => [$message ?? __('Sorry! You are not authorized to perform this action.')],
+                    'folder' => [
+                        $message ?? __('This action is unauthorized.'),
+                    ],
                 ]);
 
             Storage::disk($this->disk)->assertMissing($path);
@@ -96,7 +98,9 @@ trait FolderConcerns
                 )
                 ->assertUnprocessable()
                 ->assertJsonValidationErrors([
-                    'folder' => [$message ?? __('Sorry! You are not authorized to perform this action.')],
+                    'folder' => [
+                        $message ?? __('This action is unauthorized.'),
+                    ],
                 ]);
 
             Storage::disk($this->disk)->assertExists($old);
@@ -140,7 +144,9 @@ trait FolderConcerns
                 )
                 ->assertUnprocessable()
                 ->assertJsonValidationErrors([
-                    'folder' => [$message ?? __('Sorry! You are not authorized to perform this action.')],
+                    'folder' => [
+                        $message ?? __('This action is unauthorized.'),
+                    ],
                 ]);
 
             Storage::disk($this->disk)->assertExists($path);

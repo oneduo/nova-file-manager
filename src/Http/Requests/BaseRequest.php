@@ -4,11 +4,11 @@ declare(strict_types=1);
 
 namespace BBSLab\NovaFileManager\Http\Requests;
 
-use BBSLab\NovaFileManager\Contracts\InteractsWithFilesystem;
 use BBSLab\NovaFileManager\Contracts\Services\FileManagerContract;
+use BBSLab\NovaFileManager\Contracts\Support\InteractsWithFilesystem;
 use BBSLab\NovaFileManager\FileManager;
 use BBSLab\NovaFileManager\NovaFileManager;
-use Illuminate\Contracts\Filesystem\Filesystem;
+use Illuminate\Validation\ValidationException;
 use Laravel\Nova\Http\Requests\NovaRequest;
 use Laravel\Nova\Nova;
 use Laravel\Nova\Tool;
@@ -24,18 +24,22 @@ class BaseRequest extends NovaRequest
 {
     public function manager(): FileManagerContract
     {
-        if (!$filesystem = $this->onDemandFilesystem()) {
-            return app(FileManagerContract::class);
-        }
+        return once(function () {
+            /** @var NovaFileManager $element */
+            $element = $this->element();
 
-        return app(FileManagerContract::class, [
-            'disk' => $filesystem,
-        ]);
-    }
+            /** @var \BBSLab\NovaFileManager\Services\FileManagerService $manager */
+            $manager = app(
+                abstract: FileManagerContract::class,
+                parameters: $element?->hasCustomFilesystem() ? ['disk' => $element?->resolveFilesystem($this)] : [],
+            );
 
-    public function onDemandFilesystem(): ?Filesystem
-    {
-        return $this->element()?->resolveFilesystem($this);
+            if ($element?->hasUrlResolver()) {
+                $manager->resolveUrlUsing($element?->getUrlResolver());
+            }
+
+            return $manager;
+        });
     }
 
     public function element(): ?InteractsWithFilesystem
@@ -56,7 +60,11 @@ class BaseRequest extends NovaRequest
 
     public function resolveTool(): ?InteractsWithFilesystem
     {
-        return collect(Nova::registeredTools())->first(fn (Tool $tool) => $tool instanceof NovaFileManager);
+        return tap(once(function () {
+            return collect(Nova::registeredTools())->first(fn(Tool $tool) => $tool instanceof NovaFileManager);
+        }), function (?NovaFileManager $tool) {
+            abort_if(is_null($tool), 404);
+        });
     }
 
     public function resource()
@@ -64,7 +72,7 @@ class BaseRequest extends NovaRequest
         return tap(once(function () {
             return Nova::resourceForKey($this->input('resource'));
         }), function ($resource) {
-            return null;
+            abort_if(is_null($resource), 404);
         });
     }
 
@@ -96,5 +104,17 @@ class BaseRequest extends NovaRequest
     public function canDeleteFile(): bool
     {
         return $this->element()?->resolveCanDeleteFile($this) ?? true;
+    }
+
+    protected function failedAuthorization(): void
+    {
+        throw ValidationException::withMessages([
+            $this->authorizationAttribute() => __('This action is unauthorized.'),
+        ]);
+    }
+
+    public function authorizationAttribute(): string
+    {
+        return strtolower(str(static::class)->classBasename()->ucsplit()->get(1, ''));
     }
 }

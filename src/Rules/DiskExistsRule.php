@@ -8,17 +8,21 @@ use Illuminate\Contracts\Validation\Rule;
 
 class DiskExistsRule implements Rule
 {
+    public ?string $disk = null;
+
     public function passes($attribute, $value): bool
     {
-        $inFileManagerAvailableDisks = in_array($value, config('nova-file-manager.available_disks'), true);
+        $this->disk = $value;
 
-        $inFilesystemsDisks = array_key_exists($value, config('filesystems.disks'));
+        $inFileManagerAvailableDisks = in_array($this->disk, config('nova-file-manager.available_disks'), true);
 
-        return $value === null || ($inFileManagerAvailableDisks && $inFilesystemsDisks);
+        $inFilesystemsDisks = array_key_exists($this->disk, config('filesystems.disks'));
+
+        return $this->disk === null || ($inFileManagerAvailableDisks && $inFilesystemsDisks);
     }
 
     public function message(): string
     {
-        return __('validation.exists');
+        return __('nova-file-manager::validation.disk.missing', ['disk' => $this->disk]);
     }
 }

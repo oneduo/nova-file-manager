@@ -4,7 +4,7 @@
       <div class="rounded-md overflow-auto">
         <div class="relative rounded-md text-center overflow-hidden w-full">
           <div class="absolute inset-0 opacity-50 bg-stripes bg-stripes-gray-400"></div>
-          <img class="relative z-10 object-contain h-48 w-full" :src="image">
+          <img class="relative z-10 object-contain h-48 w-full" :src="image" />
         </div>
       </div>
       <div>
@@ -28,16 +28,6 @@
             type="text"
           />
         </div>
-        <template v-if="hasErrors">
-          <p
-            v-for="(error, index) in errorsList"
-            :key="index"
-            id="email-error"
-            class="mt-2 text-sm text-red-600"
-          >
-            {{ error }}
-          </p>
-        </template>
       </div>
     </template>
     <template v-slot:submitButton>
@@ -56,31 +46,18 @@
 <script setup>
 import { computed, onMounted, ref } from 'vue'
 import { useStore } from 'vuex'
-import {
-  CheckCircleIcon,
-  ExclamationCircleIcon,
-  ExclamationTriangleIcon,
-  PlayIcon,
-  XCircleIcon,
-} from '@heroicons/vue/24/solid'
-import Spinner from '@/components/Elements/Spinner'
 import Button from '@/components/Elements/Button'
 import InputModal from '@/components/Modals/InputModal'
-import { useErrors } from '@/hooks'
-import entityTransformer from '@/transformers/entityTransformer'
-import File from '@/components/Cards/File'
 
 const store = useStore()
 const props = defineProps(['name', 'onSubmit', 'data'])
 const value = ref(null)
 
 onMounted(() => {
-  value.value = props.data?.name
+    value.value = props.data?.name
 })
 
 const image = computed(() => URL.createObjectURL(props.data?.blob))
-
-const { hasErrors, errorsList } = useErrors('uploadCrop')
 
 const closeModal = name => store.dispatch('nova-file-manager/closeModal', name)
 

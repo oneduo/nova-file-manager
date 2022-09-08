@@ -1,13 +1,13 @@
 <template>
   <PanelItem :field="field" :index="index">
-    <template v-if="field.value?.files" v-slot:value>
+    <template v-if="field.value" v-slot:value>
       <div class="nova-file-manager">
         <div :class="darkMode && 'dark'">
           <ul class="grid grid-cols-2 md:grid-cols-4 gap-2 mb-2 w-full" role="group">
-            <template v-for="file in field.value?.files" :key="file.id">
+            <template v-for="file in field.value" :key="file.id">
               <FieldCard
                 :field="field"
-                :file="file"
+                :file="mapEntity(file)"
                 :attribute="field.attribute"
                 :detail="true"
                 :on-copy="copy"
@@ -81,7 +81,8 @@ export default {
                 file.url,
                 file.lastModifiedAt,
                 file.type,
-                file.exists
+                file.exists,
+                file.disk
             ),
     },
 }

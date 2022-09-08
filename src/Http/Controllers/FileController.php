@@ -8,32 +8,23 @@ use BBSLab\NovaFileManager\Contracts\Filesystem\Upload\Uploader;
 use BBSLab\NovaFileManager\Events\FileDeleted;
 use BBSLab\NovaFileManager\Events\FileRenamed;
 use BBSLab\NovaFileManager\Http\Requests\DeleteFileRequest;
-use BBSLab\NovaFileManager\Http\Requests\DownloadFileRequest;
 use BBSLab\NovaFileManager\Http\Requests\RenameFileRequest;
-use BBSLab\NovaFileManager\Http\Requests\UploadRequest;
+use BBSLab\NovaFileManager\Http\Requests\UploadFileRequest;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Routing\Controller;
-use Illuminate\Support\Facades\Storage;
 use Illuminate\Validation\ValidationException;
-use Symfony\Component\HttpFoundation\BinaryFileResponse;
 
 class FileController extends Controller
 {
     /**
      * Upload a file from the tool
      *
-     * @param  \BBSLab\NovaFileManager\Http\Requests\UploadRequest  $request
+     * @param  \BBSLab\NovaFileManager\Http\Requests\UploadFileRequest  $request
      * @param  \BBSLab\NovaFileManager\Contracts\Filesystem\Upload\Uploader  $uploader
      * @return \Illuminate\Http\JsonResponse
      */
-    public function upload(UploadRequest $request, Uploader $uploader): JsonResponse
+    public function upload(UploadFileRequest $request, Uploader $uploader): JsonResponse
     {
-        if (!$request->canUploadFile()) {
-            throw ValidationException::withMessages([
-                'file' => [__('Sorry! You are not authorized to perform this action.')],
-            ]);
-        }
-
         return response()->json(
             $uploader->handle($request)
         );
@@ -47,25 +38,20 @@ class FileController extends Controller
      */
     public function rename(RenameFileRequest $request): JsonResponse
     {
-        if (!$request->canRenameFile()) {
-            throw ValidationException::withMessages([
-                'oldPath' => [__('Sorry! You are not authorized to perform this action.')],
-            ]);
-        }
-
         $manager = $request->manager();
+
         $result = $manager->rename($request->oldPath, $request->newPath);
 
         if (!$result) {
             throw ValidationException::withMessages([
-                'oldPath' => [__('Could not rename file !')],
+                'oldPath' => [__('nova-file-manager::errors.file.rename')],
             ]);
         }
 
         event(new FileRenamed($manager->disk, $request->oldPath, $request->newPath));
 
         return response()->json([
-            'message' => __('File renamed successfully.'),
+            'message' => __('nova-file-manager::messages.file.create'),
         ]);
     }
 
@@ -77,37 +63,20 @@ class FileController extends Controller
      */
     public function delete(DeleteFileRequest $request): JsonResponse
     {
-        if (!$request->canDeleteFile()) {
-            throw ValidationException::withMessages([
-                'path' => [__('Sorry! You are not authorized to perform this action.')],
-            ]);
-        }
-
         $manager = $request->manager();
 
         $result = $manager->delete($request->path);
 
         if (!$result) {
             throw ValidationException::withMessages([
-                'path' => [__('Could not delete file !')],
+                'path' => [__('nova-file-manager::errors.file.delete')],
             ]);
         }
 
         event(new FileDeleted($manager->disk, $request->path));
 
         return response()->json([
-            'message' => __('File deleted successfully.'),
+            'message' => __('nova-file-manager::messages.file.delete'),
         ]);
-    }
-
-    /**
-     * Download a file
-     *
-     * @param  \BBSLab\NovaFileManager\Http\Requests\DownloadFileRequest  $request
-     * @return \Symfony\Component\HttpFoundation\BinaryFileResponse
-     */
-    public function download(DownloadFileRequest $request): BinaryFileResponse
-    {
-        return response()->download(Storage::disk($request->disk)->path($request->path));
     }
 }

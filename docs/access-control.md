@@ -20,6 +20,7 @@ Available methods :
 - `showUploadFile`
 - `showRenameFile`
 - `showDeleteFile`
+- `showCropImage`
 
 The usage is pretty straightforward, you can pass a callback that takes the current `NovaRequest` as a parameter, that
 resolves into `true|false`, like so :
