@@ -5,3 +5,4 @@ providers:
   - Laravel\Nova\NovaApplicationServiceProvider
   - Laravel\Nova\NovaCoreServiceProvider
   - NovaKit\NovaPackagesTool\LaravelServiceProvider
+  - Spatie\LaravelRay\RayServiceProvider

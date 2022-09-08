@@ -20,6 +20,7 @@ use Laravel\Nova\NovaServiceProvider;
 use NovaKit\NovaPackagesTool\LaravelServiceProvider;
 use Orchestra\Testbench\Dusk\TestCase as BaseDuskTestCase;
 use Pion\Laravel\ChunkUpload\Providers\ChunkUploadServiceProvider;
+use Spatie\LaravelRay\RayServiceProvider;
 
 class DuskTestCase extends BaseDuskTestCase
 {
@@ -34,6 +35,7 @@ class DuskTestCase extends BaseDuskTestCase
             NovaCoreServiceProvider::class,
             NovaApplicationServiceProvider::class,
             NovaServiceProvider::class,
+            RayServiceProvider::class,
             ToolServiceProvider::class,
         ];
     }
@@ -43,6 +45,7 @@ class DuskTestCase extends BaseDuskTestCase
         parent::setUp();
 
         $this->artisan('nova:publish');
+        $this->artisan('ray:publish-config');
     }
 
     protected function setUpDuskServer(): void
