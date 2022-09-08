@@ -6,11 +6,11 @@ module.exports = () => {
   return {
     externals: {
       vue: 'Vue',
+      'laravel-nova': 'LaravelNova',
     },
 
     resolve: {
       alias: {
-        'laravel-nova': path.join(__dirname, prefix, '/laravel/nova/resources/js/mixins/packages.js'),
         '@': path.join(__dirname, '/resources/js'),
       },
     },

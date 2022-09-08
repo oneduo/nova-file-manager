@@ -34,6 +34,7 @@
     "james-heinrich/getid3": "^1.9",
     "pion/laravel-chunk-upload": "^1.5",
     "laravel/nova": "^4.0",
+    "nova-kit/nova-packages-tool": "^1.1.1",
     "ext-json": "*"
   },
   "require-dev": {
