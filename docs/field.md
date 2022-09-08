@@ -58,30 +58,6 @@ class Project extends Resource
 }
 ```
 
-> **Note** If the limit is set to 1, the field saves the value as a plain string containing the file's path in the
-> specified storage disk. For any value greater than 1, the field saves the value as an array of file paths. You can
-> access these paths easily by setting a cast on your attribute.
-
-```php
-// app/Models/Project.php
-
-class Project extends Authenticatable
-{
-    // ...
-
-    protected $fillable = [
-        'name',
-        'email',
-        'password',
-        'attachments',
-    ];
-
-    protected $casts = [
-        'attachments' => 'array',
-    ];
-}
-
-```
 
 ## Validation
 
