@@ -4,3 +4,4 @@ providers:
   - Laravel\Nova\NovaServiceProvider
   - Laravel\Nova\NovaApplicationServiceProvider
   - Laravel\Nova\NovaCoreServiceProvider
+  - NovaKit\NovaPackagesTool\LaravelServiceProvider

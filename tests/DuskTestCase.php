@@ -17,6 +17,7 @@ use Laravel\Nova\Nova;
 use Laravel\Nova\NovaApplicationServiceProvider;
 use Laravel\Nova\NovaCoreServiceProvider;
 use Laravel\Nova\NovaServiceProvider;
+use NovaKit\NovaPackagesTool\LaravelServiceProvider;
 use Orchestra\Testbench\Dusk\TestCase as BaseDuskTestCase;
 use Pion\Laravel\ChunkUpload\Providers\ChunkUploadServiceProvider;
 
@@ -29,6 +30,7 @@ class DuskTestCase extends BaseDuskTestCase
         return [
             \Inertia\ServiceProvider::class,
             ChunkUploadServiceProvider::class,
+            LaravelServiceProvider::class,
             NovaCoreServiceProvider::class,
             NovaApplicationServiceProvider::class,
             NovaServiceProvider::class,
