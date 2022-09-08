@@ -29,11 +29,42 @@ it('can create a directory', function () {
     )
         ->assertOk();
 
-    expect(Storage::disk($this->disk)->exists($path))->toBeTrue();
+    Storage::disk($this->disk)->assertExists($path);
 
     Event::assertDispatched(
         event: FolderCreated::class,
         callback: fn (FolderCreated $event) => $event->disk === $this->disk && $event->path === $path,
+    );
+});
+
+it('throws an exception if the filesystem cannot create the directory', function () {
+    Event::fake();
+
+    $mock = mock(FileManagerContract::class)->expect(
+        mkdir: fn ($path) => false,
+        filesystem: fn () => Storage::disk($this->disk),
+    );
+
+    app()->instance(FileManagerContract::class, $mock);
+
+    $path = 'new folder';
+
+    postJson(
+        uri: route('nova-file-manager.folders.create'),
+        data: [
+            'disk' => $this->disk,
+            'path' => $path,
+        ],
+    )
+        ->assertJsonValidationErrors([
+            'folder' => [
+                __('nova-file-manager::errors.folder.create'),
+            ],
+        ]);
+
+    Event::assertNotDispatched(
+        event: FolderCreated::class,
+        callback: fn (FolderDeleted $event) => $event->disk === $this->disk && $event->path === $path,
     );
 });
 
@@ -44,12 +75,12 @@ it('cannot create a directory with an existing name', function () {
         uri: route('nova-file-manager.folders.create'),
         data: [
             'disk' => $this->disk,
-            'path' => 'existing',
+            'path' => $path = 'existing',
         ],
     )
         ->assertJsonValidationErrors([
-            'folder' => [
-                __('Folder already exists !'),
+            'path' => [
+                __('nova-file-manager::validation.path.exists', ['path' => $path]),
             ],
         ]);
 });
@@ -71,8 +102,8 @@ it('can rename a directory', function () {
     )
         ->assertOk();
 
-    expect(Storage::disk($this->disk)->exists($old))->toBeFalse();
-    expect(Storage::disk($this->disk)->exists($new))->toBeTrue();
+    Storage::disk($this->disk)->assertMissing($old);
+    Storage::disk($this->disk)->assertExists($new);
 
     Event::assertDispatched(
         event: FolderRenamed::class,
@@ -87,6 +118,7 @@ it('returns validation error when the filesystem can not rename the directory', 
 
     $mock = mock(FileManagerContract::class)->expect(
         rename: fn ($path) => false,
+        filesystem: fn () => Storage::disk($this->disk),
     );
 
     app()->instance(FileManagerContract::class, $mock);
@@ -105,7 +137,7 @@ it('returns validation error when the filesystem can not rename the directory', 
     )
         ->assertJsonValidationErrors([
             'folder' => [
-                __('Could not rename folder !'),
+                __('nova-file-manager::errors.folder.rename'),
             ],
         ]);
 
@@ -122,7 +154,7 @@ it('cannot rename a directory which doesnt exist', function () {
         uri: route('nova-file-manager.folders.rename'),
         data: [
             'disk' => $this->disk,
-            'oldPath' => 'existing',
+            'oldPath' => $path = 'existing',
             'newPath' => 'renamed',
         ],
     );
@@ -130,7 +162,7 @@ it('cannot rename a directory which doesnt exist', function () {
     $response
         ->assertJsonValidationErrors([
             'oldPath' => [
-                __('validation.exists', ['attribute' => 'old path']),
+                __('nova-file-manager::validation.path.missing', ['path' => $path]),
             ],
         ]);
 });
@@ -151,7 +183,7 @@ it('cannot rename a directory to an existing name', function () {
     $response
         ->assertJsonValidationErrors([
             'newPath' => [
-                __('validation.exists', ['attribute' => 'new path']),
+                __('nova-file-manager::validation.path.exists', ['path' => $second]),
             ],
         ]);
 });
@@ -195,7 +227,7 @@ it('cannot delete a directory which doesnt exist', function () {
     )
         ->assertJsonValidationErrors([
             'path' => [
-                __('validation.exists', ['attribute' => 'path']),
+                __('nova-file-manager::validation.path.missing', ['path' => $path]),
             ],
         ]);
 
@@ -210,6 +242,7 @@ it('throws an exception if the filesystem cannot delete the directory', function
 
     $mock = mock(FileManagerContract::class)->expect(
         rmdir: fn ($path) => false,
+        filesystem: fn () => Storage::disk($this->disk),
     );
 
     app()->instance(FileManagerContract::class, $mock);
@@ -227,7 +260,7 @@ it('throws an exception if the filesystem cannot delete the directory', function
     )
         ->assertJsonValidationErrors([
             'folder' => [
-                __('Could not delete folder !'),
+                __('nova-file-manager::errors.folder.delete'),
             ],
         ]);
 

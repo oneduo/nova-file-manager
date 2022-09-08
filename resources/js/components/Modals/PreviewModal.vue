@@ -44,7 +44,7 @@
                     <TrashIcon class="w-5 h-5" />
                   </IconButton>
                   <IconButton
-                    v-if="!readOnly && file?.type === 'image'"
+                    v-if="!readOnly && showCropImage && file?.type === 'image'"
                     variant="secondary"
                     @click="openModal(`crop-image-${file?.id}`)"
                     :title="__('NovaFileManager.actions.cropImage', { image: file?.name })"
@@ -53,7 +53,6 @@
                   </IconButton>
 
                   <IconButton
-                    v-if="readOnly"
                     @click="copy(file)"
                     variant="secondary"
                     :title="__('NovaFileManager.actions.copy')"
@@ -94,7 +93,9 @@
                 <div
                   class="block relative w-full md:w-4/6 overflow-hidden rounded-lg bg-gray-500/10 flex items-center justify-center"
                 >
-                  <div class="absolute inset-0 opacity-50 bg-stripes bg-stripes-gray-400"></div>
+                  <div
+                    class="absolute inset-0 opacity-50 bg-stripes bg-stripes-gray-300 dark:bg-stripes-gray-700"
+                  ></div>
                   <ImageLoader
                     v-if="file?.type === 'image'"
                     :src="file.url"
@@ -103,12 +104,14 @@
                     class="relative"
                   />
 
-                  <div v-else-if="file?.type === 'video'" class="w-full h-full">
-                    <video class="w-full max-w-screen max-h-screen" controls="controls">
-                      <source :src="file?.url" />
-                      Sorry, your browser doesn't support embedded videos.
-                    </video>
-                  </div>
+                  <video
+                    v-else-if="file?.type === 'video'"
+                    class="w-full max-w-screen max-h-[80vh] relative"
+                    controls="controls"
+                  >
+                    <source :src="file?.url" />
+                    Sorry, your browser doesn't support embedded videos.
+                  </video>
 
                   <DocumentIcon v-else class="h-40 w-40 text-gray-500 m-12" />
                 </div>
@@ -174,7 +177,12 @@
   </TransitionRoot>
 
   <DeleteFileModal v-if="showDeleteFile" :name="`delete-file-${file?.id}`" :on-confirm="onDelete" />
-  <CropImageModal :name="`crop-image-${file?.id}`" :file="file" :on-confirm="onCropImage" />
+  <CropImageModal
+    v-if="showCropImage"
+    :name="`crop-image-${file?.id}`"
+    :file="file"
+    :on-confirm="onCropImage"
+  />
 
   <RenameFileModal
     v-if="showRenameFile"
@@ -195,7 +203,6 @@ import {
     PencilSquareIcon,
     TrashIcon,
     XMarkIcon,
-    SparklesIcon,
 } from '@heroicons/vue/24/outline'
 import IconButton from '@/components/Elements/IconButton'
 import DeleteFileModal from '@/components/Modals/DeleteFileModal'
@@ -225,7 +232,7 @@ const darkMode = computed(() => store.state['nova-file-manager'].darkMode)
 const preview = computed(() => store.state['nova-file-manager'].preview)
 const isOpen = computed(() => !!preview.value)
 
-const { showRenameFile, showDeleteFile } = usePermissions()
+const { showRenameFile, showDeleteFile, showCropImage } = usePermissions()
 
 const openModal = name => {
     return store.dispatch('nova-file-manager/openModal', name)
@@ -251,17 +258,15 @@ const onDelete = () => {
     })
 }
 
-const onCropImage = (file) => {
-  closeModal()
-  openModal('upload-queue')
-  store.dispatch('nova-file-manager/upload', [file])
+const onCropImage = file => {
+    closeModal()
+    openModal('upload-queue')
+    store.dispatch('nova-file-manager/upload', [file])
 }
-
 
 const copy = file => {
     copyToClipboard(file.url)
 
     Nova.success('Copied !')
 }
-
 </script>

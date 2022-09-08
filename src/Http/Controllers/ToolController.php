@@ -20,9 +20,12 @@ class ToolController extends Controller
         $tool = collect(Nova::registeredTools())->first(fn (Tool $tool) => $tool instanceof NovaFileManager);
 
         return Inertia::render('NovaFileManager', [
-            'config' => array_merge([
-                'upload' => config('nova-file-manager.upload'),
-            ], $tool?->options()),
+            'config' => array_merge(
+                [
+                    'upload' => config('nova-file-manager.upload'),
+                ],
+                $tool?->options(),
+            ),
         ]);
     }
 }

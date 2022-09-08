@@ -17,7 +17,7 @@ abstract class Analyzer implements AnalyzerContract
 
     public function analyze(string $path): array|object
     {
-        $shouldCache = config('nova-file-manager.file_analysis.cache.enable');
+        $shouldCache = config('nova-file-manager.file_analysis.cache.enabled');
 
         if (!$shouldCache) {
             return $this->rawAnalyze($path);

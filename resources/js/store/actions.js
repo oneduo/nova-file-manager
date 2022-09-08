@@ -62,6 +62,8 @@ const actions = {
     setPerPage({ commit, dispatch }, perPage) {
         commit('setPerPage', perPage)
 
+        dispatch('setPage', 1)
+
         dispatch('getData')
 
         dispatch('updateQueryString', { perPage })
@@ -314,53 +316,6 @@ const actions = {
         })
     },
 
-    uploadCrop({ dispatch, state, commit }, file) {
-      commit('setIsUploading', true)
-
-      const uploader = new Resumable({
-        chunkSize: 50 * 1024 * 1024,
-        simultaneousUploads: 1,
-        testChunks: false,
-        throttleProgressCallbacks: 1,
-        target: '/nova-vendor/nova-file-manager/files/upload',
-        query: buildPayload(state, {
-          path: state.path ?? '/',
-        }),
-        headers: {
-          Accept: 'application/json',
-          'X-CSRF-TOKEN': state.csrfToken,
-        },
-        permanentErrors: [400, 404, 409, 415, 422, 500, 501],
-      })
-
-      uploader.addFile(file)
-
-      commit('addToQueue', file)
-
-      uploader.on('fileAdded', () => uploader.upload())
-
-      uploader.on('fileSuccess', file => {
-        resolve(file)
-      })
-
-      uploader.on('fileProgress', file => {
-        dispatch('updateQueue', { id: file.fileName, ratio: Math.floor(file.progress() * 100) })
-      })
-
-      uploader.on('fileError', (file, message) => {
-        dispatch('updateQueue', {
-          id: file.fileName,
-          status: false,
-        })
-
-        commit('setErrors', {
-          uploadCrop: errors(error.response?.data?.errors),
-        })
-
-        reject(error.response?.data?.errors)
-      })
-    },
-
     async renameFile({ dispatch, state, commit }, { id, oldPath, newPath }) {
         try {
             const response = await Nova.request().post(
@@ -521,6 +476,7 @@ const actions = {
             showUploadFile,
             showRenameFile,
             showDeleteFile,
+            showCropImage,
         }
     ) => {
         commit('setShowCreateFolder', showCreateFolder)
@@ -529,6 +485,7 @@ const actions = {
         commit('setshowUploadFile', showUploadFile)
         commit('setshowRenameFile', showRenameFile)
         commit('setshowDeleteFile', showDeleteFile)
+        commit('setshowCropImage', showCropImage)
     },
 }
 

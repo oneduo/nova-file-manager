@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace BBSLab\NovaFileManager\Contracts;
+namespace BBSLab\NovaFileManager\Contracts\Support;
 
 use Closure;
 use Illuminate\Contracts\Filesystem\Filesystem;
@@ -42,6 +42,10 @@ interface InteractsWithFilesystem
     public function showDeleteFile(Closure $callback): static;
 
     public function shouldShowDeleteFile(NovaRequest $request): bool;
+
+    public function showCropImage(Closure $callback): static;
+
+    public function shouldShowCropImage(NovaRequest $request): bool;
 
     public function canCreateFolder(Closure $callback): static;
 

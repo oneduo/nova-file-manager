@@ -12,8 +12,6 @@ use BBSLab\NovaFileManager\Services\FileManagerService;
 use Illuminate\Foundation\Application;
 use Illuminate\Support\Facades\Route;
 use Illuminate\Support\ServiceProvider;
-use Inertia\Inertia;
-use Laravel\Nova\Events\ServingNova;
 use Laravel\Nova\Nova;
 
 class ToolServiceProvider extends ServiceProvider
@@ -32,7 +30,7 @@ class ToolServiceProvider extends ServiceProvider
         $this->config();
         $this->translations();
 
-        Nova::serving(static function (ServingNova $event) {
+        Nova::serving(static function () {
             Nova::translations(__DIR__.'/../lang/en.json');
             Nova::script('nova-file-manager', __DIR__.'/../dist/js/tool.js');
             Nova::style('nova-file-manager', __DIR__.'/../dist/css/tool.css');
@@ -56,6 +54,7 @@ class ToolServiceProvider extends ServiceProvider
     public function register(): void
     {
         $this->app->singleton(UploaderContract::class, Uploader::class);
+
         $this->app->singleton(FileManagerContract::class, function (Application $app, array $args = []) {
             /** @var \Illuminate\Http\Request $request */
             $request = $app->make('request');

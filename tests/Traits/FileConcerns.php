@@ -51,7 +51,7 @@ trait FileConcerns
                 )
                 ->assertUnprocessable()
                 ->assertJsonValidationErrors([
-                    'file' => [$message ?? __('Sorry! You are not authorized to perform this action.')],
+                    'file' => [$message ?? __('This action is unauthorized.')],
                 ]);
 
             Storage::disk($this->disk)->assertMissing($path);
@@ -99,7 +99,9 @@ trait FileConcerns
                 )
                 ->assertUnprocessable()
                 ->assertJsonValidationErrors([
-                    'oldPath' => [$message ?? __('Sorry! You are not authorized to perform this action.')],
+                    'file' => [
+                            $message ?? __('This action is unauthorized.'),
+                    ],
                 ]);
 
             Storage::disk($this->disk)->assertExists($old);
@@ -141,7 +143,9 @@ trait FileConcerns
                 )
                 ->assertUnprocessable()
                 ->assertJsonValidationErrors([
-                    'path' => [$message ?? __('Sorry! You are not authorized to perform this action.')],
+                    'file' => [
+                            $message ?? __('This action is unauthorized.'),
+                    ],
                 ]);
 
             Storage::disk($this->disk)->assertExists($path);

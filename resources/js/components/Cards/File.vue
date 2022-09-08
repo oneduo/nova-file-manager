@@ -47,10 +47,7 @@
             <DocumentIcon class="w-16 h-16" v-if="!isUploading" />
           </div>
 
-          <ImageLoader
-            v-if="isImage"
-            :src="file.url"
-          />
+          <ImageLoader v-if="isImage" :src="file.url" />
 
           <template v-if="isVideo">
             <video class="pointer-events-none w-full h-full object-cover">
@@ -93,15 +90,15 @@
       {{ __('NovaFileManager.fileMissing', { path: file.path }) }}
     </p>
 
-    <p
-      :class="[
-        'pointer-events-none block font-medium text-gray-500 text-left break-all',
-        isUploading || onDeselect ? 'text-xs' : 'text-sm',
-      ]"
-      v-if="file.size"
+    <div
+      class="gap-x-0.5 inline-flex flex-wrap items-center text-xs pointer-events-none block font-medium text-gray-500 text-left break-all"
     >
-      {{ file.size }}
-    </p>
+      <span v-if="file.size">{{ file.size }}</span>
+      <span v-if="!hasCustomDisk && file.disk?.length > 0" class="ml-0.5"
+        >&centerdot; {{ file.disk }}</span
+      >
+    </div>
+
     <span class="absolute top-1 right-1" v-if="selected">
       <CheckCircleIcon class="h-5 w-5 text-blue-500" aria-hidden="true" />
     </span>
@@ -145,7 +142,11 @@ const props = defineProps({
     },
     onDeselect: {
         type: Function,
-    }
+    },
+    hasCustomDisk: {
+        type: Boolean,
+        default: false,
+    },
 })
 
 const isImage = computed(() => props.file.type === 'image')
