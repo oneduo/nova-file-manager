@@ -100,7 +100,7 @@ trait FileConcerns
                 ->assertUnprocessable()
                 ->assertJsonValidationErrors([
                     'file' => [
-                            $message ?? __('This action is unauthorized.'),
+                        $message ?? __('This action is unauthorized.'),
                     ],
                 ]);
 
@@ -144,7 +144,7 @@ trait FileConcerns
                 ->assertUnprocessable()
                 ->assertJsonValidationErrors([
                     'file' => [
-                            $message ?? __('This action is unauthorized.'),
+                        $message ?? __('This action is unauthorized.'),
                     ],
                 ]);
 

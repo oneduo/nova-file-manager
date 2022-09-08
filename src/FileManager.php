@@ -96,7 +96,7 @@ class FileManager extends Field implements InteractsWithFilesystem, ResolvesUrl
             $files = collect($payload);
 
             if ($this->multiple) {
-                $value = collect($files)->map(fn(array $file) => new Asset(...$file));
+                $value = collect($files)->map(fn (array $file) => new Asset(...$file));
             } else {
                 $value = $files->isNotEmpty() ? new Asset(...$files->first()) : null;
             }

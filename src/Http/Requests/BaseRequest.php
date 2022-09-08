@@ -61,7 +61,7 @@ class BaseRequest extends NovaRequest
     public function resolveTool(): ?InteractsWithFilesystem
     {
         return tap(once(function () {
-            return collect(Nova::registeredTools())->first(fn(Tool $tool) => $tool instanceof NovaFileManager);
+            return collect(Nova::registeredTools())->first(fn (Tool $tool) => $tool instanceof NovaFileManager);
         }), function (?NovaFileManager $tool) {
             abort_if(is_null($tool), 404);
         });

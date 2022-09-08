@@ -123,4 +123,19 @@ return [
         'unit' => 'minutes',
         'value' => 10,
     ],
+
+    /*
+    |--------------------------------------------------------------------------
+    | Update checker
+    |--------------------------------------------------------------------------
+    |
+    | The tool provides a handy update checker that will notify you when a new
+    | version is available. You can disable it if you don't want to receive
+    | these notifications.
+    |
+    */
+    'update_checker' => [
+        'enabled' => env('NOVA_FILE_MANAGER_UPDATE_CHECKER_ENABLED', true),
+        'ttl_in_days' => env('NOVA_FILE_MANAGER_UPDATE_CHECKER_TTL_IN_DAYS', 1),
+    ],
 ];

@@ -7,12 +7,9 @@ use BBSLab\NovaFileManager\Events\FileDeleted;
 use BBSLab\NovaFileManager\Events\FileRenamed;
 use BBSLab\NovaFileManager\Events\FileUploaded;
 use Illuminate\Http\UploadedFile;
-use Illuminate\Support\Arr;
 use Illuminate\Support\Facades\Event;
 use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Str;
-use Symfony\Component\HttpFoundation\BinaryFileResponse;
-use function Pest\Laravel\getJson;
 use function Pest\Laravel\postJson;
 
 beforeEach(function () {
@@ -41,7 +38,7 @@ it('can upload file', function () {
 
     Event::assertDispatched(
         event: FileUploaded::class,
-        callback: fn(FileUploaded $event) => $event->disk === $this->disk && $event->path === $path,
+        callback: fn (FileUploaded $event) => $event->disk === $this->disk && $event->path === $path,
     );
 });
 
@@ -67,7 +64,7 @@ it('can rename a file', function () {
 
     Event::assertDispatched(
         event: FileRenamed::class,
-        callback: fn(FileRenamed $event
+        callback: fn (FileRenamed $event
         ) => $event->disk === $this->disk && $event->oldPath === $path && $event->newPath === $new,
     );
 });
@@ -95,7 +92,7 @@ it('cannot rename a non existing file', function () {
 
     Event::assertNotDispatched(
         event: FileRenamed::class,
-        callback: fn(FileRenamed $event
+        callback: fn (FileRenamed $event
         ) => $event->disk === $this->disk && $event->oldPath === $path && $event->newPath === $new,
     );
 });
@@ -135,8 +132,8 @@ it('throws an exception if the filesystem cannot rename the file', function () {
     Event::fake();
 
     $mock = mock(FileManagerContract::class)->expect(
-        rename: fn(string $oldPath, string $newPath) => false,
-        filesystem: fn() => Storage::disk($this->disk),
+        rename: fn (string $oldPath, string $newPath) => false,
+        filesystem: fn () => Storage::disk($this->disk),
     );
 
     app()->instance(FileManagerContract::class, $mock);
@@ -225,8 +222,8 @@ it('throw an exception if the filesystem cannot delete the file', function () {
     Event::fake();
 
     $mock = mock(FileManagerContract::class)->expect(
-        delete: fn(string $path) => false,
-        filesystem: fn() => Storage::disk($this->disk),
+        delete: fn (string $path) => false,
+        filesystem: fn () => Storage::disk($this->disk),
     );
 
     app()->instance(FileManagerContract::class, $mock);
