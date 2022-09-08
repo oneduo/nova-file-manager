@@ -255,21 +255,3 @@ it('throw an exception if the filesystem cannot delete the file', function () {
         },
     );
 });
-
-it('can download file', function () {
-    Storage::disk($this->disk)->put($path = 'file.txt', $content = Str::random());
-    Storage::disk($this->disk)->assertExists($path);
-
-    $response = getJson(
-        uri: route('nova-file-manager.files.download').'?'.Arr::query([
-            'disk' => $this->disk,
-            'path' => $path,
-        ]),
-    )
-        ->assertOk();
-
-    expect($response->baseResponse)
-        ->toBeInstanceOf(BinaryFileResponse::class)
-        ->and($response->baseResponse->getFile()->getContent())
-        ->toBe($content);
-});
