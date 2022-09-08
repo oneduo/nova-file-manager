@@ -55,7 +55,7 @@
                   :containerStyle="containerStyle"
                   :src="file.url"
                   alt="file.name"
-                  viewMode="1"
+                  :viewMode="1"
                 >
                 </vue-cropper>
               </div>

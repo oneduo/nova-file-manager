@@ -108,7 +108,7 @@ const props = defineProps({
         required: true,
     },
     icon: {
-        type: Object,
+        type: Function,
     },
     variant: {
         type: String,
