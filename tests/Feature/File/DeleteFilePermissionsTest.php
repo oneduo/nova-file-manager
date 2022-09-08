@@ -78,7 +78,7 @@ it('can throw a custom validation message using canDeleteFile', function () {
             ->canDeleteFile(function (DeleteFileRequest $request) use ($message) {
                 if (!str_contains($request->path, 'foo')) {
                     throw ValidationException::withMessages([
-                        'path' => [$message],
+                        'file' => [$message],
                     ]);
                 }
 

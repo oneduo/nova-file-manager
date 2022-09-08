@@ -2,7 +2,6 @@
 
 declare(strict_types=1);
 
-use BBSLab\NovaFileManager\FileManager;
 use BBSLab\NovaFileManager\NovaFileManager;
 use BBSLab\NovaFileManager\Tests\Fixture\TestResource;
 use BBSLab\NovaFileManager\Tests\Fixture\TestResourceWithOnDemandFilesystem;
@@ -12,7 +11,6 @@ use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Str;
 use Laravel\Nova\Http\Requests\NovaRequest;
 use Laravel\Nova\Nova;
-use Laravel\Nova\Resource;
 use function Pest\Laravel\actingAs;
 use function Pest\Laravel\getJson;
 
@@ -26,7 +24,7 @@ it('cannot retrieve files of undefined disk', function () {
     getJson(uri: route('nova-file-manager.data').'?'.Arr::query(['disk' => 'unknown']))
         ->assertJsonValidationErrors([
             'disk' => [
-                __('validation.exists', ['attribute' => 'disk']),
+                __('nova-file-manager::validation.disk.missing', ['disk' => 'unknown']),
             ],
         ]);
 });

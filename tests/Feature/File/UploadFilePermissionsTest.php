@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-use BBSLab\NovaFileManager\Http\Requests\UploadRequest;
+use BBSLab\NovaFileManager\Http\Requests\UploadFileRequest;
 use BBSLab\NovaFileManager\NovaFileManager;
 use Illuminate\Foundation\Auth\User;
 use Illuminate\Support\Facades\Storage;
@@ -62,7 +62,7 @@ test('canUploadFile takes precedence over showUploadFile', function () {
             ->showUploadFile(function (NovaRequest $request) {
                 return $request->user()?->getKey() === 42;
             })
-            ->canUploadFile(function (UploadRequest $request) {
+            ->canUploadFile(function (UploadFileRequest $request) {
                 return str_contains($request->path, 'foo');
             }),
     ];
@@ -75,7 +75,7 @@ it('can throw a custom validation message using canUploadFile', function () {
 
     Nova::$tools = [
         NovaFileManager::make()
-            ->canUploadFile(function (UploadRequest $request) use ($message) {
+            ->canUploadFile(function (UploadFileRequest $request) use ($message) {
                 if (!str_contains($request->path, 'foo')) {
                     throw ValidationException::withMessages([
                         'file' => [$message],

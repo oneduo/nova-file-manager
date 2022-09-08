@@ -58,7 +58,7 @@ it('throws an exception if the filesystem cannot create the directory', function
     )
         ->assertJsonValidationErrors([
             'folder' => [
-                __('Could not create folder !'),
+                __('nova-file-manager::errors.folder.create'),
             ],
         ]);
 
@@ -75,12 +75,12 @@ it('cannot create a directory with an existing name', function () {
         uri: route('nova-file-manager.folders.create'),
         data: [
             'disk' => $this->disk,
-            'path' => 'existing',
+            'path' => $path = 'existing',
         ],
     )
         ->assertJsonValidationErrors([
             'path' => [
-                trans('validation.exists', ['attribute' => 'path']),
+                __('nova-file-manager::validation.path.exists', ['path' => $path]),
             ],
         ]);
 });
@@ -137,7 +137,7 @@ it('returns validation error when the filesystem can not rename the directory', 
     )
         ->assertJsonValidationErrors([
             'folder' => [
-                __('Could not rename folder !'),
+                __('nova-file-manager::errors.folder.rename'),
             ],
         ]);
 
@@ -154,7 +154,7 @@ it('cannot rename a directory which doesnt exist', function () {
         uri: route('nova-file-manager.folders.rename'),
         data: [
             'disk' => $this->disk,
-            'oldPath' => 'existing',
+            'oldPath' => $path = 'existing',
             'newPath' => 'renamed',
         ],
     );
@@ -162,7 +162,7 @@ it('cannot rename a directory which doesnt exist', function () {
     $response
         ->assertJsonValidationErrors([
             'oldPath' => [
-                __('validation.exists', ['attribute' => 'old path']),
+                __('nova-file-manager::validation.path.missing', ['path' => $path]),
             ],
         ]);
 });
@@ -183,7 +183,7 @@ it('cannot rename a directory to an existing name', function () {
     $response
         ->assertJsonValidationErrors([
             'newPath' => [
-                __('validation.exists', ['attribute' => 'new path']),
+                __('nova-file-manager::validation.path.exists', ['path' => $second]),
             ],
         ]);
 });
@@ -227,7 +227,7 @@ it('cannot delete a directory which doesnt exist', function () {
     )
         ->assertJsonValidationErrors([
             'path' => [
-                __('validation.exists', ['attribute' => 'path']),
+                __('nova-file-manager::validation.path.missing', ['path' => $path]),
             ],
         ]);
 
@@ -260,7 +260,7 @@ it('throws an exception if the filesystem cannot delete the directory', function
     )
         ->assertJsonValidationErrors([
             'folder' => [
-                __('Could not delete folder !'),
+                __('nova-file-manager::errors.folder.delete'),
             ],
         ]);
 
