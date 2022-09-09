@@ -94,4 +94,19 @@
 |--------|---------|
 | `bool` | `true`  |
 
+## `update_checker.enabled`
+
+> Toggles whether or not to show the update checker banner
+
+| Type   | Default |
+|--------|---------|
+| `bool` | `true`  |
+
+## `update_checker.ttl_in_days`
+
+> TTL for analysis caching the update checker status in days
+
+| Type  | Default |
+|-------|---------|
+| `int` | `1`     |
 
