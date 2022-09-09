@@ -40,7 +40,11 @@ let sidebar = [
       {
         text: 'Access control',
         link: '/access-control',
-      }
+      },
+      {
+        text: 'Validation',
+        link: '/validation',
+      },
     ],
   },
   {
