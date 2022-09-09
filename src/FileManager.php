@@ -6,17 +6,15 @@ namespace BBSLab\NovaFileManager;
 
 use BBSLab\NovaFileManager\Contracts\Services\FileManagerContract;
 use BBSLab\NovaFileManager\Contracts\Support\InteractsWithFilesystem;
-use BBSLab\NovaFileManager\Contracts\Support\ResolvesUrl;
 use BBSLab\NovaFileManager\Support\Asset;
 use Closure;
 use JsonException;
 use Laravel\Nova\Fields\Field;
 use Laravel\Nova\Http\Requests\NovaRequest;
 
-class FileManager extends Field implements InteractsWithFilesystem, ResolvesUrl
+class FileManager extends Field implements InteractsWithFilesystem
 {
     use Traits\Support\InteractsWithFilesystem;
-    use Traits\Support\ResolvesUrl;
 
     public $component = 'nova-file-manager-field';
 
