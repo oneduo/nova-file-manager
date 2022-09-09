@@ -116,12 +116,14 @@ export default {
         drag: false,
         displayModal: false,
         value: [],
+        flexibleGroup: [],
     }),
 
     mounted() {
         this.init()
 
         this.value = (this.field.value || []).map(file => this.mapEntity(file))
+        this.flexibleGroup = this.resolveFlexible(this)
     },
 
     computed: {
@@ -167,9 +169,10 @@ export default {
                 limit: this.field.limit ?? null,
                 resource: this.resourceName,
                 resourceId: this.resourceId,
-                attribute: this.field.attribute,
+                attribute: this.flexibleGroup.length ? this.field.sortableUriKey : this.field.attribute,
                 customDisk: this.field.customDisk,
                 permissions: this.field.permissions,
+                flexibleGroup: this.flexibleGroup,
                 callback: selection => {
                     this.value = selection.map(f => this.mapEntity(f))
                 },
@@ -199,6 +202,20 @@ export default {
                 file.exists,
                 file.disk
             ),
+
+        resolveFlexible(component) {
+            let elements = []
+
+            let group = component.$parent
+            let parent = component.$parent?.$parent?.$parent?.$parent
+
+            if (parent?.field?.component === 'nova-flexible-content') {
+                elements.unshift(...this.resolveFlexible(parent))
+                elements.push(`${group?.group?.name}:${parent.field.sortableUriKey}`)
+            }
+
+            return elements
+        },
     },
 
     watch: {

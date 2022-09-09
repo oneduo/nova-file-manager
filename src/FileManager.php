@@ -113,6 +113,14 @@ class FileManager extends Field implements InteractsWithFilesystem
             $value = collect([$value]);
         }
 
+        if (is_array($value)) {
+            if ($this->multiple) {
+                $value = collect($value)->map(fn (array $asset) => new Asset(...$asset));
+            } else {
+                $value = collect([new Asset(...$value)]);
+            }
+        }
+
         return $value
             ->map(function (Asset $asset) {
                 $disk = $this->resolveFilesystem(app(NovaRequest::class)) ?? $asset->disk;

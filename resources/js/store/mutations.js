@@ -190,6 +190,10 @@ const mutations = {
         state.customDisk = customDisk
     },
 
+    setFlexibleGroup(state, flexibleGroup) {
+        state.flexibleGroup = flexibleGroup
+    },
+
     /*
     |--------------------------------------------------------------------------
     | Setters
