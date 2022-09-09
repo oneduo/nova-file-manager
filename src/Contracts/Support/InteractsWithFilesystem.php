@@ -17,7 +17,7 @@ interface InteractsWithFilesystem
 
     public function hasCustomFilesystem(): bool;
 
-    public function resolveFilesystem(NovaRequest $request): ?Filesystem;
+    public function resolveFilesystem(NovaRequest $request): Filesystem|string|null;
 
     public function showCreateFolder(Closure $callback): static;
 
