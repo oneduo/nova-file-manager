@@ -47,6 +47,7 @@ const store = {
             resourceId: null,
             attribute: null,
             customDisk: false,
+            flexibleGroup: [],
 
             // permissions
             showCreateFolder: true,

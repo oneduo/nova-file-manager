@@ -6,10 +6,13 @@ namespace BBSLab\NovaFileManager\Traits\Support;
 
 use Closure;
 use Illuminate\Contracts\Filesystem\Filesystem;
+use Illuminate\Contracts\Validation\Rule;
 use Laravel\Nova\Http\Requests\NovaRequest;
 
 trait InteractsWithFilesystem
 {
+    use ResolvesUrl;
+
     protected ?Closure $filesystemCallback = null;
 
     protected ?Closure $showCreateFolder = null;
@@ -37,6 +40,10 @@ trait InteractsWithFilesystem
     protected ?Closure $canRenameFile = null;
 
     protected ?Closure $canDeleteFile = null;
+
+    protected array $uploadRules = [];
+
+    protected ?Closure $uploadValidator = null;
 
     public function filesystem(Closure $callback): static
     {
@@ -237,6 +244,45 @@ trait InteractsWithFilesystem
         return is_callable($this->canDeleteFile)
             ? call_user_func($this->canDeleteFile, $request)
             : $this->shouldShowDeleteFile($request);
+    }
+
+    public function hasUploadValidator(): bool
+    {
+        return $this->uploadValidator !== null && is_callable($this->uploadValidator);
+    }
+
+    public function getUploadValidator(): ?Closure
+    {
+        return $this->uploadValidator;
+    }
+
+    /**
+     * Set the validation rules for the upload.
+     *
+     * @param  callable|array<int, string|\Illuminate\Validation\Rule|\Illuminate\Contracts\Validation\Rule|callable>|string  ...$rules
+     * @return $this
+     */
+    public function uploadRules($rules): static
+    {
+        if ($rules instanceof Closure) {
+            $this->uploadRules = [$rules];
+        } else {
+            $this->uploadRules = ($rules instanceof Rule || is_string($rules)) ? func_get_args() : $rules;
+        }
+
+        return $this;
+    }
+
+    public function getUploadRules(): array
+    {
+        return $this->uploadRules;
+    }
+
+    public function validateUploadUsing(Closure $callback): static
+    {
+        $this->uploadValidator = $callback;
+
+        return $this;
     }
 
     public function options(): array

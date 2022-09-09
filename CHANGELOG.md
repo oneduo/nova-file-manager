@@ -2,6 +2,34 @@
 
 All notable changes to `nova-file-manager` will be documented in this file
 
+## 0.6.1 - 2022-09-09
+
+### What's Changed
+
+- fix: added missing update checker banner by @crezra in https://github.com/BBS-Lab/nova-file-manager/pull/73
+
+**Full Changelog**: https://github.com/BBS-Lab/nova-file-manager/compare/v0.6.0...v0.6.1
+
+## 0.6.0 - 2022-09-09
+
+### What's Changed
+
+- Add workflow to automatically update assets via `nova-kit/nova-packages-tool` by @crynobone in https://github.com/BBS-Lab/nova-file-manager/pull/64
+- Bump supported version with Script ordering fixes. by @crynobone in https://github.com/BBS-Lab/nova-file-manager/pull/65
+- test: add guzzle to fix browser test. by @mikaelpopowicz in https://github.com/BBS-Lab/nova-file-manager/pull/66
+- Minor fixed and UI improvements by @mikaelpopowicz in https://github.com/BBS-Lab/nova-file-manager/pull/67
+- refactor: refactor index field by @mikaelpopowicz in https://github.com/BBS-Lab/nova-file-manager/pull/68
+- Support filesystem as string by @milewski in https://github.com/BBS-Lab/nova-file-manager/pull/69
+- feat(upload): add upload rules and upload custom validation by @mikaelpopowicz in https://github.com/BBS-Lab/nova-file-manager/pull/71
+- feat(flexible): add flexible content support by @mikaelpopowicz in https://github.com/BBS-Lab/nova-file-manager/pull/72
+- feat: add update checker banner message by @crezra
+
+### New Contributors
+
+- @crynobone made their first contribution in https://github.com/BBS-Lab/nova-file-manager/pull/64
+
+**Full Changelog**: https://github.com/BBS-Lab/nova-file-manager/compare/v0.5.0...v0.6.0
+
 ## 0.5.0 - 2022-09-08
 
 ### 🚨 BREAKING CHANGE

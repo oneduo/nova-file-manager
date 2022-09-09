@@ -5,10 +5,12 @@ declare(strict_types=1);
 use BBSLab\NovaFileManager\Http\Requests\UploadFileRequest;
 use BBSLab\NovaFileManager\NovaFileManager;
 use Illuminate\Foundation\Auth\User;
+use Illuminate\Http\UploadedFile;
 use Illuminate\Support\Facades\Storage;
 use Illuminate\Validation\ValidationException;
 use Laravel\Nova\Http\Requests\NovaRequest;
 use Laravel\Nova\Nova;
+use function Pest\Laravel\actingAs;
 
 beforeEach(function () {
     $this->disk = 'public';
@@ -87,4 +89,62 @@ it('can throw a custom validation message using canUploadFile', function () {
     ];
 
     $this->performUnauthorizedUploadChecks($message);
+});
+
+it('can validate upload', function () {
+    Nova::$tools = [
+        NovaFileManager::make()
+            ->validateUploadUsing(function (UploadFileRequest $request, UploadedFile $file, array $meta, bool $saving) {
+                return str_contains($file->getClientOriginalName(), 'foo');
+            }),
+    ];
+
+    actingAs($this->user)
+        ->postJson(
+            uri: route('nova-file-manager.files.upload'),
+            data: [
+                'disk' => $this->disk,
+                'path' => '/',
+                'file' => UploadedFile::fake()->image($path = 'image.jpeg'),
+            ],
+        )
+        ->assertUnprocessable()
+        ->assertJsonValidationErrors([
+            'file' => [__('nova-file-manager::errors.file.upload_validation')],
+        ]);
+
+    Storage::disk($this->disk)->assertMissing($path);
+});
+
+it('can throw a custom validation message using validateUploadUsing', function () {
+    $message = 'File name must contains `foo`';
+
+    Nova::$tools = [
+        NovaFileManager::make()
+            ->validateUploadUsing(function (UploadFileRequest $request, UploadedFile $file, array $meta, bool $saving) use ($message) {
+                if (!str_contains($request->path, 'foo')) {
+                    throw ValidationException::withMessages([
+                        'file' => [$message],
+                    ]);
+                }
+
+                return true;
+            }),
+    ];
+
+    actingAs($this->user)
+        ->postJson(
+            uri: route('nova-file-manager.files.upload'),
+            data: [
+                'disk' => $this->disk,
+                'path' => '/',
+                'file' => UploadedFile::fake()->image($path = 'image.jpeg'),
+            ],
+        )
+        ->assertUnprocessable()
+        ->assertJsonValidationErrors([
+            'file' => [$message],
+        ]);
+
+    Storage::disk($this->disk)->assertMissing($path);
 });

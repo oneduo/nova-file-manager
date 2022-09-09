@@ -8,6 +8,7 @@ use BBSLab\NovaFileManager\Contracts\Filesystem\Upload\Uploader as UploaderContr
 use BBSLab\NovaFileManager\Events\FileUploaded;
 use BBSLab\NovaFileManager\Http\Requests\UploadFileRequest;
 use Illuminate\Http\UploadedFile;
+use Illuminate\Validation\ValidationException;
 use Pion\Laravel\ChunkUpload\Exceptions\UploadMissingFileException;
 use Pion\Laravel\ChunkUpload\Handler\HandlerFactory;
 use Pion\Laravel\ChunkUpload\Receiver\FileReceiver;
@@ -20,6 +21,12 @@ class Uploader implements UploaderContract
      */
     public function handle(UploadFileRequest $request, string $index = 'file'): array
     {
+        if (!$request->validateUpload()) {
+            throw ValidationException::withMessages([
+                'file' => [__('nova-file-manager::errors.file.upload_validation')],
+            ]);
+        }
+
         $receiver = new FileReceiver($index, $request, HandlerFactory::classFromRequest($request));
 
         if ($receiver->isUploaded() === false) {
@@ -42,6 +49,12 @@ class Uploader implements UploaderContract
 
     public function saveFile(UploadFileRequest $request, UploadedFile $file): array
     {
+        if (!$request->validateUpload($file, true)) {
+            throw ValidationException::withMessages([
+                'file' => [__('nova-file-manager::errors.file.upload_validation')],
+            ]);
+        }
+
         $path = $request->manager()->filesystem()->putFileAs(
             path: $request->path,
             file: $file,
