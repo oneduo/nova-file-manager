@@ -50,7 +50,7 @@ trait InteractsWithFilesystem
         return $this->filesystemCallback !== null && is_callable($this->filesystemCallback);
     }
 
-    public function resolveFilesystem(NovaRequest $request): ?Filesystem
+    public function resolveFilesystem(NovaRequest $request): Filesystem|string|null
     {
         return $this->hasCustomFilesystem()
             ? call_user_func($this->filesystemCallback, $request)
