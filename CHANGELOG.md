@@ -2,6 +2,14 @@
 
 All notable changes to `nova-file-manager` will be documented in this file
 
+## 0.6.1 - 2022-09-09
+
+### What's Changed
+
+- fix: added missing update checker banner by @crezra in https://github.com/BBS-Lab/nova-file-manager/pull/73
+
+**Full Changelog**: https://github.com/BBS-Lab/nova-file-manager/compare/v0.6.0...v0.6.1
+
 ## 0.6.0 - 2022-09-09
 
 ### What's Changed
