@@ -62,6 +62,10 @@ let sidebar = [
       {
         text: 'Contributing',
         link: '/contributing',
+      },
+      {
+        text: 'Update checker',
+        link: '/update-checker',
       }
     ],
   },
