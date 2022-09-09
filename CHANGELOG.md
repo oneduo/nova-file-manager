@@ -2,6 +2,16 @@
 
 All notable changes to `nova-file-manager` will be documented in this file
 
+## v0.6.2 - 2022-09-09
+
+### What's Changed
+
+- docs: updated docs with update checker config by @crezra in https://github.com/BBS-Lab/nova-file-manager/pull/74
+- docs: added upload validation documentation by @crezra in https://github.com/BBS-Lab/nova-file-manager/pull/75
+- fix(flexible): fix flexible support by @mikaelpopowicz in https://github.com/BBS-Lab/nova-file-manager/pull/77
+
+**Full Changelog**: https://github.com/BBS-Lab/nova-file-manager/compare/v0.6.1...v0.6.2
+
 ## 0.6.1 - 2022-09-09
 
 ### What's Changed
