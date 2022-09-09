@@ -9,8 +9,10 @@ use BBSLab\NovaFileManager\Contracts\Support\InteractsWithFilesystem;
 use BBSLab\NovaFileManager\FileManager;
 use BBSLab\NovaFileManager\NovaFileManager;
 use Illuminate\Validation\ValidationException;
+use Laravel\Nova\Fields\FieldCollection;
 use Laravel\Nova\Http\Requests\NovaRequest;
 use Laravel\Nova\Nova;
+use Laravel\Nova\Resource;
 use Laravel\Nova\Tool;
 
 /**
@@ -51,11 +53,59 @@ class BaseRequest extends NovaRequest
     {
         $resource = $this->resourceId ? $this->findResourceOrFail() : $this->newResource();
 
-        return $resource->availableFields($this)
+        $fields = $this->has('flexible')
+            ? $this->flexibleAvailableFields($resource)
+            : $resource->availableFields($this);
+
+        return $fields
             ->whereInstanceOf(FileManager::class)
             ->findFieldByAttribute($this->attribute, function () {
                 abort(404);
             });
+    }
+
+    public function flexibleAvailableFields(Resource $resource): FieldCollection
+    {
+        $path = $this->input('flexible');
+
+        abort_if(blank($path), 404);
+
+        $tree = collect(explode('.', $path))
+            ->map(function (string $item) {
+                [$layout, $attribute] = explode(':', $item);
+
+                return ['attribute' => $attribute, 'layout' => $layout];
+            });
+
+        $fields = $resource->availableFields($this);
+
+        while ($tree->isNotEmpty()) {
+            $current = $tree->shift();
+
+            $fields = $this->flexibleFieldCollection($fields, $current['attribute'], $current['layout']);
+        }
+
+        return $fields;
+    }
+
+    public function flexibleFieldCollection(FieldCollection $fields, string $attribute, string $name): FieldCollection
+    {
+        /** @var \Whitecube\NovaFlexibleContent\Flexible $field */
+        $field = $fields
+            ->whereInstanceOf('Whitecube\NovaFlexibleContent\Flexible')
+            ->findFieldByAttribute($attribute, function () {
+                abort(404);
+            });
+
+        /** @var \Whitecube\NovaFlexibleContent\Layouts\Collection $layouts */
+        abort_unless($layouts = invade($field)->layouts, 404);
+
+        /** @var \Whitecube\NovaFlexibleContent\Layouts\Layout $layout */
+        $layout = $layouts->first(fn ($layout) => $layout->name() === $name);
+
+        abort_if($layout === null, 404);
+
+        return new FieldCollection($layout->fields());
     }
 
     public function resolveTool(): ?InteractsWithFilesystem

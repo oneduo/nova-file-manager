@@ -12,6 +12,10 @@ const buildPayload = (state, params) => {
         ...(!state.customDisk && {
             disk: state.disk,
         }),
+        ...(state.isFieldMode &&
+      state.flexibleGroup?.length && {
+            flexible: state.flexibleGroup.join('.'),
+        }),
     }
 }
 
@@ -424,6 +428,7 @@ const actions = {
             attribute,
             customDisk,
             permissions,
+            flexibleGroup,
             callback,
         }
     ) => {
@@ -434,6 +439,7 @@ const actions = {
         commit('setResourceId', resourceId)
         commit('setAttribute', attribute)
         commit('setCustomDisk', customDisk)
+        commit('setFlexibleGroup', flexibleGroup)
         commit('setCallback', callback)
         commit('setSelection', [...initialFiles])
         dispatch('setPermissions', permissions)
@@ -456,6 +462,7 @@ const actions = {
         commit('setResourceId', null)
         commit('setAttribute', null)
         commit('setCustomDisk', false)
+        commit('setFlexibleGroup', [])
         commit('setDisk', null)
         commit('setSelection', null)
 
