@@ -11,7 +11,7 @@ use Laravel\Nova\Http\Requests\NovaRequest;
 /**
  * @property ?\Closure $filesystemCallback
  */
-interface InteractsWithFilesystem
+interface InteractsWithFilesystem extends ResolvesUrl
 {
     public function filesystem(Closure $callback): static;
 
@@ -70,6 +70,22 @@ interface InteractsWithFilesystem
     public function canDeleteFile(Closure $callback): static;
 
     public function resolveCanDeleteFile(NovaRequest $request): bool;
+
+    public function hasUploadValidator(): bool;
+
+    public function getUploadValidator(): ?Closure;
+
+    /**
+     * Set the validation rules for the upload.
+     *
+     * @param  callable|array<int, string|\Illuminate\Validation\Rule|\Illuminate\Contracts\Validation\Rule|callable>|string  ...$rules
+     * @return $this
+     */
+    public function uploadRules($rules): static;
+
+    public function getUploadRules(): array;
+
+    public function validateUploadUsing(Closure $callback): static;
 
     public function options(): array;
 }
