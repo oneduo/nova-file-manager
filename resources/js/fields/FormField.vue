@@ -167,11 +167,11 @@ export default {
                 initialFiles: this.value,
                 multiple: this.field.multiple ?? false,
                 limit: this.field.limit ?? null,
-                resource: this.resourceName,
-                resourceId: this.resourceId,
+                resource: this.resourceName ?? null,
+                resourceId: this.resourceId ?? null,
                 attribute: this.flexibleGroup.length ? this.field.sortableUriKey : this.field.attribute,
-                customDisk: this.field.customDisk,
-                permissions: this.field.permissions,
+                customDisk: this.field.customDisk ?? false,
+                permissions: this.field.permissions ?? {},
                 flexibleGroup: this.flexibleGroup,
                 callback: selection => {
                     this.value = selection.map(f => this.mapEntity(f))

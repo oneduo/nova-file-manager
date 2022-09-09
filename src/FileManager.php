@@ -11,6 +11,7 @@ use Closure;
 use JsonException;
 use Laravel\Nova\Fields\Field;
 use Laravel\Nova\Http\Requests\NovaRequest;
+use stdClass;
 
 class FileManager extends Field implements InteractsWithFilesystem
 {
@@ -111,6 +112,10 @@ class FileManager extends Field implements InteractsWithFilesystem
 
         if ($value instanceof Asset) {
             $value = collect([$value]);
+        }
+
+        if ($value instanceof stdClass) {
+            $value = (array) $value;
         }
 
         if (is_array($value)) {

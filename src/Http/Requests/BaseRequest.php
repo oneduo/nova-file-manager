@@ -51,7 +51,7 @@ class BaseRequest extends NovaRequest
 
     public function resolveField(): ?InteractsWithFilesystem
     {
-        $resource = $this->resourceId ? $this->findResourceOrFail() : $this->newResource();
+        $resource = !(empty($this->resourceId)) ? $this->findResourceOrFail() : $this->newResource();
 
         $fields = $this->has('flexible')
             ? $this->flexibleAvailableFields($resource)
