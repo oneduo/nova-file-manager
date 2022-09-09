@@ -7,7 +7,9 @@ const buildPayload = (state, params) => {
         ...params,
         attribute: state.attribute,
         resource: state.resource,
-        resourceId: state.resourceId,
+        ...(state.resourceId && {
+            resourceId: state.resourceId,
+        }),
         fieldMode: state.isFieldMode ? 1 : 0,
         ...(!state.customDisk && {
             disk: state.disk,
