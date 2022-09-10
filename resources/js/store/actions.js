@@ -2,11 +2,17 @@ import sanitize from '../helpers/sanitize'
 import errors from '@/helpers/errors'
 import Resumable from 'resumablejs'
 
+const buildUrl = (state, url) => {
+    const suffifx = state.isFieldMode ? `/${state.resource}` : ''
+    console.log(suffifx, state.isFieldMode)
+
+    return `${url}${suffifx}`
+}
+
 const buildPayload = (state, params) => {
     return {
         ...params,
         attribute: state.attribute,
-        resource: state.resource,
         ...(state.resourceId && {
             resourceId: state.resourceId,
         }),
@@ -144,9 +150,12 @@ const actions = {
     async getDisks({ commit, state }) {
         commit('setIsFetchingDisks', true)
 
-        const { data } = await Nova.request().get('/nova-vendor/nova-file-manager/disks/available', {
-            params: buildPayload(state, {}),
-        })
+        const { data } = await Nova.request().get(
+            buildUrl(state, '/nova-vendor/nova-file-manager/disks/available'),
+            {
+                params: buildPayload(state, {}),
+            }
+        )
 
         commit('setDisks', data)
 
@@ -163,7 +172,7 @@ const actions = {
     async getData({ state, commit }) {
         commit('setIsFetchingData', true)
 
-        const { data } = await Nova.request().get('/nova-vendor/nova-file-manager', {
+        const { data } = await Nova.request().get(buildUrl(state, '/nova-vendor/nova-file-manager'), {
             params: buildPayload(state, {
                 path: state.path,
                 page: state.page,
@@ -187,7 +196,7 @@ const actions = {
     async createFolder({ dispatch, state, commit }, path) {
         try {
             const response = await Nova.request().post(
-                '/nova-vendor/nova-file-manager/folders/create',
+                buildUrl(state, '/nova-vendor/nova-file-manager/folders/create'),
                 buildPayload(state, {
                     path: sanitize(`${state.path ?? ''}/${path}`),
                 })
@@ -206,7 +215,7 @@ const actions = {
     async renameFolder({ dispatch, state, commit }, { id, oldPath, newPath }) {
         try {
             const response = await Nova.request().post(
-                '/nova-vendor/nova-file-manager/folders/rename',
+                buildUrl(state, '/nova-vendor/nova-file-manager/folders/rename'),
                 buildPayload(state, {
                     path: state.path,
                     oldPath: sanitize(oldPath),
@@ -227,7 +236,7 @@ const actions = {
     async deleteFolder({ dispatch, state, commit }, { id, path }) {
         try {
             const response = await Nova.request().post(
-                '/nova-vendor/nova-file-manager/folders/delete',
+                buildUrl(state, '/nova-vendor/nova-file-manager/folders/delete'),
                 buildPayload(state, {
                     path: path,
                 })
@@ -282,7 +291,7 @@ const actions = {
             simultaneousUploads: 1,
             testChunks: false,
             throttleProgressCallbacks: 1,
-            target: '/nova-vendor/nova-file-manager/files/upload',
+            target: buildUrl(state, '/nova-vendor/nova-file-manager/files/upload'),
             query: buildPayload(state, {
                 path: state.path ?? '/',
             }),
@@ -325,7 +334,7 @@ const actions = {
     async renameFile({ dispatch, state, commit }, { id, oldPath, newPath }) {
         try {
             const response = await Nova.request().post(
-                '/nova-vendor/nova-file-manager/files/rename',
+                buildUrl(state, '/nova-vendor/nova-file-manager/files/rename'),
                 buildPayload(state, {
                     path: state.path,
                     oldPath: sanitize(oldPath),
@@ -349,7 +358,7 @@ const actions = {
     async deleteFile({ dispatch, state, commit }, { id, path }) {
         try {
             const response = await Nova.request().post(
-                '/nova-vendor/nova-file-manager/files/delete',
+                buildUrl(state, '/nova-vendor/nova-file-manager/files/delete'),
                 buildPayload(state, {
                     path: path,
                 })

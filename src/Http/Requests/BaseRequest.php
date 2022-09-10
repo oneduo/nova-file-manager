@@ -117,15 +117,6 @@ class BaseRequest extends NovaRequest
         });
     }
 
-    public function resource()
-    {
-        return tap(once(function () {
-            return Nova::resourceForKey($this->input('resource'));
-        }), function ($resource) {
-            abort_if(is_null($resource), 404);
-        });
-    }
-
     public function canCreateFolder(): bool
     {
         return $this->element()?->resolveCanCreateFolder($this) ?? true;
