@@ -20,21 +20,21 @@ use Illuminate\Support\Facades\Route;
 */
 
 Route::as('nova-file-manager.')->middleware('nova')->group(static function () {
-    Route::get('/', IndexController::class)->name('data');
+    Route::get('/{resource?}', IndexController::class)->name('data');
 
     Route::prefix('disks')->as('disks.')->group(static function () {
-        Route::get('available', [DiskController::class, 'available'])->name('available');
+        Route::get('available/{resource?}', [DiskController::class, 'available'])->name('available');
     });
 
     Route::prefix('files')->as('files.')->group(function () {
-        Route::post('upload', [FileController::class, 'upload'])->name('upload');
-        Route::post('rename', [FileController::class, 'rename'])->name('rename');
-        Route::post('delete', [FileController::class, 'delete'])->name('delete');
+        Route::post('upload/{resource?}', [FileController::class, 'upload'])->name('upload');
+        Route::post('rename/{resource?}', [FileController::class, 'rename'])->name('rename');
+        Route::post('delete/{resource?}', [FileController::class, 'delete'])->name('delete');
     });
 
     Route::prefix('folders')->as('folders.')->group(function () {
-        Route::post('create', [FolderController::class, 'create'])->name('create');
-        Route::post('rename', [FolderController::class, 'rename'])->name('rename');
-        Route::post('delete', [FolderController::class, 'delete'])->name('delete');
+        Route::post('create/{resource?}', [FolderController::class, 'create'])->name('create');
+        Route::post('rename/{resource?}', [FolderController::class, 'rename'])->name('rename');
+        Route::post('delete/{resource?}', [FolderController::class, 'delete'])->name('delete');
     });
 });
