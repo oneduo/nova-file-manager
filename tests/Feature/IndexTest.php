@@ -101,6 +101,8 @@ it('can retrieve files from field with a custom filesystem', function () {
     Storage::disk($this->disk)->put('users/42/'.($path = Str::random().'.txt'), Str::random());
     Storage::disk($this->disk)->put('users/84/'.(Str::random().'.txt'), Str::random());
 
+    $resource = TestResourceWithOnDemandFilesystem::uriKey();
+
     $query = Arr::query([
         'resource' => TestResourceWithOnDemandFilesystem::uriKey(),
         'resourceId' => null,
@@ -109,7 +111,7 @@ it('can retrieve files from field with a custom filesystem', function () {
     ]);
 
     actingAs($this->user)
-        ->getJson(uri: route('nova-file-manager.data')."?{$query}")
+        ->getJson(uri: route('nova-file-manager.data')."/{$resource}?{$query}")
         ->assertOk()
         ->assertJson([
             'disk' => 'default',
@@ -134,6 +136,8 @@ it('cannot retrieve files from field with the wrong attribute', function () {
         TestResource::class,
     ]);
 
+    $resource = TestResource::uriKey();
+
     $query = Arr::query([
         'resource' => TestResource::uriKey(),
         'resourceId' => null,
@@ -142,6 +146,6 @@ it('cannot retrieve files from field with the wrong attribute', function () {
     ]);
 
     actingAs($this->user)
-        ->getJson(uri: route('nova-file-manager.data')."?{$query}")
+        ->getJson(uri: route('nova-file-manager.data')."/{$resource}?{$query}")
         ->assertNotFound();
 });
