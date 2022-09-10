@@ -2,6 +2,14 @@
 
 All notable changes to `nova-file-manager` will be documented in this file
 
+## v0.6.4 - 2022-09-10
+
+### What's Changed
+
+- fix(upload): fix an issue where a file could not be uploaded in a subdirectory when a file with same name exists in the root directory by @mikaelpopowicz in https://github.com/BBS-Lab/nova-file-manager/pull/79
+
+**Full Changelog**: https://github.com/BBS-Lab/nova-file-manager/compare/v0.6.3...v0.6.4
+
 ## v0.6.3 - 2022-09-10
 
 ### What's Changed
