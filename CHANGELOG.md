@@ -2,6 +2,14 @@
 
 All notable changes to `nova-file-manager` will be documented in this file
 
+## v0.6.3 - 2022-09-10
+
+### What's Changed
+
+- refactor: add optional `resource` route parameter on api routes to comply with NovaRequest resource resolving by @mikaelpopowicz in https://github.com/BBS-Lab/nova-file-manager/pull/78
+
+**Full Changelog**: https://github.com/BBS-Lab/nova-file-manager/compare/v0.6.2...v0.6.3
+
 ## v0.6.2 - 2022-09-09
 
 ### What's Changed
