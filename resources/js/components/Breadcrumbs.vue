@@ -26,10 +26,6 @@
         </div>
       </li>
     </ol>
-    <!--    todo-->
-    <!--    <div v-if="selection.length" class="flex items-center border border-blue-500 rounded-md p-1">-->
-    <!--      <span class="text-xs text-blue-500">{{ __('NovaFileManager.totalFilesCount', {count: selection.length}) }}</span>-->
-    <!--    </div>-->
   </nav>
 </template>
 
@@ -37,7 +33,13 @@
 import { ChevronRightIcon, HomeIcon } from '@heroicons/vue/24/outline'
 
 defineProps({
-    items: null,
-    setPath: null,
+  items: {
+    type: Array,
+    default: [],
+  },
+  setPath: {
+    type: Function,
+    required: true,
+  },
 })
 </script>
