@@ -20,7 +20,7 @@ use Laravel\Nova\Tool;
  * @property-read ?string $attribute
  * @property-read ?string $resource
  * @property-read ?string $resourceId
- * @property-read ?bool $fieldMode
+ * @property-read ?string $fieldMode
  */
 class BaseRequest extends NovaRequest
 {
@@ -46,7 +46,7 @@ class BaseRequest extends NovaRequest
 
     public function element(): ?InteractsWithFilesystem
     {
-        return $this->fieldMode ? $this->resolveField() : $this->resolveTool();
+        return filter_var($this->fieldMode, FILTER_VALIDATE_BOOL) ? $this->resolveField() : $this->resolveTool();
     }
 
     public function resolveField(): ?InteractsWithFilesystem
@@ -101,7 +101,7 @@ class BaseRequest extends NovaRequest
         abort_unless($layouts = invade($field)->layouts, 404);
 
         /** @var \Whitecube\NovaFlexibleContent\Layouts\Layout $layout */
-        $layout = $layouts->first(fn ($layout) => $layout->name() === $name);
+        $layout = $layouts->first(fn($layout) => $layout->name() === $name);
 
         abort_if($layout === null, 404);
 
@@ -111,7 +111,7 @@ class BaseRequest extends NovaRequest
     public function resolveTool(): ?InteractsWithFilesystem
     {
         return tap(once(function () {
-            return collect(Nova::registeredTools())->first(fn (Tool $tool) => $tool instanceof NovaFileManager);
+            return collect(Nova::registeredTools())->first(fn(Tool $tool) => $tool instanceof NovaFileManager);
         }), function (?NovaFileManager $tool) {
             abort_if(is_null($tool), 404);
         });
