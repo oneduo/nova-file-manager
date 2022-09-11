@@ -49,10 +49,10 @@ class FolderController extends Controller
      */
     public function rename(RenameFolderRequest $request): JsonResponse
     {
-        $oldPath = $request->oldPath;
-        $newPath = $request->newPath;
+        $from = $request->from;
+        $to = $request->to;
 
-        $result = $request->manager()->rename($oldPath, $newPath);
+        $result = $request->manager()->rename($from, $to);
 
         if (!$result) {
             throw ValidationException::withMessages([
@@ -60,7 +60,7 @@ class FolderController extends Controller
             ]);
         }
 
-        event(new FolderRenamed($request->manager()->disk, $oldPath, $newPath));
+        event(new FolderRenamed($request->manager()->disk, $from, $to));
 
         return response()->json([
             'message' => __('nova-file-manager::messages.folder.rename'),

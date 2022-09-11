@@ -40,15 +40,15 @@ class FileController extends Controller
     {
         $manager = $request->manager();
 
-        $result = $manager->rename($request->oldPath, $request->newPath);
+        $result = $manager->rename($request->from, $request->to);
 
         if (!$result) {
             throw ValidationException::withMessages([
-                'oldPath' => [__('nova-file-manager::errors.file.rename')],
+                'from' => [__('nova-file-manager::errors.file.rename')],
             ]);
         }
 
-        event(new FileRenamed($manager->disk, $request->oldPath, $request->newPath));
+        event(new FileRenamed($manager->disk, $request->from, $request->to));
 
         return response()->json([
             'message' => __('nova-file-manager::messages.file.create'),

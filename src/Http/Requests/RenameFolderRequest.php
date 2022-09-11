@@ -9,8 +9,8 @@ use BBSLab\NovaFileManager\Rules\ExistsInFilesystem;
 use BBSLab\NovaFileManager\Rules\MissingInFilesystem;
 
 /**
- * @property-read string $oldPath
- * @property-read string $newPath
+ * @property-read string $from
+ * @property-read string $to
  */
 class RenameFolderRequest extends BaseRequest
 {
@@ -23,8 +23,8 @@ class RenameFolderRequest extends BaseRequest
     {
         return [
             'disk' => ['sometimes', 'string', new DiskExistsRule()],
-            'oldPath' => ['required', 'string', new ExistsInFilesystem($this)],
-            'newPath' => ['required', 'string', new MissingInFilesystem($this)],
+            'from' => ['required', 'string', new ExistsInFilesystem($this)],
+            'to' => ['required', 'string', new MissingInFilesystem($this)],
         ];
     }
 }

@@ -237,13 +237,13 @@ class FileManagerService implements FileManagerContract, ResolvesUrlContract
     /**
      * Rename a directory or file in the disk
      *
-     * @param  string  $oldPath
-     * @param  string  $newPath
+     * @param  string  $from
+     * @param  string  $to
      * @return bool
      */
-    public function rename(string $oldPath, string $newPath): bool
+    public function rename(string $from, string $to): bool
     {
-        return $this->filesystem->move($oldPath, $newPath);
+        return $this->filesystem->move($from, $to);
     }
 
     /**

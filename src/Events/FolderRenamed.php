@@ -10,7 +10,7 @@ class FolderRenamed
 {
     use Dispatchable;
 
-    public function __construct(public string $disk, public string $oldPath, public string $newPath)
+    public function __construct(public string $disk, public string $from, public string $to)
     {
     }
 }
