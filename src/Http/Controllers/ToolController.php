@@ -22,7 +22,7 @@ class ToolController extends Controller
     public function __invoke(NovaRequest $request): Response
     {
         /** @var ?\BBSLab\NovaFileManager\NovaFileManager $tool */
-        $tool = collect(Nova::registeredTools())->first(fn (Tool $tool) => $tool instanceof NovaFileManager);
+        $tool = collect(Nova::registeredTools())->first(fn(Tool $tool) => $tool instanceof NovaFileManager);
 
         return Inertia::render('NovaFileManager', [
             'config' => array_merge(

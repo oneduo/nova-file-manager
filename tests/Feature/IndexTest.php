@@ -39,7 +39,7 @@ it('can retrieve files', function () {
         ->assertJson([
             'disk' => $this->disk,
             'breadcrumbs' => [],
-            'directories' => [],
+            'folders' => [],
             'files' => [
                 [
                     'path' => $path,
@@ -77,7 +77,7 @@ it('can retrieve files from tool with a custom filesystem', function () {
         ->assertJson([
             'disk' => 'default',
             'breadcrumbs' => [],
-            'directories' => [],
+            'folders' => [],
             'files' => [
                 [
                     'path' => $path,
@@ -116,7 +116,7 @@ it('can retrieve files from field with a custom filesystem', function () {
         ->assertJson([
             'disk' => 'default',
             'breadcrumbs' => [],
-            'directories' => [],
+            'folders' => [],
             'files' => [
                 [
                     'path' => $path,

@@ -27,7 +27,7 @@ class IndexController extends Controller
         return response()->json([
             'disk' => $manager->disk,
             'breadcrumbs' => $manager->breadcrumbs(),
-            'directories' => $manager->directories(),
+            'folders' => $manager->directories(),
             'files' => $paginator->items(),
             'pagination' => [
                 'current_page' => $paginator->currentPage(),
