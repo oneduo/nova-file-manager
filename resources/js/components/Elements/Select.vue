@@ -3,12 +3,16 @@
     <div class="group">
       <MenuButton
         class="inline-flex justify-center items-center w-full rounded-md shadow-sm px-4 py-2 bg-gray-100 dark:bg-gray-700 text-sm font-medium text-gray-500 dark:text-gray-300 hover:text-black dark:hover:text-white focus:outline-none focus:ring-1 focus:outline-blue-500 whitespace-no-wrap"
+        :disabled="isLoading"
       >
-        {{ current }}
-        <ChevronDownIcon
-          aria-hidden="true"
-          class="-mr-1 ml-2 h-4 w-4 dark:group-hover:text-white group-hover:text-black"
-        />
+        <Spinner class="h-4 w-4" v-if="isLoading" />
+        <template v-else>
+          {{ current }}
+          <ChevronDownIcon
+            aria-hidden="true"
+            class="-mr-1 ml-2 h-4 w-4 dark:group-hover:text-white group-hover:text-black"
+          />
+        </template>
       </MenuButton>
     </div>
 
@@ -49,6 +53,23 @@
 <script setup>
 import { Menu, MenuButton, MenuItem, MenuItems } from '@headlessui/vue'
 import { CheckIcon, ChevronDownIcon } from '@heroicons/vue/24/solid'
+import Spinner from '@/components/Elements/Spinner'
 
-defineProps(['current', 'options', 'onClick'])
+defineProps({
+  current: {
+    type: [String, Number],
+  },
+  options: {
+    type: Array,
+    default: [],
+  },
+  onClick: {
+    type: Function,
+    required: true,
+  },
+  isLoading: {
+    type: Boolean,
+    default: false,
+  },
+})
 </script>

@@ -12,16 +12,6 @@
   </component>
 </template>
 
-<script>
-const variants = {
-    primary: 'bg-blue-500 dark:bg-blue-600/50 focus:outline-blue-500',
-    secondary: 'bg-gray-600 dark:bg-gray-600/50 focus:outline-gray-600',
-    success: 'bg-green-500 dark:bg-green-600/50 focus:outline-green-500',
-    warning: 'bg-orange-400 dark:bg-orange-600/50 focus:outline-orange-400',
-    danger: 'bg-red-500 dark:bg-red-600/50 focus:outline-red-500',
-    transparent: 'bg-transparent',
-}
-</script>
 <script setup>
 import { computed } from 'vue'
 
@@ -43,4 +33,15 @@ const props = defineProps({
 })
 
 const style = computed(() => variants[props.variant] || variants.primary)
+</script>
+
+<script>
+const variants = {
+  primary: 'bg-blue-500 dark:bg-blue-600/50 focus:outline-blue-500',
+  secondary: 'bg-gray-600 dark:bg-gray-600/50 focus:outline-gray-600',
+  success: 'bg-green-500 dark:bg-green-600/50 focus:outline-green-500',
+  warning: 'bg-orange-400 dark:bg-orange-600/50 focus:outline-orange-400',
+  danger: 'bg-red-500 dark:bg-red-600/50 focus:outline-red-500',
+  transparent: 'bg-transparent',
+}
 </script>
