@@ -2,7 +2,7 @@
   <PanelItem :field="field" :index="index">
     <template v-if="field.value" v-slot:value>
       <div class="nova-file-manager">
-        <div :class="darkMode && 'dark'">
+        <div :class="{ dark }">
           <ul class="grid grid-cols-2 md:grid-cols-4 gap-2 mb-2 w-full" role="group">
             <template v-for="file in field.value" :key="file.id">
               <FieldCard
@@ -27,63 +27,64 @@
 
 <script>
 import { CopiesToClipboard } from 'laravel-nova'
-import { mapMutations, mapState } from 'vuex'
+import { mapActions, mapState } from 'pinia'
 import FieldCard from '@/components/Cards/FieldCard'
 import Entity from '@/types/Entity'
 import PreviewModal from '@/components/Modals/PreviewModal'
+import { useStore } from '@/store'
 
 export default {
-    mixins: [CopiesToClipboard],
+  mixins: [CopiesToClipboard],
 
-    components: {
-        PreviewModal,
-        FieldCard,
+  components: {
+    PreviewModal,
+    FieldCard,
+  },
+
+  props: ['field', 'index'],
+
+  computed: {
+    ...mapState(useStore, ['dark', 'preview']),
+  },
+
+  mounted() {
+    this.syncDarkMode()
+  },
+
+  data: () => ({
+    selected: null,
+  }),
+
+  methods: {
+    ...mapActions(useStore, ['syncDarkMode', 'setPreview']),
+
+    copy(file) {
+      this.selected = file
+      this.copyValueToClipboard(file.url)
+
+      setTimeout(() => {
+        this.selected = null
+      }, 1000)
     },
 
-    props: ['field', 'index'],
-
-    computed: {
-        ...mapState('nova-file-manager', ['darkMode', 'preview']),
+    openPreview(file) {
+      this.setPreview({ preview: file })
     },
 
-    mounted() {
-        this.detectDarkMode()
-    },
-
-    data: () => ({
-        selected: null,
-    }),
-
-    methods: {
-        ...mapMutations('nova-file-manager', ['init', 'detectDarkMode', 'previewFile']),
-
-        copy(file) {
-            this.selected = file
-            this.copyValueToClipboard(file.url)
-
-            setTimeout(() => {
-                this.selected = null
-            }, 1000)
-        },
-
-        openPreview(file) {
-            this.previewFile(file)
-        },
-
-        mapEntity: file =>
-            new Entity(
-                file.id,
-                file.name,
-                file.path,
-                file.size,
-                file.extension,
-                file.mime,
-                file.url,
-                file.lastModifiedAt,
-                file.type,
-                file.exists,
-                file.disk
-            ),
-    },
+    mapEntity: file =>
+      new Entity(
+        file.id,
+        file.name,
+        file.path,
+        file.size,
+        file.extension,
+        file.mime,
+        file.url,
+        file.lastModifiedAt,
+        file.type,
+        file.exists,
+        file.disk
+      ),
+  },
 }
 </script>
