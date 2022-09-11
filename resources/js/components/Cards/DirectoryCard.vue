@@ -37,6 +37,7 @@
                   {{ __('NovaFileManager.actions.rename') }}
                 </button>
               </MenuItem>
+
               <MenuItem v-if="showDeleteFolder">
                 <button
                   class="hover:bg-red-50 dark:hover:bg-red-600/20 block w-full text-left cursor-pointer py-2 px-3 focus:outline-none focus:ring rounded truncate whitespace-nowrap text-red-500 dark:text-red-500 dark:hover:text-red-700"
@@ -57,55 +58,44 @@
   <RenameFolderModal
     v-if="showRenameFolder"
     :name="`rename-folder-${id}`"
-    :old-path="name"
+    :from="name"
     :on-submit="onRename"
   />
 </template>
 
 <script setup>
-import { useStore } from 'vuex'
 import { Menu, MenuButton, MenuItem, MenuItems } from '@headlessui/vue'
 import { FolderIcon } from '@heroicons/vue/24/outline'
 import { EllipsisVerticalIcon } from '@heroicons/vue/24/solid'
 import RenameFolderModal from '@/components/Modals/RenameFolderModal'
 import DeleteFolderModal from '@/components/Modals/DeleteFolderModal'
 import { usePermissions } from '@/hooks'
+import { useStore } from '@/store'
 
 const props = defineProps({
-    disk: {
-        type: String,
-    },
-    name: {
-        type: String,
-        required: true,
-    },
-    path: {
-        type: String,
-        required: true,
-    },
-    id: {
-        type: String,
-        required: true,
-    },
+  id: {
+    type: String,
+    required: true,
+  },
+  disk: {
+    type: String,
+  },
+  name: {
+    type: String,
+    required: true,
+  },
+  path: {
+    type: String,
+    required: true,
+  },
 })
 
 const store = useStore()
-
-const openModal = name => store.dispatch('nova-file-manager/openModal', name)
-const setPath = path => store.dispatch('nova-file-manager/setPath', path)
-
 const { showRenameFolder, showDeleteFolder } = usePermissions()
 
-const onRename = value =>
-    store.dispatch('nova-file-manager/renameFolder', {
-        id: props.id,
-        oldPath: props.path,
-        newPath: value,
-    })
-
-const onDelete = () =>
-    store.dispatch('nova-file-manager/deleteFolder', {
-        id: props.id,
-        path: props.path,
-    })
+// ACTIONS
+const openModal = name => store.openModal({ name })
+const setPath = path => store.setPath({ path })
+const onRename = value => store.renameFolder({ id: props.id, from: props.path, to: value })
+const onDelete = () => store.deleteFolder({ id: props.id, path: props.path })
 </script>

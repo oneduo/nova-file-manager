@@ -13,8 +13,8 @@
         {{ __('Delete') }}
       </Button>
     </template>
-    <template v-slot:cancelButton>
-      <Button class="w-full sm:w-auto" type="button" variant="secondary" @click="closeModal(name)">
+    <template v-slot:cancelButton="{ close }">
+      <Button class="w-full sm:w-auto" type="button" variant="secondary" @click="close">
         {{ __('Cancel') }}
       </Button>
     </template>
@@ -31,22 +31,21 @@ import Button from '@/components/Elements/Button'
 const store = useStore()
 
 defineProps({
-    isOpen: {
-        type: Boolean,
-        default: false,
-    },
-    name: {
-        type: String,
-        required: true,
-    },
-    onConfirm: {
-        type: Function,
-    },
-    onClose: {
-        type: Function,
-    },
+  isOpen: {
+    type: Boolean,
+    default: false,
+  },
+  name: {
+    type: String,
+    required: true,
+  },
+  onConfirm: {
+    type: Function,
+  },
+  onClose: {
+    type: Function,
+  },
 })
 
 const icon = computed(() => ExclamationCircleIcon)
-const closeModal = name => store.dispatch('nova-file-manager/closeModal', name)
 </script>

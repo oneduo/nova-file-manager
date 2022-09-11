@@ -35,17 +35,12 @@
       </div>
     </template>
     <template v-slot:submitButton>
-      <Button
-        :disabled="value === oldName"
-        class="w-full sm:w-auto"
-        type="submit"
-        variant="primary"
-      >
+      <Button :disabled="value === from" class="w-full sm:w-auto" type="submit" variant="primary">
         {{ __('Submit') }}
       </Button>
     </template>
-    <template v-slot:cancelButton>
-      <Button class="w-full sm:w-auto" type="button" variant="secondary" @click="closeModal(name)">
+    <template v-slot:cancelButton="{ close }">
+      <Button class="w-full sm:w-auto" type="button" variant="secondary" @click="close">
         {{ __('Cancel') }}
       </Button>
     </template>
@@ -53,20 +48,36 @@
 </template>
 
 <script setup>
-import { useStore } from 'vuex'
 import { onMounted, ref } from 'vue'
 import { useErrors } from '@/hooks'
 import Button from '@/components/Elements/Button'
 import InputModal from '@/components/Modals/InputModal'
+import { useStore } from '@/store'
+
+const props = defineProps({
+  name: {
+    type: String,
+    required: true,
+  },
+  onSubmit: {
+    type: Function,
+    required: true,
+  },
+  from: {
+    type: String,
+    required: true,
+  },
+})
 
 const store = useStore()
-const props = defineProps(['name', 'onSubmit', 'oldName'])
-const value = ref(null)
-
-onMounted(() => (value.value = props.oldName))
-
 const { hasErrors, errorsList } = useErrors('renameFile')
 
-const closeModal = name => store.dispatch('nova-file-manager/closeModal', name)
+// STATE
+const value = ref(null)
+
+// HOOKS
+onMounted(() => (value.value = props.from))
+
+// ACTIONS
 const submit = () => props.onSubmit(value.value)
 </script>

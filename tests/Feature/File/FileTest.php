@@ -53,8 +53,8 @@ it('can rename a file', function () {
         uri: route('nova-file-manager.files.rename'),
         data: [
             'disk' => $this->disk,
-            'oldPath' => $path,
-            'newPath' => $new = 'secret.txt',
+            'from' => $path,
+            'to' => $new = 'secret.txt',
         ],
     )
         ->assertOk();
@@ -65,7 +65,7 @@ it('can rename a file', function () {
     Event::assertDispatched(
         event: FileRenamed::class,
         callback: fn (FileRenamed $event
-        ) => $event->disk === $this->disk && $event->oldPath === $path && $event->newPath === $new,
+        ) => $event->disk === $this->disk && $event->from === $path && $event->to === $new,
     );
 });
 
@@ -80,12 +80,12 @@ it('cannot rename a non existing file', function () {
         uri: route('nova-file-manager.files.rename'),
         data: [
             'disk' => $this->disk,
-            'oldPath' => $path,
-            'newPath' => $new = 'secret.txt',
+            'from' => $path,
+            'to' => $new = 'secret.txt',
         ],
     )
         ->assertJsonValidationErrors([
-            'oldPath' => [
+            'from' => [
                 __('nova-file-manager::validation.path.missing', ['path' => $path]),
             ],
         ]);
@@ -93,7 +93,7 @@ it('cannot rename a non existing file', function () {
     Event::assertNotDispatched(
         event: FileRenamed::class,
         callback: fn (FileRenamed $event
-        ) => $event->disk === $this->disk && $event->oldPath === $path && $event->newPath === $new,
+        ) => $event->disk === $this->disk && $event->from === $path && $event->to === $new,
     );
 });
 
@@ -110,12 +110,12 @@ it('cannot rename a file to an existing name', function () {
         uri: route('nova-file-manager.files.rename'),
         data: [
             'disk' => $this->disk,
-            'oldPath' => $fisrt,
-            'newPath' => $second,
+            'from' => $fisrt,
+            'to' => $second,
         ],
     )
         ->assertJsonValidationErrors([
-            'newPath' => [
+            'to' => [
                 __('nova-file-manager::validation.path.exists', ['path' => $second]),
             ],
         ]);
@@ -123,7 +123,7 @@ it('cannot rename a file to an existing name', function () {
     Event::assertNotDispatched(
         event: FileRenamed::class,
         callback: function (FileRenamed $event) use ($fisrt, $second) {
-            return $event->disk === $this->disk && $event->oldPath === $fisrt && $event->newPath === $second;
+            return $event->disk === $this->disk && $event->from === $fisrt && $event->to === $second;
         },
     );
 });
@@ -132,7 +132,7 @@ it('throws an exception if the filesystem cannot rename the file', function () {
     Event::fake();
 
     $mock = mock(FileManagerContract::class)->expect(
-        rename: fn (string $oldPath, string $newPath) => false,
+        rename: fn (string $from, string $to) => false,
         filesystem: fn () => Storage::disk($this->disk),
     );
 
@@ -146,12 +146,12 @@ it('throws an exception if the filesystem cannot rename the file', function () {
         uri: route('nova-file-manager.files.rename'),
         data: [
             'disk' => $this->disk,
-            'oldPath' => $path,
-            'newPath' => $new = 'secret.txt',
+            'from' => $path,
+            'to' => $new = 'secret.txt',
         ]
     )
         ->assertJsonValidationErrors([
-            'oldPath' => [
+            'from' => [
                 __('nova-file-manager::errors.file.rename'),
             ],
         ]);
@@ -159,7 +159,7 @@ it('throws an exception if the filesystem cannot rename the file', function () {
     Event::assertNotDispatched(
         event: FileRenamed::class,
         callback: function (FileRenamed $event) use ($path, $new) {
-            return $event->disk === $this->disk && $event->oldPath === $path && $event->newPath === $new;
+            return $event->disk === $this->disk && $event->from === $path && $event->to === $new;
         },
     );
 });

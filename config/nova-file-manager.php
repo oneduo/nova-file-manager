@@ -138,4 +138,17 @@ return [
         'enabled' => env('NOVA_FILE_MANAGER_UPDATE_CHECKER_ENABLED', true),
         'ttl_in_days' => env('NOVA_FILE_MANAGER_UPDATE_CHECKER_TTL_IN_DAYS', 1),
     ],
+
+    /*
+    |--------------------------------------------------------------------------
+    | Hot module reload
+    |--------------------------------------------------------------------------
+    |
+    | [WARNING] This a development feature. It should not be enabled unless you
+    | are actively developing the tool.
+    |
+    | @internal-usage
+    |
+    */
+    'hmr' => env('HOT_MODULE_RELOAD', false),
 ];

@@ -5,7 +5,7 @@ export function useLocalization() {
         let translation = Nova.config('translations')[key] ? Nova.config('translations')[key] : key
 
         forEach(replace, (value, key) => {
-            key = new String(key)
+            key = String(key)
 
             if (value === null) {
                 console.error(`Translation '${translation}' for key '${key}' contains a null replacement.`)
@@ -13,7 +13,7 @@ export function useLocalization() {
                 return
             }
 
-            value = new String(value)
+            value = String(value)
 
             const searches = [
                 ':' + key,

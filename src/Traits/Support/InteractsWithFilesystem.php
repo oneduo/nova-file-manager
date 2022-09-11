@@ -289,15 +289,19 @@ trait InteractsWithFilesystem
     {
         return with(app(NovaRequest::class), function (NovaRequest $request) {
             return [
-                'customDisk' => $this->hasCustomFilesystem(),
+                'singleDisk' => $this->hasCustomFilesystem(),
                 'permissions' => [
-                    'showCreateFolder' => $this->shouldShowCreateFolder($request),
-                    'showRenameFolder' => $this->shouldShowRenameFolder($request),
-                    'showDeleteFolder' => $this->shouldShowDeleteFolder($request),
-                    'showUploadFile' => $this->shouldShowUploadFile($request),
-                    'showRenameFile' => $this->shouldShowRenameFile($request),
-                    'showDeleteFile' => $this->shouldShowDeleteFile($request),
-                    'showCropImage' => $this->shouldShowCropImage($request),
+                    'folder' => [
+                        'create' => $this->shouldShowCreateFolder($request),
+                        'rename' => $this->shouldShowRenameFolder($request),
+                        'delete' => $this->shouldShowDeleteFolder($request),
+                    ],
+                    'file' => [
+                        'upload' => $this->shouldShowUploadFile($request),
+                        'rename' => $this->shouldShowRenameFile($request),
+                        'edit' => $this->shouldShowCropImage($request),
+                        'delete' => $this->shouldShowDeleteFile($request),
+                    ],
                 ],
             ];
         });

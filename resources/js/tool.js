@@ -2,10 +2,10 @@ import Tool from '@/pages/Tool'
 import IndexField from '@/fields/IndexField'
 import DetailField from '@/fields/DetailField'
 import FormField from '@/fields/FormField'
-import { store as toolStore } from '@/store/store'
+import { createPinia } from 'pinia'
 
-Nova.booting((app, store) => {
-    store.registerModule('nova-file-manager', toolStore)
+Nova.booting((app, _store) => {
+    app.use(createPinia())
 
     Nova.inertia('NovaFileManager', Tool)
 

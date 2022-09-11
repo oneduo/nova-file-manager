@@ -34,13 +34,15 @@
         </template>
       </div>
     </template>
+
     <template v-slot:submitButton>
       <Button :disabled="!value" class="w-full sm:w-auto" type="submit" variant="primary">
         {{ __('Create') }}
       </Button>
     </template>
-    <template v-slot:cancelButton>
-      <Button class="w-full sm:w-auto" type="reset" variant="secondary" @click="closeModal(name)">
+
+    <template v-slot:cancelButton="{ close }">
+      <Button class="w-full sm:w-auto" type="reset" variant="secondary" @click="close">
         {{ __('Cancel') }}
       </Button>
     </template>
@@ -49,23 +51,30 @@
 
 <script setup>
 import { onMounted, ref } from 'vue'
-import { useStore } from 'vuex'
 import Button from '@/components/Elements/Button'
 import InputModal from '@/components/Modals/InputModal'
 import { useErrors } from '@/hooks'
 
-const store = useStore()
-const props = defineProps(['name', 'onSubmit', 'attribute'])
+const props = defineProps({
+  name: {
+    type: String,
+    required: true,
+  },
+  onSubmit: {
+    type: Function,
+    required: true,
+  },
+})
+
 const value = ref(null)
 
 onMounted(() => (value.value = null))
 
 const { hasErrors, errorsList } = useErrors('createFolder')
 
-const closeModal = name => store.dispatch('nova-file-manager/closeModal', name)
 const submit = () => {
-    props.onSubmit(value.value)
+  props.onSubmit(value.value)
 
-    value.value = null
+  value.value = null
 }
 </script>

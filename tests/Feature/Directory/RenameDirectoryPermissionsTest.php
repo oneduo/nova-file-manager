@@ -63,7 +63,7 @@ test('canRenameFolder takes precedence over showRenameFolder', function () {
                 return $request->user()?->getKey() === 42;
             })
             ->canRenameFolder(function (RenameFolderRequest $request) {
-                return str_contains($request->newPath, 'foo');
+                return str_contains($request->to, 'foo');
             }),
     ];
 
@@ -76,7 +76,7 @@ it('can throw a custom validation message using canRenameFolder', function () {
     Nova::$tools = [
         NovaFileManager::make()
             ->canRenameFolder(function (RenameFolderRequest $request) use ($message) {
-                if (!str_contains($request->newPath, 'foo')) {
+                if (!str_contains($request->to, 'foo')) {
                     throw ValidationException::withMessages([
                         'folder' => [$message],
                     ]);

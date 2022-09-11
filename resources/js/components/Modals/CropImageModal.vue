@@ -1,6 +1,6 @@
 <template>
-  <TransitionRoot :show="isOpen" as="template" class="nova-file-manager">
-    <Dialog :initial-focus="buttonRef" as="div" class="relative z-[60]" @close="closeModal">
+  <BaseModal as="template" class="nova-file-manager" :name="name" v-slot="{ close, dark }">
+    <Dialog :initial-focus="buttonRef" as="div" class="relative z-[60]" @close="close">
       <TransitionChild
         as="template"
         enter="ease-out duration-300"
@@ -13,7 +13,7 @@
         <div class="fixed inset-0 bg-gray-800/20 backdrop-blur-sm transition-opacity" />
       </TransitionChild>
 
-      <div :class="['fixed z-10 inset-0 overflow-y-auto', darkMode ? 'dark' : '']">
+      <div :class="['fixed z-10 inset-0 overflow-y-auto', { dark }]">
         <div class="flex items-center justify-center min-h-full p-4">
           <TransitionChild
             as="template"
@@ -38,7 +38,7 @@
                   <IconButton
                     ref="buttonRef"
                     :title="__('NovaFileManager.actions.close')"
-                    @click.prevent.stop="closeModal(name)"
+                    @click.prevent.stop="close"
                   >
                     <XMarkIcon class="w-5 h-5" />
                   </IconButton>
@@ -64,7 +64,7 @@
         </div>
       </div>
     </Dialog>
-  </TransitionRoot>
+  </BaseModal>
 
   <UploadCropModal
     v-if="uploadIsOpen"
@@ -77,81 +77,77 @@
 
 <script setup>
 import { computed, ref } from 'vue'
-import { useStore } from 'vuex'
-import { Dialog, DialogPanel, TransitionChild, TransitionRoot } from '@headlessui/vue'
+import VueCropper from 'vue-cropperjs'
+import { Dialog, DialogPanel, TransitionChild } from '@headlessui/vue'
 import { CheckIcon, XMarkIcon } from '@heroicons/vue/24/outline'
 import IconButton from '@/components/Elements/IconButton'
-import VueCropper from 'vue-cropperjs'
-import 'cropperjs/dist/cropper.css'
 import Entity from '@/types/Entity'
+import BaseModal from '@/components/Modals/BaseModal'
 import UploadCropModal from '@/components/Modals/UploadCropModal'
+import { useStore } from '@/store'
+import 'cropperjs/dist/cropper.css'
 
 const props = defineProps({
-    file: {
-        type: Entity,
-        required: true,
-    },
-    name: {
-        type: String,
-        required: true,
-    },
-    onConfirm: {
-        type: Function,
-        required: true,
-    },
+  file: {
+    type: Entity,
+    required: true,
+  },
+  name: {
+    type: String,
+    required: true,
+  },
+  onConfirm: {
+    type: Function,
+    required: true,
+  },
 })
 
 const store = useStore()
+
+//STATE
 const buttonRef = ref(null)
 const cropper = ref(null)
 const blob = ref(null)
-
-const darkMode = computed(() => store.state['nova-file-manager'].darkMode)
-const isOpen = computed(() => store.getters['nova-file-manager/allModals'].includes(props.name))
-const uploadIsOpen = computed(() =>
-    store.getters['nova-file-manager/allModals'].includes('upload-crop')
-)
-
-const cropData = computed(() => {
-    const data = cropper.value.getData()
-
-    const suffix = `${Math.round(data.width)}_${Math.round(data.height)}_${Math.round(
-        data.x
-    )}_${Math.round(data.y)}`
-
-    return {
-        blob: blob.value,
-        name: props.file?.name.replace(props.file?.extension, `${suffix}.${props.file?.extension}`),
-    }
-})
-
-const openModal = name => {
-    return store.dispatch('nova-file-manager/openModal', name)
-}
-
-const closeModal = name => store.dispatch('nova-file-manager/closeModal', name)
+const uploadIsOpen = computed(() => store.isOpen('upload-crop'))
 
 const containerStyle = computed(() => ({
-    height: '100%',
-    minHeight: '60vh',
+  height: '100%',
+  minHeight: '60vh',
 }))
 
-const openUploadCropModal = () => {
-    cropper.value.getCroppedCanvas().toBlob(b => {
-        blob.value = b
+const cropData = computed(() => {
+  const data = cropper.value.getData()
 
-        openModal('upload-crop')
-    })
+  const suffix = `${Math.round(data.width)}_${Math.round(data.height)}_${Math.round(
+    data.x
+  )}_${Math.round(data.y)}`
+
+  return {
+    blob: blob.value,
+    name: props.file?.name.replace(props.file?.extension, `${suffix}.${props.file?.extension}`),
+  }
+})
+
+// ACTIONS
+const openModal = name => store.openModal({ name })
+const closeModal = name => store.closeModal({ name })
+
+const openUploadCropModal = () => {
+  cropper.value.getCroppedCanvas().toBlob(b => {
+    blob.value = b
+
+    openModal('upload-crop')
+  })
 }
 
 const submitCrop = name => {
-    const file = new File([blob.value], name, {
-        type: props.file.mime,
-    })
+  const file = new File([blob.value], name, {
+    type: props.file.mime,
+  })
 
-    closeModal('upload-crop')
-    closeModal(props.name)
+  closeModal('upload-crop')
+  closeModal(props.name)
 
-    props.onConfirm(file)
+  props.onConfirm(file)
 }
 </script>

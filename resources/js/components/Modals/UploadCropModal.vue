@@ -45,21 +45,36 @@
 
 <script setup>
 import { computed, onMounted, ref } from 'vue'
-import { useStore } from 'vuex'
 import Button from '@/components/Elements/Button'
 import InputModal from '@/components/Modals/InputModal'
+import { useStore } from '@/store'
+
+const props = defineProps({
+  name: {
+    type: String,
+    required: true,
+  },
+  onSubmit: {
+    type: Function,
+    required: true,
+  },
+  data: {
+    type: Object,
+    required: true,
+  },
+})
 
 const store = useStore()
-const props = defineProps(['name', 'onSubmit', 'data'])
+
 const value = ref(null)
 
 onMounted(() => {
-    value.value = props.data?.name
+  value.value = props.data?.name
 })
 
 const image = computed(() => URL.createObjectURL(props.data?.blob))
 
-const closeModal = name => store.dispatch('nova-file-manager/closeModal', name)
-
+// ACTIONS
+const closeModal = name => store.closeModal({ name })
 const submit = () => props.onSubmit(value.value)
 </script>

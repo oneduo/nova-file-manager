@@ -4,7 +4,7 @@
     role="list"
   >
     <DirectoryCard
-      v-for="directory in directories"
+      v-for="directory in folders"
       :key="directory.id"
       :id="directory.id"
       :disk="directory.disk"
@@ -16,6 +16,12 @@
 
 <script setup>
 import DirectoryCard from '@/components/Cards/DirectoryCard'
+import { defineProps } from 'vue'
 
-defineProps(['directories'])
+defineProps({
+  folders: {
+    type: Array,
+    default: [],
+  },
+})
 </script>

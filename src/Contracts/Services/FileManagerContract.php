@@ -50,7 +50,7 @@ interface FileManagerContract
 
     public function path(string $path): self;
 
-    public function rename(string $oldPath, string $newPath): bool;
+    public function rename(string $from, string $to): bool;
 
     public function rmdir(string $path): bool;
 

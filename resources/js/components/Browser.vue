@@ -8,99 +8,126 @@
           <Spinner class="w-16 h-16" />
         </div>
 
-        <div v-else @dragover.prevent.stop="dragenter" @drop.prevent="onDrop" class="relative">
-          <div
-            v-if="showUploadFile && isDragging"
-            @dragleave.prevent.self="dragleave"
-            class="absolute inset-0 z-50 pt-16 bg-gray-100/90 dark:bg-gray-700/80 rounded-md backdrop-blur-sm w-full h-full flex justify-start flex-col items-center border-2 border-blue-500"
-          >
-            <CloudArrowUpIcon class="w-16 h-16 text-blue-500 animate-bounce" />
-            <p class="font-bold text-gray-900 dark:text-gray-50 p-2 rounded-md">
-              {{ __('NovaFileManager.dropzone.prompt') }}
-            </p>
-          </div>
-          <BrowserContent :directories="directories" :files="files" :filled="filled" :view="view" />
+        <div v-else @dragover.prevent.stop="dragEnter" @drop.prevent="dragDrop" class="relative">
+          <BrowserDragzone :drag-leave="dragLeave" v-if="showUploadFile && dragActive" />
+
+          <BrowserContent :folders="folders" :files="files" :filled="filled" :view="view" />
         </div>
       </div>
 
-      <Pagination
-        v-if="!isFetchingData && pagination && pagination.total > 0"
-        :current-page="pagination.current_page"
-        :from="pagination.from"
-        :last-page="pagination.last_page"
-        :links="pagination.links"
-        :to="pagination.to"
-        :total="pagination.total"
-        class="mt-auto"
-      />
+      <Pagination v-if="!isFetchingData && pagination && pagination.total > 0" class="mt-auto" />
     </main>
   </div>
 
   <UploadQueueModal name="upload-queue" v-if="showUploadFile && queue.length" />
-  <div id="modals"></div>
 </template>
 
 <script setup>
-import { computed, onMounted, ref, watch } from 'vue'
-import { useStore } from 'vuex'
+import { computed, onBeforeUnmount, onMounted, ref, watch } from 'vue'
 import Toolbar from '@/components/Toolbar'
 import Pagination from '@/components/Pagination'
 import Spinner from '@/components/Elements/Spinner'
 import BrowserContent from '@/components/BrowserContent'
-import { CloudArrowUpIcon } from '@heroicons/vue/24/outline'
 import UploadQueueModal from '@/components/Modals/UploadQueueModal'
 import { usePermissions } from '@/hooks'
+import { useStore } from '@/store'
+import BrowserDragzone from '@/components/Elements/BrowserDragzone'
 
 const store = useStore()
-const files = computed(() => store.state['nova-file-manager'].files)
-const directories = computed(() => store.state['nova-file-manager'].directories)
-const filled = computed(() => files.value?.length || directories.value?.length)
-const pagination = computed(() => store.state['nova-file-manager'].pagination)
-const view = computed(() => store.state['nova-file-manager'].view)
-const isFetchingData = computed(() => store.state['nova-file-manager'].isFetchingData)
-const queue = computed(() => store.state['nova-file-manager'].queue)
+
+// STATE
+const files = computed(() => store.files)
+const folders = computed(() => store.folders)
+const filled = computed(() => !!files.value?.length || !!folders.value?.length)
+const pagination = computed(() => store.pagination)
+const view = computed(() => store.view)
+const isFetchingData = computed(() => store.isFetchingData)
+const isFetchingDisks = computed(() => store.isFetchingDisks)
+const queue = computed(() => store.queue)
+
+// ACTIONS
+const openModal = name => store.openModal({ name })
 
 const { showUploadFile } = usePermissions()
 
 onMounted(() => {
-    store.commit('nova-file-manager/init')
+  store.init()
 
-    if (!store.state['nova-file-manager'].customDisk) {
-        store.dispatch('nova-file-manager/getDisks')
-    }
+  if (!store.singleDisk && !store.disks) {
+    store.getDisks()
+  }
 
-    store.dispatch('nova-file-manager/getData')
+  store.data()
 })
 
-const isDragging = ref(false)
-const draggedFiles = ref([])
+const dragActive = ref(false)
+const dragFiles = ref([])
 
-const dragenter = () => {
-    if (showUploadFile.value) {
-        isDragging.value = true
-    }
+const dragEnter = () => {
+  if (!showUploadFile.value) {
+    return
+  }
+
+  dragActive.value = true
 }
 
-const dragleave = () => {
-    if (showUploadFile.value) {
-        isDragging.value = false
-    }
+const dragLeave = () => {
+  if (!showUploadFile.value) {
+    return
+  }
+
+  dragActive.value = false
 }
-const onDrop = e => {
-    if (showUploadFile.value) {
-        draggedFiles.value = e.dataTransfer.files
-    }
+
+const dragDrop = event => {
+  if (!showUploadFile.value) {
+    return
+  }
+
+  dragFiles.value = event.dataTransfer.files
 }
 
 const submit = () => {
-    if (showUploadFile.value && draggedFiles.value.length) {
-        store.dispatch('nova-file-manager/upload', draggedFiles.value)
+  if (!showUploadFile.value) {
+    return
+  }
 
-        store.dispatch('nova-file-manager/openModal', 'upload-queue')
+  if (!dragFiles.value.length) {
+    return
+  }
 
-        isDragging.value = false
-    }
+  store.upload({ files: dragFiles.value })
+
+  store.openModal({ name: 'queue' })
+
+  dragActive.value = false
 }
 
-watch(draggedFiles, () => submit())
+watch(dragFiles, () => submit())
+
+const unsubscribe = store.$onAction(({ name, store, after }) => {
+  after(() => {
+    if (
+      [
+        'setDisk',
+        'setPath',
+        'setPerPage',
+        'setPage',
+        'setSearch',
+        'upload',
+        'renameFile',
+        'deleteFile',
+        'createFolder',
+        'renameFolder',
+        'deleteFolder',
+      ].includes(name)
+    ) {
+      store.data()
+    }
+  })
+})
+
+onBeforeUnmount(() => {
+  unsubscribe()
+})
 </script>

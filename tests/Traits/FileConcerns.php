@@ -70,8 +70,8 @@ trait FileConcerns
                     uri: route('nova-file-manager.files.rename'),
                     data: [
                         'disk' => $this->disk,
-                        'oldPath' => $old,
-                        'newPath' => $new,
+                        'from' => $old,
+                        'to' => $new,
                     ],
                 )
                 ->assertOk();
@@ -93,8 +93,8 @@ trait FileConcerns
                     uri: route('nova-file-manager.files.rename'),
                     data: [
                         'disk' => $this->disk,
-                        'oldPath' => $old,
-                        'newPath' => $new,
+                        'from' => $old,
+                        'to' => $new,
                     ],
                 )
                 ->assertUnprocessable()

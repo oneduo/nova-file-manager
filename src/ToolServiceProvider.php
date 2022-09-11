@@ -32,8 +32,14 @@ class ToolServiceProvider extends ServiceProvider
 
         Nova::serving(static function () {
             Nova::translations(__DIR__.'/../lang/en.json');
-            Nova::script('nova-file-manager', __DIR__.'/../dist/js/tool.js');
             Nova::style('nova-file-manager', __DIR__.'/../dist/css/tool.css');
+
+            // [WARNING - internal use only] This is for local development only. DO NOT ENABLE.
+            if (!config('nova-file-manager.hmr')) {
+                Nova::script('nova-file-manager', __DIR__.'/../dist/js/tool.js');
+            } else {
+                Nova::remoteScript('http://localhost:8080/js/tool.js');
+            }
         });
     }
 
