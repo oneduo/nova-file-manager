@@ -1,6 +1,6 @@
 <template>
-  <TransitionRoot :show="isOpen" as="template" class="nova-file-manager">
-    <Dialog as="div" class="relative z-[60]" style="z-index: 999" @close="closeModal">
+  <BaseModal as="template" class="nova-file-manager" :name="name" v-slot="{ close, dark }">
+    <Dialog as="div" class="relative z-[60]" style="z-index: 999" @close="close">
       <TransitionChild
         as="template"
         enter="ease-out duration-300"
@@ -13,7 +13,7 @@
         <div class="fixed inset-0 backdrop-blur-sm transition-opacity bg-gray-800/20" />
       </TransitionChild>
 
-      <div :class="darkMode && 'dark'" class="fixed z-10 inset-0 overflow-y-auto">
+      <div :class="{ dark }" class="fixed z-10 inset-0 overflow-y-auto">
         <div
           class="flex items-end sm:items-center justify-center min-h-full p-4 text-center sm:p-0 max-w-4xl mx-auto"
         >
@@ -51,31 +51,22 @@
         </div>
       </div>
     </Dialog>
-  </TransitionRoot>
+  </BaseModal>
 </template>
 
 <script setup>
-import { computed, onBeforeUnmount } from 'vue'
-import { useStore } from 'vuex'
-import { Dialog, DialogPanel, TransitionChild, TransitionRoot } from '@headlessui/vue'
+import { computed } from 'vue'
+import { Dialog, DialogPanel, TransitionChild } from '@headlessui/vue'
 import File from '@/components/Cards/File'
 import entityTransformer from '@/transformers/entityTransformer'
+import BaseModal from '@/components/Modals/BaseModal'
+import { useStore } from '@/store'
 
 const store = useStore()
+
 const props = defineProps({
-    name: String,
+  name: String,
 })
 
-const darkMode = computed(() => store.state['nova-file-manager'].darkMode)
-const isOpen = computed(() => store.getters['nova-file-manager/allModals'].includes(props.name))
-
-const queue = computed(() => store.state['nova-file-manager'].queue)
-
-const closeModal = () => store.dispatch('nova-file-manager/closeModal', props.name)
-
-onBeforeUnmount(() => {
-    if (isOpen.value) {
-        closeModal()
-    }
-})
+const queue = computed(() => store.queue)
 </script>

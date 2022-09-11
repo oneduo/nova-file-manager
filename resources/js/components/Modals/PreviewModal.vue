@@ -1,6 +1,6 @@
 <template>
   <TransitionRoot :show="isOpen" as="template" class="nova-file-manager">
-    <Dialog :initial-focus="buttonRef" as="div" class="relative z-[60]" @close="closeModal">
+    <Dialog :initial-focus="buttonRef" as="div" class="relative z-[60]" @close="closePreview">
       <TransitionChild
         as="template"
         enter="ease-out duration-300"
@@ -13,7 +13,7 @@
         <div class="fixed inset-0 bg-gray-800/20 backdrop-blur-sm transition-opacity" />
       </TransitionChild>
 
-      <div :class="['fixed z-10 inset-0 overflow-y-auto', darkMode ? 'dark' : '']">
+      <div :class="['fixed z-10 inset-0 overflow-y-auto', { dark }]">
         <div class="flex items-center justify-center min-h-full p-4">
           <TransitionChild
             as="template"
@@ -81,7 +81,7 @@
 
                   <IconButton
                     ref="buttonRef"
-                    @click="closeModal"
+                    @click="closePreview"
                     :title="__('NovaFileManager.actions.close')"
                   >
                     <XMarkIcon class="w-5 h-5" />
@@ -93,9 +93,6 @@
                 <div
                   class="block relative w-full md:w-4/6 overflow-hidden rounded-lg bg-gray-500/10 flex items-center justify-center"
                 >
-                  <div
-                    class="absolute inset-0 opacity-50 bg-stripes bg-stripes-gray-300 dark:bg-stripes-gray-700"
-                  ></div>
                   <ImageLoader
                     v-if="file?.type === 'image'"
                     :src="file.url"
@@ -177,32 +174,32 @@
   </TransitionRoot>
 
   <DeleteFileModal v-if="showDeleteFile" :name="`delete-file-${file?.id}`" :on-confirm="onDelete" />
+
   <CropImageModal
     v-if="showCropImage"
     :name="`crop-image-${file?.id}`"
     :file="file"
-    :on-confirm="onCropImage"
+    :on-confirm="onEditImage"
   />
 
   <RenameFileModal
     v-if="showRenameFile"
     :name="`rename-file-${file?.id}`"
-    :old-name="file?.name"
+    :from="file?.name"
     :on-submit="onRename"
   />
 </template>
 
 <script setup>
 import { computed, ref } from 'vue'
-import { useStore } from 'vuex'
 import { Dialog, DialogPanel, TransitionChild, TransitionRoot } from '@headlessui/vue'
 import {
-    ClipboardDocumentIcon,
-    CloudArrowDownIcon,
-    DocumentIcon,
-    PencilSquareIcon,
-    TrashIcon,
-    XMarkIcon,
+  ClipboardDocumentIcon,
+  CloudArrowDownIcon,
+  DocumentIcon,
+  PencilSquareIcon,
+  TrashIcon,
+  XMarkIcon,
 } from '@heroicons/vue/24/outline'
 import IconButton from '@/components/Elements/IconButton'
 import DeleteFileModal from '@/components/Modals/DeleteFileModal'
@@ -212,61 +209,51 @@ import Entity from '@/types/Entity'
 import { useClipboard, usePermissions } from '@/hooks'
 import CropIcon from '@/components/Elements/CropIcon'
 import ImageLoader from '@/components/Elements/ImageLoader'
+import { useStore } from '@/store'
 
 const props = defineProps({
-    file: {
-        type: Entity,
-        required: true,
-    },
-    readOnly: {
-        type: Boolean,
-        default: false,
-    },
+  file: {
+    type: Entity,
+    required: true,
+  },
+  readOnly: {
+    type: Boolean,
+    default: false,
+  },
 })
 
 const store = useStore()
 const { copyToClipboard } = useClipboard()
-const buttonRef = ref(null)
-
-const darkMode = computed(() => store.state['nova-file-manager'].darkMode)
-const preview = computed(() => store.state['nova-file-manager'].preview)
-const isOpen = computed(() => !!preview.value)
-
 const { showRenameFile, showDeleteFile, showCropImage } = usePermissions()
 
-const openModal = name => {
-    return store.dispatch('nova-file-manager/openModal', name)
+// STATE
+const buttonRef = ref(null)
+const dark = computed(() => store.dark)
+const preview = computed(() => store.preview)
+const isOpen = computed(() => !!preview.value)
+
+// ACTIONS
+const openModal = name => store.openModal({ name })
+const onRename = () => store.renameFile({ id: props.file.id, from: props.file.path, to: value })
+const onDelete = () => store.deleteFile({ id: props.file.id, path: props.file.path })
+
+const closePreview = () => {
+  store.preview = null
+
+  store.fixPortal()
 }
 
-const closeModal = () => {
-    store.commit('nova-file-manager/previewFile', null)
-    store.commit('nova-file-manager/fixPortal')
-}
+const onEditImage = file => {
+  closePreview()
 
-const onRename = value => {
-    store.dispatch('nova-file-manager/renameFile', {
-        id: props.file.id,
-        oldPath: props.file.path,
-        newPath: value,
-    })
-}
+  openModal('queue')
 
-const onDelete = () => {
-    store.dispatch('nova-file-manager/deleteFile', {
-        id: props.file.id,
-        path: props.file.path,
-    })
-}
-
-const onCropImage = file => {
-    closeModal()
-    openModal('upload-queue')
-    store.dispatch('nova-file-manager/upload', [file])
+  store.upload({ files: [file] })
 }
 
 const copy = file => {
-    copyToClipboard(file.url)
+  copyToClipboard(file.url)
 
-    Nova.success('Copied !')
+  Nova.success('Copied !')
 }
 </script>
