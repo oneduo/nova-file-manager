@@ -1,5 +1,4 @@
 export { useClipboard } from './useClipboard'
 export { useErrors } from './useErrors'
 export { useLocalization } from './useLocalization'
-export { useNovaFileManagerStore } from './useNovaFileManagerStore'
 export { usePermissions } from './usePermissions'
