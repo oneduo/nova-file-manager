@@ -160,9 +160,7 @@ participated in this project.
 
 ## Screenshots <a name= "screenshots"></a>
 
-<img src="./docs/preview.gif"/>
-
-You can find more screenshots in the `docs` directory.
+You can find more screenshots here https://bbs-lab.github.io/nova-file-manager/screenshots.html.
 
 ## Changelog
 
