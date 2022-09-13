@@ -20,18 +20,18 @@ import { useStore } from '@/store'
 const store = useStore()
 
 const props = defineProps({
-  config: {
-    type: Object,
-    required: true,
-  },
+    config: {
+        type: Object,
+        required: true,
+    },
 })
 
 const dark = computed(() => store.dark)
 
 onBeforeMount(() => {
-  store.prepareTool({
-    singleDisk: props.config.singleDisk,
-    permissions: props.config.permissions,
-  })
+    store.prepareTool({
+        singleDisk: props.config.singleDisk,
+        permissions: props.config.permissions,
+    })
 })
 </script>

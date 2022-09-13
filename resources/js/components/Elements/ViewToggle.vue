@@ -20,25 +20,25 @@ import { ref } from 'vue'
 import { QueueListIcon, Squares2X2Icon } from '@heroicons/vue/24/outline'
 
 defineProps({
-  current: {
-    type: String,
-    required: true,
-  },
-  setView: {
-    type: Function,
-    required: true,
-  },
+    current: {
+        type: String,
+        required: true,
+    },
+    setView: {
+        type: Function,
+        required: true,
+    },
 })
 
 const views = ref([
-  {
-    name: 'list',
-    icon: QueueListIcon,
-  },
-  {
-    name: 'grid',
-    icon: Squares2X2Icon,
-  },
+    {
+        name: 'list',
+        icon: QueueListIcon,
+    },
+    {
+        name: 'grid',
+        icon: Squares2X2Icon,
+    },
 ])
 
 const selectedClass = 'bg-white dark:bg-gray-700 text-blue-500 shadow-sm '

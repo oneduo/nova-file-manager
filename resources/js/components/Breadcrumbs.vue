@@ -33,13 +33,13 @@
 import { ChevronRightIcon, HomeIcon } from '@heroicons/vue/24/outline'
 
 defineProps({
-  items: {
-    type: Array,
-    default: [],
-  },
-  setPath: {
-    type: Function,
-    required: true,
-  },
+    items: {
+        type: Array,
+        default: () => [],
+    },
+    setPath: {
+        type: Function,
+        required: true,
+    },
 })
 </script>

@@ -27,6 +27,6 @@ const store = useStore()
 const search = computed(() => store.search)
 
 const setSearch = debounce(({ target: { value } }) => {
-  store.setSearch({ search: value })
+    store.setSearch({ search: value })
 }, Nova.config('debounce'))
 </script>

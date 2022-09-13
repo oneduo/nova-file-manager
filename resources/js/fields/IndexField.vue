@@ -14,9 +14,9 @@
 
 <script setup>
 defineProps({
-  field: {
-    type: Object,
-    required: true,
-  },
+    field: {
+        type: Object,
+        required: true,
+    },
 })
 </script>

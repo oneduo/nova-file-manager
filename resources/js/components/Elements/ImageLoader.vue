@@ -9,18 +9,18 @@ import { computed, onMounted, ref } from 'vue'
 import Spinner from '@/components/Elements/Spinner'
 
 const props = defineProps({
-  src: {
-    type: String,
-    required: true,
-  },
-  fullWidth: {
-    type: Boolean,
-    default: true,
-  },
-  isThumbnail: {
-    type: Boolean,
-    default: true,
-  },
+    src: {
+        type: String,
+        required: true,
+    },
+    fullWidth: {
+        type: Boolean,
+        default: true,
+    },
+    isThumbnail: {
+        type: Boolean,
+        default: true,
+    },
 })
 
 const emit = defineEmits(['missing'])
@@ -31,34 +31,34 @@ const missing = ref(false)
 const card = ref(null)
 
 const cardClasses = computed(() => {
-  return {
-    'w-full': props.fullWidth,
-  }
+    return {
+        'w-full': props.fullWidth,
+    }
 })
 
 onMounted(() => {
-  new Promise((resolve, reject) => {
-    let image = new Image()
+    new Promise((resolve, reject) => {
+        let image = new Image()
 
-    image.addEventListener('load', () => resolve(image))
-    image.addEventListener('error', () => reject())
+        image.addEventListener('load', () => resolve(image))
+        image.addEventListener('error', () => reject())
 
-    image.src = props.src
-  })
-    .then(image => {
-      image.className = 'pointer-events-none w-full h-full'
-      image.classList.add(props.isThumbnail ? 'object-cover' : 'object-contain')
-      image.draggable = false
-
-      card.value.appendChild(image)
+        image.src = props.src
     })
-    .catch(() => {
-      missing.value = true
+        .then(image => {
+            image.className = 'pointer-events-none w-full h-full'
+            image.classList.add(props.isThumbnail ? 'object-cover' : 'object-contain')
+            image.draggable = false
 
-      emit('missing', true)
-    })
-    .finally(() => {
-      loading.value = false
-    })
+            card.value.appendChild(image)
+        })
+        .catch(() => {
+            missing.value = true
+
+            emit('missing', true)
+        })
+        .finally(() => {
+            loading.value = false
+        })
 })
 </script>

@@ -4,7 +4,7 @@ import DetailField from '@/fields/DetailField'
 import FormField from '@/fields/FormField'
 import { createPinia } from 'pinia'
 
-Nova.booting((app, _store) => {
+Nova.booting(app => {
     app.use(createPinia())
 
     Nova.inertia('NovaFileManager', Tool)

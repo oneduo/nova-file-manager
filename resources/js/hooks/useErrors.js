@@ -1,5 +1,5 @@
-import {computed} from 'vue'
-import {useStore} from '@/store'
+import { computed } from 'vue'
+import { useStore } from '@/store'
 
 export function useErrors(name) {
     const store = useStore()
@@ -8,5 +8,5 @@ export function useErrors(name) {
     const hasErrors = computed(() => errors.value?.has(name))
     const errorsList = computed(() => errors.value?.get(name))
 
-    return {errors, hasErrors, errorsList}
+    return { errors, hasErrors, errorsList }
 }

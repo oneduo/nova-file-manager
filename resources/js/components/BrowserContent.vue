@@ -51,19 +51,19 @@ import List from '@/components/List'
 import Empty from '@/components/Empty'
 
 defineProps({
-  view: {
-    type: String,
-    default: 'grid',
-  },
-  files: {
-    type: Array,
-  },
-  folders: {
-    type: Array,
-  },
-  filled: {
-    type: Boolean,
-    default: false,
-  },
+    view: {
+        type: String,
+        default: 'grid',
+    },
+    files: {
+        type: Array,
+    },
+    folders: {
+        type: Array,
+    },
+    filled: {
+        type: Boolean,
+        default: false,
+    },
 })
 </script>

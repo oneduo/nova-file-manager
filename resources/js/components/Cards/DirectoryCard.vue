@@ -73,21 +73,21 @@ import { usePermissions } from '@/hooks'
 import { useStore } from '@/store'
 
 const props = defineProps({
-  id: {
-    type: String,
-    required: true,
-  },
-  disk: {
-    type: String,
-  },
-  name: {
-    type: String,
-    required: true,
-  },
-  path: {
-    type: String,
-    required: true,
-  },
+    id: {
+        type: String,
+        required: true,
+    },
+    disk: {
+        type: String,
+    },
+    name: {
+        type: String,
+        required: true,
+    },
+    path: {
+        type: String,
+        required: true,
+    },
 })
 
 const store = useStore()

@@ -7,17 +7,17 @@ import Select from '@/components/Elements/Select'
 import { range } from 'lodash/util'
 
 defineProps({
-  perPage: {
-    type: Number,
-    default: 10,
-  },
-  perPageOptions: {
-    type: Array,
-    default: range(10, 50, 10),
-  },
-  setPerPage: {
-    type: Function,
-    required: true,
-  },
+    perPage: {
+        type: Number,
+        default: 10,
+    },
+    perPageOptions: {
+        type: Array,
+        default: range(10, 50, 10),
+    },
+    setPerPage: {
+        type: Function,
+        required: true,
+    },
 })
 </script>

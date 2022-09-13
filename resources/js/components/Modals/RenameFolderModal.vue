@@ -52,24 +52,22 @@ import { onMounted, ref } from 'vue'
 import Button from '@/components/Elements/Button'
 import InputModal from '@/components/Modals/InputModal'
 import { useErrors } from '@/hooks'
-import { useStore } from '@/store'
 
 const props = defineProps({
-  name: {
-    type: String,
-    required: true,
-  },
-  onSubmit: {
-    type: Function,
-    required: true,
-  },
-  from: {
-    type: String,
-    required: true,
-  },
+    name: {
+        type: String,
+        required: true,
+    },
+    onSubmit: {
+        type: Function,
+        required: true,
+    },
+    from: {
+        type: String,
+        required: true,
+    },
 })
 
-const store = useStore()
 const { hasErrors, errorsList } = useErrors('renameFolder')
 
 //STATE

@@ -194,12 +194,12 @@
 import { computed, ref } from 'vue'
 import { Dialog, DialogPanel, TransitionChild, TransitionRoot } from '@headlessui/vue'
 import {
-  ClipboardDocumentIcon,
-  CloudArrowDownIcon,
-  DocumentIcon,
-  PencilSquareIcon,
-  TrashIcon,
-  XMarkIcon,
+    ClipboardDocumentIcon,
+    CloudArrowDownIcon,
+    DocumentIcon,
+    PencilSquareIcon,
+    TrashIcon,
+    XMarkIcon,
 } from '@heroicons/vue/24/outline'
 import IconButton from '@/components/Elements/IconButton'
 import DeleteFileModal from '@/components/Modals/DeleteFileModal'
@@ -212,14 +212,14 @@ import ImageLoader from '@/components/Elements/ImageLoader'
 import { useStore } from '@/store'
 
 const props = defineProps({
-  file: {
-    type: Entity,
-    required: true,
-  },
-  readOnly: {
-    type: Boolean,
-    default: false,
-  },
+    file: {
+        type: Entity,
+        required: true,
+    },
+    readOnly: {
+        type: Boolean,
+        default: false,
+    },
 })
 
 const store = useStore()
@@ -234,26 +234,26 @@ const isOpen = computed(() => !!preview.value)
 
 // ACTIONS
 const openModal = name => store.openModal({ name })
-const onRename = () => store.renameFile({ id: props.file.id, from: props.file.path, to: value })
+const onRename = value => store.renameFile({ id: props.file.id, from: props.file.path, to: value })
 const onDelete = () => store.deleteFile({ id: props.file.id, path: props.file.path })
 
 const closePreview = () => {
-  store.preview = null
+    store.preview = null
 
-  store.fixPortal()
+    store.fixPortal()
 }
 
 const onEditImage = file => {
-  closePreview()
+    closePreview()
 
-  openModal('queue')
+    openModal('queue')
 
-  store.upload({ files: [file] })
+    store.upload({ files: [file] })
 }
 
 const copy = file => {
-  copyToClipboard(file.url)
+    copyToClipboard(file.url)
 
-  Nova.success('Copied !')
+    Nova.success('Copied !')
 }
 </script>

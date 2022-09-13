@@ -91,10 +91,10 @@ import { FormField, HandlesValidationErrors } from 'laravel-nova'
 import { mapActions, mapState } from 'pinia'
 import { CloudIcon } from '@heroicons/vue/24/outline'
 import {
-  Dialog as DialogModal,
-  DialogPanel,
-  TransitionChild,
-  TransitionRoot,
+    Dialog as DialogModal,
+    DialogPanel,
+    TransitionChild,
+    TransitionRoot,
 } from '@headlessui/vue'
 import Browser from '@/components/Browser'
 import draggable from 'vuedraggable'
@@ -103,128 +103,128 @@ import Entity from '@/types/Entity'
 import { useStore } from '@/store'
 
 export default {
-  mixins: [FormField, HandlesValidationErrors],
+    mixins: [FormField, HandlesValidationErrors],
 
-  components: {
-    FieldCard,
-    Browser,
-    CloudIcon,
-    DialogModal,
-    DialogPanel,
-    TransitionChild,
-    TransitionRoot,
-    draggable,
-  },
-
-  props: ['resourceName', 'resourceId', 'field'],
-
-  data: () => ({
-    drag: false,
-    displayModal: false,
-    value: [],
-    flexibleGroup: [],
-  }),
-
-  mounted() {
-    this.init()
-
-    this.value = (this.field.value || []).map(file => this.mapEntity(file))
-    this.flexibleGroup = this.resolveFlexible(this)
-  },
-
-  computed: {
-    ...mapState(useStore, ['dark', 'disk', 'isBrowserOpen']),
-
-    dragOptions() {
-      return {
-        animation: 200,
-        disabled: !this.field?.multiple,
-        ghostClass: 'opacity-0',
-      }
-    },
-  },
-
-  methods: {
-    ...mapActions(useStore, ['init', 'closeBrowser', 'openBrowser']),
-
-    fill(formData) {
-      if (this.value?.length) {
-        formData.append(
-          this.field.attribute,
-          JSON.stringify(
-            this.value?.map(file => ({
-              path: file.path,
-              disk: file.disk,
-            }))
-          )
-        )
-      }
+    components: {
+        FieldCard,
+        Browser,
+        CloudIcon,
+        DialogModal,
+        DialogPanel,
+        TransitionChild,
+        TransitionRoot,
+        draggable,
     },
 
-    openBrowserModal() {
-      this.displayModal = true
+    props: ['resourceName', 'resourceId', 'field'],
 
-      this.openBrowser({
-        initialFiles: this.value,
-        multiple: this.field.multiple ?? false,
-        limit: this.field.limit ?? null,
-        resource: this.resourceName ?? null,
-        resourceId: this.resourceId ?? null,
-        attribute: this.flexibleGroup.length ? this.field.sortableUriKey : this.field.attribute,
-        customDisk: this.field.customDisk ?? false,
-        permissions: this.field.permissions ?? {},
-        flexibleGroup: this.flexibleGroup,
-        callback: selection => {
-          this.value = selection.map(f => this.mapEntity(f))
+    data: () => ({
+        drag: false,
+        displayModal: false,
+        value: [],
+        flexibleGroup: [],
+    }),
+
+    mounted() {
+        this.init()
+
+        this.value = (this.field.value || []).map(file => this.mapEntity(file))
+        this.flexibleGroup = this.resolveFlexible(this)
+    },
+
+    computed: {
+        ...mapState(useStore, ['dark', 'disk', 'isBrowserOpen']),
+
+        dragOptions() {
+            return {
+                animation: 200,
+                disabled: !this.field?.multiple,
+                ghostClass: 'opacity-0',
+            }
         },
-      })
     },
 
-    closeBrowserModal() {
-      this.displayModal = false
-      this.closeBrowser()
+    methods: {
+        ...mapActions(useStore, ['init', 'closeBrowser', 'openBrowser']),
+
+        fill(formData) {
+            if (this.value?.length) {
+                formData.append(
+                    this.field.attribute,
+                    JSON.stringify(
+                        this.value?.map(file => ({
+                            path: file.path,
+                            disk: file.disk,
+                        }))
+                    )
+                )
+            }
+        },
+
+        openBrowserModal() {
+            this.displayModal = true
+
+            this.openBrowser({
+                initialFiles: this.value,
+                multiple: this.field.multiple ?? false,
+                limit: this.field.limit ?? null,
+                resource: this.resourceName ?? null,
+                resourceId: this.resourceId ?? null,
+                attribute: this.flexibleGroup.length ? this.field.sortableUriKey : this.field.attribute,
+                customDisk: this.field.customDisk ?? false,
+                permissions: this.field.permissions ?? {},
+                flexibleGroup: this.flexibleGroup,
+                callback: selection => {
+                    this.value = selection.map(f => this.mapEntity(f))
+                },
+            })
+        },
+
+        closeBrowserModal() {
+            this.displayModal = false
+            this.closeBrowser()
+        },
+
+        deselectFile(file) {
+            this.value = this.value.filter(f => f.id !== file.id)
+        },
+
+        mapEntity: file =>
+            new Entity(
+                file.id,
+                file.name,
+                file.path,
+                file.size,
+                file.extension,
+                file.mime,
+                file.url,
+                file.lastModifiedAt,
+                file.type,
+                file.exists,
+                file.disk
+            ),
+
+        resolveFlexible(component) {
+            let elements = []
+
+            let group = component.$parent
+            let parent = component.$parent?.$parent?.$parent?.$parent
+
+            if (parent?.field?.component === 'nova-flexible-content') {
+                elements.unshift(...this.resolveFlexible(parent))
+                elements.push(`${group?.group?.name}:${parent.field.sortableUriKey}`)
+            }
+
+            return elements
+        },
     },
 
-    deselectFile(file) {
-      this.value = this.value.filter(f => f.id !== file.id)
+    watch: {
+        isBrowserOpen(newValue, oldValue) {
+            if (!newValue && oldValue) {
+                this.displayModal = false
+            }
+        },
     },
-
-    mapEntity: file =>
-      new Entity(
-        file.id,
-        file.name,
-        file.path,
-        file.size,
-        file.extension,
-        file.mime,
-        file.url,
-        file.lastModifiedAt,
-        file.type,
-        file.exists,
-        file.disk
-      ),
-
-    resolveFlexible(component) {
-      let elements = []
-
-      let group = component.$parent
-      let parent = component.$parent?.$parent?.$parent?.$parent
-
-      if (parent?.field?.component === 'nova-flexible-content') {
-        elements.unshift(...this.resolveFlexible(parent))
-        elements.push(`${group?.group?.name}:${parent.field.sortableUriKey}`)
-      }
-
-      return elements
-    },
-  },
-
-  watch: {
-    isBrowserOpen(newValue, oldValue) {
-      if (!newValue && oldValue) {
-        this.displayModal = false
-      }
-    },
-  },
 }
 </script>

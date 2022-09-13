@@ -88,18 +88,18 @@ import { useStore } from '@/store'
 import 'cropperjs/dist/cropper.css'
 
 const props = defineProps({
-  file: {
-    type: Entity,
-    required: true,
-  },
-  name: {
-    type: String,
-    required: true,
-  },
-  onConfirm: {
-    type: Function,
-    required: true,
-  },
+    file: {
+        type: Entity,
+        required: true,
+    },
+    name: {
+        type: String,
+        required: true,
+    },
+    onConfirm: {
+        type: Function,
+        required: true,
+    },
 })
 
 const store = useStore()
@@ -111,21 +111,21 @@ const blob = ref(null)
 const uploadIsOpen = computed(() => store.isOpen('upload-crop'))
 
 const containerStyle = computed(() => ({
-  height: '100%',
-  minHeight: '60vh',
+    height: '100%',
+    minHeight: '60vh',
 }))
 
 const cropData = computed(() => {
-  const data = cropper.value.getData()
+    const data = cropper.value.getData()
 
-  const suffix = `${Math.round(data.width)}_${Math.round(data.height)}_${Math.round(
-    data.x
-  )}_${Math.round(data.y)}`
+    const suffix = `${Math.round(data.width)}_${Math.round(data.height)}_${Math.round(
+        data.x
+    )}_${Math.round(data.y)}`
 
-  return {
-    blob: blob.value,
-    name: props.file?.name.replace(props.file?.extension, `${suffix}.${props.file?.extension}`),
-  }
+    return {
+        blob: blob.value,
+        name: props.file?.name.replace(props.file?.extension, `${suffix}.${props.file?.extension}`),
+    }
 })
 
 // ACTIONS
@@ -133,21 +133,21 @@ const openModal = name => store.openModal({ name })
 const closeModal = name => store.closeModal({ name })
 
 const openUploadCropModal = () => {
-  cropper.value.getCroppedCanvas().toBlob(b => {
-    blob.value = b
+    cropper.value.getCroppedCanvas().toBlob(b => {
+        blob.value = b
 
-    openModal('upload-crop')
-  })
+        openModal('upload-crop')
+    })
 }
 
 const submitCrop = name => {
-  const file = new File([blob.value], name, {
-    type: props.file.mime,
-  })
+    const file = new File([blob.value], name, {
+        type: props.file.mime,
+    })
 
-  closeModal('upload-crop')
-  closeModal(props.name)
+    closeModal('upload-crop')
+    closeModal(props.name)
 
-  props.onConfirm(file)
+    props.onConfirm(file)
 }
 </script>

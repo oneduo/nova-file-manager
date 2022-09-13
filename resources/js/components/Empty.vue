@@ -47,13 +47,13 @@
 
 <script setup>
 defineProps({
-  title: {
-    type: String,
-    default: null,
-  },
-  subtitle: {
-    type: String,
-    default: null,
-  },
+    title: {
+        type: String,
+        default: null,
+    },
+    subtitle: {
+        type: String,
+        default: null,
+    },
 })
 </script>

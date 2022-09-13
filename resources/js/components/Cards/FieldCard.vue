@@ -17,21 +17,21 @@ import { useStore } from '@/store'
 const store = useStore()
 
 const props = defineProps({
-  file: {
-    type: Entity,
-    required: true,
-  },
-  detail: {
-    type: Boolean,
-    default: false,
-  },
-  field: {
-    type: Object,
-    required: true,
-  },
-  onDeselect: {
-    type: Function,
-  },
+    file: {
+        type: Entity,
+        required: true,
+    },
+    detail: {
+        type: Boolean,
+        default: false,
+    },
+    field: {
+        type: Object,
+        required: true,
+    },
+    onDeselect: {
+        type: Function,
+    },
 })
 
 // STATE
@@ -41,10 +41,10 @@ const singleDisk = computed(() => store.singleDisk)
 const openPreview = file => (store.preview = file)
 
 const preview = file => {
-  if (!props.detail) {
-    return
-  }
+    if (!props.detail) {
+        return
+    }
 
-  file.exists && openPreview(file)
+    file.exists && openPreview(file)
 }
 </script>
