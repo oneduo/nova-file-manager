@@ -15,4 +15,8 @@ return [
         'rename' => 'The folder could not be renamed!',
         'delete' => 'The folder could not be deleted!',
     ],
+
+    'authorization' => [
+        'unauthorized' => 'This action [:action] is unauthorized.',
+    ]
 ];

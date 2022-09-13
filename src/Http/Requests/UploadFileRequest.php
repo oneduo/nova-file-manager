@@ -24,13 +24,22 @@ class UploadFileRequest extends BaseRequest
             return false;
         }
 
-        $path = ltrim(dirname($this->input('resumableFilename')), DIRECTORY_SEPARATOR);
+        $path = ltrim(dirname($this->input('resumableFilename')), '/.');
 
         if (!empty($path) && !$this->canCreateFolder()) {
             return false;
         }
 
         return true;
+    }
+
+    public function authorizationActionAttribute(string $class = null): string
+    {
+        if (!$this->canUploadFile()) {
+            return parent::authorizationActionAttribute();
+        }
+
+        return parent::authorizationActionAttribute(CreateFolderRequest::class);
     }
 
     public function rules(): array
