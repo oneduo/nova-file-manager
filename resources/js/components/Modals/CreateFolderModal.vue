@@ -56,14 +56,14 @@ import InputModal from '@/components/Modals/InputModal'
 import { useErrors } from '@/hooks'
 
 const props = defineProps({
-    name: {
-        type: String,
-        required: true,
-    },
-    onSubmit: {
-        type: Function,
-        required: true,
-    },
+  name: {
+    type: String,
+    required: true,
+  },
+  onSubmit: {
+    type: Function,
+    required: true,
+  },
 })
 
 const value = ref(null)
@@ -73,8 +73,8 @@ onMounted(() => (value.value = null))
 const { hasErrors, errorsList } = useErrors('createFolder')
 
 const submit = () => {
-    props.onSubmit(value.value)
+  props.onSubmit(value.value)
 
-    value.value = null
+  value.value = null
 }
 </script>

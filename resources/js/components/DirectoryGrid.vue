@@ -19,9 +19,9 @@ import DirectoryCard from '@/components/Cards/DirectoryCard'
 import { defineProps } from 'vue'
 
 defineProps({
-    folders: {
-        type: Array,
-        default: () => [],
-    },
+  folders: {
+    type: Array,
+    default: () => [],
+  },
 })
 </script>

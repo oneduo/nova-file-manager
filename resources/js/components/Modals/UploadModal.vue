@@ -101,16 +101,16 @@ import { useStore } from '@/store'
 import dataTransferFiles from '@/helpers/data-transfer'
 
 const props = defineProps({
-    name: {
-        type: String,
-        default: 'upload',
-    },
-    queue: {
-        type: Array,
-    },
-    upload: {
-        type: Function,
-    },
+  name: {
+    type: String,
+    default: 'upload',
+  },
+  queue: {
+    type: Array,
+  },
+  upload: {
+    type: Function,
+  },
 })
 
 // STATE
@@ -130,15 +130,15 @@ const closeModal = () => store.closeModal({ name: props.name })
 const openModal = name => store.openModal({ name })
 
 const submit = () => {
-    if (files.value.length) {
-        props.upload(files.value)
-    }
+  if (files.value.length) {
+    props.upload(files.value)
+  }
 
-    closeModal()
+  closeModal()
 
-    openModal('queue')
+  openModal('queue')
 
-    active.value = false
+  active.value = false
 }
 
 // HOOKS

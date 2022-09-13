@@ -49,89 +49,83 @@ const queue = computed(() => store.queue)
 const { showUploadFile } = usePermissions()
 
 onMounted(() => {
-    store.init()
+  store.init()
 
-    if (!store.singleDisk && !store.disks) {
-        store.getDisks()
-    }
+  if (!store.singleDisk && !store.disks) {
+    store.getDisks()
+  }
 
-    store.data()
+  store.data()
 })
 
 const dragActive = ref(false)
 const dragFiles = ref([])
-const dataTransfer = ref(null)
 
 const dragEnter = () => {
-    if (!showUploadFile.value) {
-        return
-    }
+  if (!showUploadFile.value) {
+    return
+  }
 
-    dragActive.value = true
+  dragActive.value = true
 }
 
 const dragLeave = () => {
-    if (!showUploadFile.value) {
-        return
-    }
+  if (!showUploadFile.value) {
+    return
+  }
 
-    dragActive.value = false
+  dragActive.value = false
 }
 
-const dragDrop = event => {
-    if (!showUploadFile.value) {
-        return
-    }
+const dragDrop = async event => {
+  if (!showUploadFile.value) {
+    return
+  }
 
-    dragFiles.value = event.dataTransfer.files
-    dataTransfer.value = event.dataTransfer
+  dragFiles.value = await dataTransferFiles(event.dataTransfer.items)
 }
 
 const submit = async () => {
-    if (!showUploadFile.value) {
-        return
-    }
+  if (!showUploadFile.value) {
+    return
+  }
 
-    if (dataTransfer.value === null) {
-        return
-    }
+  if (!dragFiles.value?.length) {
+    return
+  }
 
-    const files = await dataTransferFiles(dataTransfer.value.items)
-    console.log(files)
+  store.upload({ files: dragFiles.value })
 
-    store.upload({ files })
+  store.openModal({ name: 'queue' })
 
-    store.openModal({ name: 'queue' })
-
-    dragActive.value = false
-    dataTransfer.value = null
+  dragActive.value = false
 }
 
 watch(dragFiles, () => submit())
 
 const unsubscribe = store.$onAction(({ name, store, after }) => {
-    after(() => {
-        if (
-            [
-                'setDisk',
-                'setPath',
-                'setPerPage',
-                'setPage',
-                'setSearch',
-                'upload',
-                'renameFile',
-                'deleteFile',
-                'createFolder',
-                'renameFolder',
-                'deleteFolder',
-            ].includes(name)
-        ) {
-            store.data()
-        }
-    })
+  after(() => {
+    if (
+      [
+        'setDisk',
+        'setPath',
+        'setPerPage',
+        'setPage',
+        'setSearch',
+        'upload',
+        'renameFile',
+        'deleteFile',
+        'createFolder',
+        'renameFolder',
+        'deleteFolder',
+      ].includes(name)
+    ) {
+      store.data()
+    }
+  })
 })
 
 onBeforeUnmount(() => {
-    unsubscribe()
+  unsubscribe()
 })
 </script>

@@ -14,9 +14,9 @@
 import { CloudArrowUpIcon } from '@heroicons/vue/24/outline'
 
 defineProps({
-    dragLeave: {
-        type: Function,
-        required: true,
-    },
+  dragLeave: {
+    type: Function,
+    required: true,
+  },
 })
 </script>

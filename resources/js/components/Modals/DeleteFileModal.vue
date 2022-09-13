@@ -28,20 +28,20 @@ import ConfirmModal from '@/components/Modals/ConfirmModal'
 import Button from '@/components/Elements/Button'
 
 defineProps({
-    isOpen: {
-        type: Boolean,
-        default: false,
-    },
-    name: {
-        type: String,
-        required: true,
-    },
-    onConfirm: {
-        type: Function,
-    },
-    onClose: {
-        type: Function,
-    },
+  isOpen: {
+    type: Boolean,
+    default: false,
+  },
+  name: {
+    type: String,
+    required: true,
+  },
+  onConfirm: {
+    type: Function,
+  },
+  onClose: {
+    type: Function,
+  },
 })
 
 const icon = computed(() => ExclamationCircleIcon)

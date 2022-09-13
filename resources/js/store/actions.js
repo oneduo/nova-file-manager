@@ -3,509 +3,509 @@ import errors from '@/helpers/errors'
 import Resumable from 'resumablejs'
 
 const buildUrl = (state, url) => {
-    const suffifx = state.isFieldMode ? `/${state.resource}` : ''
-    console.log(suffifx, state.isFieldMode)
+  const suffifx = state.isFieldMode ? `/${state.resource}` : ''
+  console.log(suffifx, state.isFieldMode)
 
-    return `${url}${suffifx}`
+  return `${url}${suffifx}`
 }
 
 const buildPayload = (state, params) => {
-    return {
-        ...params,
-        attribute: state.attribute,
-        ...(state.resourceId && {
-            resourceId: state.resourceId,
-        }),
-        fieldMode: state.isFieldMode ? 1 : 0,
-        ...(!state.customDisk && {
-            disk: state.disk,
-        }),
-        ...(state.isFieldMode &&
+  return {
+    ...params,
+    attribute: state.attribute,
+    ...(state.resourceId && {
+      resourceId: state.resourceId,
+    }),
+    fieldMode: state.isFieldMode ? 1 : 0,
+    ...(!state.customDisk && {
+      disk: state.disk,
+    }),
+    ...(state.isFieldMode &&
       state.flexibleGroup?.length && {
-            flexible: state.flexibleGroup.join('.'),
-        }),
-    }
+      flexible: state.flexibleGroup.join('.'),
+    }),
+  }
 }
 
 const actions = {
-    /**
+  /**
    * Set the current path
    *
    * @param commit
    * @param dispatch
    * @param {string|null} path
    */
-    setPath({ commit, dispatch }, path) {
-        dispatch('reset')
+  setPath({ commit, dispatch }, path) {
+    dispatch('reset')
 
-        commit('setPath', path)
+    commit('setPath', path)
 
-        dispatch('getData')
+    dispatch('getData')
 
-        dispatch('updateQueryString', { path })
-    },
+    dispatch('updateQueryString', { path })
+  },
 
-    /**
+  /**
    * Set the current disk
    *
    * @param commit
    * @param dispatch
    * @param {string|null} disk
    */
-    setDisk({ commit, dispatch }, disk) {
-        dispatch('reset')
+  setDisk({ commit, dispatch }, disk) {
+    dispatch('reset')
 
-        commit('setDisk', disk)
+    commit('setDisk', disk)
 
-        dispatch('getData')
+    dispatch('getData')
 
-        dispatch('updateQueryString', { disk })
+    dispatch('updateQueryString', { disk })
 
-        dispatch('saveToLocalStorage', { disk })
-    },
+    dispatch('saveToLocalStorage', { disk })
+  },
 
-    /**
+  /**
    * Set the pagination's per page value
    *
    * @param commit
    * @param dispatch
    * @param {number|null} perPage
    */
-    setPerPage({ commit, dispatch }, perPage) {
-        commit('setPerPage', perPage)
+  setPerPage({ commit, dispatch }, perPage) {
+    commit('setPerPage', perPage)
 
-        dispatch('setPage', 1)
+    dispatch('setPage', 1)
 
-        dispatch('getData')
+    dispatch('getData')
 
-        dispatch('updateQueryString', { perPage })
+    dispatch('updateQueryString', { perPage })
 
-        dispatch('saveToLocalStorage', { perPage })
-    },
+    dispatch('saveToLocalStorage', { perPage })
+  },
 
-    /**
+  /**
    * Set the pagination's page
    *
    * @param commit
    * @param dispatch
    * @param {number|null} page
    */
-    setPage({ commit, dispatch }, page) {
-        commit('setPage', page)
+  setPage({ commit, dispatch }, page) {
+    commit('setPage', page)
 
-        dispatch('getData')
+    dispatch('getData')
 
-        dispatch('updateQueryString', { page })
-    },
+    dispatch('updateQueryString', { page })
+  },
 
-    /**
+  /**
    * Set the tool view mode
    *
    * @param commit
    * @param dispatch
    * @param {string|null} view
    */
-    setView({ commit, dispatch }, view) {
-        commit('setView', view)
-        dispatch('saveToLocalStorage', { view })
-    },
+  setView({ commit, dispatch }, view) {
+    commit('setView', view)
+    dispatch('saveToLocalStorage', { view })
+  },
 
-    /**
+  /**
    * Set the search query
    *
    * @param commit
    * @param dispatch
    * @param {search|null} search
    */
-    setSearch({ commit, dispatch }, search) {
-        commit('setSearch', search)
+  setSearch({ commit, dispatch }, search) {
+    commit('setSearch', search)
 
-        dispatch('getData')
+    dispatch('getData')
 
-        dispatch('updateQueryString', { search })
-    },
+    dispatch('updateQueryString', { search })
+  },
 
-    /**
+  /**
    * Reset the tool
    *
    * @param commit
    * @param dispatch
    */
-    reset({ commit, dispatch }) {
-        const keys = ['page', 'search', 'path']
+  reset({ commit, dispatch }) {
+    const keys = ['page', 'search', 'path']
 
-        keys.forEach(key => {
-            commit(`set${key.charAt(0).toUpperCase() + key.slice(1)}`, null)
+    keys.forEach(key => {
+      commit(`set${key.charAt(0).toUpperCase() + key.slice(1)}`, null)
 
-            dispatch('updateQueryString', { [key]: null })
-        })
-    },
+      dispatch('updateQueryString', { [key]: null })
+    })
+  },
 
-    /**
+  /**
    * Get the disks from the API
    *
    * @param commit
    * @returns {Promise<void>}
    */
-    async getDisks({ commit, state }) {
-        commit('setIsFetchingDisks', true)
+  async getDisks({ commit, state }) {
+    commit('setIsFetchingDisks', true)
 
-        const { data } = await Nova.request().get(
-            buildUrl(state, '/nova-vendor/nova-file-manager/disks/available'),
-            {
-                params: buildPayload(state, {}),
-            }
-        )
+    const { data } = await Nova.request().get(
+      buildUrl(state, '/nova-vendor/nova-file-manager/disks/available'),
+      {
+        params: buildPayload(state, {}),
+      }
+    )
 
-        commit('setDisks', data)
+    commit('setDisks', data)
 
-        commit('setIsFetchingDisks', false)
-    },
+    commit('setIsFetchingDisks', false)
+  },
 
-    /**
+  /**
    * Get the files and directories from the API
    *
    * @param state
    * @param commit
    * @returns {Promise<void>}
    */
-    async getData({ state, commit }) {
-        commit('setIsFetchingData', true)
+  async getData({ state, commit }) {
+    commit('setIsFetchingData', true)
 
-        const { data } = await Nova.request().get(buildUrl(state, '/nova-vendor/nova-file-manager'), {
-            params: buildPayload(state, {
-                path: state.path,
-                page: state.page,
-                perPage: state.perPage,
-                search: state.search,
-            }),
+    const { data } = await Nova.request().get(buildUrl(state, '/nova-vendor/nova-file-manager'), {
+      params: buildPayload(state, {
+        path: state.path,
+        page: state.page,
+        perPage: state.perPage,
+        search: state.search,
+      }),
+    })
+
+    commit('setDisk', data.disk)
+
+    commit('setDirectories', data.directories)
+
+    commit('setBreadcrumbs', data.breadcrumbs)
+
+    commit('setFiles', data.files)
+
+    commit('setPagination', data.pagination)
+
+    commit('setIsFetchingData', false)
+  },
+  async createFolder({ dispatch, state, commit }, path) {
+    try {
+      const response = await Nova.request().post(
+        buildUrl(state, '/nova-vendor/nova-file-manager/folders/create'),
+        buildPayload(state, {
+          path: sanitize(`${state.path ?? ''}/${path}`),
         })
+      )
 
-        commit('setDisk', data.disk)
+      Nova.success(response.data.message)
 
-        commit('setDirectories', data.directories)
-
-        commit('setBreadcrumbs', data.breadcrumbs)
-
-        commit('setFiles', data.files)
-
-        commit('setPagination', data.pagination)
-
-        commit('setIsFetchingData', false)
-    },
-    async createFolder({ dispatch, state, commit }, path) {
-        try {
-            const response = await Nova.request().post(
-                buildUrl(state, '/nova-vendor/nova-file-manager/folders/create'),
-                buildPayload(state, {
-                    path: sanitize(`${state.path ?? ''}/${path}`),
-                })
-            )
-
-            Nova.success(response.data.message)
-
-            dispatch('closeModal', 'create-folder')
-            dispatch('getData')
-        } catch (error) {
-            commit('setErrors', {
-                createFolder: errors(error.response?.data?.errors),
-            })
-        }
-    },
-    async renameFolder({ dispatch, state, commit }, { id, oldPath, newPath }) {
-        try {
-            const response = await Nova.request().post(
-                buildUrl(state, '/nova-vendor/nova-file-manager/folders/rename'),
-                buildPayload(state, {
-                    path: state.path,
-                    oldPath: sanitize(oldPath),
-                    newPath: sanitize(`${state.path ?? ''}/${newPath}`),
-                })
-            )
-
-            Nova.success(response.data.message)
-
-            dispatch('closeModal', `rename-folder-${id}`)
-            dispatch('getData')
-        } catch (error) {
-            commit('setErrors', {
-                renameFolder: errors(error.response?.data?.errors),
-            })
-        }
-    },
-    async deleteFolder({ dispatch, state, commit }, { id, path }) {
-        try {
-            const response = await Nova.request().post(
-                buildUrl(state, '/nova-vendor/nova-file-manager/folders/delete'),
-                buildPayload(state, {
-                    path: path,
-                })
-            )
-
-            Nova.success(response.data.message)
-
-            dispatch('closeModal', `delete-folder-${id}`)
-            dispatch('getData')
-        } catch (error) {
-            commit('setErrors', {
-                deleteFolder: errors(error.response?.data?.errors),
-            })
-        }
-    },
-
-    updateQueue: ({ dispatch, state, commit }, { id, ratio = 100, status = null }) => {
-        state.queue = state.queue.map(item => {
-            if (item.id === id) {
-                return {
-                    ...item,
-                    status,
-                    ratio,
-                }
-            }
-
-            return item
+      dispatch('closeModal', 'create-folder')
+      dispatch('getData')
+    } catch (error) {
+      commit('setErrors', {
+        createFolder: errors(error.response?.data?.errors),
+      })
+    }
+  },
+  async renameFolder({ dispatch, state, commit }, { id, oldPath, newPath }) {
+    try {
+      const response = await Nova.request().post(
+        buildUrl(state, '/nova-vendor/nova-file-manager/folders/rename'),
+        buildPayload(state, {
+          path: state.path,
+          oldPath: sanitize(oldPath),
+          newPath: sanitize(`${state.path ?? ''}/${newPath}`),
         })
+      )
 
-        const done = state.queue.reduce((carry, item) => carry && item.ratio === 100, true)
+      Nova.success(response.data.message)
 
-        if (done && state.queue.length) {
-            setTimeout(() => {
-                dispatch('closeModal', 'upload')
-
-                dispatch('closeModal', 'upload-queue')
-
-                commit('clearQueue')
-
-                commit('setIsUploading', false)
-
-                dispatch('getData')
-            }, 1000)
-        }
-    },
-
-    async upload({ dispatch, state, commit }, files) {
-        commit('setIsUploading', true)
-
-        const uploader = new Resumable({
-            chunkSize: 50 * 1024 * 1024,
-            simultaneousUploads: 1,
-            testChunks: false,
-            throttleProgressCallbacks: 1,
-            target: buildUrl(state, '/nova-vendor/nova-file-manager/files/upload'),
-            query: buildPayload(state, {
-                path: state.path ?? '/',
-            }),
-            headers: {
-                Accept: 'application/json',
-                'X-CSRF-TOKEN': state.csrfToken,
-            },
-            permanentErrors: [400, 404, 409, 415, 422, 500, 501],
+      dispatch('closeModal', `rename-folder-${id}`)
+      dispatch('getData')
+    } catch (error) {
+      commit('setErrors', {
+        renameFolder: errors(error.response?.data?.errors),
+      })
+    }
+  },
+  async deleteFolder({ dispatch, state, commit }, { id, path }) {
+    try {
+      const response = await Nova.request().post(
+        buildUrl(state, '/nova-vendor/nova-file-manager/folders/delete'),
+        buildPayload(state, {
+          path: path,
         })
+      )
 
-        files.forEach(file => {
-            uploader.addFile(file)
+      Nova.success(response.data.message)
 
-            commit('addToQueue', file)
+      dispatch('closeModal', `delete-folder-${id}`)
+      dispatch('getData')
+    } catch (error) {
+      commit('setErrors', {
+        deleteFolder: errors(error.response?.data?.errors),
+      })
+    }
+  },
+
+  updateQueue: ({ dispatch, state, commit }, { id, ratio = 100, status = null }) => {
+    state.queue = state.queue.map(item => {
+      if (item.id === id) {
+        return {
+          ...item,
+          status,
+          ratio,
+        }
+      }
+
+      return item
+    })
+
+    const done = state.queue.reduce((carry, item) => carry && item.ratio === 100, true)
+
+    if (done && state.queue.length) {
+      setTimeout(() => {
+        dispatch('closeModal', 'upload')
+
+        dispatch('closeModal', 'upload-queue')
+
+        commit('clearQueue')
+
+        commit('setIsUploading', false)
+
+        dispatch('getData')
+      }, 1000)
+    }
+  },
+
+  async upload({ dispatch, state, commit }, files) {
+    commit('setIsUploading', true)
+
+    const uploader = new Resumable({
+      chunkSize: 50 * 1024 * 1024,
+      simultaneousUploads: 1,
+      testChunks: false,
+      throttleProgressCallbacks: 1,
+      target: buildUrl(state, '/nova-vendor/nova-file-manager/files/upload'),
+      query: buildPayload(state, {
+        path: state.path ?? '/',
+      }),
+      headers: {
+        Accept: 'application/json',
+        'X-CSRF-TOKEN': state.csrfToken,
+      },
+      permanentErrors: [400, 404, 409, 415, 422, 500, 501],
+    })
+
+    files.forEach(file => {
+      uploader.addFile(file)
+
+      commit('addToQueue', file)
+    })
+
+    uploader.on('fileAdded', () => uploader.upload())
+
+    uploader.on('fileSuccess', file => {
+      dispatch('updateQueue', {
+        id: file.fileName,
+        status: true,
+      })
+    })
+
+    uploader.on('fileProgress', file => {
+      dispatch('updateQueue', { id: file.fileName, ratio: Math.floor(file.progress() * 100) })
+    })
+
+    uploader.on('fileError', (file, message) => {
+      dispatch('updateQueue', {
+        id: file.fileName,
+        status: false,
+      })
+
+      Nova.error(JSON.parse(message).message)
+    })
+  },
+
+  async renameFile({ dispatch, state, commit }, { id, oldPath, newPath }) {
+    try {
+      const response = await Nova.request().post(
+        buildUrl(state, '/nova-vendor/nova-file-manager/files/rename'),
+        buildPayload(state, {
+          path: state.path,
+          oldPath: sanitize(oldPath),
+          newPath: sanitize(`${state.path ?? ''}/${newPath}`),
         })
+      )
 
-        uploader.on('fileAdded', () => uploader.upload())
+      Nova.success(response.data.message)
 
-        uploader.on('fileSuccess', file => {
-            dispatch('updateQueue', {
-                id: file.fileName,
-                status: true,
-            })
+      commit('previewFile', null)
+
+      dispatch('closeModal', `rename-file-${id}`)
+
+      dispatch('getData')
+    } catch (error) {
+      commit('setErrors', {
+        renameFile: errors(error.response?.data?.errors),
+      })
+    }
+  },
+  async deleteFile({ dispatch, state, commit }, { id, path }) {
+    try {
+      const response = await Nova.request().post(
+        buildUrl(state, '/nova-vendor/nova-file-manager/files/delete'),
+        buildPayload(state, {
+          path: path,
         })
+      )
 
-        uploader.on('fileProgress', file => {
-            dispatch('updateQueue', { id: file.fileName, ratio: Math.floor(file.progress() * 100) })
-        })
+      Nova.success(response.data.message)
 
-        uploader.on('fileError', (file, message) => {
-            dispatch('updateQueue', {
-                id: file.fileName,
-                status: false,
-            })
+      dispatch('closeModal', `delete-file-${id}`)
 
-            Nova.error(JSON.parse(message).message)
-        })
-    },
+      commit('previewFile', null)
 
-    async renameFile({ dispatch, state, commit }, { id, oldPath, newPath }) {
-        try {
-            const response = await Nova.request().post(
-                buildUrl(state, '/nova-vendor/nova-file-manager/files/rename'),
-                buildPayload(state, {
-                    path: state.path,
-                    oldPath: sanitize(oldPath),
-                    newPath: sanitize(`${state.path ?? ''}/${newPath}`),
-                })
-            )
+      commit('setSelection', [])
 
-            Nova.success(response.data.message)
+      dispatch('getData')
 
-            commit('previewFile', null)
+      commit('fixPortal')
+    } catch (error) {
+      commit('setErrors', {
+        deleteFile: errors(error.response?.data?.errors),
+      })
+    }
+  },
 
-            dispatch('closeModal', `rename-file-${id}`)
+  updateQueryString({ state }, values) {
+    if (state.isFieldMode) {
+      return
+    }
 
-            dispatch('getData')
-        } catch (error) {
-            commit('setErrors', {
-                renameFile: errors(error.response?.data?.errors),
-            })
-        }
-    },
-    async deleteFile({ dispatch, state, commit }, { id, path }) {
-        try {
-            const response = await Nova.request().post(
-                buildUrl(state, '/nova-vendor/nova-file-manager/files/delete'),
-                buildPayload(state, {
-                    path: path,
-                })
-            )
+    const searchParams = new URLSearchParams(window.location.search)
 
-            Nova.success(response.data.message)
+    const page = Nova.app.config.globalProperties.$inertia.page
 
-            dispatch('closeModal', `delete-file-${id}`)
+    for (const [key, value] of Object.entries(values)) {
+      if (value?.length > 0) {
+        searchParams.set(key, value)
+      } else {
+        searchParams.delete(key)
+      }
+    }
 
-            commit('previewFile', null)
+    if (page.url !== `${window.location.pathname}?${searchParams}`) {
+      page.url = `${window.location.pathname}?${searchParams}`
 
-            commit('setSelection', [])
+      const separator = searchParams.toString().length > 0 ? '?' : ''
 
-            dispatch('getData')
+      window.history.pushState(page, '', `${window.location.pathname}${separator}${searchParams}`)
+    }
+  },
 
-            commit('fixPortal')
-        } catch (error) {
-            commit('setErrors', {
-                deleteFile: errors(error.response?.data?.errors),
-            })
-        }
-    },
+  saveToLocalStorage({ state }, values) {
+    if (state.isFieldMode) {
+      return
+    }
 
-    updateQueryString({ state }, values) {
-        if (state.isFieldMode) {
-            return
-        }
+    for (const [key, value] of Object.entries(values)) {
+      window?.localStorage.setItem(`nova-file-manager::${key}`, value)
+    }
+  },
 
-        const searchParams = new URLSearchParams(window.location.search)
+  openModal: ({ commit }, payload) => {
+    commit('openModal', payload)
+  },
 
-        const page = Nova.app.config.globalProperties.$inertia.page
+  closeModal: ({ commit }, payload) => {
+    commit('closeModal', payload)
 
-        for (const [key, value] of Object.entries(values)) {
-            if (value?.length > 0) {
-                searchParams.set(key, value)
-            } else {
-                searchParams.delete(key)
-            }
-        }
+    commit('fixPortal')
+  },
 
-        if (page.url !== `${window.location.pathname}?${searchParams}`) {
-            page.url = `${window.location.pathname}?${searchParams}`
+  openBrowser: (
+    { commit, dispatch },
+    {
+      initialFiles,
+      multiple,
+      limit,
+      resource,
+      resourceId,
+      attribute,
+      customDisk,
+      permissions,
+      flexibleGroup,
+      callback,
+    }
+  ) => {
+    commit('setIsFieldMode', true)
+    commit('setMultiple', multiple)
+    commit('setLimit', limit)
+    commit('setResource', resource)
+    commit('setResourceId', resourceId)
+    commit('setAttribute', attribute)
+    commit('setCustomDisk', customDisk)
+    commit('setFlexibleGroup', flexibleGroup)
+    commit('setCallback', callback)
+    commit('setSelection', [...initialFiles])
+    dispatch('setPermissions', permissions)
+    commit('setDisk', null)
 
-            const separator = searchParams.toString().length > 0 ? '?' : ''
+    dispatch('openModal', 'browser')
+  },
 
-            window.history.pushState(page, '', `${window.location.pathname}${separator}${searchParams}`)
-        }
-    },
+  closeBrowser: ({ dispatch, commit }) => {
+    commit('setCallback', null)
 
-    saveToLocalStorage({ state }, values) {
-        if (state.isFieldMode) {
-            return
-        }
+    commit('setPage', null)
+    commit('setPath', null)
 
-        for (const [key, value] of Object.entries(values)) {
-            window?.localStorage.setItem(`nova-file-manager::${key}`, value)
-        }
-    },
+    commit('setIsFieldMode', false)
 
-    openModal: ({ commit }, payload) => {
-        commit('openModal', payload)
-    },
+    commit('setMultiple', false)
+    commit('setLimit', null)
+    commit('setResource', null)
+    commit('setResourceId', null)
+    commit('setAttribute', null)
+    commit('setCustomDisk', false)
+    commit('setFlexibleGroup', [])
+    commit('setDisk', null)
+    commit('setSelection', null)
 
-    closeModal: ({ commit }, payload) => {
-        commit('closeModal', payload)
+    dispatch('closeModal', 'browser')
+  },
 
-        commit('fixPortal')
-    },
+  submitFieldSelection: ({ state, dispatch }) => {
+    state.callback(state.selection)
 
-    openBrowser: (
-        { commit, dispatch },
-        {
-            initialFiles,
-            multiple,
-            limit,
-            resource,
-            resourceId,
-            attribute,
-            customDisk,
-            permissions,
-            flexibleGroup,
-            callback,
-        }
-    ) => {
-        commit('setIsFieldMode', true)
-        commit('setMultiple', multiple)
-        commit('setLimit', limit)
-        commit('setResource', resource)
-        commit('setResourceId', resourceId)
-        commit('setAttribute', attribute)
-        commit('setCustomDisk', customDisk)
-        commit('setFlexibleGroup', flexibleGroup)
-        commit('setCallback', callback)
-        commit('setSelection', [...initialFiles])
-        dispatch('setPermissions', permissions)
-        commit('setDisk', null)
+    dispatch('closeBrowser')
+  },
 
-        dispatch('openModal', 'browser')
-    },
-
-    closeBrowser: ({ dispatch, commit }) => {
-        commit('setCallback', null)
-
-        commit('setPage', null)
-        commit('setPath', null)
-
-        commit('setIsFieldMode', false)
-
-        commit('setMultiple', false)
-        commit('setLimit', null)
-        commit('setResource', null)
-        commit('setResourceId', null)
-        commit('setAttribute', null)
-        commit('setCustomDisk', false)
-        commit('setFlexibleGroup', [])
-        commit('setDisk', null)
-        commit('setSelection', null)
-
-        dispatch('closeModal', 'browser')
-    },
-
-    submitFieldSelection: ({ state, dispatch }) => {
-        state.callback(state.selection)
-
-        dispatch('closeBrowser')
-    },
-
-    setPermissions: (
-        { commit },
-        {
-            showCreateFolder,
-            showRenameFolder,
-            showDeleteFolder,
-            showUploadFile,
-            showRenameFile,
-            showDeleteFile,
-            showCropImage,
-        }
-    ) => {
-        commit('setShowCreateFolder', showCreateFolder)
-        commit('setShowRenameFolder', showRenameFolder)
-        commit('setShowDeleteFolder', showDeleteFolder)
-        commit('setshowUploadFile', showUploadFile)
-        commit('setshowRenameFile', showRenameFile)
-        commit('setshowDeleteFile', showDeleteFile)
-        commit('setshowCropImage', showCropImage)
-    },
+  setPermissions: (
+    { commit },
+    {
+      showCreateFolder,
+      showRenameFolder,
+      showDeleteFolder,
+      showUploadFile,
+      showRenameFile,
+      showDeleteFile,
+      showCropImage,
+    }
+  ) => {
+    commit('setShowCreateFolder', showCreateFolder)
+    commit('setShowRenameFolder', showRenameFolder)
+    commit('setShowDeleteFolder', showDeleteFolder)
+    commit('setshowUploadFile', showUploadFile)
+    commit('setshowRenameFile', showRenameFile)
+    commit('setshowDeleteFile', showDeleteFile)
+    commit('setshowCropImage', showCropImage)
+  },
 }
 
 export default actions

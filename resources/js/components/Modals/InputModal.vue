@@ -35,17 +35,17 @@ import { DialogPanel, DialogTitle } from '@headlessui/vue'
 import BaseModal from '@/components/Modals/BaseModal'
 
 defineProps({
-    name: {
-        type: String,
-        required: true,
-    },
-    title: {
-        type: String,
-        required: true,
-    },
-    onSubmit: {
-        type: Function,
-        required: true,
-    },
+  name: {
+    type: String,
+    required: true,
+  },
+  title: {
+    type: String,
+    required: true,
+  },
+  onSubmit: {
+    type: Function,
+    required: true,
+  },
 })
 </script>

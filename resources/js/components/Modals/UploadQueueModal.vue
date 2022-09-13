@@ -35,7 +35,7 @@ import { useStore } from '@/store'
 const store = useStore()
 
 defineProps({
-    name: String,
+  name: String,
 })
 
 const queue = computed(() => store.queue)

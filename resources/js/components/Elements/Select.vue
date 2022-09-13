@@ -56,20 +56,20 @@ import { CheckIcon, ChevronDownIcon } from '@heroicons/vue/24/solid'
 import Spinner from '@/components/Elements/Spinner'
 
 defineProps({
-    current: {
-        type: [String, Number],
-    },
-    options: {
-        type: Array,
-        default: () => [],
-    },
-    onClick: {
-        type: Function,
-        required: true,
-    },
-    isLoading: {
-        type: Boolean,
-        default: false,
-    },
+  current: {
+    type: [String, Number],
+  },
+  options: {
+    type: Array,
+    default: () => [],
+  },
+  onClick: {
+    type: Function,
+    required: true,
+  },
+  isLoading: {
+    type: Boolean,
+    default: false,
+  },
 })
 </script>

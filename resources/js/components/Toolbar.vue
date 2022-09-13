@@ -109,6 +109,6 @@ const confirm = () => store.confirm()
 const createFolder = path => store.createFolder({ path })
 
 const openUploadModal = () => {
-    openModal(queue.value.length ? 'queue' : 'upload')
+  openModal(queue.value.length ? 'queue' : 'upload')
 }
 </script>

@@ -54,18 +54,18 @@ import InputModal from '@/components/Modals/InputModal'
 import { useErrors } from '@/hooks'
 
 const props = defineProps({
-    name: {
-        type: String,
-        required: true,
-    },
-    onSubmit: {
-        type: Function,
-        required: true,
-    },
-    from: {
-        type: String,
-        required: true,
-    },
+  name: {
+    type: String,
+    required: true,
+  },
+  onSubmit: {
+    type: Function,
+    required: true,
+  },
+  from: {
+    type: String,
+    required: true,
+  },
 })
 
 const { hasErrors, errorsList } = useErrors('renameFolder')

@@ -34,57 +34,57 @@ import PreviewModal from '@/components/Modals/PreviewModal'
 import { useStore } from '@/store'
 
 export default {
-    mixins: [CopiesToClipboard],
+  mixins: [CopiesToClipboard],
 
-    components: {
-        PreviewModal,
-        FieldCard,
+  components: {
+    PreviewModal,
+    FieldCard,
+  },
+
+  props: ['field', 'index'],
+
+  computed: {
+    ...mapState(useStore, ['dark', 'preview']),
+  },
+
+  mounted() {
+    this.syncDarkMode()
+  },
+
+  data: () => ({
+    selected: null,
+  }),
+
+  methods: {
+    ...mapActions(useStore, ['syncDarkMode', 'setPreview']),
+
+    copy(file) {
+      this.selected = file
+      this.copyValueToClipboard(file.url)
+
+      setTimeout(() => {
+        this.selected = null
+      }, 1000)
     },
 
-    props: ['field', 'index'],
-
-    computed: {
-        ...mapState(useStore, ['dark', 'preview']),
+    openPreview(file) {
+      this.setPreview({ preview: file })
     },
 
-    mounted() {
-        this.syncDarkMode()
-    },
-
-    data: () => ({
-        selected: null,
-    }),
-
-    methods: {
-        ...mapActions(useStore, ['syncDarkMode', 'setPreview']),
-
-        copy(file) {
-            this.selected = file
-            this.copyValueToClipboard(file.url)
-
-            setTimeout(() => {
-                this.selected = null
-            }, 1000)
-        },
-
-        openPreview(file) {
-            this.setPreview({ preview: file })
-        },
-
-        mapEntity: file =>
-            new Entity(
-                file.id,
-                file.name,
-                file.path,
-                file.size,
-                file.extension,
-                file.mime,
-                file.url,
-                file.lastModifiedAt,
-                file.type,
-                file.exists,
-                file.disk
-            ),
-    },
+    mapEntity: file =>
+      new Entity(
+        file.id,
+        file.name,
+        file.path,
+        file.size,
+        file.extension,
+        file.mime,
+        file.url,
+        file.lastModifiedAt,
+        file.type,
+        file.exists,
+        file.disk
+      ),
+  },
 }
 </script>

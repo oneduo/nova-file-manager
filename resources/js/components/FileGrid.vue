@@ -24,10 +24,10 @@ import { entity } from '@/transformers/entityTransformer'
 import { useStore } from '@/store'
 
 defineProps({
-    files: {
-        type: Array,
-        default: () => [],
-    },
+  files: {
+    type: Array,
+    default: () => [],
+  },
 })
 
 const store = useStore()

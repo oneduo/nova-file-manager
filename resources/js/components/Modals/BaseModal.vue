@@ -39,16 +39,16 @@ import { computed, onBeforeUnmount } from 'vue'
 import { useStore } from '@/store'
 
 const props = defineProps({
-    name: {
-        type: String,
-        required: true,
-    },
+  name: {
+    type: String,
+    required: true,
+  },
 })
 
 onBeforeUnmount(() => {
-    if (isOpen.value) {
-        closeModal()
-    }
+  if (isOpen.value) {
+    closeModal()
+  }
 })
 
 const store = useStore()
@@ -57,6 +57,6 @@ const dark = computed(() => store.dark)
 const isOpen = computed(() => store.isOpen(props.name))
 
 const closeModal = () => {
-    store.closeModal({ name: props.name })
+  store.closeModal({ name: props.name })
 }
 </script>
