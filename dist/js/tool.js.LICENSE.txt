@@ -8,12 +8,6 @@
  * Date: 2021-06-12T08:00:17.411Z
  */
 
-/*!
- * vuex v4.0.2
- * (c) 2021 Evan You
- * @license MIT
- */
-
 /*! regenerator-runtime -- Copyright (c) 2014-present, Facebook, Inc. -- license (MIT): https://github.com/facebook/regenerator/blob/main/LICENSE */
 
 /**!
