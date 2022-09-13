@@ -19,7 +19,7 @@
     </main>
   </div>
 
-  <UploadQueueModal name="upload-queue" v-if="showUploadFile && queue.length" />
+  <UploadQueueModal name="queue" v-if="showUploadFile && queue.length" />
 </template>
 
 <script setup>
@@ -32,6 +32,7 @@ import UploadQueueModal from '@/components/Modals/UploadQueueModal'
 import { usePermissions } from '@/hooks'
 import { useStore } from '@/store'
 import BrowserDragzone from '@/components/Elements/BrowserDragzone'
+import dataTransferFiles from '@/helpers/data-transfer'
 
 const store = useStore()
 
@@ -42,92 +43,95 @@ const filled = computed(() => !!files.value?.length || !!folders.value?.length)
 const pagination = computed(() => store.pagination)
 const view = computed(() => store.view)
 const isFetchingData = computed(() => store.isFetchingData)
-const isFetchingDisks = computed(() => store.isFetchingDisks)
 const queue = computed(() => store.queue)
 
 // ACTIONS
-const openModal = name => store.openModal({ name })
-
 const { showUploadFile } = usePermissions()
 
 onMounted(() => {
-  store.init()
+    store.init()
 
-  if (!store.singleDisk && !store.disks) {
-    store.getDisks()
-  }
+    if (!store.singleDisk && !store.disks) {
+        store.getDisks()
+    }
 
-  store.data()
+    store.data()
 })
 
 const dragActive = ref(false)
 const dragFiles = ref([])
+const dataTransfer = ref(null)
 
 const dragEnter = () => {
-  if (!showUploadFile.value) {
-    return
-  }
+    if (!showUploadFile.value) {
+        return
+    }
 
-  dragActive.value = true
+    dragActive.value = true
 }
 
 const dragLeave = () => {
-  if (!showUploadFile.value) {
-    return
-  }
+    if (!showUploadFile.value) {
+        return
+    }
 
-  dragActive.value = false
+    dragActive.value = false
 }
 
 const dragDrop = event => {
-  if (!showUploadFile.value) {
-    return
-  }
+    if (!showUploadFile.value) {
+        return
+    }
 
-  dragFiles.value = event.dataTransfer.files
+    dragFiles.value = event.dataTransfer.files
+    dataTransfer.value = event.dataTransfer
 }
 
-const submit = () => {
-  if (!showUploadFile.value) {
-    return
-  }
+const submit = async () => {
+    if (!showUploadFile.value) {
+        return
+    }
 
-  if (!dragFiles.value.length) {
-    return
-  }
+    if (dataTransfer.value === null) {
+        return
+    }
 
-  store.upload({ files: dragFiles.value })
+    const files = await dataTransferFiles(dataTransfer.value.items)
+    console.log(files)
 
-  store.openModal({ name: 'queue' })
+    store.upload({ files })
 
-  dragActive.value = false
+    store.openModal({ name: 'queue' })
+
+    dragActive.value = false
+    dataTransfer.value = null
 }
 
 watch(dragFiles, () => submit())
 
 const unsubscribe = store.$onAction(({ name, store, after }) => {
-  after(() => {
-    if (
-      [
-        'setDisk',
-        'setPath',
-        'setPerPage',
-        'setPage',
-        'setSearch',
-        'upload',
-        'renameFile',
-        'deleteFile',
-        'createFolder',
-        'renameFolder',
-        'deleteFolder',
-      ].includes(name)
-    ) {
-      store.data()
-    }
-  })
+    after(() => {
+        if (
+            [
+                'setDisk',
+                'setPath',
+                'setPerPage',
+                'setPage',
+                'setSearch',
+                'upload',
+                'renameFile',
+                'deleteFile',
+                'createFolder',
+                'renameFolder',
+                'deleteFolder',
+            ].includes(name)
+        ) {
+            store.data()
+        }
+    })
 })
 
 onBeforeUnmount(() => {
-  unsubscribe()
+    unsubscribe()
 })
 </script>
