@@ -702,7 +702,7 @@ const useStore = defineStore('nova-file-manager', {
     url(url) {
       const suffifx = this.isField ? `/${this.resource}` : ''
 
-      return `${url}${suffifx}`
+      return `${url}${suffifx}`.replace('//', '/')
     },
 
     openBrowser({
