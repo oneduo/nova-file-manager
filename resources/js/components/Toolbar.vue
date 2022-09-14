@@ -19,8 +19,6 @@
         />
 
         <ViewToggle :current="view" :set-view="setView" />
-
-        <ToolbarSearch />
       </div>
       <div class="flex flex-row gap-x-2 justify-end w-full sm:w-auto flex-shrink-0">
         <div class="p-2 rounded-md font-semibold text-xs text-gray-400" v-if="selection?.length">
@@ -38,6 +36,10 @@
             {{ __('NovaFileManager.toolbar.clear') }}
           </button>
         </div>
+
+        <IconButton @click="openSearch">
+          <MagnifyingGlassIcon class="w-5 h-5" />
+        </IconButton>
 
         <IconButton v-if="showCreateFolder" @click="openModal('create-folder')">
           <FolderPlusIcon class="w-5 h-5" />
@@ -67,20 +69,27 @@
 </template>
 
 <script setup>
-import { CheckIcon, CloudArrowUpIcon, FolderPlusIcon } from '@heroicons/vue/24/outline'
+import {
+  CheckIcon,
+  CloudArrowUpIcon,
+  FolderPlusIcon,
+  MagnifyingGlassIcon,
+} from '@heroicons/vue/24/outline'
 import DiskSelector from '@/components/DiskSelector'
 import PaginationSelector from '@/components/Elements/PaginationSelector'
 import Breadcrumbs from '@/components/Breadcrumbs'
 import IconButton from '@/components/Elements/IconButton'
-import ToolbarSearch from '@/components/Elements/ToolbarSearch'
 import ViewToggle from '@/components/Elements/ViewToggle'
 import UploadModal from '@/components/Modals/UploadModal'
 import CreateFolderModal from '@/components/Modals/CreateFolderModal'
 import { usePermissions } from '@/hooks'
 import { computed } from 'vue'
 import { useStore } from '@/store'
+import { useSearchStore } from '@/store/search'
 
 const store = useStore()
+const searchStore = useSearchStore()
+
 const { showCreateFolder, showUploadFile } = usePermissions()
 
 // STATE
@@ -107,6 +116,7 @@ const clearSelection = () => store.clearSelection()
 const upload = files => store.upload({ files })
 const confirm = () => store.confirm()
 const createFolder = path => store.createFolder({ path })
+const openSearch = () => searchStore.open()
 
 const openUploadModal = () => {
   openModal(queue.value.length ? 'queue' : 'upload')

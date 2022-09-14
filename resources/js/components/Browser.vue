@@ -20,6 +20,8 @@
   </div>
 
   <UploadQueueModal name="queue" v-if="showUploadFile && queue.length" />
+
+  <Spotlight />
 </template>
 
 <script setup>
@@ -33,6 +35,7 @@ import { usePermissions } from '@/hooks'
 import { useStore } from '@/store'
 import BrowserDragzone from '@/components/Elements/BrowserDragzone'
 import dataTransferFiles from '@/helpers/data-transfer'
+import Spotlight from '@/components/Modals/Spotlight'
 
 const store = useStore()
 

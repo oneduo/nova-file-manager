@@ -4,6 +4,7 @@ import errors from '@/helpers/errors'
 import escape from 'lodash/escape'
 import Resumable from 'resumablejs'
 import { range } from 'lodash/util'
+import { client } from '@/helpers/client'
 
 const useStore = defineStore('nova-file-manager', {
   state: () => ({
@@ -656,13 +657,15 @@ const useStore = defineStore('nova-file-manager', {
     /**
      * GET request wrapper
      *
-     * @param {string|null} path
+     * @param {string|null|undefined} path
      * @param {Object|null|undefined} params
+     * @param {Object|null|undefined} options
      * @returns {Promise<*>}
      */
-    async get({ path, params }) {
-      return await Nova.request().get(this.url(`/nova-vendor/nova-file-manager${path ?? '/'}`), {
+    async get({ path, params, options = {} }) {
+      return await client().get(`/nova-vendor/nova-file-manager${path ?? '/'}`, {
         params,
+        ...options,
       })
     },
 
@@ -674,10 +677,7 @@ const useStore = defineStore('nova-file-manager', {
      * @returns {Promise<*>}
      */
     async post({ path, data }) {
-      return await Nova.request().post(
-        this.url(`/nova-vendor/nova-file-manager${path ?? '/'}`),
-        data
-      )
+      return await client().post(`/nova-vendor/nova-file-manager${path ?? '/'}`, data)
     },
 
     payload(params) {
