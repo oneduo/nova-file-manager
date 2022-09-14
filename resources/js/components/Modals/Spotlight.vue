@@ -16,7 +16,7 @@
         leave-from="opacity-100"
         leave-to="opacity-0"
       >
-        <div class="fixed inset-0 bg-gray-800/20 backdrop-blur-sm transition-opacity"/>
+        <div class="fixed inset-0 bg-gray-800/20 backdrop-blur-sm transition-opacity" />
       </TransitionChild>
 
       <div :class="{ dark }" class="fixed inset-0 z-10 overflow-y-auto p-4 sm:p-6 md:p-20">
@@ -120,7 +120,7 @@
               </ComboboxOptions>
 
               <div v-if="help && !isSearching" class="py-14 px-6 text-center text-sm sm:px-14">
-                <LifebuoyIcon class="mx-auto h-6 w-6 text-gray-400" aria-hidden="true"/>
+                <LifebuoyIcon class="mx-auto h-6 w-6 text-gray-400" aria-hidden="true" />
                 <p class="mt-4 font-semibold text-gray-900">
                   {{ __('NovaFileManager.spotlight.helpTitle') }}
                 </p>
@@ -133,7 +133,7 @@
                 v-if="query?.length && !isSearching && !hasResults"
                 class="py-14 px-6 text-center text-sm sm:px-14"
               >
-                <ExclamationTriangleIcon class="mx-auto h-6 w-6 text-gray-400" aria-hidden="true"/>
+                <ExclamationTriangleIcon class="mx-auto h-6 w-6 text-gray-400" aria-hidden="true" />
                 <p class="mt-4 font-semibold text-gray-900">
                   {{ __('NovaFileManager.spotlight.noResults') }}
                 </p>
@@ -154,7 +154,7 @@
                         ? 'border-blue-500 text-blue-500'
                         : 'border-gray-400 dark:border-gray-600 text-gray-500 dark:text-gray-500',
                     ]"
-                  >{{ tip.key }}</kbd
+                    >{{ tip.key }}</kbd
                   >
                   <span>{{ tip.label }}</span>
                 </template>
@@ -168,8 +168,8 @@
 </template>
 
 <script setup>
-import {computed, onMounted} from 'vue'
-import {MagnifyingGlassIcon} from '@heroicons/vue/20/solid'
+import { computed, onMounted } from 'vue'
+import { MagnifyingGlassIcon } from '@heroicons/vue/20/solid'
 import {
   DocumentIcon,
   ExclamationTriangleIcon,
@@ -186,8 +186,8 @@ import {
   TransitionChild,
   TransitionRoot,
 } from '@headlessui/vue'
-import {useSearchStore} from '@/store/search'
-import {useStore} from '@/store'
+import { useSearchStore } from '@/store/search'
+import { useStore } from '@/store'
 import Spinner from '@/components/Elements/Spinner'
 
 const searchStore = useSearchStore()
@@ -206,7 +206,6 @@ onMounted(() => {
 const dark = computed(() => store.dark)
 const folders = computed(() => searchStore.folders)
 const files = computed(() => searchStore.files)
-const search = computed(() => searchStore.search)
 const query = computed(() => searchStore.query)
 const isSearching = computed(() => searchStore.isLoading)
 const isOpen = computed(() => searchStore.isOpen)
@@ -235,9 +234,9 @@ const tips = computed(() => [
 
 // ACTIONS
 const close = () => searchStore.close()
-const onSelect = item => searchStore.select({item})
+const onSelect = item => searchStore.select({ item })
 
 const onSearch = event => {
-  searchStore.setSearch({search: event.target.value})
+  searchStore.setSearch({ search: event.target.value })
 }
 </script>

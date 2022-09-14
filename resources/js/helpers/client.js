@@ -19,7 +19,7 @@ export function client() {
 
       const {
         status,
-        data: {redirect},
+        data: { redirect },
       } = response
 
       // Show the user a 500 error

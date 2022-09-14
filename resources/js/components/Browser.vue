@@ -21,7 +21,7 @@
 
   <UploadQueueModal name="queue" v-if="showUploadFile && queue.length" />
 
-  <Spotlight/>
+  <Spotlight />
 </template>
 
 <script setup>
