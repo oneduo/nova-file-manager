@@ -120,8 +120,8 @@
               </ComboboxOptions>
 
               <div v-if="help && !isSearching" class="py-14 px-6 text-center text-sm sm:px-14">
-                <LifebuoyIcon class="mx-auto h-6 w-6 text-gray-400" aria-hidden="true" />
-                <p class="mt-4 font-semibold text-gray-900">
+                <LifebuoyIcon class="mx-auto h-6 w-6" aria-hidden="true" />
+                <p class="mt-4 font-semibold text-gray-900 dark:text-gray-400">
                   {{ __('NovaFileManager.spotlight.helpTitle') }}
                 </p>
                 <p class="mt-2 text-gray-500">
@@ -133,8 +133,8 @@
                 v-if="query?.length && !isSearching && !hasResults"
                 class="py-14 px-6 text-center text-sm sm:px-14"
               >
-                <ExclamationTriangleIcon class="mx-auto h-6 w-6 text-gray-400" aria-hidden="true" />
-                <p class="mt-4 font-semibold text-gray-900">
+                <ExclamationTriangleIcon class="mx-auto h-6 w-6" aria-hidden="true" />
+                <p class="mt-4 font-semibold text-gray-900 dark:text-gray-400">
                   {{ __('NovaFileManager.spotlight.noResults') }}
                 </p>
                 <p class="mt-2 text-gray-500">
