@@ -35,7 +35,7 @@ import { ChevronRightIcon, HomeIcon } from '@heroicons/vue/24/outline'
 defineProps({
   items: {
     type: Array,
-    default: [],
+    default: () => [],
   },
   setPath: {
     type: Function,

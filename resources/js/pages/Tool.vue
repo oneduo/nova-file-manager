@@ -33,5 +33,7 @@ onBeforeMount(() => {
     singleDisk: props.config.singleDisk,
     permissions: props.config.permissions,
   })
+
+  store.loadFromQueryString()
 })
 </script>

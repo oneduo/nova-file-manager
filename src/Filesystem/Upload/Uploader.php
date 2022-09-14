@@ -56,7 +56,7 @@ class Uploader implements UploaderContract
         }
 
         $path = $request->manager()->filesystem()->putFileAs(
-            path: $request->path,
+            path: dirname($request->filePath()),
             file: $file,
             name: $file->getClientOriginalName(),
         );

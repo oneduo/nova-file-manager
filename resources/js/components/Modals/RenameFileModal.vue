@@ -52,7 +52,6 @@ import { onMounted, ref } from 'vue'
 import { useErrors } from '@/hooks'
 import Button from '@/components/Elements/Button'
 import InputModal from '@/components/Modals/InputModal'
-import { useStore } from '@/store'
 
 const props = defineProps({
   name: {
@@ -69,7 +68,6 @@ const props = defineProps({
   },
 })
 
-const store = useStore()
 const { hasErrors, errorsList } = useErrors('renameFile')
 
 // STATE

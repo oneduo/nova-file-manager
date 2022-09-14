@@ -23,12 +23,9 @@
 
 <script setup>
 import { computed } from 'vue'
-import { useStore } from 'vuex'
 import { ExclamationCircleIcon } from '@heroicons/vue/24/outline'
 import ConfirmModal from '@/components/Modals/ConfirmModal'
 import Button from '@/components/Elements/Button'
-
-const store = useStore()
 
 defineProps({
   isOpen: {

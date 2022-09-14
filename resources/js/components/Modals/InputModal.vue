@@ -1,5 +1,5 @@
 <template>
-  <BaseModal as="template" class="nova-file-manager" :name="name" v-slot="{ close, dark }">
+  <BaseModal as="template" class="nova-file-manager" :name="name" v-slot="{ close }">
     <DialogPanel
       class="relative bg-gray-200 dark:bg-gray-900 rounded-lg text-left overflow-hidden shadow-xl transform transition-all sm:my-8 sm:max-w-lg w-full"
     >
@@ -34,7 +34,7 @@
 import { DialogPanel, DialogTitle } from '@headlessui/vue'
 import BaseModal from '@/components/Modals/BaseModal'
 
-const props = defineProps({
+defineProps({
   name: {
     type: String,
     required: true,

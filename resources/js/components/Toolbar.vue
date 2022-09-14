@@ -43,7 +43,7 @@
           <FolderPlusIcon class="w-5 h-5" />
         </IconButton>
 
-        <IconButton v-if="showUploadFile" variant="primary" @click="openModal('upload')">
+        <IconButton v-if="showUploadFile" variant="primary" @click="openUploadModal">
           <CloudArrowUpIcon class="h-5 w-5" />
         </IconButton>
 
@@ -107,4 +107,8 @@ const clearSelection = () => store.clearSelection()
 const upload = files => store.upload({ files })
 const confirm = () => store.confirm()
 const createFolder = path => store.createFolder({ path })
+
+const openUploadModal = () => {
+  openModal(queue.value.length ? 'queue' : 'upload')
+}
 </script>

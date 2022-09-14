@@ -23,10 +23,10 @@ import File from '@/components/Cards/File'
 import { entity } from '@/transformers/entityTransformer'
 import { useStore } from '@/store'
 
-const props = defineProps({
+defineProps({
   files: {
     type: Array,
-    default: [],
+    default: () => [],
   },
 })
 

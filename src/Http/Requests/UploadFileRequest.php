@@ -9,6 +9,7 @@ use BBSLab\NovaFileManager\Rules\DiskExistsRule;
 use BBSLab\NovaFileManager\Rules\ExistsInFilesystem;
 use BBSLab\NovaFileManager\Rules\FileMissingInFilesystem;
 use Illuminate\Http\UploadedFile;
+use Illuminate\Support\Str;
 
 /**
  * @property-read string|null $disk
@@ -19,7 +20,26 @@ class UploadFileRequest extends BaseRequest
 {
     public function authorize(): bool
     {
-        return $this->canUploadFile();
+        if (!$this->canUploadFile()) {
+            return false;
+        }
+
+        $path = ltrim(dirname($this->input('resumableFilename')), '/.');
+
+        if (!empty($path) && !$this->canCreateFolder()) {
+            return false;
+        }
+
+        return true;
+    }
+
+    public function authorizationActionAttribute(string $class = null): string
+    {
+        if (!$this->canUploadFile()) {
+            return parent::authorizationActionAttribute();
+        }
+
+        return parent::authorizationActionAttribute(CreateFolderRequest::class);
     }
 
     public function rules(): array
@@ -49,5 +69,15 @@ class UploadFileRequest extends BaseRequest
             (new GetID3())->analyze($file->path()),
             $saving,
         );
+    }
+
+    public function filePath(): string
+    {
+        $path = implode('/', array_filter([
+            Str::finish($this->path, '/'),
+            ltrim($this->input('resumableFilename'), '/'),
+        ]));
+
+        return str_replace('//', '/', $path);
     }
 }

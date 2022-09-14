@@ -242,7 +242,7 @@ const useStore = defineStore('nova-file-manager', {
         return
       }
 
-      this.modals = this.modals.filter(_name => name !== name)
+      this.modals = this.modals.filter(_name => _name !== name)
 
       this.fixPortal()
     },
@@ -355,8 +355,6 @@ const useStore = defineStore('nova-file-manager', {
 
       keys.forEach(key => {
         this[key] = null
-
-        this.setQueryString({ parameters: { [key]: null } })
       })
     },
 
@@ -371,7 +369,7 @@ const useStore = defineStore('nova-file-manager', {
 
       this.path = path
 
-      this.setQueryString({ parameters: { path } })
+      this.setQueryString({ parameters: { page: null, search: null, path } })
     },
 
     /**
@@ -387,7 +385,7 @@ const useStore = defineStore('nova-file-manager', {
 
       this.setQueryString({ parameters: { disk } })
 
-      this.saveToLocalStorage({ values: { disk } })
+      this.saveToLocalStorage({ values: { disk, page: null, search: null, path: null } })
     },
 
     /**
@@ -459,7 +457,6 @@ const useStore = defineStore('nova-file-manager', {
           page: this.page,
           perPage: this.perPage,
           search: this.search,
-          disk: this.disk,
         }),
       })
 
@@ -495,7 +492,6 @@ const useStore = defineStore('nova-file-manager', {
           path: '/folders/create',
           data: this.payload({
             path: escape(`${this.path ?? ''}/${path}`),
-            disk: this.disk,
           }),
         })
 
@@ -560,7 +556,7 @@ const useStore = defineStore('nova-file-manager', {
      * @param {File[]} files
      * @returns {Promise<void>}
      */
-    async upload({ files }) {
+    upload({ files }) {
       this.isUploading = true
 
       const uploader = new Resumable({
@@ -568,10 +564,11 @@ const useStore = defineStore('nova-file-manager', {
         simultaneousUploads: 1,
         testChunks: false,
         throttleProgressCallbacks: 1,
-        target: '/nova-vendor/nova-file-manager/files/upload',
+        target: this.url('/nova-vendor/nova-file-manager/files/upload'),
         query: this.payload({
           path: this.path ?? '/',
         }),
+        minFileSize: 0,
         headers: {
           Accept: 'application/json',
           'X-CSRF-TOKEN': document.head.querySelector('meta[name="csrf-token"]').content,
@@ -691,12 +688,21 @@ const useStore = defineStore('nova-file-manager', {
         ...(this.resourceId && {
           resourceId: this.resourceId,
         }),
+        ...(!this.singleDisk && {
+          disk: this.disk,
+        }),
         fieldMode: this.isField,
-        ...(this.isFieldMode &&
+        ...(this.isField &&
           this.flexibleGroup?.length && {
-            flexible: this.flexibleGroup.join('.'),
-          }),
+          flexible: this.flexibleGroup.join('.'),
+        }),
       }
+    },
+
+    url(url) {
+      const suffifx = this.isField ? `/${this.resource}` : ''
+
+      return `${url}${suffifx}`.replace('//', '/')
     },
 
     openBrowser({

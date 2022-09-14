@@ -21,7 +21,7 @@ import { defineProps } from 'vue'
 defineProps({
   folders: {
     type: Array,
-    default: [],
+    default: () => [],
   },
 })
 </script>

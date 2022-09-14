@@ -1,5 +1,5 @@
 <template>
-  <BaseModal as="template" class="nova-file-manager" :name="name" v-slot="{ close, dark }">
+  <BaseModal as="template" class="nova-file-manager" :name="name" v-slot="{ close }">
     <DialogPanel
       class="relative bg-gray-100 dark:bg-gray-900 rounded-lg px-4 pt-5 pb-4 text-left overflow-hidden shadow-xl transform transition-all sm:my-8 sm:max-w-lg sm:w-full sm:p-6"
     >
@@ -55,7 +55,6 @@ import { computed } from 'vue'
 import { DialogPanel, DialogTitle } from '@headlessui/vue'
 import { useErrors } from '@/hooks'
 import BaseModal from '@/components/Modals/BaseModal'
-import { useStore } from '@/store'
 
 const props = defineProps({
   name: {
@@ -83,7 +82,6 @@ const props = defineProps({
   },
 })
 
-const store = useStore()
 const { hasErrors, errorsList } = useErrors(props.attribute)
 
 // STATE

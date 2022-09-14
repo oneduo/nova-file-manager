@@ -85,14 +85,7 @@ const store = useStore()
 
 const pagination = computed(() => store.pagination)
 
-const {
-  current_page: currentPage,
-  last_page: lastPage,
-  from,
-  to,
-  total,
-  links,
-} = pagination.value
+const { current_page: currentPage, last_page: lastPage, from, to, total, links } = pagination.value
 
 const setPage = page => store.setPage({ page })
 </script>

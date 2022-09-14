@@ -61,7 +61,7 @@ defineProps({
   },
   options: {
     type: Array,
-    default: [],
+    default: () => [],
   },
   onClick: {
     type: Function,

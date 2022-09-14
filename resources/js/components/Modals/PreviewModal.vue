@@ -234,7 +234,7 @@ const isOpen = computed(() => !!preview.value)
 
 // ACTIONS
 const openModal = name => store.openModal({ name })
-const onRename = () => store.renameFile({ id: props.file.id, from: props.file.path, to: value })
+const onRename = value => store.renameFile({ id: props.file.id, from: props.file.path, to: value })
 const onDelete = () => store.deleteFile({ id: props.file.id, path: props.file.path })
 
 const closePreview = () => {

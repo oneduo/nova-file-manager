@@ -11,7 +11,7 @@ defineProps({
   },
   disks: {
     type: Array,
-    default: [],
+    default: () => [],
   },
   setDisk: {
     type: Function,

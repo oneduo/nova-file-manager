@@ -19,7 +19,7 @@
     </main>
   </div>
 
-  <UploadQueueModal name="upload-queue" v-if="showUploadFile && queue.length"/>
+  <UploadQueueModal name="queue" v-if="showUploadFile && queue.length" />
 
   <Spotlight/>
 </template>
@@ -34,6 +34,7 @@ import UploadQueueModal from '@/components/Modals/UploadQueueModal'
 import { usePermissions } from '@/hooks'
 import { useStore } from '@/store'
 import BrowserDragzone from '@/components/Elements/BrowserDragzone'
+import dataTransferFiles from '@/helpers/data-transfer'
 import Spotlight from '@/components/Modals/Spotlight'
 
 const store = useStore()
@@ -45,12 +46,9 @@ const filled = computed(() => !!files.value?.length || !!folders.value?.length)
 const pagination = computed(() => store.pagination)
 const view = computed(() => store.view)
 const isFetchingData = computed(() => store.isFetchingData)
-const isFetchingDisks = computed(() => store.isFetchingDisks)
 const queue = computed(() => store.queue)
 
 // ACTIONS
-const openModal = name => store.openModal({ name })
-
 const { showUploadFile } = usePermissions()
 
 onMounted(() => {
@@ -82,20 +80,20 @@ const dragLeave = () => {
   dragActive.value = false
 }
 
-const dragDrop = event => {
+const dragDrop = async event => {
   if (!showUploadFile.value) {
     return
   }
 
-  dragFiles.value = event.dataTransfer.files
+  dragFiles.value = await dataTransferFiles(event.dataTransfer.items)
 }
 
-const submit = () => {
+const submit = async () => {
   if (!showUploadFile.value) {
     return
   }
 
-  if (!dragFiles.value.length) {
+  if (!dragFiles.value?.length) {
     return
   }
 

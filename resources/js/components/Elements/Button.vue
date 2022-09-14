@@ -16,20 +16,20 @@
 import { computed } from 'vue'
 
 const props = defineProps({
-    variant: {
-        type: String,
-        default: 'secondary',
-        validator: value => Object.keys(variants).includes(value),
-    },
-    type: {
-        type: String,
-        default: 'button',
-        validator: value => ['button', 'submit', 'reset'].includes(value),
-    },
-    href: {
-        type: String,
-        default: null,
-    },
+  variant: {
+    type: String,
+    default: 'secondary',
+    validator: value => Object.keys(variants).includes(value),
+  },
+  type: {
+    type: String,
+    default: 'button',
+    validator: value => ['button', 'submit', 'reset'].includes(value),
+  },
+  href: {
+    type: String,
+    default: null,
+  },
 })
 
 const style = computed(() => variants[props.variant] || variants.primary)
