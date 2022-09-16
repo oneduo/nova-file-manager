@@ -29,6 +29,7 @@ class ToolController extends Controller
                 [
                     'upload' => config('nova-file-manager.upload'),
                     'outdated' => $this->updateChecker(),
+                    'tour' => config('nova-file-manager.tour.enabled')
                 ],
                 $tool?->options(),
             ),
