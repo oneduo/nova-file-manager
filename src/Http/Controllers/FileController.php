@@ -94,7 +94,6 @@ class FileController extends Controller
 
         $result = $manager->unzip($request->path);
 
-
         if (!$result) {
             throw ValidationException::withMessages([
                 'path' => [__('nova-file-manager::errors.file.unzip')],

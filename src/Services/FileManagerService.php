@@ -114,7 +114,7 @@ class FileManagerService implements FileManagerContract, ResolvesUrlContract
         $this->applySearchCallback();
 
         return collect($this->filesystem->files($this->path))
-            ->filter(fn(string $file) => $this->applyFilterCallbacks($file));
+            ->filter(fn (string $file) => $this->applyFilterCallbacks($file));
     }
 
     /**
@@ -127,9 +127,9 @@ class FileManagerService implements FileManagerContract, ResolvesUrlContract
         $this->omitHiddenFilesAndDirectories();
 
         return collect($this->filesystem->directories($this->path))
-            ->filter(fn(string $folder) => $this->applyFilterCallbacks($folder))
+            ->filter(fn (string $folder) => $this->applyFilterCallbacks($folder))
             // we map the folder to an array with an id, path and name
-            ->map(fn(string $path) => [
+            ->map(fn (string $path) => [
                 'id' => sha1($path),
                 'path' => str($path)->start(DIRECTORY_SEPARATOR),
                 'name' => pathinfo($path, PATHINFO_BASENAME),
@@ -146,8 +146,8 @@ class FileManagerService implements FileManagerContract, ResolvesUrlContract
     public function omitHiddenFilesAndDirectories(): void
     {
         $this->filterCallbacks[] = $this->shouldShowHiddenFiles
-            ? static fn() => true
-            : static fn(string $path) => !str($path)->startsWith('.');
+            ? static fn () => true
+            : static fn (string $path) => !str($path)->startsWith('.');
     }
 
     /**
@@ -168,7 +168,7 @@ class FileManagerService implements FileManagerContract, ResolvesUrlContract
             }
 
             // join words with .* expression
-            $words = implode('.*', array_map(fn(string $word) => preg_quote($word, '/'), $words));
+            $words = implode('.*', array_map(fn (string $word) => preg_quote($word, '/'), $words));
 
             return preg_match("/(.*{$words}.*)/i", $path);
         };
@@ -204,13 +204,13 @@ class FileManagerService implements FileManagerContract, ResolvesUrlContract
         str($this->path)
             ->ltrim(DIRECTORY_SEPARATOR)
             ->explode(DIRECTORY_SEPARATOR)
-            ->filter(fn(string $item) => !blank($item))
+            ->filter(fn (string $item) => !blank($item))
             ->each(function (string $item) use ($paths) {
                 return $paths->push($paths->last().DIRECTORY_SEPARATOR.$item);
             });
 
         // we map the folders to match the breadcrumbs format
-        return $paths->map(fn(string $item) => [
+        return $paths->map(fn (string $item) => [
             'id' => sha1($item),
             'path' => $item,
             'name' => str($item)->afterLast('/'),
@@ -351,7 +351,7 @@ class FileManagerService implements FileManagerContract, ResolvesUrlContract
      */
     public function mapIntoEntity(): Closure
     {
-        return fn(string $path) => $this->makeEntity($path, $this->disk);
+        return fn (string $path) => $this->makeEntity($path, $this->disk);
     }
 
     /**
@@ -402,7 +402,8 @@ class FileManagerService implements FileManagerContract, ResolvesUrlContract
         int $page = 1,
         int $perPage = 15,
         ?string $search = null
-    ): static {
+    ): static
+    {
         return new self($disk, $path, $page, $perPage, $search);
     }
 }
