@@ -22,6 +22,10 @@
   <UploadQueueModal name="queue" v-if="showUploadFile && queue.length" />
 
   <Spotlight />
+
+  <div class="nova-file-manager" :class="{ dark }" id="tour"></div>
+
+  <Tour v-if="showTour" />
 </template>
 
 <script setup>
@@ -36,6 +40,7 @@ import { useStore } from '@/store'
 import BrowserDragzone from '@/components/Elements/BrowserDragzone'
 import dataTransferFiles from '@/helpers/data-transfer'
 import Spotlight from '@/components/Modals/Spotlight'
+import Tour from '@/components/Elements/Tour'
 
 const store = useStore()
 
@@ -47,10 +52,15 @@ const pagination = computed(() => store.pagination)
 const view = computed(() => store.view)
 const isFetchingData = computed(() => store.isFetchingData)
 const queue = computed(() => store.queue)
+const dragActive = ref(false)
+const dragFiles = ref([])
+const showTour = ref(false)
+const dark = computed(() => store.dark)
 
 // ACTIONS
 const { showUploadFile } = usePermissions()
 
+// HOOKS
 onMounted(() => {
   store.init()
 
@@ -59,10 +69,11 @@ onMounted(() => {
   }
 
   store.data()
-})
 
-const dragActive = ref(false)
-const dragFiles = ref([])
+  setTimeout(() => {
+    showTour.value = true
+  }, 1000)
+})
 
 const dragEnter = () => {
   if (!showUploadFile.value) {

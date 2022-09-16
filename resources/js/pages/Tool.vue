@@ -3,7 +3,7 @@
     <div :class="{ dark }">
       <Head :title="__('NovaFileManager.title')" />
 
-      <Heading class="mb-6">{{ __('NovaFileManager.title') }}</Heading>
+      <Heading class="mb-6" data-tour="nfm-tool-title">{{ __('NovaFileManager.title') }}</Heading>
 
       <UpdateChecker v-if="config.outdated" />
 

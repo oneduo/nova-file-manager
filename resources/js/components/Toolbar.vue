@@ -10,15 +10,17 @@
           :disks="disks"
           :set-disk="setDisk"
           :is-loading="isFetchingDisks"
+          data-tour="nfm-disk-selector"
         />
 
         <PaginationSelector
           :per-page="Number(perPage)"
           :per-page-options="perPageOptions"
           :set-per-page="setPerPage"
+          data-tour="nfm-pagination-selector"
         />
 
-        <ViewToggle :current="view" :set-view="setView" />
+        <ViewToggle :current="view" :set-view="setView" data-tour="nfm-view-toggle" />
       </div>
       <div class="flex flex-row gap-x-2 justify-end w-full sm:w-auto flex-shrink-0">
         <div class="p-2 rounded-md font-semibold text-xs text-gray-400" v-if="selection?.length">
@@ -37,15 +39,24 @@
           </button>
         </div>
 
-        <IconButton @click="openSearch">
+        <IconButton @click="openSearch" data-tour="nfm-spotlight-search-button">
           <MagnifyingGlassIcon class="w-5 h-5" />
         </IconButton>
 
-        <IconButton v-if="showCreateFolder" @click="openModal('create-folder')">
+        <IconButton
+          v-if="showCreateFolder"
+          @click="openModal('create-folder')"
+          data-tour="nfm-create-folder-button"
+        >
           <FolderPlusIcon class="w-5 h-5" />
         </IconButton>
 
-        <IconButton v-if="showUploadFile" variant="primary" @click="openUploadModal">
+        <IconButton
+          v-if="showUploadFile"
+          variant="primary"
+          @click="openUploadModal"
+          data-tour="nfm-upload-file-button"
+        >
           <CloudArrowUpIcon class="h-5 w-5" />
         </IconButton>
 
@@ -54,6 +65,7 @@
           variant="success"
           @click="confirm"
           :disabled="!!limit && selection?.length > limit"
+          data-tour="nfm-confirm-selection-button"
         >
           <CheckIcon class="h-5 w-5" />
         </IconButton>

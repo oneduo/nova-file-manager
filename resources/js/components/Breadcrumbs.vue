@@ -2,6 +2,7 @@
   <nav
     aria-label="Breadcrumb"
     class="flex dark:bg-gray-400/5 bg-gray-800/5 rounded-md p-2 justify-between items-center"
+    data-tour="nfm-breadcrumbs"
   >
     <ol class="flex items-center space-x-2 flex-wrap gap-y-0.5" role="list">
       <li>

@@ -1,5 +1,5 @@
 <template>
-  <div class="relative bg-amber-600/10 rounded-md mb-4 text-xs">
+  <div class="relative bg-amber-600/10 rounded-md mb-4 text-xs" id="nfm-update-checker">
     <div class="mx-auto max-w-7xl py-3 px-3 sm:px-6 lg:px-8">
       <div class="pr-16 sm:px-16 sm:text-center">
         <p class="font-medium text-amber-700 dark:text-amber-500">
