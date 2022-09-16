@@ -53,7 +53,6 @@ const queue = computed(() => store.queue)
 const dragActive = ref(false)
 const dragFiles = ref([])
 const showTour = ref(false)
-const dark = computed(() => store.dark)
 
 // ACTIONS
 const { showUploadFile } = usePermissions()
