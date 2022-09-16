@@ -119,6 +119,13 @@
                     Sorry, your browser doesn't support embedded videos.
                   </video>
 
+                  <embed
+                    v-if="file?.type === 'pdf'"
+                    :src="file?.url"
+                    type="application/pdf"
+                    class="w-full max-w-screen h-[80vh]"
+                  />
+
                   <DocumentIcon v-else class="h-40 w-40 text-gray-500 m-12" />
                 </div>
 
