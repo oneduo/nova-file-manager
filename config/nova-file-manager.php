@@ -141,6 +141,21 @@ return [
 
     /*
     |--------------------------------------------------------------------------
+    | Onboarding tour
+    |--------------------------------------------------------------------------
+    |
+    | You can enable a handy onboarding tour to guide you or your users through
+    | the tool. You can disable it if you don't want to show it.
+    |
+    | default: true
+    |
+    */
+    'tour' => [
+        'enabled' => env('NOVA_FILE_MANAGER_TOUR_ENABLED', true),
+    ],
+
+    /*
+    |--------------------------------------------------------------------------
     | Hot module reload
     |--------------------------------------------------------------------------
     |
