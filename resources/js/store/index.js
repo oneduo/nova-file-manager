@@ -717,8 +717,8 @@ const useStore = defineStore('nova-file-manager', {
         fieldMode: this.isField,
         ...(this.isField &&
           this.flexibleGroup?.length && {
-            flexible: this.flexibleGroup.join('.'),
-          }),
+          flexible: this.flexibleGroup.join('.'),
+        }),
       }
     },
 
