@@ -8,6 +8,7 @@ return [
         'edit' => 'File edited successfully!',
         'rename' => 'File renamed successfully!',
         'delete' => 'File deleted successfully!',
+        'unzip' => 'File unzipped successfully!',
     ],
 
     'folder' => [

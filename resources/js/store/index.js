@@ -62,6 +62,7 @@ const useStore = defineStore('nova-file-manager', {
         rename: true,
         edit: true,
         delete: true,
+        unzip: true,
       },
     },
 
@@ -655,6 +656,27 @@ const useStore = defineStore('nova-file-manager', {
       }
     },
 
+    async unzipFile({ path }) {
+      try {
+        const response = await this.post({
+          path: '/files/unzip',
+          data: this.payload({
+            path: path,
+          }),
+        })
+
+        Nova.success(response.data.message)
+
+        this.preview = null
+
+        this.clearSelection()
+      } catch (error) {
+        this.setErrors({
+          unzipFile: errors(error.response?.data?.errors),
+        })
+      }
+    },
+
     /**
      * GET request wrapper
      *
@@ -695,8 +717,8 @@ const useStore = defineStore('nova-file-manager', {
         fieldMode: this.isField,
         ...(this.isField &&
           this.flexibleGroup?.length && {
-          flexible: this.flexibleGroup.join('.'),
-        }),
+            flexible: this.flexibleGroup.join('.'),
+          }),
       }
     },
 

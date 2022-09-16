@@ -36,6 +36,8 @@ interface FileManagerContract
 
     public function files(): Collection;
 
+    public function filesystem(): Filesystem;
+
     public function forPage(int $page, int $perPage): self;
 
     public function makeEntity(string $path, string $disk): Entity;
@@ -56,5 +58,5 @@ interface FileManagerContract
 
     public function showHiddenFiles(bool $show = true): self;
 
-    public function filesystem(): Filesystem;
+    public function unzip(string $path): bool;
 }

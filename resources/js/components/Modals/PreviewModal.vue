@@ -53,6 +53,15 @@
                   </IconButton>
 
                   <IconButton
+                    v-if="!readOnly && showUnzipFile && file?.type === 'zip'"
+                    variant="secondary"
+                    @click="onUnzip(file.path)"
+                    :title="__('NovaFileManager.actions.unzip')"
+                  >
+                    <ArchiveBoxIcon class="w-5 h-5" />
+                  </IconButton>
+
+                  <IconButton
                     @click="copy(file)"
                     variant="secondary"
                     :title="__('NovaFileManager.actions.copy')"
@@ -194,6 +203,7 @@
 import { computed, ref } from 'vue'
 import { Dialog, DialogPanel, TransitionChild, TransitionRoot } from '@headlessui/vue'
 import {
+  ArchiveBoxIcon,
   ClipboardDocumentIcon,
   CloudArrowDownIcon,
   DocumentIcon,
@@ -224,7 +234,7 @@ const props = defineProps({
 
 const store = useStore()
 const { copyToClipboard } = useClipboard()
-const { showRenameFile, showDeleteFile, showCropImage } = usePermissions()
+const { showRenameFile, showDeleteFile, showCropImage, showUnzipFile } = usePermissions()
 
 // STATE
 const buttonRef = ref(null)
@@ -236,6 +246,7 @@ const isOpen = computed(() => !!preview.value)
 const openModal = name => store.openModal({ name })
 const onRename = value => store.renameFile({ id: props.file.id, from: props.file.path, to: value })
 const onDelete = () => store.deleteFile({ id: props.file.id, path: props.file.path })
+const onUnzip = path => store.unzipFile({ path })
 
 const closePreview = () => {
   store.preview = null

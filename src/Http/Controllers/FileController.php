@@ -7,8 +7,10 @@ namespace BBSLab\NovaFileManager\Http\Controllers;
 use BBSLab\NovaFileManager\Contracts\Filesystem\Upload\Uploader;
 use BBSLab\NovaFileManager\Events\FileDeleted;
 use BBSLab\NovaFileManager\Events\FileRenamed;
+use BBSLab\NovaFileManager\Events\FileUnzipped;
 use BBSLab\NovaFileManager\Http\Requests\DeleteFileRequest;
 use BBSLab\NovaFileManager\Http\Requests\RenameFileRequest;
+use BBSLab\NovaFileManager\Http\Requests\UnzipFileRequest;
 use BBSLab\NovaFileManager\Http\Requests\UploadFileRequest;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Routing\Controller;
@@ -77,6 +79,32 @@ class FileController extends Controller
 
         return response()->json([
             'message' => __('nova-file-manager::messages.file.delete'),
+        ]);
+    }
+
+    /**
+     * Unzip an archive
+     *
+     * @param  \BBSLab\NovaFileManager\Http\Requests\UnzipFileRequest  $request
+     * @return \Illuminate\Http\JsonResponse
+     */
+    public function unzip(UnzipFileRequest $request): JsonResponse
+    {
+        $manager = $request->manager();
+
+        $result = $manager->unzip($request->path);
+
+
+        if (!$result) {
+            throw ValidationException::withMessages([
+                'path' => [__('nova-file-manager::errors.file.unzip')],
+            ]);
+        }
+
+        event(new FileUnzipped($manager->disk, $request->path));
+
+        return response()->json([
+            'message' => __('nova-file-manager::messages.file.unzip'),
         ]);
     }
 }

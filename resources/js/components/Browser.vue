@@ -126,6 +126,7 @@ const unsubscribe = store.$onAction(({ name, store, after }) => {
         'upload',
         'renameFile',
         'deleteFile',
+        'unzipFile',
         'createFolder',
         'renameFolder',
         'deleteFolder',

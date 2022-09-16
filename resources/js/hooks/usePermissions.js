@@ -11,6 +11,7 @@ export function usePermissions() {
   const showRenameFile = computed(() => store.permissions.file.rename)
   const showDeleteFile = computed(() => store.permissions.file.delete)
   const showCropImage = computed(() => store.permissions.file.edit)
+  const showUnzipFile = computed(() => store.permissions.file.unzip)
 
   return {
     showCreateFolder,
@@ -20,5 +21,6 @@ export function usePermissions() {
     showRenameFile,
     showDeleteFile,
     showCropImage,
+    showUnzipFile,
   }
 }

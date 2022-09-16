@@ -228,7 +228,16 @@ abstract class Entity implements Arrayable, EntityContract
      */
     public function type(): string
     {
-        return (string) str($this->mime())->before('/');
+        $mime = str($this->mime());
+
+        return match ((string) $mime->before('/')) {
+            'image' => 'image',
+            'video' => 'video',
+            'audio' => 'audio',
+            'text' => 'text',
+            'application' => (string) $mime->afterLast('/'),
+            default => 'unknown',
+        };
     }
 
     abstract public function meta(): array;

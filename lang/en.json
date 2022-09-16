@@ -10,6 +10,7 @@
   "NovaFileManager.actions.rename": "Rename",
   "NovaFileManager.actions.submit": "Submit",
   "NovaFileManager.actions.upload": "Upload",
+  "NovaFileManager.actions.unzip": "Unzip",
   "NovaFileManager.createFolderTitle": "Create a new folder",
   "NovaFileManager.deleteFileContent": "This will will delete the file from the storage. This action cannot be undone.",
   "NovaFileManager.deleteFileTitle": "Are you sure you want to delete this file?",
