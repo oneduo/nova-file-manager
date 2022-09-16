@@ -32,6 +32,7 @@ onBeforeMount(() => {
   store.prepareTool({
     singleDisk: props.config.singleDisk,
     permissions: props.config.permissions,
+    tour: props.config.tour,
   })
 
   store.loadFromQueryString()

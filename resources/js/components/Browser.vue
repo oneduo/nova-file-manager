@@ -23,8 +23,6 @@
 
   <Spotlight />
 
-  <div class="nova-file-manager" :class="{ dark }" id="tour"></div>
-
   <Tour v-if="showTour" />
 </template>
 
@@ -71,7 +69,7 @@ onMounted(() => {
   store.data()
 
   setTimeout(() => {
-    showTour.value = true
+    showTour.value = store.tour
   }, 1000)
 })
 

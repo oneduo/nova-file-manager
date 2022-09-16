@@ -40,6 +40,7 @@ const useStore = defineStore('nova-file-manager', {
 
     // common
     dark: undefined,
+    tour: false,
 
     // field specific state
     resource: null,
@@ -762,7 +763,7 @@ const useStore = defineStore('nova-file-manager', {
       this.closeBrowser()
     },
 
-    prepareTool({ singleDisk, permissions }) {
+    prepareTool({ singleDisk, permissions, tour }) {
       this.init()
       this.clearSelection()
 
@@ -771,6 +772,7 @@ const useStore = defineStore('nova-file-manager', {
       this.multiple = true
       this.singleDisk = singleDisk
       this.permissions = permissions
+      this.tour = tour
     },
   },
   getters: {
