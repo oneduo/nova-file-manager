@@ -10,6 +10,8 @@
 
 /*! regenerator-runtime -- Copyright (c) 2014-present, Facebook, Inc. -- license (MIT): https://github.com/facebook/regenerator/blob/main/LICENSE */
 
+/*! shepherd.js 10.0.1 */
+
 /**!
  * Sortable 1.14.0
  * @author	RubaXa   <trash@rubaxa.org>
