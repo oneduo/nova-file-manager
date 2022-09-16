@@ -18,5 +18,5 @@ return [
 
     'authorization' => [
         'unauthorized' => 'This action [:action] is unauthorized.',
-    ]
+    ],
 ];

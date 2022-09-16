@@ -353,7 +353,8 @@ class FileManagerService implements FileManagerContract, ResolvesUrlContract
         int $page = 1,
         int $perPage = 15,
         ?string $search = null
-    ): static {
+    ): static
+    {
         return new self($disk, $path, $page, $perPage, $search);
     }
 
