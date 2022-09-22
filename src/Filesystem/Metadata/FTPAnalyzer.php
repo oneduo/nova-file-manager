@@ -2,9 +2,9 @@
 
 declare(strict_types=1);
 
-namespace BBSLab\NovaFileManager\Filesystem\Metadata;
+namespace Oneduo\NovaFileManager\Filesystem\Metadata;
 
-use BBSLab\NovaFileManager\Filesystem\Support\GetID3;
+use Oneduo\NovaFileManager\Filesystem\Support\GetID3;
 
 class FTPAnalyzer extends Analyzer
 {

@@ -2,10 +2,10 @@
 
 declare(strict_types=1);
 
-namespace BBSLab\NovaFileManager\Tests;
+namespace Oneduo\NovaFileManager\Tests;
 
-use BBSLab\NovaFileManager\NovaFileManager;
-use BBSLab\NovaFileManager\ToolServiceProvider;
+use Oneduo\NovaFileManager\NovaFileManager;
+use Oneduo\NovaFileManager\ToolServiceProvider;
 use Illuminate\Foundation\Application;
 use Illuminate\Foundation\Auth\User;
 use Illuminate\Foundation\Testing\DatabaseMigrations;

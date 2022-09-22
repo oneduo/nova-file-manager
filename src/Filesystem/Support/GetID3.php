@@ -4,7 +4,7 @@
 
 declare(strict_types=1);
 
-namespace BBSLab\NovaFileManager\Filesystem\Support;
+namespace Oneduo\NovaFileManager\Filesystem\Support;
 
 use getID3 as BaseGetID3;
 use getid3_exception;

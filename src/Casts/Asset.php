@@ -2,9 +2,9 @@
 
 declare(strict_types=1);
 
-namespace BBSLab\NovaFileManager\Casts;
+namespace Oneduo\NovaFileManager\Casts;
 
-use BBSLab\NovaFileManager\Support\Asset as AssetObject;
+use Oneduo\NovaFileManager\Support\Asset as AssetObject;
 use Illuminate\Contracts\Database\Eloquent\CastsAttributes;
 use InvalidArgumentException;
 
@@ -15,7 +15,7 @@ class Asset implements CastsAttributes
      * @param  string  $key
      * @param  string|null  $value
      * @param  array  $attributes
-     * @return \BBSLab\NovaFileManager\Support\Asset|null
+     * @return \Oneduo\NovaFileManager\Support\Asset|null
      *
      * @throws \JsonException
      */

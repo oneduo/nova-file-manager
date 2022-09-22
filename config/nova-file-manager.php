@@ -98,13 +98,13 @@ return [
     | Here you can override or define new entity types that can be used to map
     | the files in your storage.
     |
-    | Should extend \Bbs\NovaFileManager\Entities\Entity::class
+    | Should extend \Oneduo\NovaFileManager\Entities\Entity::class
     |
     */
     'entities' => [
-        'image' => \BBSLab\NovaFileManager\Entities\Image::class,
-        'video' => \BBSLab\NovaFileManager\Entities\Video::class,
-        'default' => \BBSLab\NovaFileManager\Entities\File::class,
+        'image' => \Oneduo\NovaFileManager\Entities\Image::class,
+        'video' => \Oneduo\NovaFileManager\Entities\Video::class,
+        'default' => \Oneduo\NovaFileManager\Entities\File::class,
     ],
 
     /*

@@ -2,8 +2,8 @@
 
 declare(strict_types=1);
 
-use BBSLab\NovaFileManager\Http\Requests\UploadFileRequest;
-use BBSLab\NovaFileManager\NovaFileManager;
+use Oneduo\NovaFileManager\Http\Requests\UploadFileRequest;
+use Oneduo\NovaFileManager\NovaFileManager;
 use Illuminate\Foundation\Auth\User;
 use Illuminate\Http\UploadedFile;
 use Illuminate\Support\Facades\Storage;

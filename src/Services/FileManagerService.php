@@ -2,12 +2,12 @@
 
 declare(strict_types=1);
 
-namespace BBSLab\NovaFileManager\Services;
+namespace Oneduo\NovaFileManager\Services;
 
-use BBSLab\NovaFileManager\Contracts\Services\FileManagerContract;
-use BBSLab\NovaFileManager\Contracts\Support\ResolvesUrl as ResolvesUrlContract;
-use BBSLab\NovaFileManager\Entities\Entity;
-use BBSLab\NovaFileManager\Traits\Support\ResolvesUrl;
+use Oneduo\NovaFileManager\Contracts\Services\FileManagerContract;
+use Oneduo\NovaFileManager\Contracts\Support\ResolvesUrl as ResolvesUrlContract;
+use Oneduo\NovaFileManager\Entities\Entity;
+use Oneduo\NovaFileManager\Traits\Support\ResolvesUrl;
 use Closure;
 use Illuminate\Container\Container;
 use Illuminate\Contracts\Filesystem\Filesystem;
@@ -359,7 +359,7 @@ class FileManagerService implements FileManagerContract, ResolvesUrlContract
      *
      * @param  string  $path
      * @param  string  $disk
-     * @return \BBSLab\NovaFileManager\Entities\Entity
+     * @return \Oneduo\NovaFileManager\Entities\Entity
      */
     public function makeEntity(string $path, string $disk): Entity
     {

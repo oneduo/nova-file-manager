@@ -2,12 +2,12 @@
 
 declare(strict_types=1);
 
-namespace BBSLab\NovaFileManager\Http\Requests;
+namespace Oneduo\NovaFileManager\Http\Requests;
 
-use BBSLab\NovaFileManager\Filesystem\Support\GetID3;
-use BBSLab\NovaFileManager\Rules\DiskExistsRule;
-use BBSLab\NovaFileManager\Rules\ExistsInFilesystem;
-use BBSLab\NovaFileManager\Rules\FileMissingInFilesystem;
+use Oneduo\NovaFileManager\Filesystem\Support\GetID3;
+use Oneduo\NovaFileManager\Rules\DiskExistsRule;
+use Oneduo\NovaFileManager\Rules\ExistsInFilesystem;
+use Oneduo\NovaFileManager\Rules\FileMissingInFilesystem;
 use Illuminate\Http\UploadedFile;
 use Illuminate\Support\Str;
 

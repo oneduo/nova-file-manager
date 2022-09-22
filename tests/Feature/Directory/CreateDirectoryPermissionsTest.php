@@ -2,8 +2,8 @@
 
 declare(strict_types=1);
 
-use BBSLab\NovaFileManager\Http\Requests\CreateFolderRequest;
-use BBSLab\NovaFileManager\NovaFileManager;
+use Oneduo\NovaFileManager\Http\Requests\CreateFolderRequest;
+use Oneduo\NovaFileManager\NovaFileManager;
 use Illuminate\Foundation\Auth\User;
 use Illuminate\Support\Facades\Storage;
 use Illuminate\Validation\ValidationException;

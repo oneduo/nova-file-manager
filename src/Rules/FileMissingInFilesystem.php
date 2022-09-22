@@ -2,9 +2,9 @@
 
 declare(strict_types=1);
 
-namespace BBSLab\NovaFileManager\Rules;
+namespace Oneduo\NovaFileManager\Rules;
 
-use BBSLab\NovaFileManager\Http\Requests\UploadFileRequest;
+use Oneduo\NovaFileManager\Http\Requests\UploadFileRequest;
 use Illuminate\Contracts\Validation\Rule;
 
 class FileMissingInFilesystem implements Rule

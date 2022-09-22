@@ -2,9 +2,9 @@
 
 declare(strict_types=1);
 
-namespace BBSLab\NovaFileManager\Contracts\Services;
+namespace Oneduo\NovaFileManager\Contracts\Services;
 
-use BBSLab\NovaFileManager\Entities\Entity;
+use Oneduo\NovaFileManager\Entities\Entity;
 use Closure;
 use Illuminate\Contracts\Filesystem\Filesystem;
 use Illuminate\Contracts\Pagination\LengthAwarePaginator;

@@ -2,9 +2,9 @@
 
 declare(strict_types=1);
 
-namespace BBSLab\NovaFileManager\Entities;
+namespace Oneduo\NovaFileManager\Entities;
 
-use BBSLab\NovaFileManager\Filesystem\Metadata\Factory;
+use Oneduo\NovaFileManager\Filesystem\Metadata\Factory;
 
 class Video extends Entity
 {

@@ -7,7 +7,7 @@ You can start using the field by adding a `FileManager` field to your Nova resou
 ```php
 // app/Nova/Project.php
 
-use BBSLab\NovaFileManager\FileManager;
+use Oneduo\NovaFileManager\FileManager;
 
 class Project extends Resource
 {
@@ -40,7 +40,7 @@ by using the `limit` method.
 ```php
 // app/Nova/Project.php
 
-use BBSLab\NovaFileManager\FileManager;
+use Oneduo\NovaFileManager\FileManager;
 
 class Project extends Resource
 {
@@ -68,8 +68,8 @@ For that, you can specifically use the following custom rule :
 ```php
 // app/Nova/Project.php
 
-use BBSLab\NovaFileManager\FileManager;
-use BBSLab\NovaFileManager\Rules\FileLimit;
+use Oneduo\NovaFileManager\FileManager;
+use Oneduo\NovaFileManager\Rules\FileLimit;
 
 class Project extends Resource
 {
@@ -106,8 +106,8 @@ You may then use the `resolveUrlUsing` method to customize how the file URL is g
 ```php
 // app/Nova/User.php
 
-use BBSLab\NovaFileManager\FileManager;
-use BBSLab\NovaFileManager\Rules\FileLimit;
+use Oneduo\NovaFileManager\FileManager;
+use Oneduo\NovaFileManager\Rules\FileLimit;
 
 class User extends Resource
 {

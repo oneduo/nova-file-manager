@@ -7,7 +7,7 @@ want to check the mime type of the uploaded file, you can then use something lik
 ```php
 // app/Nova/Project.php
 
-use BBSLab\NovaFileManager\FileManager;
+use Oneduo\NovaFileManager\FileManager;
 
 class Project extends Resource
 {
@@ -30,8 +30,8 @@ method to define a full-on custom businness logic :
 ```php
 // app/Nova/Project.php
 
-use BBSLab\NovaFileManager\FileManager;
-use BBSLab\NovaFileManager\Http\Requests\UploadFileRequest;
+use Oneduo\NovaFileManager\FileManager;
+use Oneduo\NovaFileManager\Http\Requests\UploadFileRequest;
 use Illuminate\Http\UploadedFile;
 
 class Project extends Resource

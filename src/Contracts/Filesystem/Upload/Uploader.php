@@ -2,9 +2,9 @@
 
 declare(strict_types=1);
 
-namespace BBSLab\NovaFileManager\Contracts\Filesystem\Upload;
+namespace Oneduo\NovaFileManager\Contracts\Filesystem\Upload;
 
-use BBSLab\NovaFileManager\Http\Requests\UploadFileRequest;
+use Oneduo\NovaFileManager\Http\Requests\UploadFileRequest;
 
 interface Uploader
 {

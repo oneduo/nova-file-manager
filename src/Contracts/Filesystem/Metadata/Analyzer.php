@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace BBSLab\NovaFileManager\Contracts\Filesystem\Metadata;
+namespace Oneduo\NovaFileManager\Contracts\Filesystem\Metadata;
 
 interface Analyzer
 {

@@ -2,10 +2,10 @@
 
 declare(strict_types=1);
 
-use BBSLab\NovaFileManager\Contracts\Services\FileManagerContract;
-use BBSLab\NovaFileManager\Events\FolderCreated;
-use BBSLab\NovaFileManager\Events\FolderDeleted;
-use BBSLab\NovaFileManager\Events\FolderRenamed;
+use Oneduo\NovaFileManager\Contracts\Services\FileManagerContract;
+use Oneduo\NovaFileManager\Events\FolderCreated;
+use Oneduo\NovaFileManager\Events\FolderDeleted;
+use Oneduo\NovaFileManager\Events\FolderRenamed;
 use Illuminate\Support\Facades\Event;
 use Illuminate\Support\Facades\Storage;
 use function Pest\Laravel\postJson;

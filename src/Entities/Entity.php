@@ -2,10 +2,10 @@
 
 declare(strict_types=1);
 
-namespace BBSLab\NovaFileManager\Entities;
+namespace Oneduo\NovaFileManager\Entities;
 
-use BBSLab\NovaFileManager\Contracts\Entities\Entity as EntityContract;
-use BBSLab\NovaFileManager\Contracts\Services\FileManagerContract;
+use Oneduo\NovaFileManager\Contracts\Entities\Entity as EntityContract;
+use Oneduo\NovaFileManager\Contracts\Services\FileManagerContract;
 use Illuminate\Contracts\Support\Arrayable;
 use Illuminate\fileSystem\AwsS3V3Adapter;
 use Illuminate\Support\Carbon;
@@ -26,7 +26,7 @@ abstract class Entity implements Arrayable, EntityContract
     /**
      * Static helper
      *
-     * @param  \BBSLab\NovaFileManager\Contracts\Services\FileManagerContract  $manager
+     * @param  \Oneduo\NovaFileManager\Contracts\Services\FileManagerContract  $manager
      * @param  string  $path
      * @param  string  $disk
      * @return static

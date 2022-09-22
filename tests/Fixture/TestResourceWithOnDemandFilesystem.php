@@ -2,9 +2,9 @@
 
 declare(strict_types=1);
 
-namespace BBSLab\NovaFileManager\Tests\Fixture;
+namespace Oneduo\NovaFileManager\Tests\Fixture;
 
-use BBSLab\NovaFileManager\FileManager;
+use Oneduo\NovaFileManager\FileManager;
 use Illuminate\Foundation\Auth\User;
 use Illuminate\Support\Facades\Storage;
 use Laravel\Nova\Http\Requests\NovaRequest;

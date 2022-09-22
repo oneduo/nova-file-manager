@@ -2,11 +2,11 @@
 
 declare(strict_types=1);
 
-namespace BBSLab\NovaFileManager\Filesystem\Upload;
+namespace Oneduo\NovaFileManager\Filesystem\Upload;
 
-use BBSLab\NovaFileManager\Contracts\Filesystem\Upload\Uploader as UploaderContract;
-use BBSLab\NovaFileManager\Events\FileUploaded;
-use BBSLab\NovaFileManager\Http\Requests\UploadFileRequest;
+use Oneduo\NovaFileManager\Contracts\Filesystem\Upload\Uploader as UploaderContract;
+use Oneduo\NovaFileManager\Events\FileUploaded;
+use Oneduo\NovaFileManager\Http\Requests\UploadFileRequest;
 use Illuminate\Http\UploadedFile;
 use Illuminate\Validation\ValidationException;
 use Pion\Laravel\ChunkUpload\Exceptions\UploadMissingFileException;

@@ -1,6 +1,6 @@
 # The MIT License (MIT)
 
-Copyright (c) BBS Lab <paris@big-boss-studio.com>
+Copyright (c) Oneduo
 
 > Permission is hereby granted, free of charge, to any person obtaining a copy
 > of this software and associated documentation files (the "Software"), to deal

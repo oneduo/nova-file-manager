@@ -2,9 +2,9 @@
 
 declare(strict_types=1);
 
-namespace BBSLab\NovaFileManager;
+namespace Oneduo\NovaFileManager;
 
-use BBSLab\NovaFileManager\Contracts\Support\InteractsWithFilesystem;
+use Oneduo\NovaFileManager\Contracts\Support\InteractsWithFilesystem;
 use Illuminate\Http\Request;
 use Laravel\Nova\Menu\MenuSection;
 use Laravel\Nova\Tool;

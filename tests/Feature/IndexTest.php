@@ -2,9 +2,9 @@
 
 declare(strict_types=1);
 
-use BBSLab\NovaFileManager\NovaFileManager;
-use BBSLab\NovaFileManager\Tests\Fixture\TestResource;
-use BBSLab\NovaFileManager\Tests\Fixture\TestResourceWithOnDemandFilesystem;
+use Oneduo\NovaFileManager\NovaFileManager;
+use Oneduo\NovaFileManager\Tests\Fixture\TestResource;
+use Oneduo\NovaFileManager\Tests\Fixture\TestResourceWithOnDemandFilesystem;
 use Illuminate\Foundation\Auth\User;
 use Illuminate\Support\Arr;
 use Illuminate\Support\Facades\Storage;

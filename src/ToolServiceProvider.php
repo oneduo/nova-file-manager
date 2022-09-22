@@ -2,13 +2,13 @@
 
 declare(strict_types=1);
 
-namespace BBSLab\NovaFileManager;
+namespace Oneduo\NovaFileManager;
 
-use BBSLab\NovaFileManager\Contracts\Filesystem\Upload\Uploader as UploaderContract;
-use BBSLab\NovaFileManager\Contracts\Services\FileManagerContract;
-use BBSLab\NovaFileManager\Filesystem\Upload\Uploader;
-use BBSLab\NovaFileManager\Http\Middleware\Authorize;
-use BBSLab\NovaFileManager\Services\FileManagerService;
+use Oneduo\NovaFileManager\Contracts\Filesystem\Upload\Uploader as UploaderContract;
+use Oneduo\NovaFileManager\Contracts\Services\FileManagerContract;
+use Oneduo\NovaFileManager\Filesystem\Upload\Uploader;
+use Oneduo\NovaFileManager\Http\Middleware\Authorize;
+use Oneduo\NovaFileManager\Services\FileManagerService;
 use Illuminate\Foundation\Application;
 use Illuminate\Support\Facades\Route;
 use Illuminate\Support\ServiceProvider;

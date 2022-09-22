@@ -7,7 +7,7 @@ To start using the tool, you will need to register the tool in your `NovaService
 ```php
 // NovaServiceProvider.php
 
-use BBSLab\NovaFileManager\NovaFileManager;
+use Oneduo\NovaFileManager\NovaFileManager;
 
 class NovaServiceProvider extends NovaApplicationServiceProvider
 {

@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace BBSLab\NovaFileManager\Entities;
+namespace Oneduo\NovaFileManager\Entities;
 
 class File extends Entity
 {

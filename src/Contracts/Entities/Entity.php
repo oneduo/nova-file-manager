@@ -2,9 +2,9 @@
 
 declare(strict_types=1);
 
-namespace BBSLab\NovaFileManager\Contracts\Entities;
+namespace Oneduo\NovaFileManager\Contracts\Entities;
 
-use BBSLab\NovaFileManager\Contracts\Services\FileManagerContract;
+use Oneduo\NovaFileManager\Contracts\Services\FileManagerContract;
 use Illuminate\Support\Carbon;
 
 interface Entity

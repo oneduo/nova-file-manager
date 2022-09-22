@@ -15,4 +15,4 @@ mix
     processCssUrls: false,
   })
   .webpackConfig(config)
-  .nova('bbs/nova-file-manager')
+  .nova('oneduo/nova-file-manager')

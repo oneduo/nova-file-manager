@@ -2,9 +2,9 @@
 
 declare(strict_types=1);
 
-namespace BBSLab\NovaFileManager\Http\Controllers;
+namespace Oneduo\NovaFileManager\Http\Controllers;
 
-use BBSLab\NovaFileManager\NovaFileManager;
+use Oneduo\NovaFileManager\NovaFileManager;
 use Carbon\CarbonInterval;
 use Closure;
 use Composer\InstalledVersions;
@@ -21,7 +21,7 @@ class ToolController extends Controller
 {
     public function __invoke(NovaRequest $request): Response
     {
-        /** @var ?\BBSLab\NovaFileManager\NovaFileManager $tool */
+        /** @var ?\Oneduo\NovaFileManager\NovaFileManager $tool */
         $tool = collect(Nova::registeredTools())->first(fn (Tool $tool) => $tool instanceof NovaFileManager);
 
         return Inertia::render('NovaFileManager', [
@@ -47,8 +47,8 @@ class ToolController extends Controller
                 key: 'nova-file-manager.update_checker',
                 ttl: (int) CarbonInterval::days(config('nova-file-manager.update_checker.ttl_in_days'))->totalSeconds,
                 callback: function () {
-                    $current = InstalledVersions::getPrettyVersion('bbs-lab/nova-file-manager');
-                    $latest = Http::get('https://api.github.com/repos/bbs-lab/nova-file-manager/releases/latest')->json('tag_name');
+                    $current = InstalledVersions::getPrettyVersion('oneduo/nova-file-manager');
+                    $latest = Http::get('https://api.github.com/repos/oneduo/nova-file-manager/releases/latest')->json('tag_name');
 
                     return version_compare($current, $latest, '<');
                 });

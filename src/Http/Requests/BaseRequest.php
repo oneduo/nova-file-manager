@@ -2,12 +2,12 @@
 
 declare(strict_types=1);
 
-namespace BBSLab\NovaFileManager\Http\Requests;
+namespace Oneduo\NovaFileManager\Http\Requests;
 
-use BBSLab\NovaFileManager\Contracts\Services\FileManagerContract;
-use BBSLab\NovaFileManager\Contracts\Support\InteractsWithFilesystem;
-use BBSLab\NovaFileManager\FileManager;
-use BBSLab\NovaFileManager\NovaFileManager;
+use Oneduo\NovaFileManager\Contracts\Services\FileManagerContract;
+use Oneduo\NovaFileManager\Contracts\Support\InteractsWithFilesystem;
+use Oneduo\NovaFileManager\FileManager;
+use Oneduo\NovaFileManager\NovaFileManager;
 use Illuminate\Validation\ValidationException;
 use Laravel\Nova\Fields\FieldCollection;
 use Laravel\Nova\Http\Requests\NovaRequest;
@@ -30,7 +30,7 @@ class BaseRequest extends NovaRequest
             /** @var NovaFileManager $element */
             $element = $this->element();
 
-            /** @var \BBSLab\NovaFileManager\Services\FileManagerService $manager */
+            /** @var \Oneduo\NovaFileManager\Services\FileManagerService $manager */
             $manager = app(
                 abstract: FileManagerContract::class,
                 parameters: $element?->hasCustomFilesystem() ? ['disk' => $element?->resolveFilesystem($this)] : [],

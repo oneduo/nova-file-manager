@@ -2,16 +2,16 @@
 
 declare(strict_types=1);
 
-namespace BBSLab\NovaFileManager\Http\Controllers;
+namespace Oneduo\NovaFileManager\Http\Controllers;
 
-use BBSLab\NovaFileManager\Contracts\Filesystem\Upload\Uploader;
-use BBSLab\NovaFileManager\Events\FileDeleted;
-use BBSLab\NovaFileManager\Events\FileRenamed;
-use BBSLab\NovaFileManager\Events\FileUnzipped;
-use BBSLab\NovaFileManager\Http\Requests\DeleteFileRequest;
-use BBSLab\NovaFileManager\Http\Requests\RenameFileRequest;
-use BBSLab\NovaFileManager\Http\Requests\UnzipFileRequest;
-use BBSLab\NovaFileManager\Http\Requests\UploadFileRequest;
+use Oneduo\NovaFileManager\Contracts\Filesystem\Upload\Uploader;
+use Oneduo\NovaFileManager\Events\FileDeleted;
+use Oneduo\NovaFileManager\Events\FileRenamed;
+use Oneduo\NovaFileManager\Events\FileUnzipped;
+use Oneduo\NovaFileManager\Http\Requests\DeleteFileRequest;
+use Oneduo\NovaFileManager\Http\Requests\RenameFileRequest;
+use Oneduo\NovaFileManager\Http\Requests\UnzipFileRequest;
+use Oneduo\NovaFileManager\Http\Requests\UploadFileRequest;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Routing\Controller;
 use Illuminate\Validation\ValidationException;
@@ -21,8 +21,8 @@ class FileController extends Controller
     /**
      * Upload a file from the tool
      *
-     * @param  \BBSLab\NovaFileManager\Http\Requests\UploadFileRequest  $request
-     * @param  \BBSLab\NovaFileManager\Contracts\Filesystem\Upload\Uploader  $uploader
+     * @param  \Oneduo\NovaFileManager\Http\Requests\UploadFileRequest  $request
+     * @param  \Oneduo\NovaFileManager\Contracts\Filesystem\Upload\Uploader  $uploader
      * @return \Illuminate\Http\JsonResponse
      */
     public function upload(UploadFileRequest $request, Uploader $uploader): JsonResponse
@@ -35,7 +35,7 @@ class FileController extends Controller
     /**
      * Rename a file
      *
-     * @param  \BBSLab\NovaFileManager\Http\Requests\RenameFileRequest  $request
+     * @param  \Oneduo\NovaFileManager\Http\Requests\RenameFileRequest  $request
      * @return \Illuminate\Http\JsonResponse
      */
     public function rename(RenameFileRequest $request): JsonResponse
@@ -60,7 +60,7 @@ class FileController extends Controller
     /**
      * Delete a file
      *
-     * @param  \BBSLab\NovaFileManager\Http\Requests\DeleteFileRequest  $request
+     * @param  \Oneduo\NovaFileManager\Http\Requests\DeleteFileRequest  $request
      * @return \Illuminate\Http\JsonResponse
      */
     public function delete(DeleteFileRequest $request): JsonResponse
@@ -85,7 +85,7 @@ class FileController extends Controller
     /**
      * Unzip an archive
      *
-     * @param  \BBSLab\NovaFileManager\Http\Requests\UnzipFileRequest  $request
+     * @param  \Oneduo\NovaFileManager\Http\Requests\UnzipFileRequest  $request
      * @return \Illuminate\Http\JsonResponse
      */
     public function unzip(UnzipFileRequest $request): JsonResponse

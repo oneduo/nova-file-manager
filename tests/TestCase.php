@@ -2,9 +2,9 @@
 
 declare(strict_types=1);
 
-namespace BBSLab\NovaFileManager\Tests;
+namespace Oneduo\NovaFileManager\Tests;
 
-use BBSLab\NovaFileManager\ToolServiceProvider;
+use Oneduo\NovaFileManager\ToolServiceProvider;
 use Illuminate\Support\Facades\File;
 use Illuminate\Support\Facades\Route;
 use Inertia\ServiceProvider;

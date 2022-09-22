@@ -2,8 +2,8 @@
 
 declare(strict_types=1);
 
-use BBSLab\NovaFileManager\Http\Requests\DeleteFolderRequest;
-use BBSLab\NovaFileManager\NovaFileManager;
+use Oneduo\NovaFileManager\Http\Requests\DeleteFolderRequest;
+use Oneduo\NovaFileManager\NovaFileManager;
 use Illuminate\Foundation\Auth\User;
 use Illuminate\Support\Facades\Storage;
 use Illuminate\Validation\ValidationException;

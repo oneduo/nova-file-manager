@@ -13,7 +13,7 @@ hero:
       link: /introduction
     - theme: alt
       text: View on GitHub
-      link: https://github.com/BBS-Lab/nova-file-manager
+      link: https://github.com/oneduo/nova-file-manager
 
 features:
     - icon: "⚡️"
@@ -38,5 +38,5 @@ features:
 ---
 
 <div class="footer">
-    Copyright &copy; {{ new Date().getFullYear() }} BBS Lab | MIT License
+    Copyright &copy; {{ new Date().getFullYear() }} Oneduo | MIT License
 </div>

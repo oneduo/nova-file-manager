@@ -2,10 +2,10 @@
 
 declare(strict_types=1);
 
-use BBSLab\NovaFileManager\Contracts\Services\FileManagerContract;
-use BBSLab\NovaFileManager\Events\FileDeleted;
-use BBSLab\NovaFileManager\Events\FileRenamed;
-use BBSLab\NovaFileManager\Events\FileUploaded;
+use Oneduo\NovaFileManager\Contracts\Services\FileManagerContract;
+use Oneduo\NovaFileManager\Events\FileDeleted;
+use Oneduo\NovaFileManager\Events\FileRenamed;
+use Oneduo\NovaFileManager\Events\FileUploaded;
 use Illuminate\Http\UploadedFile;
 use Illuminate\Support\Facades\Event;
 use Illuminate\Support\Facades\Storage;

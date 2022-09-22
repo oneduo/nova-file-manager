@@ -2,10 +2,10 @@
 
 declare(strict_types=1);
 
-use BBSLab\NovaFileManager\Http\Controllers\DiskController;
-use BBSLab\NovaFileManager\Http\Controllers\FileController;
-use BBSLab\NovaFileManager\Http\Controllers\FolderController;
-use BBSLab\NovaFileManager\Http\Controllers\IndexController;
+use Oneduo\NovaFileManager\Http\Controllers\DiskController;
+use Oneduo\NovaFileManager\Http\Controllers\FileController;
+use Oneduo\NovaFileManager\Http\Controllers\FolderController;
+use Oneduo\NovaFileManager\Http\Controllers\IndexController;
 use Illuminate\Support\Facades\Route;
 
 /*

@@ -2,9 +2,9 @@
 
 declare(strict_types=1);
 
-namespace BBSLab\NovaFileManager\Http\Controllers;
+namespace Oneduo\NovaFileManager\Http\Controllers;
 
-use BBSLab\NovaFileManager\Http\Requests\IndexRequest;
+use Oneduo\NovaFileManager\Http\Requests\IndexRequest;
 use Illuminate\Routing\Controller;
 
 class IndexController extends Controller
@@ -12,7 +12,7 @@ class IndexController extends Controller
     /**
      * Get the data for the tool
      *
-     * @param  \BBSLab\NovaFileManager\Http\Requests\IndexRequest  $request
+     * @param  \Oneduo\NovaFileManager\Http\Requests\IndexRequest  $request
      * @return \Illuminate\Http\JsonResponse
      */
     public function __invoke(IndexRequest $request)

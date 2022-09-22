@@ -2,10 +2,10 @@
 
 declare(strict_types=1);
 
-namespace BBSLab\NovaFileManager\Http\Requests;
+namespace Oneduo\NovaFileManager\Http\Requests;
 
-use BBSLab\NovaFileManager\Rules\DiskExistsRule;
-use BBSLab\NovaFileManager\Rules\ExistsInFilesystem;
+use Oneduo\NovaFileManager\Rules\DiskExistsRule;
+use Oneduo\NovaFileManager\Rules\ExistsInFilesystem;
 
 class IndexRequest extends BaseRequest
 {

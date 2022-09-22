@@ -8,7 +8,7 @@
           }}</span>
           <span class="block sm:ml-2 sm:inline-block">
             <a
-              href="https://github.com/BBS-Lab/nova-file-manager/releases"
+              href="https://github.com/oneduo/nova-file-manager/releases"
               class="font-bold text-amber-800 dark:text-amber-400 inline-flex gap-1"
               target="_blank"
             >
