@@ -27,7 +27,7 @@ const useTourStore = defineStore('nova-file-manager/tour', {
       const self = this
 
       this.steps().map(step => {
-        const _step = self.tour.addStep({
+        const tourStep = self.tour.addStep({
           id: step.key,
           text: `<div class="gap-2 flex flex-row items-center"><span class="mr-2 flex-shrink-0 rounded-lg bg-indigo-900/60 p-2">💡</span>${step.label}</div>`,
           attachTo: {
@@ -51,7 +51,7 @@ const useTourStore = defineStore('nova-file-manager/tour', {
         })
 
         if (step.preloadConfetti) {
-          _step.on('before-show', () => this.loadConfetti())
+          tourStep.on('before-show', () => this.loadConfetti())
         }
       })
 
@@ -77,14 +77,34 @@ const useTourStore = defineStore('nova-file-manager/tour', {
       document.head.appendChild(confettijs)
     },
 
+    async showConfetti() {
+      return new Promise(resolve => {
+        const canvas = document.createElement('canvas')
+        canvas.id = 'confetti-canvas'
+        canvas.className = 'absolute bottom-0 left-0 w-full h-full pointer-events-none'
+        document.body.appendChild(canvas)
+
+        canvas.confetti = canvas.confetti || window.confetti.create(canvas, { resize: true })
+
+        canvas.confetti({
+          particleCount: 250,
+          spread: 150,
+          origin: { y: 1 },
+        })
+
+        setTimeout(() => {
+          resolve(canvas)
+        }, 5000)
+      })
+    },
+
     steps() {
       const self = this
 
       return [
         {
-          key: 'nfm-tool-title',
-          label: 'Thank you for using Nova File Manager, let us take a look around !',
-          position: 'bottom',
+          key: 'nfm-disk-selector',
+          label: 'You can use this to change the current storage disk',
           buttons: [
             {
               label: 'Skip tour',
@@ -104,11 +124,6 @@ const useTourStore = defineStore('nova-file-manager/tour', {
           ],
         },
         {
-          key: 'nfm-disk-selector',
-          label: 'You can use this to change the current storage disk',
-          preloadConfetti: true,
-        },
-        {
           key: 'nfm-pagination-selector',
           label: 'Use this to change the number of files shown per page',
         },
@@ -119,6 +134,7 @@ const useTourStore = defineStore('nova-file-manager/tour', {
         {
           key: 'nfm-spotlight-search-button',
           label: 'This opens a spotlight search modal, you can use ⌘+k',
+          preloadConfetti: true,
         },
         {
           key: 'nfm-create-folder-button',
@@ -142,6 +158,7 @@ const useTourStore = defineStore('nova-file-manager/tour', {
           label:
             'Here are your files, a single click to select them, and double click to open a preview',
           position: 'bottom',
+          scrollTo: false,
           buttons: [
             {
               label: 'Previous',
@@ -152,26 +169,12 @@ const useTourStore = defineStore('nova-file-manager/tour', {
             {
               label: 'Finish',
               text: '🎉 Done',
-              action: () => {
-                new Promise(() => {
-                  const canvas = document.createElement('canvas')
-                  canvas.id = 'confetti-canvas'
-                  canvas.className = 'absolute bottom-0 left-0 w-full h-full pointer-events-none'
-                  document.body.appendChild(canvas)
-
-                  canvas.confetti =
-                    canvas.confetti || window.confetti.create(canvas, { resize: true })
-
-                  canvas.confetti({
-                    particleCount: 250,
-                    spread: 150,
-                    origin: { y: 1 },
-                  })
-                }).then(() => document.getElementById('confetti-canvas').remove())
-
+              action: async () => {
                 self.tour?.complete()
-
                 self.dismiss()
+
+                const canvas = await self.showConfetti()
+                canvas.remove()
               },
             },
           ],
