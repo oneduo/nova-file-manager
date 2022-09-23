@@ -8,9 +8,9 @@ layout:home
 <img src="https://img.shields.io/badge/license-MIT-blue.svg"/>
 <img src="https://img.shields.io/badge/PHP-8-blue.svg"/>
 <img src="https://img.shields.io/badge/laravel%2Fnova-4-cyan.svg"/>
-<img src="https://img.shields.io/packagist/v/bbs-lab/nova-file-manager.svg"/>
-<img src="https://img.shields.io/packagist/dt/bbs-lab/nova-file-manager.svg"/>
-<img src="https://github.com/BBS-Lab/nova-file-manager/actions/workflows/tests.yml/badge.svg?branch=main"/>
+<img src="https://img.shields.io/packagist/v/oneduo/nova-file-manager.svg"/>
+<img src="https://img.shields.io/packagist/dt/oneduo/nova-file-manager.svg"/>
+<img src="https://github.com/oneduo/nova-file-manager/actions/workflows/tests.yml/badge.svg?branch=main"/>
 </div>
 
 

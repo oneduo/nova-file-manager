@@ -7,7 +7,7 @@ This package is proudly brought to you by [Charaf Rezrazi](https://github.com/cr
 
 We have put so much ♥️ and care making this cool package, and we had fun building it. We hope you enjoy it.
 
-We would also like to thank [all the contributors](https://github.com/BBS-Lab/nova-file-manager/contributors)
+We would also like to thank [all the contributors](https://github.com/oneduo/nova-file-manager/contributors)
 and the people who helped us build this package.
 
 ## Credits

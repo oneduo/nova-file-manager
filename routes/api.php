@@ -2,11 +2,11 @@
 
 declare(strict_types=1);
 
-use BBSLab\NovaFileManager\Http\Controllers\DiskController;
-use BBSLab\NovaFileManager\Http\Controllers\FileController;
-use BBSLab\NovaFileManager\Http\Controllers\FolderController;
-use BBSLab\NovaFileManager\Http\Controllers\IndexController;
 use Illuminate\Support\Facades\Route;
+use Oneduo\NovaFileManager\Http\Controllers\DiskController;
+use Oneduo\NovaFileManager\Http\Controllers\FileController;
+use Oneduo\NovaFileManager\Http\Controllers\FolderController;
+use Oneduo\NovaFileManager\Http\Controllers\IndexController;
 
 /*
 |--------------------------------------------------------------------------
@@ -30,6 +30,7 @@ Route::as('nova-file-manager.')->middleware('nova')->group(static function () {
         Route::post('upload/{resource?}', [FileController::class, 'upload'])->name('upload');
         Route::post('rename/{resource?}', [FileController::class, 'rename'])->name('rename');
         Route::post('delete/{resource?}', [FileController::class, 'delete'])->name('delete');
+        Route::post('unzip/{resource?}', [FileController::class, 'unzip'])->name('unzip');
     });
 
     Route::prefix('folders')->as('folders.')->group(function () {

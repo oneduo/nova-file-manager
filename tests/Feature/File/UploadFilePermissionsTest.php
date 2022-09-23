@@ -2,14 +2,14 @@
 
 declare(strict_types=1);
 
-use BBSLab\NovaFileManager\Http\Requests\UploadFileRequest;
-use BBSLab\NovaFileManager\NovaFileManager;
 use Illuminate\Foundation\Auth\User;
 use Illuminate\Http\UploadedFile;
 use Illuminate\Support\Facades\Storage;
 use Illuminate\Validation\ValidationException;
 use Laravel\Nova\Http\Requests\NovaRequest;
 use Laravel\Nova\Nova;
+use Oneduo\NovaFileManager\Http\Requests\UploadFileRequest;
+use Oneduo\NovaFileManager\NovaFileManager;
 use function Pest\Laravel\actingAs;
 
 beforeEach(function () {
@@ -106,6 +106,7 @@ it('can validate upload', function () {
                 'disk' => $this->disk,
                 'path' => '/',
                 'file' => UploadedFile::fake()->image($path = 'image.jpeg'),
+                'resumableFilename' => $path,
             ],
         )
         ->assertUnprocessable()
@@ -139,6 +140,7 @@ it('can throw a custom validation message using validateUploadUsing', function (
                 'disk' => $this->disk,
                 'path' => '/',
                 'file' => UploadedFile::fake()->image($path = 'image.jpeg'),
+                'resumableFilename' => $path,
             ],
         )
         ->assertUnprocessable()

@@ -1,2 +1,67 @@
 @tailwind components;
 @tailwind utilities;
+
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+.shepherd-button {
+    @apply my-1 rounded-full bg-gray-100 px-4 py-1 text-xs font-bold uppercase text-indigo-700 hover:bg-indigo-500 hover:text-indigo-100;
+}
+
+.shepherd-button.shepherd-button-secondary {
+    @apply my-1 rounded-full bg-gray-400 dark:bg-gray-800 px-4 py-1 text-xs font-bold uppercase text-gray-100 dark:text-gray-100 hover:bg-indigo-500 hover:text-indigo-100;
+}
+
+.shepherd-button:disabled {
+    cursor: not-allowed;
+}
+
+.shepherd-footer {
+    @apply absolute right-0 top-full mt-6 flex w-full flex-row items-center justify-between rounded-md;
+}
+
+.shepherd-content {
+    @apply relative rounded-md p-0 outline-none;
+}
+
+.shepherd-element {
+    @apply invisible w-full max-w-md rounded-md border border-indigo-500 p-4 opacity-0 shadow-lg outline-none transition-opacity bg-indigo-800/80 text-indigo-300;
+    @apply top-2 !important;
+    z-index: 9999;
+}
+
+.shepherd-enabled.shepherd-element {
+    @apply visible opacity-100;
+}
+
+.shepherd-element,
+.shepherd-element *,
+.shepherd-element :after,
+.shepherd-element :before {
+    @apply box-border;
+}
+
+.shepherd-modal-overlay-container {
+    height: 0;
+    left: 0;
+    opacity: 0;
+    overflow: hidden;
+    pointer-events: none;
+    position: fixed;
+    top: 0;
+    transition: all 0.3s ease-out, height 0ms 0.3s, opacity 0.3s 0ms;
+    width: 100vw;
+    z-index: 9997;
+}
+
+.shepherd-modal-overlay-container.shepherd-modal-is-visible {
+    height: 100vh;
+    opacity: 0.5;
+    transform: translateZ(0);
+    transition: all 0.3s ease-out, height 0s 0s, opacity 0.3s 0s;
+}
+
+.shepherd-modal-overlay-container.shepherd-modal-is-visible path {
+    pointer-events: all;
+}

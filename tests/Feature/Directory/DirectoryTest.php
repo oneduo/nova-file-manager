@@ -2,12 +2,12 @@
 
 declare(strict_types=1);
 
-use BBSLab\NovaFileManager\Contracts\Services\FileManagerContract;
-use BBSLab\NovaFileManager\Events\FolderCreated;
-use BBSLab\NovaFileManager\Events\FolderDeleted;
-use BBSLab\NovaFileManager\Events\FolderRenamed;
 use Illuminate\Support\Facades\Event;
 use Illuminate\Support\Facades\Storage;
+use Oneduo\NovaFileManager\Contracts\Services\FileManagerContract;
+use Oneduo\NovaFileManager\Events\FolderCreated;
+use Oneduo\NovaFileManager\Events\FolderDeleted;
+use Oneduo\NovaFileManager\Events\FolderRenamed;
 use function Pest\Laravel\postJson;
 
 beforeEach(function () {
@@ -96,8 +96,8 @@ it('can rename a directory', function () {
         uri: route('nova-file-manager.folders.rename'),
         data: [
             'disk' => $this->disk,
-            'oldPath' => $old,
-            'newPath' => $new,
+            'from' => $old,
+            'to' => $new,
         ],
     )
         ->assertOk();
@@ -108,8 +108,8 @@ it('can rename a directory', function () {
     Event::assertDispatched(
         event: FolderRenamed::class,
         callback: fn (FolderRenamed $event) => $event->disk === $this->disk
-            && $event->oldPath === $old
-            && $event->newPath === $new,
+            && $event->from === $old
+            && $event->to === $new,
     );
 });
 
@@ -131,8 +131,8 @@ it('returns validation error when the filesystem can not rename the directory', 
         uri: route('nova-file-manager.folders.rename'),
         data: [
             'disk' => $this->disk,
-            'oldPath' => $old,
-            'newPath' => $new,
+            'from' => $old,
+            'to' => $new,
         ],
     )
         ->assertJsonValidationErrors([
@@ -144,8 +144,8 @@ it('returns validation error when the filesystem can not rename the directory', 
     Event::assertNotDispatched(
         event: FolderRenamed::class,
         callback: fn (FolderRenamed $event) => $event->disk === $this->disk
-            && $event->oldPath === $old
-            && $event->newPath === $new,
+            && $event->from === $old
+            && $event->to === $new,
     );
 });
 
@@ -154,14 +154,14 @@ it('cannot rename a directory which doesnt exist', function () {
         uri: route('nova-file-manager.folders.rename'),
         data: [
             'disk' => $this->disk,
-            'oldPath' => $path = 'existing',
-            'newPath' => 'renamed',
+            'from' => $path = 'existing',
+            'to' => 'renamed',
         ],
     );
 
     $response
         ->assertJsonValidationErrors([
-            'oldPath' => [
+            'from' => [
                 __('nova-file-manager::validation.path.missing', ['path' => $path]),
             ],
         ]);
@@ -175,14 +175,14 @@ it('cannot rename a directory to an existing name', function () {
         uri: route('nova-file-manager.folders.rename'),
         data: [
             'disk' => $this->disk,
-            'oldPath' => $first,
-            'newPath' => $second,
+            'from' => $first,
+            'to' => $second,
         ],
     );
 
     $response
         ->assertJsonValidationErrors([
-            'newPath' => [
+            'to' => [
                 __('nova-file-manager::validation.path.exists', ['path' => $second]),
             ],
         ]);

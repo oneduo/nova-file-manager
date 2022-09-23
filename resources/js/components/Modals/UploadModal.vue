@@ -5,9 +5,9 @@
       class="relative z-[60]"
       style="z-index: 999"
       @close="closeModal"
-      @dragover.prevent.stop="dragenter"
-      @dragleave.prevent.stop="dragleave"
-      @drop.prevent="onDrop"
+      @dragover.prevent.stop="dragEnter"
+      @dragleave.prevent.stop="dragLeave"
+      @drop.prevent="dragDrop"
     >
       <TransitionChild
         as="template"
@@ -67,23 +67,23 @@
                     </p>
                   </div>
                 </div>
-                <template v-else>
-                  <div class="w-full flex flex-row justify-between items-center">
-                    <h1 class="text-xs uppercase text-gray-400 font-bold">Queue</h1>
-                  </div>
-                  <ul class="grid grid-cols-2 md:grid-cols-4 gap-6">
-                    <template v-for="item in queue" :key="item.id">
-                      <File
-                        :file="entityTransformer(item.file)"
-                        :is-uploading="true"
-                        :is-uploaded="item.status"
-                        :upload-ratio="item.ratio"
-                        :selected="false"
-                        class="cursor-default"
-                      />
-                    </template>
-                  </ul>
-                </template>
+                <!--                <template v-else>-->
+                <!--                  <div class="w-full flex flex-row justify-between items-center">-->
+                <!--                    <h1 class="text-xs uppercase text-gray-400 font-bold">Queue</h1>-->
+                <!--                  </div>-->
+                <!--                  <ul class="grid grid-cols-2 md:grid-cols-4 gap-6">-->
+                <!--                    <template v-for="item in queue" :key="item.id">-->
+                <!--                      <File-->
+                <!--                        :file="entityTransformer(item.file)"-->
+                <!--                        :is-uploading="true"-->
+                <!--                        :is-uploaded="item.status"-->
+                <!--                        :upload-ratio="item.ratio"-->
+                <!--                        :selected="false"-->
+                <!--                        class="cursor-default"-->
+                <!--                      />-->
+                <!--                    </template>-->
+                <!--                  </ul>-->
+                <!--                </template>-->
               </div>
             </DialogPanel>
           </TransitionChild>
@@ -94,42 +94,53 @@
 </template>
 
 <script setup>
-import { computed, onBeforeUnmount, ref, watch } from 'vue'
-import { useStore } from 'vuex'
+import { computed, ref, watch } from 'vue'
 import { Dialog, DialogPanel, TransitionChild, TransitionRoot } from '@headlessui/vue'
 import { CloudArrowUpIcon } from '@heroicons/vue/24/outline'
-import File from '@/components/Cards/File'
-import entityTransformer from '@/transformers/entityTransformer'
+import { useStore } from '@/store'
+import dataTransferFiles from '@/helpers/data-transfer'
 
-const store = useStore()
-const props = defineProps(['name'])
-const darkMode = computed(() => store.state['nova-file-manager'].darkMode)
-const isOpen = computed(() => store.getters['nova-file-manager/allModals'].includes(props.name))
+const props = defineProps({
+  name: {
+    type: String,
+    default: 'upload',
+  },
+  queue: {
+    type: Array,
+  },
+  upload: {
+    type: Function,
+  },
+})
 
-const queue = computed(() => store.state['nova-file-manager'].queue)
-
+// STATE
 const active = ref(false)
 const files = ref([])
 
-const closeModal = () => store.dispatch('nova-file-manager/closeModal', props.name)
-const dragenter = () => (active.value = true)
-const dragleave = () => (active.value = false)
-const onDrop = e => (files.value = e.dataTransfer.files)
+const store = useStore()
+const isOpen = computed(() => store.isOpen(props.name))
+const darkMode = computed(() => store.dark)
+
+// ACTIONS
+const dragEnter = () => (active.value = true)
+const dragLeave = () => (active.value = false)
+const dragDrop = async e => (files.value = await dataTransferFiles(e.dataTransfer.items))
 const onChange = e => (files.value = e.target.files)
+const closeModal = () => store.closeModal({ name: props.name })
+const openModal = name => store.openModal({ name })
 
 const submit = () => {
-    if (files.value.length) {
-        store.dispatch('nova-file-manager/upload', files.value)
-    }
+  if (files.value.length) {
+    props.upload(files.value)
+  }
 
-    active.value = false
+  closeModal()
+
+  openModal('queue')
+
+  active.value = false
 }
 
-onBeforeUnmount(() => {
-    if (isOpen.value) {
-        closeModal()
-    }
-})
-
+// HOOKS
 watch(files, () => submit())
 </script>

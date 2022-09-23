@@ -94,7 +94,7 @@
       class="gap-x-0.5 inline-flex flex-wrap items-center text-xs pointer-events-none block font-medium text-gray-500 text-left break-all"
     >
       <span v-if="file.size">{{ file.size }}</span>
-      <span v-if="!hasCustomDisk && file.disk?.length > 0" class="ml-0.5"
+      <span v-if="!singleDisk && file.disk?.length > 0" class="ml-0.5"
         >&centerdot; {{ file.disk }}</span
       >
     </div>
@@ -109,44 +109,44 @@
 import { computed } from 'vue'
 import { DocumentIcon } from '@heroicons/vue/24/outline'
 import {
-    CheckCircleIcon,
-    ExclamationCircleIcon,
-    ExclamationTriangleIcon,
-    PlayIcon,
-    XCircleIcon,
+  CheckCircleIcon,
+  ExclamationCircleIcon,
+  ExclamationTriangleIcon,
+  PlayIcon,
+  XCircleIcon,
 } from '@heroicons/vue/24/solid'
 import Spinner from '@/components/Elements/Spinner'
 import Entity from '@/types/Entity'
 import ImageLoader from '@/components/Elements/ImageLoader'
 
 const props = defineProps({
-    file: {
-        type: Entity,
-        default: null,
-    },
-    isUploading: {
-        type: Boolean,
-        default: false,
-    },
-    isUploaded: {
-        type: Boolean,
-        default: null,
-    },
-    uploadRatio: {
-        type: Number,
-        default: null,
-    },
-    selected: {
-        type: Boolean,
-        default: true,
-    },
-    onDeselect: {
-        type: Function,
-    },
-    hasCustomDisk: {
-        type: Boolean,
-        default: false,
-    },
+  file: {
+    type: Entity,
+    default: null,
+  },
+  isUploading: {
+    type: Boolean,
+    default: false,
+  },
+  isUploaded: {
+    type: Boolean,
+    default: null,
+  },
+  uploadRatio: {
+    type: Number,
+    default: null,
+  },
+  selected: {
+    type: Boolean,
+    default: true,
+  },
+  onDeselect: {
+    type: Function,
+  },
+  singleDisk: {
+    type: Boolean,
+    default: false,
+  },
 })
 
 const isImage = computed(() => props.file.type === 'image')

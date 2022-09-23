@@ -2,16 +2,13 @@
 
 declare(strict_types=1);
 
-namespace BBSLab\NovaFileManager\Rules;
+namespace Oneduo\NovaFileManager\Rules;
 
-use BBSLab\NovaFileManager\Http\Requests\UploadFileRequest;
 use Illuminate\Contracts\Validation\Rule;
-use Illuminate\Support\Str;
+use Oneduo\NovaFileManager\Http\Requests\UploadFileRequest;
 
 class FileMissingInFilesystem implements Rule
 {
-    public ?string $path = null;
-
     public function __construct(public UploadFileRequest $request)
     {
     }
@@ -23,16 +20,14 @@ class FileMissingInFilesystem implements Rule
      */
     public function passes($attribute, $value): bool
     {
-        $this->path = Str::finish($this->request->path, '/').$value->getClientOriginalName();
-
         return $this->request
             ->manager()
             ->filesystem()
-            ->missing($this->path);
+            ->missing($this->request->filePath());
     }
 
     public function message(): string
     {
-        return __('nova-file-manager::validation.path.exists', ['path' => $this->path]);
+        return __('nova-file-manager::validation.path.exists', ['path' => $this->request->filePath()]);
     }
 }

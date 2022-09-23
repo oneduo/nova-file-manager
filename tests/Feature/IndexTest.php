@@ -2,15 +2,15 @@
 
 declare(strict_types=1);
 
-use BBSLab\NovaFileManager\NovaFileManager;
-use BBSLab\NovaFileManager\Tests\Fixture\TestResource;
-use BBSLab\NovaFileManager\Tests\Fixture\TestResourceWithOnDemandFilesystem;
 use Illuminate\Foundation\Auth\User;
 use Illuminate\Support\Arr;
 use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Str;
 use Laravel\Nova\Http\Requests\NovaRequest;
 use Laravel\Nova\Nova;
+use Oneduo\NovaFileManager\NovaFileManager;
+use Oneduo\NovaFileManager\Tests\Fixture\TestResource;
+use Oneduo\NovaFileManager\Tests\Fixture\TestResourceWithOnDemandFilesystem;
 use function Pest\Laravel\actingAs;
 use function Pest\Laravel\getJson;
 
@@ -39,7 +39,7 @@ it('can retrieve files', function () {
         ->assertJson([
             'disk' => $this->disk,
             'breadcrumbs' => [],
-            'directories' => [],
+            'folders' => [],
             'files' => [
                 [
                     'path' => $path,
@@ -77,7 +77,7 @@ it('can retrieve files from tool with a custom filesystem', function () {
         ->assertJson([
             'disk' => 'default',
             'breadcrumbs' => [],
-            'directories' => [],
+            'folders' => [],
             'files' => [
                 [
                     'path' => $path,
@@ -116,7 +116,7 @@ it('can retrieve files from field with a custom filesystem', function () {
         ->assertJson([
             'disk' => 'default',
             'breadcrumbs' => [],
-            'directories' => [],
+            'folders' => [],
             'files' => [
                 [
                     'path' => $path,

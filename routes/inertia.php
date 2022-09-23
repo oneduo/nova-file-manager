@@ -2,8 +2,8 @@
 
 declare(strict_types=1);
 
-use BBSLab\NovaFileManager\Http\Controllers\ToolController;
 use Illuminate\Support\Facades\Route;
+use Oneduo\NovaFileManager\Http\Controllers\ToolController;
 
 /*
 |--------------------------------------------------------------------------

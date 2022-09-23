@@ -1,24 +1,26 @@
-import { useStore } from 'vuex'
+import { useStore } from '@/store'
 import { computed } from 'vue'
 
 export function usePermissions() {
-    const store = useStore()
+  const store = useStore()
 
-    const showCreateFolder = computed(() => store.state['nova-file-manager'].showCreateFolder)
-    const showRenameFolder = computed(() => store.state['nova-file-manager'].showRenameFolder)
-    const showDeleteFolder = computed(() => store.state['nova-file-manager'].showDeleteFolder)
-    const showUploadFile = computed(() => store.state['nova-file-manager'].showUploadFile)
-    const showRenameFile = computed(() => store.state['nova-file-manager'].showRenameFile)
-    const showDeleteFile = computed(() => store.state['nova-file-manager'].showDeleteFile)
-    const showCropImage = computed(() => store.state['nova-file-manager'].showCropImage)
+  const showCreateFolder = computed(() => store.permissions.folder.create)
+  const showRenameFolder = computed(() => store.permissions.folder.rename)
+  const showDeleteFolder = computed(() => store.permissions.folder.delete)
+  const showUploadFile = computed(() => store.permissions.file.upload)
+  const showRenameFile = computed(() => store.permissions.file.rename)
+  const showDeleteFile = computed(() => store.permissions.file.delete)
+  const showCropImage = computed(() => store.permissions.file.edit)
+  const showUnzipFile = computed(() => store.permissions.file.unzip)
 
-    return {
-        showCreateFolder,
-        showRenameFolder,
-        showDeleteFolder,
-        showUploadFile,
-        showRenameFile,
-        showDeleteFile,
-        showCropImage,
-    }
+  return {
+    showCreateFolder,
+    showRenameFolder,
+    showDeleteFolder,
+    showUploadFile,
+    showRenameFile,
+    showDeleteFile,
+    showCropImage,
+    showUnzipFile,
+  }
 }

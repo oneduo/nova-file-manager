@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace BBSLab\NovaFileManager\Tests\Traits;
+namespace Oneduo\NovaFileManager\Tests\Traits;
 
 use Illuminate\Foundation\Auth\User;
 use Illuminate\Http\UploadedFile;
@@ -26,11 +26,12 @@ trait FileConcerns
                         'disk' => $this->disk,
                         'path' => '/',
                         'file' => UploadedFile::fake()->image($path = 'image.jpeg'),
+                        'resumableFilename' => $path,
                     ],
                 )
                 ->assertOk()
                 ->assertJson([
-                    'message' => __('Uploaded successfully'),
+                    'message' => __('nova-file-manager::messages.file.upload'),
                 ]);
 
             Storage::disk($this->disk)->assertExists($path);
@@ -47,11 +48,12 @@ trait FileConcerns
                         'disk' => $this->disk,
                         'path' => '/',
                         'file' => UploadedFile::fake()->image($path = 'image.jpeg'),
+                        'resumableFilename' => $path,
                     ],
                 )
                 ->assertUnprocessable()
                 ->assertJsonValidationErrors([
-                    'file' => [$message ?? __('This action is unauthorized.')],
+                    'file' => [$message ?? __('nova-file-manager::errors.authorization.unauthorized', ['action' => 'upload file'])],
                 ]);
 
             Storage::disk($this->disk)->assertMissing($path);
@@ -70,8 +72,8 @@ trait FileConcerns
                     uri: route('nova-file-manager.files.rename'),
                     data: [
                         'disk' => $this->disk,
-                        'oldPath' => $old,
-                        'newPath' => $new,
+                        'from' => $old,
+                        'to' => $new,
                     ],
                 )
                 ->assertOk();
@@ -93,14 +95,14 @@ trait FileConcerns
                     uri: route('nova-file-manager.files.rename'),
                     data: [
                         'disk' => $this->disk,
-                        'oldPath' => $old,
-                        'newPath' => $new,
+                        'from' => $old,
+                        'to' => $new,
                     ],
                 )
                 ->assertUnprocessable()
                 ->assertJsonValidationErrors([
                     'file' => [
-                        $message ?? __('This action is unauthorized.'),
+                        $message ?? __('nova-file-manager::errors.authorization.unauthorized', ['action' => 'rename file']),
                     ],
                 ]);
 
@@ -144,7 +146,7 @@ trait FileConcerns
                 ->assertUnprocessable()
                 ->assertJsonValidationErrors([
                     'file' => [
-                        $message ?? __('This action is unauthorized.'),
+                        $message ?? __('nova-file-manager::errors.authorization.unauthorized', ['action' => 'delete file']),
                     ],
                 ]);
 

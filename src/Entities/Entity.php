@@ -2,15 +2,15 @@
 
 declare(strict_types=1);
 
-namespace BBSLab\NovaFileManager\Entities;
+namespace Oneduo\NovaFileManager\Entities;
 
-use BBSLab\NovaFileManager\Contracts\Entities\Entity as EntityContract;
-use BBSLab\NovaFileManager\Contracts\Services\FileManagerContract;
 use Illuminate\Contracts\Support\Arrayable;
 use Illuminate\fileSystem\AwsS3V3Adapter;
 use Illuminate\Support\Carbon;
 use Laravel\Nova\Http\Requests\NovaRequest;
 use League\Flysystem\UnableToRetrieveMetadata;
+use Oneduo\NovaFileManager\Contracts\Entities\Entity as EntityContract;
+use Oneduo\NovaFileManager\Contracts\Services\FileManagerContract;
 
 abstract class Entity implements Arrayable, EntityContract
 {
@@ -26,7 +26,7 @@ abstract class Entity implements Arrayable, EntityContract
     /**
      * Static helper
      *
-     * @param  \BBSLab\NovaFileManager\Contracts\Services\FileManagerContract  $manager
+     * @param  \Oneduo\NovaFileManager\Contracts\Services\FileManagerContract  $manager
      * @param  string  $path
      * @param  string  $disk
      * @return static
@@ -228,7 +228,16 @@ abstract class Entity implements Arrayable, EntityContract
      */
     public function type(): string
     {
-        return (string) str($this->mime())->before('/');
+        $mime = str($this->mime());
+
+        return match ((string) $mime->before('/')) {
+            'image' => 'image',
+            'video' => 'video',
+            'audio' => 'audio',
+            'text' => 'text',
+            'application' => (string) $mime->afterLast('/'),
+            default => 'unknown',
+        };
     }
 
     abstract public function meta(): array;

@@ -2,10 +2,10 @@
 
 declare(strict_types=1);
 
-namespace BBSLab\NovaFileManager\Filesystem\Metadata;
+namespace Oneduo\NovaFileManager\Filesystem\Metadata;
 
-use BBSLab\NovaFileManager\Contracts\Filesystem\Metadata\Analyzer;
 use Illuminate\Contracts\Filesystem\Filesystem;
+use Oneduo\NovaFileManager\Contracts\Filesystem\Metadata\Analyzer;
 
 class Factory
 {

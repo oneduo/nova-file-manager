@@ -16,15 +16,17 @@
 </template>
 
 <script setup>
-import { useStore } from 'vuex'
 import { computed } from 'vue'
 import { MagnifyingGlassIcon } from '@heroicons/vue/24/outline'
 import debounce from 'lodash/debounce'
+import { useStore } from '@/store'
 
 const store = useStore()
-const search = computed(() => store.state['nova-file-manager'].search)
 
-const setSearch = debounce(function ({ target: { value } }) {
-    store.dispatch('nova-file-manager/setSearch', value)
+// STATE
+const search = computed(() => store.search)
+
+const setSearch = debounce(({ target: { value } }) => {
+  store.setSearch({ search: value })
 }, Nova.config('debounce'))
 </script>

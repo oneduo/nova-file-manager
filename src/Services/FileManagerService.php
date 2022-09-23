@@ -2,12 +2,8 @@
 
 declare(strict_types=1);
 
-namespace BBSLab\NovaFileManager\Services;
+namespace Oneduo\NovaFileManager\Services;
 
-use BBSLab\NovaFileManager\Contracts\Services\FileManagerContract;
-use BBSLab\NovaFileManager\Contracts\Support\ResolvesUrl as ResolvesUrlContract;
-use BBSLab\NovaFileManager\Entities\Entity;
-use BBSLab\NovaFileManager\Traits\Support\ResolvesUrl;
 use Closure;
 use Illuminate\Container\Container;
 use Illuminate\Contracts\Filesystem\Filesystem;
@@ -17,6 +13,10 @@ use Illuminate\Support\Collection;
 use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Str;
 use League\Flysystem\UnableToRetrieveMetadata;
+use Oneduo\NovaFileManager\Contracts\Services\FileManagerContract;
+use Oneduo\NovaFileManager\Contracts\Support\ResolvesUrl as ResolvesUrlContract;
+use Oneduo\NovaFileManager\Entities\Entity;
+use Oneduo\NovaFileManager\Traits\Support\ResolvesUrl;
 
 class FileManagerService implements FileManagerContract, ResolvesUrlContract
 {
@@ -88,6 +88,16 @@ class FileManagerService implements FileManagerContract, ResolvesUrlContract
         $this->shouldShowHiddenFiles = $show;
 
         return $this;
+    }
+
+    /**
+     * Get the current filesystem instance
+     *
+     * @return \Illuminate\Contracts\Filesystem\Filesystem
+     */
+    public function filesystem(): Filesystem
+    {
+        return $this->filesystem;
     }
 
     /**
@@ -237,13 +247,13 @@ class FileManagerService implements FileManagerContract, ResolvesUrlContract
     /**
      * Rename a directory or file in the disk
      *
-     * @param  string  $oldPath
-     * @param  string  $newPath
+     * @param  string  $from
+     * @param  string  $to
      * @return bool
      */
-    public function rename(string $oldPath, string $newPath): bool
+    public function rename(string $from, string $to): bool
     {
-        return $this->filesystem->move($oldPath, $newPath);
+        return $this->filesystem->move($from, $to);
     }
 
     /**
@@ -255,6 +265,44 @@ class FileManagerService implements FileManagerContract, ResolvesUrlContract
     public function delete(string $path): bool
     {
         return $this->filesystem->delete($path);
+    }
+
+    /**
+     * Unzip an archive to the current path
+     *
+     * Note: ext-zip is required
+     *
+     * @param  string  $path
+     * @return bool
+     */
+    public function unzip(string $path): bool
+    {
+        // we check the mime type to ensure it is a zip file
+        if ($this->filesystem->mimeType($path) !== 'application/zip') {
+            return false;
+        }
+
+        // if ext-zip is not available, we do nothing
+        if (!class_exists(\ZipArchive::class)) {
+            return false;
+        }
+
+        $zip = new \ZipArchive();
+
+        // open the zip archive
+        $zip->open($this->filesystem->path($path));
+
+        // create the target folder
+        $destination = (string) str($zip->filename)->basename()->replace('.zip', '');
+
+        if (!$this->mkdir($destination)) {
+            return false;
+        }
+
+        // extract the contents
+        $zip->extractTo($this->filesystem->path($destination));
+
+        return $zip->close();
     }
 
     /**
@@ -310,7 +358,8 @@ class FileManagerService implements FileManagerContract, ResolvesUrlContract
      * Create a new entity from the given path
      *
      * @param  string  $path
-     * @return \BBSLab\NovaFileManager\Entities\Entity
+     * @param  string  $disk
+     * @return \Oneduo\NovaFileManager\Entities\Entity
      */
     public function makeEntity(string $path, string $disk): Entity
     {
@@ -355,10 +404,5 @@ class FileManagerService implements FileManagerContract, ResolvesUrlContract
         ?string $search = null
     ): static {
         return new self($disk, $path, $page, $perPage, $search);
-    }
-
-    public function filesystem(): Filesystem
-    {
-        return $this->filesystem;
     }
 }

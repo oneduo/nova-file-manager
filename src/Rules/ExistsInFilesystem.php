@@ -2,10 +2,10 @@
 
 declare(strict_types=1);
 
-namespace BBSLab\NovaFileManager\Rules;
+namespace Oneduo\NovaFileManager\Rules;
 
-use BBSLab\NovaFileManager\Http\Requests\BaseRequest;
 use Illuminate\Contracts\Validation\Rule;
+use Oneduo\NovaFileManager\Http\Requests\BaseRequest;
 
 class ExistsInFilesystem implements Rule
 {

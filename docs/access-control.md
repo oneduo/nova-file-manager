@@ -28,8 +28,8 @@ resolves into `true|false`, like so :
 ```php
 // app/Nova/Project.php
 
-use BBSLab\NovaFileManager\FileManager;
-use BBSLab\NovaFileManager\Http\Requests\CreateFolderRequest;
+use Oneduo\NovaFileManager\FileManager;
+use Oneduo\NovaFileManager\Http\Requests\CreateFolderRequest;
 use Illuminate\Support\Facades\Storage;
 use Laravel\Nova\Http\Requests\NovaRequest;
 
@@ -79,8 +79,8 @@ creating a folder, you can use the following callback :
 ```php
 // app/Nova/Project.php
 
-use BBSLab\NovaFileManager\FileManager;
-use BBSLab\NovaFileManager\Http\Requests\CreateFolderRequest;
+use Oneduo\NovaFileManager\FileManager;
+use Oneduo\NovaFileManager\Http\Requests\CreateFolderRequest;
 use Illuminate\Support\Facades\Storage;
 use Laravel\Nova\Http\Requests\NovaRequest;
 
@@ -108,8 +108,8 @@ error message that you can set yourself :
 ```php
 // app/Nova/Project.php
 
-use BBSLab\NovaFileManager\FileManager;
-use BBSLab\NovaFileManager\Http\Requests\CreateFolderRequest;
+use Oneduo\NovaFileManager\FileManager;
+use Oneduo\NovaFileManager\Http\Requests\CreateFolderRequest;
 use Illuminate\Support\Facades\Storage;
 use Laravel\Nova\Http\Requests\NovaRequest;
 
@@ -176,7 +176,7 @@ return [
 ```php
 // app/Nova/Project.php
 
-use BBSLab\NovaFileManager\FileManager;
+use Oneduo\NovaFileManager\FileManager;
 use Illuminate\Support\Facades\Storage;
 use Laravel\Nova\Http\Requests\NovaRequest;
 
@@ -208,7 +208,7 @@ root, a folder based on the current user's role :
 ```php
 // app/Nova/Project.php
 
-use BBSLab\NovaFileManager\FileManager;
+use Oneduo\NovaFileManager\FileManager;
 use Illuminate\Support\Facades\Storage;
 use Laravel\Nova\Http\Requests\NovaRequest;
 

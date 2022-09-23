@@ -1,5 +1,5 @@
 {
-  "name": "bbs-lab/nova-file-manager",
+  "name": "oneduo/nova-file-manager",
   "description": "A handy file manager tool for Laravel Nova",
   "keywords": [
     "laravel",
@@ -17,12 +17,12 @@
       "url": "https://nova.laravel.com"
     }
   ],
-  "homepage": "https://github.com/BBS-Lab/nova-file-manager",
+  "homepage": "https://github.com/oneduo/nova-file-manager",
   "license": "MIT",
   "authors": [
     {
       "name": "Charaf Rezrazi",
-      "email": "charaf@big-boss-studio.com"
+      "email": "charaf@rezrazi.fr"
     },
     {
       "name": "Mikaël Popowicz",
@@ -51,7 +51,7 @@
   },
   "autoload": {
     "psr-4": {
-      "BBSLab\\NovaFileManager\\": "src/"
+      "Oneduo\\NovaFileManager\\": "src/"
     },
     "files": [
       "src/helpers.php"
@@ -59,13 +59,13 @@
   },
   "autoload-dev": {
     "psr-4": {
-      "BBSLab\\NovaFileManager\\Tests\\": "tests/"
+      "Oneduo\\NovaFileManager\\Tests\\": "tests/"
     }
   },
   "extra": {
     "laravel": {
       "providers": [
-        "BBSLab\\NovaFileManager\\ToolServiceProvider"
+        "Oneduo\\NovaFileManager\\ToolServiceProvider"
       ]
     }
   },

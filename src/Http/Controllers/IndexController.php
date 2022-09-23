@@ -2,17 +2,17 @@
 
 declare(strict_types=1);
 
-namespace BBSLab\NovaFileManager\Http\Controllers;
+namespace Oneduo\NovaFileManager\Http\Controllers;
 
-use BBSLab\NovaFileManager\Http\Requests\IndexRequest;
 use Illuminate\Routing\Controller;
+use Oneduo\NovaFileManager\Http\Requests\IndexRequest;
 
 class IndexController extends Controller
 {
     /**
      * Get the data for the tool
      *
-     * @param  \BBSLab\NovaFileManager\Http\Requests\IndexRequest  $request
+     * @param  \Oneduo\NovaFileManager\Http\Requests\IndexRequest  $request
      * @return \Illuminate\Http\JsonResponse
      */
     public function __invoke(IndexRequest $request)
@@ -27,7 +27,7 @@ class IndexController extends Controller
         return response()->json([
             'disk' => $manager->disk,
             'breadcrumbs' => $manager->breadcrumbs(),
-            'directories' => $manager->directories(),
+            'folders' => $manager->directories(),
             'files' => $paginator->items(),
             'pagination' => [
                 'current_page' => $paginator->currentPage(),

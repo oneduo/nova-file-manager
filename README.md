@@ -7,9 +7,9 @@
 [![License](https://img.shields.io/badge/license-MIT-blue.svg)](/LICENSE)
 ![PHP](https://img.shields.io/badge/PHP-8-blue.svg)
 ![Laravel Nova](https://img.shields.io/badge/laravel%2Fnova-4-cyan.svg)
-[![Latest Version on Packagist](https://img.shields.io/packagist/v/bbs-lab/nova-file-manager.svg)](https://packagist.org/packages/bbs-lab/nova-file-manager)
-[![Total Downloads](https://img.shields.io/packagist/dt/bbs-lab/nova-file-manager.svg)](https://packagist.org/packages/bbs-lab/nova-file-manager)
-[![Run tests](https://github.com/BBS-Lab/nova-file-manager/actions/workflows/tests.yml/badge.svg?branch=main)](https://github.com/BBS-Lab/nova-file-manager/actions/workflows/tests.yml)
+[![Latest Version on Packagist](https://img.shields.io/packagist/v/oneduo/nova-file-manager.svg)](https://packagist.org/packages/oneduo/nova-file-manager)
+[![Total Downloads](https://img.shields.io/packagist/dt/oneduo/nova-file-manager.svg)](https://packagist.org/packages/oneduo/nova-file-manager)
+[![Run tests](https://github.com/oneduo/nova-file-manager/actions/workflows/tests.yml/badge.svg?branch=main)](https://github.com/oneduo/nova-file-manager/actions/workflows/tests.yml)
 </div>
 
 ---
@@ -31,7 +31,7 @@ A file manager tool and field for Laravel Nova. Beautifully designed, and custom
 
 
 
-<a href="https://bbs-lab.github.io/nova-file-manager/"><img src="./docs/images/documentation_banner.png"/></a>
+<a href="https://oneduo.github.io/nova-file-manager/"><img src="./docs/images/documentation_banner.png"/></a>
 
 <img src="./docs/subbanner.png"/>
 
@@ -68,7 +68,7 @@ This package requires the following :
 To get started, you will need to install the following dependencies :
 
 ```
-composer require bbs-lab/nova-file-manager
+composer require oneduo/nova-file-manager
 ```
 
 That's it, you're ready to go!
@@ -90,7 +90,7 @@ To get yourself started, you need to add the following tool to your `NovaService
 ```php
 // NovaServiceProvider.php
 
-use BBSLab\NovaFileManager\NovaFileManager;
+use Oneduo\NovaFileManager\NovaFileManager;
 
 class NovaServiceProvider extends NovaApplicationServiceProvider
 {
@@ -116,7 +116,7 @@ Go ahead and add a `FileManager` field to your Nova resource.
 ```php
 // app/Nova/User.php
 
-use BBSLab\NovaFileManager\FileManager;
+use Oneduo\NovaFileManager\FileManager;
 
 class User extends Resource
 {
@@ -155,7 +155,7 @@ You have now successfully added a File Manager field to your resource.
 - [Charaf Rezrazi](https://github.com/crezra)
 - [Mikaël Popowicz](https://github.com/mikaelpopowicz)
 
-See also the list of [contributors](https://github.com/bbs-lab/nova-file-manager/contributors) who
+See also the list of [contributors](https://github.com/oneduo/nova-file-manager/contributors) who
 participated in this project.
 
 ## Screenshots <a name= "screenshots"></a>

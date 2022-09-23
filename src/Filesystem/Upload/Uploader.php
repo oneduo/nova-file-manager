@@ -2,13 +2,13 @@
 
 declare(strict_types=1);
 
-namespace BBSLab\NovaFileManager\Filesystem\Upload;
+namespace Oneduo\NovaFileManager\Filesystem\Upload;
 
-use BBSLab\NovaFileManager\Contracts\Filesystem\Upload\Uploader as UploaderContract;
-use BBSLab\NovaFileManager\Events\FileUploaded;
-use BBSLab\NovaFileManager\Http\Requests\UploadFileRequest;
 use Illuminate\Http\UploadedFile;
 use Illuminate\Validation\ValidationException;
+use Oneduo\NovaFileManager\Contracts\Filesystem\Upload\Uploader as UploaderContract;
+use Oneduo\NovaFileManager\Events\FileUploaded;
+use Oneduo\NovaFileManager\Http\Requests\UploadFileRequest;
 use Pion\Laravel\ChunkUpload\Exceptions\UploadMissingFileException;
 use Pion\Laravel\ChunkUpload\Handler\HandlerFactory;
 use Pion\Laravel\ChunkUpload\Receiver\FileReceiver;
@@ -56,7 +56,7 @@ class Uploader implements UploaderContract
         }
 
         $path = $request->manager()->filesystem()->putFileAs(
-            path: $request->path,
+            path: dirname($request->filePath()),
             file: $file,
             name: $file->getClientOriginalName(),
         );
@@ -64,7 +64,7 @@ class Uploader implements UploaderContract
         event(new FileUploaded($request->manager()->disk, $path));
 
         return [
-            'message' => __('Uploaded successfully'),
+            'message' => __('nova-file-manager::messages.file.upload'),
         ];
     }
 }

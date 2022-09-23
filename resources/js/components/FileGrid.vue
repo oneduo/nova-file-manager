@@ -2,10 +2,11 @@
   <div
     class="grid grid-cols-2 gap-x-4 gap-y-4 sm:grid-cols-3 sm:gap-x-6 md:grid-cols-4 md:grid-cols-4 xl:grid-cols-6 xl:gap-x-4"
     role="group"
+    data-tour="nfm-file-grid"
   >
     <template v-for="file in files" :key="file.id">
       <File
-        :selected="isFileSelected(file) ?? false"
+        :selected="isSelected(file) ?? false"
         :file="entity(file)"
         @click="toggleSelection(file)"
         @dblclick="openPreview(file)"
@@ -18,17 +19,25 @@
 
 <script setup>
 import { computed } from 'vue'
-import { useStore } from 'vuex'
 import PreviewModal from '@/components/Modals/PreviewModal'
 import File from '@/components/Cards/File'
 import { entity } from '@/transformers/entityTransformer'
+import { useStore } from '@/store'
+
+defineProps({
+  files: {
+    type: Array,
+    default: () => [],
+  },
+})
 
 const store = useStore()
 
-const files = computed(() => store.state['nova-file-manager'].files)
-const isFileSelected = computed(() => store.getters['nova-file-manager/isFileSelected'])
-const preview = computed(() => store.state['nova-file-manager'].preview)
+// STATE
+const isSelected = computed(() => store.isSelected)
+const preview = computed(() => store.preview)
 
-const openPreview = file => store.commit('nova-file-manager/previewFile', file)
-const toggleSelection = file => store.commit('nova-file-manager/toggleSelection', file)
+// ACTIONS
+const openPreview = file => (store.preview = file)
+const toggleSelection = file => store.toggleSelection({ file })
 </script>

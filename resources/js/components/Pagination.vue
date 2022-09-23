@@ -50,7 +50,7 @@
             <ChevronLeftIcon aria-hidden="true" class="h-4 w-4" />
           </button>
           <button
-            v-for="(link, index) in links.slice(1, -1)"
+            v-for="(link, index) in links?.slice(1, -1)"
             :key="index"
             :class="{
               'z-10 bg-blue-50 dark:bg-blue-800/30 border-blue-500 text-blue-600 dark:text-blue-300 relative inline-flex items-center py-1 px-3 border text-xs font-medium':
@@ -77,11 +77,15 @@
 </template>
 
 <script setup>
-import { useStore } from 'vuex'
+import { computed } from 'vue'
 import { ChevronLeftIcon, ChevronRightIcon } from '@heroicons/vue/24/solid'
+import { useStore } from '@/store'
 
 const store = useStore()
-defineProps(['currentPage', 'from', 'to', 'total', 'lastPage', 'links'])
 
-const setPage = page => store.dispatch('nova-file-manager/setPage', page)
+const pagination = computed(() => store.pagination)
+
+const { current_page: currentPage, last_page: lastPage, from, to, total, links } = pagination.value
+
+const setPage = page => store.setPage({ page })
 </script>

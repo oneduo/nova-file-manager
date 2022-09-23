@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace BBSLab\NovaFileManager\Events;
+namespace Oneduo\NovaFileManager\Events;
 
 use Illuminate\Foundation\Events\Dispatchable;
 

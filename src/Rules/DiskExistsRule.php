@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace BBSLab\NovaFileManager\Rules;
+namespace Oneduo\NovaFileManager\Rules;
 
 use Illuminate\Contracts\Validation\Rule;
 

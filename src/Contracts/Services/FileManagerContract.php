@@ -2,13 +2,13 @@
 
 declare(strict_types=1);
 
-namespace BBSLab\NovaFileManager\Contracts\Services;
+namespace Oneduo\NovaFileManager\Contracts\Services;
 
-use BBSLab\NovaFileManager\Entities\Entity;
 use Closure;
 use Illuminate\Contracts\Filesystem\Filesystem;
 use Illuminate\Contracts\Pagination\LengthAwarePaginator;
 use Illuminate\Support\Collection;
+use Oneduo\NovaFileManager\Entities\Entity;
 
 interface FileManagerContract
 {
@@ -36,6 +36,8 @@ interface FileManagerContract
 
     public function files(): Collection;
 
+    public function filesystem(): Filesystem;
+
     public function forPage(int $page, int $perPage): self;
 
     public function makeEntity(string $path, string $disk): Entity;
@@ -50,11 +52,11 @@ interface FileManagerContract
 
     public function path(string $path): self;
 
-    public function rename(string $oldPath, string $newPath): bool;
+    public function rename(string $from, string $to): bool;
 
     public function rmdir(string $path): bool;
 
     public function showHiddenFiles(bool $show = true): self;
 
-    public function filesystem(): Filesystem;
+    public function unzip(string $path): bool;
 }

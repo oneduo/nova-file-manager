@@ -2,47 +2,49 @@
   <File
     :file="file"
     :selected="false"
-    @click.prevent.stop="preview(file)"
     :on-deselect="onDeselect"
-    :has-custom-disk="hasCustomDisk"
+    :single-disk="singleDisk"
+    @click.prevent.stop="preview(file)"
   />
 </template>
 
 <script setup>
-import { useStore } from 'vuex'
-import File from '@/components/Cards/File'
 import { computed } from 'vue'
 import Entity from '@/types/Entity'
+import File from '@/components/Cards/File'
+import { useStore } from '@/store'
 
 const store = useStore()
 
 const props = defineProps({
-    file: {
-        type: Entity,
-        required: true,
-    },
-    detail: {
-        type: Boolean,
-        default: false,
-    },
-    field: {
-        type: Object,
-        required: true,
-    },
-    onDeselect: {
-        type: Function,
-    },
+  file: {
+    type: Entity,
+    required: true,
+  },
+  detail: {
+    type: Boolean,
+    default: false,
+  },
+  field: {
+    type: Object,
+    required: true,
+  },
+  onDeselect: {
+    type: Function,
+  },
 })
 
-const hasCustomDisk = computed(() => store.state['nova-file-manager'].customDisk)
+// STATE
+const singleDisk = computed(() => store.singleDisk)
 
-const openPreview = file => store.commit('nova-file-manager/previewFile', file)
+// ACTIONS
+const openPreview = file => (store.preview = file)
 
 const preview = file => {
-    if (!props.detail) {
-        return
-    }
+  if (!props.detail) {
+    return
+  }
 
-    props.detail && file.exists && openPreview(file)
+  file.exists && openPreview(file)
 }
 </script>

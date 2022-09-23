@@ -2,13 +2,13 @@
 
 declare(strict_types=1);
 
-use BBSLab\NovaFileManager\Http\Requests\RenameFileRequest;
-use BBSLab\NovaFileManager\NovaFileManager;
 use Illuminate\Foundation\Auth\User;
 use Illuminate\Support\Facades\Storage;
 use Illuminate\Validation\ValidationException;
 use Laravel\Nova\Http\Requests\NovaRequest;
 use Laravel\Nova\Nova;
+use Oneduo\NovaFileManager\Http\Requests\RenameFileRequest;
+use Oneduo\NovaFileManager\NovaFileManager;
 
 beforeEach(function () {
     $this->disk = 'public';
@@ -63,7 +63,7 @@ test('canRenameFile takes precedence over showRenameFile', function () {
                 return $request->user()?->getKey() === 42;
             })
             ->canRenameFile(function (RenameFileRequest $request) {
-                return str_contains($request->newPath, 'foo');
+                return str_contains($request->to, 'foo');
             }),
     ];
 
@@ -76,7 +76,7 @@ it('can throw a custom validation message using canRenameFile', function () {
     Nova::$tools = [
         NovaFileManager::make()
             ->canRenameFile(function (RenameFileRequest $request) use ($message) {
-                if (!str_contains($request->newPath, 'foo')) {
+                if (!str_contains($request->to, 'foo')) {
                     throw ValidationException::withMessages([
                         'file' => [$message],
                     ]);

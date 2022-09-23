@@ -2,13 +2,13 @@
 
 declare(strict_types=1);
 
-use BBSLab\NovaFileManager\Http\Requests\DeleteFileRequest;
-use BBSLab\NovaFileManager\NovaFileManager;
 use Illuminate\Foundation\Auth\User;
 use Illuminate\Support\Facades\Storage;
 use Illuminate\Validation\ValidationException;
 use Laravel\Nova\Http\Requests\NovaRequest;
 use Laravel\Nova\Nova;
+use Oneduo\NovaFileManager\Http\Requests\DeleteFileRequest;
+use Oneduo\NovaFileManager\NovaFileManager;
 
 beforeEach(function () {
     $this->disk = 'public';

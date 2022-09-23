@@ -2,10 +2,10 @@
 
 declare(strict_types=1);
 
-namespace BBSLab\NovaFileManager\Tests\Browser;
+namespace Oneduo\NovaFileManager\Tests\Browser;
 
-use BBSLab\NovaFileManager\Tests\DuskTestCase;
 use Laravel\Dusk\Browser;
+use Oneduo\NovaFileManager\Tests\DuskTestCase;
 
 /**
  * @group browser

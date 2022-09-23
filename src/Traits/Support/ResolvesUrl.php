@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace BBSLab\NovaFileManager\Traits\Support;
+namespace Oneduo\NovaFileManager\Traits\Support;
 
 use Closure;
 

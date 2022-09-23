@@ -2,17 +2,17 @@
 
 declare(strict_types=1);
 
-namespace BBSLab\NovaFileManager;
+namespace Oneduo\NovaFileManager;
 
-use BBSLab\NovaFileManager\Contracts\Filesystem\Upload\Uploader as UploaderContract;
-use BBSLab\NovaFileManager\Contracts\Services\FileManagerContract;
-use BBSLab\NovaFileManager\Filesystem\Upload\Uploader;
-use BBSLab\NovaFileManager\Http\Middleware\Authorize;
-use BBSLab\NovaFileManager\Services\FileManagerService;
 use Illuminate\Foundation\Application;
 use Illuminate\Support\Facades\Route;
 use Illuminate\Support\ServiceProvider;
 use Laravel\Nova\Nova;
+use Oneduo\NovaFileManager\Contracts\Filesystem\Upload\Uploader as UploaderContract;
+use Oneduo\NovaFileManager\Contracts\Services\FileManagerContract;
+use Oneduo\NovaFileManager\Filesystem\Upload\Uploader;
+use Oneduo\NovaFileManager\Http\Middleware\Authorize;
+use Oneduo\NovaFileManager\Services\FileManagerService;
 
 class ToolServiceProvider extends ServiceProvider
 {
@@ -32,8 +32,14 @@ class ToolServiceProvider extends ServiceProvider
 
         Nova::serving(static function () {
             Nova::translations(__DIR__.'/../lang/en.json');
-            Nova::script('nova-file-manager', __DIR__.'/../dist/js/tool.js');
             Nova::style('nova-file-manager', __DIR__.'/../dist/css/tool.css');
+
+            // [WARNING - internal use only] This is for local development only. DO NOT ENABLE.
+            if (!config('nova-file-manager.hmr')) {
+                Nova::script('nova-file-manager', __DIR__.'/../dist/js/tool.js');
+            } else {
+                Nova::remoteScript('http://localhost:8080/js/tool.js');
+            }
         });
     }
 

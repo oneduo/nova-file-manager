@@ -2,24 +2,24 @@
 
 declare(strict_types=1);
 
-namespace BBSLab\NovaFileManager\Http\Controllers;
+namespace Oneduo\NovaFileManager\Http\Controllers;
 
-use BBSLab\NovaFileManager\Events\FolderCreated;
-use BBSLab\NovaFileManager\Events\FolderDeleted;
-use BBSLab\NovaFileManager\Events\FolderRenamed;
-use BBSLab\NovaFileManager\Http\Requests\CreateFolderRequest;
-use BBSLab\NovaFileManager\Http\Requests\DeleteFolderRequest;
-use BBSLab\NovaFileManager\Http\Requests\RenameFolderRequest;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Routing\Controller;
 use Illuminate\Validation\ValidationException;
+use Oneduo\NovaFileManager\Events\FolderCreated;
+use Oneduo\NovaFileManager\Events\FolderDeleted;
+use Oneduo\NovaFileManager\Events\FolderRenamed;
+use Oneduo\NovaFileManager\Http\Requests\CreateFolderRequest;
+use Oneduo\NovaFileManager\Http\Requests\DeleteFolderRequest;
+use Oneduo\NovaFileManager\Http\Requests\RenameFolderRequest;
 
 class FolderController extends Controller
 {
     /**
      * Create a new folder
      *
-     * @param  \BBSLab\NovaFileManager\Http\Requests\CreateFolderRequest  $request
+     * @param  \Oneduo\NovaFileManager\Http\Requests\CreateFolderRequest  $request
      * @return \Illuminate\Http\JsonResponse
      */
     public function create(CreateFolderRequest $request): JsonResponse
@@ -44,15 +44,15 @@ class FolderController extends Controller
     /**
      * Rename a folder
      *
-     * @param  \BBSLab\NovaFileManager\Http\Requests\RenameFolderRequest  $request
+     * @param  \Oneduo\NovaFileManager\Http\Requests\RenameFolderRequest  $request
      * @return \Illuminate\Http\JsonResponse
      */
     public function rename(RenameFolderRequest $request): JsonResponse
     {
-        $oldPath = $request->oldPath;
-        $newPath = $request->newPath;
+        $from = $request->from;
+        $to = $request->to;
 
-        $result = $request->manager()->rename($oldPath, $newPath);
+        $result = $request->manager()->rename($from, $to);
 
         if (!$result) {
             throw ValidationException::withMessages([
@@ -60,7 +60,7 @@ class FolderController extends Controller
             ]);
         }
 
-        event(new FolderRenamed($request->manager()->disk, $oldPath, $newPath));
+        event(new FolderRenamed($request->manager()->disk, $from, $to));
 
         return response()->json([
             'message' => __('nova-file-manager::messages.folder.rename'),
@@ -70,7 +70,7 @@ class FolderController extends Controller
     /**
      * Delete a folder
      *
-     * @param  \BBSLab\NovaFileManager\Http\Requests\DeleteFolderRequest  $request
+     * @param  \Oneduo\NovaFileManager\Http\Requests\DeleteFolderRequest  $request
      * @return \Illuminate\Http\JsonResponse
      */
     public function delete(DeleteFolderRequest $request): JsonResponse

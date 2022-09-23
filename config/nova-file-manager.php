@@ -98,13 +98,13 @@ return [
     | Here you can override or define new entity types that can be used to map
     | the files in your storage.
     |
-    | Should extend \Bbs\NovaFileManager\Entities\Entity::class
+    | Should extend \Oneduo\NovaFileManager\Entities\Entity::class
     |
     */
     'entities' => [
-        'image' => \BBSLab\NovaFileManager\Entities\Image::class,
-        'video' => \BBSLab\NovaFileManager\Entities\Video::class,
-        'default' => \BBSLab\NovaFileManager\Entities\File::class,
+        'image' => \Oneduo\NovaFileManager\Entities\Image::class,
+        'video' => \Oneduo\NovaFileManager\Entities\Video::class,
+        'default' => \Oneduo\NovaFileManager\Entities\File::class,
     ],
 
     /*
@@ -138,4 +138,32 @@ return [
         'enabled' => env('NOVA_FILE_MANAGER_UPDATE_CHECKER_ENABLED', true),
         'ttl_in_days' => env('NOVA_FILE_MANAGER_UPDATE_CHECKER_TTL_IN_DAYS', 1),
     ],
+
+    /*
+    |--------------------------------------------------------------------------
+    | Onboarding tour
+    |--------------------------------------------------------------------------
+    |
+    | You can enable a handy onboarding tour to guide you or your users through
+    | the tool. You can disable it if you don't want to show it.
+    |
+    | default: true
+    |
+    */
+    'tour' => [
+        'enabled' => env('NOVA_FILE_MANAGER_TOUR_ENABLED', true),
+    ],
+
+    /*
+    |--------------------------------------------------------------------------
+    | Hot module reload
+    |--------------------------------------------------------------------------
+    |
+    | [WARNING] This a development feature. It should not be enabled unless you
+    | are actively developing the tool.
+    |
+    | @internal-usage
+    |
+    */
+    'hmr' => env('HOT_MODULE_RELOAD', false),
 ];

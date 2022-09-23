@@ -79,11 +79,11 @@ let sidebar = [
     items: [
       {
         text: 'Github',
-        link: 'https://github.com/BBS-Lab/nova-file-manager',
+        link: 'https://github.com/oneduo/nova-file-manager',
       },
       {
         text: 'Other packages',
-        link: 'https://github.com/BBS-Lab',
+        link: 'https://github.com/oneduo',
       },
     ],
   },
@@ -109,14 +109,14 @@ let head = [
     'meta',
     {
       property: 'og:url',
-      content: 'https://github.com/BBS-Lab/nova-file-manager',
+      content: 'https://github.com/oneduo/nova-file-manager',
     },
   ],
   [
     'meta',
     {
       property: 'og:image',
-      content: 'https://raw.githubusercontent.com/BBS-Lab/nova-file-manager/main/docs/cover.png',
+      content: 'https://raw.githubusercontent.com/oneduo/nova-file-manager/main/docs/cover.png',
     },
   ],
   [
@@ -143,12 +143,12 @@ let theme = {
   socialLinks: [
     {
       icon: 'github',
-      link: 'https://github.com/BBS-Lab/nova-file-manager',
+      link: 'https://github.com/oneduo/nova-file-manager',
     },
   ],
   editLink: {
     text: 'Edit page',
-    pattern: 'https://github.com/BBS-Lab/nova-file-manager/edit/main/docs/:path',
+    pattern: 'https://github.com/oneduo/nova-file-manager/edit/main/docs/:path',
   },
   algolia: {
     apiKey: 'f9cb045fd7c64079aecb15f9e450cf29',

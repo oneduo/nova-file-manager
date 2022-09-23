@@ -2,15 +2,15 @@
 
 declare(strict_types=1);
 
-namespace BBSLab\NovaFileManager;
+namespace Oneduo\NovaFileManager;
 
-use BBSLab\NovaFileManager\Contracts\Services\FileManagerContract;
-use BBSLab\NovaFileManager\Contracts\Support\InteractsWithFilesystem;
-use BBSLab\NovaFileManager\Support\Asset;
 use Closure;
 use JsonException;
 use Laravel\Nova\Fields\Field;
 use Laravel\Nova\Http\Requests\NovaRequest;
+use Oneduo\NovaFileManager\Contracts\Services\FileManagerContract;
+use Oneduo\NovaFileManager\Contracts\Support\InteractsWithFilesystem;
+use Oneduo\NovaFileManager\Support\Asset;
 use stdClass;
 
 class FileManager extends Field implements InteractsWithFilesystem
@@ -130,7 +130,7 @@ class FileManager extends Field implements InteractsWithFilesystem
             ->map(function (Asset $asset) {
                 $disk = $this->resolveFilesystem(app(NovaRequest::class)) ?? $asset->disk;
 
-                /** @var \BBSLab\NovaFileManager\Services\FileManagerService $manager */
+                /** @var \Oneduo\NovaFileManager\Services\FileManagerService $manager */
                 $manager = app(FileManagerContract::class, ['disk' => $disk]);
 
                 if ($this->hasUrlResolver()) {

@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace BBSLab\NovaFileManager\Traits\Support;
+namespace Oneduo\NovaFileManager\Traits\Support;
 
 use Closure;
 use Illuminate\Contracts\Filesystem\Filesystem;
@@ -15,31 +15,35 @@ trait InteractsWithFilesystem
 
     protected ?Closure $filesystemCallback = null;
 
-    protected ?Closure $showCreateFolder = null;
-
-    protected ?Closure $showRenameFolder = null;
-
-    protected ?Closure $showDeleteFolder = null;
-
-    protected ?Closure $showUploadFile = null;
-
-    protected ?Closure $showRenameFile = null;
-
-    protected ?Closure $showDeleteFile = null;
-
-    protected ?Closure $showCropImage = null;
-
     protected ?Closure $canCreateFolder = null;
 
-    protected ?Closure $canRenameFolder = null;
+    protected ?Closure $canDeleteFile = null;
 
     protected ?Closure $canDeleteFolder = null;
 
-    protected ?Closure $canUploadFile = null;
-
     protected ?Closure $canRenameFile = null;
 
-    protected ?Closure $canDeleteFile = null;
+    protected ?Closure $canRenameFolder = null;
+
+    protected ?Closure $canUnzipFile = null;
+
+    protected ?Closure $canUploadFile = null;
+
+    protected ?Closure $showCreateFolder = null;
+
+    protected ?Closure $showCropImage = null;
+
+    protected ?Closure $showDeleteFile = null;
+
+    protected ?Closure $showDeleteFolder = null;
+
+    protected ?Closure $showRenameFile = null;
+
+    protected ?Closure $showRenameFolder = null;
+
+    protected ?Closure $showUnzipFile = null;
+
+    protected ?Closure $showUploadFile = null;
 
     protected array $uploadRules = [];
 
@@ -148,6 +152,13 @@ trait InteractsWithFilesystem
             : true;
     }
 
+    public function shouldShowUnzipFile(NovaRequest $request): bool
+    {
+        return is_callable($this->showUnzipFile)
+            ? call_user_func($this->showUnzipFile, $request)
+            : true;
+    }
+
     public function showCropImage(Closure $callback): static
     {
         $this->showCropImage = $callback;
@@ -246,6 +257,13 @@ trait InteractsWithFilesystem
             : $this->shouldShowDeleteFile($request);
     }
 
+    public function resolveCanUnzipFile(NovaRequest $request): bool
+    {
+        return is_callable($this->canUnzipFile)
+            ? call_user_func($this->canUnzipFile, $request)
+            : $this->shouldShowDeleteFile($request);
+    }
+
     public function hasUploadValidator(): bool
     {
         return $this->uploadValidator !== null && is_callable($this->uploadValidator);
@@ -289,15 +307,20 @@ trait InteractsWithFilesystem
     {
         return with(app(NovaRequest::class), function (NovaRequest $request) {
             return [
-                'customDisk' => $this->hasCustomFilesystem(),
+                'singleDisk' => $this->hasCustomFilesystem(),
                 'permissions' => [
-                    'showCreateFolder' => $this->shouldShowCreateFolder($request),
-                    'showRenameFolder' => $this->shouldShowRenameFolder($request),
-                    'showDeleteFolder' => $this->shouldShowDeleteFolder($request),
-                    'showUploadFile' => $this->shouldShowUploadFile($request),
-                    'showRenameFile' => $this->shouldShowRenameFile($request),
-                    'showDeleteFile' => $this->shouldShowDeleteFile($request),
-                    'showCropImage' => $this->shouldShowCropImage($request),
+                    'folder' => [
+                        'create' => $this->shouldShowCreateFolder($request),
+                        'rename' => $this->shouldShowRenameFolder($request),
+                        'delete' => $this->shouldShowDeleteFolder($request),
+                    ],
+                    'file' => [
+                        'upload' => $this->shouldShowUploadFile($request),
+                        'rename' => $this->shouldShowRenameFile($request),
+                        'edit' => $this->shouldShowCropImage($request),
+                        'delete' => $this->shouldShowDeleteFile($request),
+                        'unzip' => $this->shouldShowUnzipFile($request),
+                    ],
                 ],
             ];
         });

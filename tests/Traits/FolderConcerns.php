@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace BBSLab\NovaFileManager\Tests\Traits;
+namespace Oneduo\NovaFileManager\Tests\Traits;
 
 use Illuminate\Foundation\Auth\User;
 use Illuminate\Support\Facades\Storage;
@@ -49,7 +49,7 @@ trait FolderConcerns
                 ->assertUnprocessable()
                 ->assertJsonValidationErrors([
                     'folder' => [
-                        $message ?? __('This action is unauthorized.'),
+                        $message ?? __('nova-file-manager::errors.authorization.unauthorized', ['action' => 'create folder']),
                     ],
                 ]);
 
@@ -69,8 +69,8 @@ trait FolderConcerns
                     uri: route('nova-file-manager.folders.rename'),
                     data: [
                         'disk' => $this->disk,
-                        'oldPath' => $old,
-                        'newPath' => $new,
+                        'from' => $old,
+                        'to' => $new,
                     ],
                 )
                 ->assertOk();
@@ -92,14 +92,14 @@ trait FolderConcerns
                     uri: route('nova-file-manager.folders.rename'),
                     data: [
                         'disk' => $this->disk,
-                        'oldPath' => $old,
-                        'newPath' => $new,
+                        'from' => $old,
+                        'to' => $new,
                     ],
                 )
                 ->assertUnprocessable()
                 ->assertJsonValidationErrors([
                     'folder' => [
-                        $message ?? __('This action is unauthorized.'),
+                        $message ?? __('nova-file-manager::errors.authorization.unauthorized', ['action' => 'rename folder']),
                     ],
                 ]);
 
@@ -145,7 +145,7 @@ trait FolderConcerns
                 ->assertUnprocessable()
                 ->assertJsonValidationErrors([
                     'folder' => [
-                        $message ?? __('This action is unauthorized.'),
+                        $message ?? __('nova-file-manager::errors.authorization.unauthorized', ['action' => 'delete folder']),
                     ],
                 ]);
 

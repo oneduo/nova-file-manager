@@ -1,7 +1,7 @@
 <template>
   <template v-if="view === 'grid'">
     <div class="space-y-2 mb-2">
-      <Disclosure v-if="directories?.length" v-slot="{ open }" :default-open="true">
+      <Disclosure v-if="folders?.length" v-slot="{ open }" :default-open="true">
         <DisclosureButton>
           <div class="flex flex-row w-full items-center gap-x-1">
             <span class="text-gray-500 text-xs">{{ __('Folders') }}</span>
@@ -12,7 +12,7 @@
 
         <DisclosurePanel>
           <section aria-labelledby="gallery-heading">
-            <DirectoryGrid :directories="directories" />
+            <DirectoryGrid :folders="folders" />
           </section>
         </DisclosurePanel>
       </Disclosure>
@@ -29,7 +29,7 @@
 
         <DisclosurePanel>
           <section aria-labelledby="gallery-heading">
-            <FileGrid />
+            <FileGrid :files="files" />
           </section>
         </DisclosurePanel>
       </Disclosure>
@@ -50,5 +50,20 @@ import DirectoryGrid from '@/components/DirectoryGrid'
 import List from '@/components/List'
 import Empty from '@/components/Empty'
 
-defineProps(['view', 'files', 'directories', 'filled'])
+defineProps({
+  view: {
+    type: String,
+    default: 'grid',
+  },
+  files: {
+    type: Array,
+  },
+  folders: {
+    type: Array,
+  },
+  filled: {
+    type: Boolean,
+    default: false,
+  },
+})
 </script>

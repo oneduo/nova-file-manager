@@ -49,4 +49,4 @@ npm run build
 ```
 
 ## Reference
-If you are encountering any issues, please refer to the [Laravel Nova Documentation](https://nova.laravel.com/docs/4.0/customization/frontend.html#using-nova-mixins). Or you may open a new issue/discussion at https://github.com/BBS-Lab/nova-file-manager
+If you are encountering any issues, please refer to the [Laravel Nova Documentation](https://nova.laravel.com/docs/4.0/customization/frontend.html#using-nova-mixins). Or you may open a new issue/discussion at https://github.com/oneduo/nova-file-manager

@@ -2,25 +2,25 @@
 
 declare(strict_types=1);
 
-namespace BBSLab\NovaFileManager\Http\Requests;
+namespace Oneduo\NovaFileManager\Http\Requests;
 
-use BBSLab\NovaFileManager\Contracts\Services\FileManagerContract;
-use BBSLab\NovaFileManager\Contracts\Support\InteractsWithFilesystem;
-use BBSLab\NovaFileManager\FileManager;
-use BBSLab\NovaFileManager\NovaFileManager;
 use Illuminate\Validation\ValidationException;
 use Laravel\Nova\Fields\FieldCollection;
 use Laravel\Nova\Http\Requests\NovaRequest;
 use Laravel\Nova\Nova;
 use Laravel\Nova\Resource;
 use Laravel\Nova\Tool;
+use Oneduo\NovaFileManager\Contracts\Services\FileManagerContract;
+use Oneduo\NovaFileManager\Contracts\Support\InteractsWithFilesystem;
+use Oneduo\NovaFileManager\FileManager;
+use Oneduo\NovaFileManager\NovaFileManager;
 
 /**
  * @property-read ?string $disk
  * @property-read ?string $attribute
  * @property-read ?string $resource
  * @property-read ?string $resourceId
- * @property-read ?bool $fieldMode
+ * @property-read ?string $fieldMode
  */
 class BaseRequest extends NovaRequest
 {
@@ -30,7 +30,7 @@ class BaseRequest extends NovaRequest
             /** @var NovaFileManager $element */
             $element = $this->element();
 
-            /** @var \BBSLab\NovaFileManager\Services\FileManagerService $manager */
+            /** @var \Oneduo\NovaFileManager\Services\FileManagerService $manager */
             $manager = app(
                 abstract: FileManagerContract::class,
                 parameters: $element?->hasCustomFilesystem() ? ['disk' => $element?->resolveFilesystem($this)] : [],
@@ -46,7 +46,7 @@ class BaseRequest extends NovaRequest
 
     public function element(): ?InteractsWithFilesystem
     {
-        return $this->fieldMode ? $this->resolveField() : $this->resolveTool();
+        return filter_var($this->fieldMode, FILTER_VALIDATE_BOOL) ? $this->resolveField() : $this->resolveTool();
     }
 
     public function resolveField(): ?InteractsWithFilesystem
@@ -147,15 +147,25 @@ class BaseRequest extends NovaRequest
         return $this->element()?->resolveCanDeleteFile($this) ?? true;
     }
 
+    public function canUnzipArchive(): bool
+    {
+        return $this->element()?->resolveCanUnzipFile($this) ?? true;
+    }
+
     protected function failedAuthorization(): void
     {
         throw ValidationException::withMessages([
-            $this->authorizationAttribute() => __('This action is unauthorized.'),
+            $this->authorizationAttribute() => __('nova-file-manager::errors.authorization.unauthorized', ['action' => $this->authorizationActionAttribute()]),
         ]);
     }
 
     public function authorizationAttribute(): string
     {
         return strtolower(str(static::class)->classBasename()->ucsplit()->get(1, ''));
+    }
+
+    public function authorizationActionAttribute(string $class = null): string
+    {
+        return (string) str($class ?? static::class)->classBasename()->replace('Request', '')->snake(' ');
     }
 }
