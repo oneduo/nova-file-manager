@@ -49,7 +49,7 @@ trait FolderConcerns
                 ->assertUnprocessable()
                 ->assertJsonValidationErrors([
                     'folder' => [
-                        $message ?? __('This action is unauthorized.'),
+                        $message ?? __('nova-file-manager::errors.authorization.unauthorized', ['action' => 'create folder']),
                     ],
                 ]);
 
@@ -99,7 +99,7 @@ trait FolderConcerns
                 ->assertUnprocessable()
                 ->assertJsonValidationErrors([
                     'folder' => [
-                        $message ?? __('This action is unauthorized.'),
+                        $message ?? __('nova-file-manager::errors.authorization.unauthorized', ['action' => 'rename folder']),
                     ],
                 ]);
 
@@ -145,7 +145,7 @@ trait FolderConcerns
                 ->assertUnprocessable()
                 ->assertJsonValidationErrors([
                     'folder' => [
-                        $message ?? __('This action is unauthorized.'),
+                        $message ?? __('nova-file-manager::errors.authorization.unauthorized', ['action' => 'delete folder']),
                     ],
                 ]);
 

@@ -64,7 +64,7 @@ class Uploader implements UploaderContract
         event(new FileUploaded($request->manager()->disk, $path));
 
         return [
-            'message' => __('Uploaded successfully'),
+            'message' => __('nova-file-manager::messages.file.upload'),
         ];
     }
 }

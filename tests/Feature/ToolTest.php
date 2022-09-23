@@ -18,19 +18,23 @@ it('can show the file manager tool', function () {
 
     get(route('nova-file-manager.tool'))
         ->assertInertia(function (Assert $page) {
-            ray($page);
             $page
                 ->component('NovaFileManager', false)
                 ->where('config.upload', null)
-                ->where('config.customDisk', false)
+                ->where('config.singleDisk', false)
                 ->where('config.permissions', [
-                    'showCreateFolder' => true,
-                    'showRenameFolder' => true,
-                    'showDeleteFolder' => true,
-                    'showUploadFile' => true,
-                    'showRenameFile' => true,
-                    'showDeleteFile' => true,
-                    'showCropImage' => true,
+                    'file' => [
+                        'delete' => true,
+                        'edit' => true,
+                        'rename' => true,
+                        'unzip' => true,
+                        'upload' => true,
+                    ],
+                    'folder' => [
+                        'create' => true,
+                        'delete' => true,
+                        'rename' => true,
+                    ],
                 ]);
         });
 });

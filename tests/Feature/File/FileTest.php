@@ -27,11 +27,12 @@ it('can upload file', function () {
             'disk' => $this->disk,
             'path' => '/',
             'file' => UploadedFile::fake()->image($path = 'image.jpeg'),
+            'resumableFilename' => $path,
         ],
     )
         ->assertOk()
         ->assertJson([
-            'message' => __('Uploaded successfully'),
+            'message' => __('nova-file-manager::messages.file.upload'),
         ]);
 
     Storage::disk($this->disk)->assertExists($path);

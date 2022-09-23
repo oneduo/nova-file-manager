@@ -106,6 +106,7 @@ it('can validate upload', function () {
                 'disk' => $this->disk,
                 'path' => '/',
                 'file' => UploadedFile::fake()->image($path = 'image.jpeg'),
+                'resumableFilename' => $path,
             ],
         )
         ->assertUnprocessable()
@@ -139,6 +140,7 @@ it('can throw a custom validation message using validateUploadUsing', function (
                 'disk' => $this->disk,
                 'path' => '/',
                 'file' => UploadedFile::fake()->image($path = 'image.jpeg'),
+                'resumableFilename' => $path,
             ],
         )
         ->assertUnprocessable()
