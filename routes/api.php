@@ -2,11 +2,11 @@
 
 declare(strict_types=1);
 
+use Illuminate\Support\Facades\Route;
 use Oneduo\NovaFileManager\Http\Controllers\DiskController;
 use Oneduo\NovaFileManager\Http\Controllers\FileController;
 use Oneduo\NovaFileManager\Http\Controllers\FolderController;
 use Oneduo\NovaFileManager\Http\Controllers\IndexController;
-use Illuminate\Support\Facades\Route;
 
 /*
 |--------------------------------------------------------------------------

@@ -4,13 +4,13 @@ declare(strict_types=1);
 
 namespace Oneduo\NovaFileManager\Http\Middleware;
 
-use Oneduo\NovaFileManager\NovaFileManager;
 use Closure;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
 use Illuminate\Http\Response;
 use Laravel\Nova\Nova;
 use Laravel\Nova\Tool;
+use Oneduo\NovaFileManager\NovaFileManager;
 
 class Authorize
 {

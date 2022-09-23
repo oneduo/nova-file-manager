@@ -2,15 +2,15 @@
 
 declare(strict_types=1);
 
-use Oneduo\NovaFileManager\NovaFileManager;
-use Oneduo\NovaFileManager\Tests\Fixture\TestResource;
-use Oneduo\NovaFileManager\Tests\Fixture\TestResourceWithOnDemandFilesystem;
 use Illuminate\Foundation\Auth\User;
 use Illuminate\Support\Arr;
 use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Str;
 use Laravel\Nova\Http\Requests\NovaRequest;
 use Laravel\Nova\Nova;
+use Oneduo\NovaFileManager\NovaFileManager;
+use Oneduo\NovaFileManager\Tests\Fixture\TestResource;
+use Oneduo\NovaFileManager\Tests\Fixture\TestResourceWithOnDemandFilesystem;
 use function Pest\Laravel\actingAs;
 use function Pest\Laravel\getJson;
 

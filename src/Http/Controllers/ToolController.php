@@ -4,7 +4,6 @@ declare(strict_types=1);
 
 namespace Oneduo\NovaFileManager\Http\Controllers;
 
-use Oneduo\NovaFileManager\NovaFileManager;
 use Carbon\CarbonInterval;
 use Closure;
 use Composer\InstalledVersions;
@@ -16,6 +15,7 @@ use Inertia\Response;
 use Laravel\Nova\Http\Requests\NovaRequest;
 use Laravel\Nova\Nova;
 use Laravel\Nova\Tool;
+use Oneduo\NovaFileManager\NovaFileManager;
 
 class ToolController extends Controller
 {

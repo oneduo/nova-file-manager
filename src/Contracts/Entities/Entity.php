@@ -4,8 +4,8 @@ declare(strict_types=1);
 
 namespace Oneduo\NovaFileManager\Contracts\Entities;
 
-use Oneduo\NovaFileManager\Contracts\Services\FileManagerContract;
 use Illuminate\Support\Carbon;
+use Oneduo\NovaFileManager\Contracts\Services\FileManagerContract;
 
 interface Entity
 {

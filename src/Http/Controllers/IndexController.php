@@ -4,8 +4,8 @@ declare(strict_types=1);
 
 namespace Oneduo\NovaFileManager\Http\Controllers;
 
-use Oneduo\NovaFileManager\Http\Requests\IndexRequest;
 use Illuminate\Routing\Controller;
+use Oneduo\NovaFileManager\Http\Requests\IndexRequest;
 
 class IndexController extends Controller
 {

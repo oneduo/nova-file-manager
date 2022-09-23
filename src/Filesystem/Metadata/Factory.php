@@ -4,8 +4,8 @@ declare(strict_types=1);
 
 namespace Oneduo\NovaFileManager\Filesystem\Metadata;
 
-use Oneduo\NovaFileManager\Contracts\Filesystem\Metadata\Analyzer;
 use Illuminate\Contracts\Filesystem\Filesystem;
+use Oneduo\NovaFileManager\Contracts\Filesystem\Metadata\Analyzer;
 
 class Factory
 {

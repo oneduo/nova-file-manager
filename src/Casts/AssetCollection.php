@@ -4,10 +4,10 @@ declare(strict_types=1);
 
 namespace Oneduo\NovaFileManager\Casts;
 
-use Oneduo\NovaFileManager\Support\Asset;
 use Illuminate\Contracts\Database\Eloquent\CastsAttributes;
 use Illuminate\Support\Collection;
 use InvalidArgumentException;
+use Oneduo\NovaFileManager\Support\Asset;
 
 class AssetCollection implements CastsAttributes
 {

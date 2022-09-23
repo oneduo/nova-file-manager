@@ -4,13 +4,13 @@ declare(strict_types=1);
 
 namespace Oneduo\NovaFileManager;
 
-use Oneduo\NovaFileManager\Contracts\Services\FileManagerContract;
-use Oneduo\NovaFileManager\Contracts\Support\InteractsWithFilesystem;
-use Oneduo\NovaFileManager\Support\Asset;
 use Closure;
 use JsonException;
 use Laravel\Nova\Fields\Field;
 use Laravel\Nova\Http\Requests\NovaRequest;
+use Oneduo\NovaFileManager\Contracts\Services\FileManagerContract;
+use Oneduo\NovaFileManager\Contracts\Support\InteractsWithFilesystem;
+use Oneduo\NovaFileManager\Support\Asset;
 use stdClass;
 
 class FileManager extends Field implements InteractsWithFilesystem

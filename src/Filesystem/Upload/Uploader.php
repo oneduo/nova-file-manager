@@ -4,11 +4,11 @@ declare(strict_types=1);
 
 namespace Oneduo\NovaFileManager\Filesystem\Upload;
 
+use Illuminate\Http\UploadedFile;
+use Illuminate\Validation\ValidationException;
 use Oneduo\NovaFileManager\Contracts\Filesystem\Upload\Uploader as UploaderContract;
 use Oneduo\NovaFileManager\Events\FileUploaded;
 use Oneduo\NovaFileManager\Http\Requests\UploadFileRequest;
-use Illuminate\Http\UploadedFile;
-use Illuminate\Validation\ValidationException;
 use Pion\Laravel\ChunkUpload\Exceptions\UploadMissingFileException;
 use Pion\Laravel\ChunkUpload\Handler\HandlerFactory;
 use Pion\Laravel\ChunkUpload\Receiver\FileReceiver;

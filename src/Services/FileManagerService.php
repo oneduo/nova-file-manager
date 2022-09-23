@@ -4,10 +4,6 @@ declare(strict_types=1);
 
 namespace Oneduo\NovaFileManager\Services;
 
-use Oneduo\NovaFileManager\Contracts\Services\FileManagerContract;
-use Oneduo\NovaFileManager\Contracts\Support\ResolvesUrl as ResolvesUrlContract;
-use Oneduo\NovaFileManager\Entities\Entity;
-use Oneduo\NovaFileManager\Traits\Support\ResolvesUrl;
 use Closure;
 use Illuminate\Container\Container;
 use Illuminate\Contracts\Filesystem\Filesystem;
@@ -17,6 +13,10 @@ use Illuminate\Support\Collection;
 use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Str;
 use League\Flysystem\UnableToRetrieveMetadata;
+use Oneduo\NovaFileManager\Contracts\Services\FileManagerContract;
+use Oneduo\NovaFileManager\Contracts\Support\ResolvesUrl as ResolvesUrlContract;
+use Oneduo\NovaFileManager\Entities\Entity;
+use Oneduo\NovaFileManager\Traits\Support\ResolvesUrl;
 
 class FileManagerService implements FileManagerContract, ResolvesUrlContract
 {
@@ -402,8 +402,7 @@ class FileManagerService implements FileManagerContract, ResolvesUrlContract
         int $page = 1,
         int $perPage = 15,
         ?string $search = null
-    ): static
-    {
+    ): static {
         return new self($disk, $path, $page, $perPage, $search);
     }
 }

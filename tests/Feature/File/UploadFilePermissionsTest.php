@@ -2,14 +2,14 @@
 
 declare(strict_types=1);
 
-use Oneduo\NovaFileManager\Http\Requests\UploadFileRequest;
-use Oneduo\NovaFileManager\NovaFileManager;
 use Illuminate\Foundation\Auth\User;
 use Illuminate\Http\UploadedFile;
 use Illuminate\Support\Facades\Storage;
 use Illuminate\Validation\ValidationException;
 use Laravel\Nova\Http\Requests\NovaRequest;
 use Laravel\Nova\Nova;
+use Oneduo\NovaFileManager\Http\Requests\UploadFileRequest;
+use Oneduo\NovaFileManager\NovaFileManager;
 use function Pest\Laravel\actingAs;
 
 beforeEach(function () {

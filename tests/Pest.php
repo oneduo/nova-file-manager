@@ -2,12 +2,12 @@
 
 declare(strict_types=1);
 
+use Laravel\Nova\Nova;
 use Oneduo\NovaFileManager\NovaFileManager;
 use Oneduo\NovaFileManager\Tests\DuskTestCase;
 use Oneduo\NovaFileManager\Tests\TestCase;
 use Oneduo\NovaFileManager\Tests\Traits\FileConcerns;
 use Oneduo\NovaFileManager\Tests\Traits\FolderConcerns;
-use Laravel\Nova\Nova;
 
 uses(TestCase::class)->in('Feature');
 uses(FolderConcerns::class)->in('Feature/Directory');

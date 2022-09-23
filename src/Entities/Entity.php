@@ -4,13 +4,13 @@ declare(strict_types=1);
 
 namespace Oneduo\NovaFileManager\Entities;
 
-use Oneduo\NovaFileManager\Contracts\Entities\Entity as EntityContract;
-use Oneduo\NovaFileManager\Contracts\Services\FileManagerContract;
 use Illuminate\Contracts\Support\Arrayable;
 use Illuminate\fileSystem\AwsS3V3Adapter;
 use Illuminate\Support\Carbon;
 use Laravel\Nova\Http\Requests\NovaRequest;
 use League\Flysystem\UnableToRetrieveMetadata;
+use Oneduo\NovaFileManager\Contracts\Entities\Entity as EntityContract;
+use Oneduo\NovaFileManager\Contracts\Services\FileManagerContract;
 
 abstract class Entity implements Arrayable, EntityContract
 {

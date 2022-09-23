@@ -4,15 +4,15 @@ declare(strict_types=1);
 
 namespace Oneduo\NovaFileManager\Http\Controllers;
 
+use Illuminate\Http\JsonResponse;
+use Illuminate\Routing\Controller;
+use Illuminate\Validation\ValidationException;
 use Oneduo\NovaFileManager\Events\FolderCreated;
 use Oneduo\NovaFileManager\Events\FolderDeleted;
 use Oneduo\NovaFileManager\Events\FolderRenamed;
 use Oneduo\NovaFileManager\Http\Requests\CreateFolderRequest;
 use Oneduo\NovaFileManager\Http\Requests\DeleteFolderRequest;
 use Oneduo\NovaFileManager\Http\Requests\RenameFolderRequest;
-use Illuminate\Http\JsonResponse;
-use Illuminate\Routing\Controller;
-use Illuminate\Validation\ValidationException;
 
 class FolderController extends Controller
 {

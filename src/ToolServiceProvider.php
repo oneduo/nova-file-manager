@@ -4,15 +4,15 @@ declare(strict_types=1);
 
 namespace Oneduo\NovaFileManager;
 
+use Illuminate\Foundation\Application;
+use Illuminate\Support\Facades\Route;
+use Illuminate\Support\ServiceProvider;
+use Laravel\Nova\Nova;
 use Oneduo\NovaFileManager\Contracts\Filesystem\Upload\Uploader as UploaderContract;
 use Oneduo\NovaFileManager\Contracts\Services\FileManagerContract;
 use Oneduo\NovaFileManager\Filesystem\Upload\Uploader;
 use Oneduo\NovaFileManager\Http\Middleware\Authorize;
 use Oneduo\NovaFileManager\Services\FileManagerService;
-use Illuminate\Foundation\Application;
-use Illuminate\Support\Facades\Route;
-use Illuminate\Support\ServiceProvider;
-use Laravel\Nova\Nova;
 
 class ToolServiceProvider extends ServiceProvider
 {

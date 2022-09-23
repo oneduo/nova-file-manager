@@ -4,8 +4,8 @@ declare(strict_types=1);
 
 namespace Oneduo\NovaFileManager\Rules;
 
-use Oneduo\NovaFileManager\Http\Requests\UploadFileRequest;
 use Illuminate\Contracts\Validation\Rule;
+use Oneduo\NovaFileManager\Http\Requests\UploadFileRequest;
 
 class FileMissingInFilesystem implements Rule
 {

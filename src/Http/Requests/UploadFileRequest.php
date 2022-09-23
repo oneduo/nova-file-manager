@@ -4,12 +4,12 @@ declare(strict_types=1);
 
 namespace Oneduo\NovaFileManager\Http\Requests;
 
+use Illuminate\Http\UploadedFile;
+use Illuminate\Support\Str;
 use Oneduo\NovaFileManager\Filesystem\Support\GetID3;
 use Oneduo\NovaFileManager\Rules\DiskExistsRule;
 use Oneduo\NovaFileManager\Rules\ExistsInFilesystem;
 use Oneduo\NovaFileManager\Rules\FileMissingInFilesystem;
-use Illuminate\Http\UploadedFile;
-use Illuminate\Support\Str;
 
 /**
  * @property-read string|null $disk

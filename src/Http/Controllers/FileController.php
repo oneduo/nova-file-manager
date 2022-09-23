@@ -4,6 +4,9 @@ declare(strict_types=1);
 
 namespace Oneduo\NovaFileManager\Http\Controllers;
 
+use Illuminate\Http\JsonResponse;
+use Illuminate\Routing\Controller;
+use Illuminate\Validation\ValidationException;
 use Oneduo\NovaFileManager\Contracts\Filesystem\Upload\Uploader;
 use Oneduo\NovaFileManager\Events\FileDeleted;
 use Oneduo\NovaFileManager\Events\FileRenamed;
@@ -12,9 +15,6 @@ use Oneduo\NovaFileManager\Http\Requests\DeleteFileRequest;
 use Oneduo\NovaFileManager\Http\Requests\RenameFileRequest;
 use Oneduo\NovaFileManager\Http\Requests\UnzipFileRequest;
 use Oneduo\NovaFileManager\Http\Requests\UploadFileRequest;
-use Illuminate\Http\JsonResponse;
-use Illuminate\Routing\Controller;
-use Illuminate\Validation\ValidationException;
 
 class FileController extends Controller
 {
