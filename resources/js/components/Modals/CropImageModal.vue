@@ -1,41 +1,41 @@
 <template>
   <BaseModal as="template" class="nova-file-manager" :name="name">
-      <DialogPanel
-          class="relative bg-gray-100 dark:bg-gray-900 rounded-lg overflow-hidden shadow-xl transform transition-all w-full max-w-7xl p-4 flex flex-col gap-4 h-[80vh] max-h-[80vh]"
+    <DialogPanel
+      class="relative bg-gray-100 dark:bg-gray-900 rounded-lg overflow-hidden shadow-xl transform transition-all w-full max-w-7xl p-4 flex flex-col gap-4 h-[80vh] max-h-[80vh]"
+    >
+      <div
+        class="w-full flex flex-col flex-col-reverse gap-2 md:flex-row justify-between items-start"
       >
-          <div
-              class="w-full flex flex-col flex-col-reverse gap-2 md:flex-row justify-between items-start"
+        <h2 class="text-lg font-medium text-gray-900 dark:text-gray-400 break-all w-full">
+          {{ __('NovaFileManager.actions.cropImage', { image: file.name }) }}
+        </h2>
+
+        <div class="flex flex-row gap-2 justify-end flex-shrink-0">
+          <IconButton
+            ref="buttonRef"
+            :title="__('NovaFileManager.actions.close')"
+            @click.prevent.stop="close"
           >
-              <h2 class="text-lg font-medium text-gray-900 dark:text-gray-400 break-all w-full">
-                  {{ __('NovaFileManager.actions.cropImage', { image: file.name }) }}
-              </h2>
+            <XMarkIcon class="w-5 h-5" />
+          </IconButton>
 
-              <div class="flex flex-row gap-2 justify-end flex-shrink-0">
-                  <IconButton
-                      ref="buttonRef"
-                      :title="__('NovaFileManager.actions.close')"
-                      @click.prevent.stop="close"
-                  >
-                      <XMarkIcon class="w-5 h-5" />
-                  </IconButton>
+          <IconButton variant="success" @click="openUploadCropModal">
+            <CheckIcon class="h-5 w-5" />
+          </IconButton>
+        </div>
+      </div>
 
-                  <IconButton variant="success" @click="openUploadCropModal">
-                      <CheckIcon class="h-5 w-5" />
-                  </IconButton>
-              </div>
-          </div>
-
-          <div class="h-full max-h-[70vh]">
-              <vue-cropper
-                  ref="cropper"
-                  :containerStyle="containerStyle"
-                  :src="file.url"
-                  alt="file.name"
-                  :viewMode="1"
-              >
-              </vue-cropper>
-          </div>
-      </DialogPanel>
+      <div class="h-full max-h-[70vh]">
+        <vue-cropper
+          ref="cropper"
+          :containerStyle="containerStyle"
+          :src="file.url"
+          alt="file.name"
+          :viewMode="1"
+        >
+        </vue-cropper>
+      </div>
+    </DialogPanel>
   </BaseModal>
 
   <UploadCropModal

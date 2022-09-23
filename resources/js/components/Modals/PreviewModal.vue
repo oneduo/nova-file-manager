@@ -1,165 +1,161 @@
 <template>
-    <BaseModal as="template" class="nova-file-manager" name="preview">
-      <DialogPanel
-          class="relative bg-gray-100 dark:bg-gray-900 rounded-lg overflow-hidden shadow-xl transform transition-all w-full max-w-7xl p-4 flex flex-col gap-4"
+  <BaseModal as="template" class="nova-file-manager" name="preview">
+    <DialogPanel
+      class="relative bg-gray-100 dark:bg-gray-900 rounded-lg overflow-hidden shadow-xl transform transition-all w-full max-w-7xl p-4 flex flex-col gap-4"
+    >
+      <div
+        class="w-full flex flex-col flex-col-reverse gap-y-2 md:flex-row justify-between items-start"
       >
-          <div
-              class="w-full flex flex-col flex-col-reverse gap-y-2 md:flex-row justify-between items-start"
+        <h2 class="text-lg font-medium text-gray-900 dark:text-gray-400 break-all w-full">
+          {{ file?.name }}
+        </h2>
+
+        <div class="flex flex-row gap-2 justify-end flex-shrink-0">
+          <IconButton
+            v-if="!readOnly && showDeleteFile"
+            variant="danger"
+            @click="openModal(`delete-file-${file?.id}`)"
+            :title="__('NovaFileManager.actions.delete')"
           >
-              <h2 class="text-lg font-medium text-gray-900 dark:text-gray-400 break-all w-full">
-                  {{ file?.name }}
-              </h2>
+            <TrashIcon class="w-5 h-5" />
+          </IconButton>
+          <IconButton
+            v-if="!readOnly && showCropImage && file?.type === 'image'"
+            variant="secondary"
+            @click="openModal(`crop-image-${file?.id}`)"
+            :title="__('NovaFileManager.actions.cropImage', { image: file?.name })"
+          >
+            <CropIcon class="w-5 h-5" />
+          </IconButton>
 
-              <div class="flex flex-row gap-2 justify-end flex-shrink-0">
-                  <IconButton
-                      v-if="!readOnly && showDeleteFile"
-                      variant="danger"
-                      @click="openModal(`delete-file-${file?.id}`)"
-                      :title="__('NovaFileManager.actions.delete')"
-                  >
-                      <TrashIcon class="w-5 h-5" />
-                  </IconButton>
-                  <IconButton
-                      v-if="!readOnly && showCropImage && file?.type === 'image'"
-                      variant="secondary"
-                      @click="openModal(`crop-image-${file?.id}`)"
-                      :title="__('NovaFileManager.actions.cropImage', { image: file?.name })"
-                  >
-                      <CropIcon class="w-5 h-5" />
-                  </IconButton>
+          <IconButton
+            v-if="!readOnly && showUnzipFile && file?.type === 'zip'"
+            variant="secondary"
+            @click="onUnzip(file.path)"
+            :title="__('NovaFileManager.actions.unzip')"
+          >
+            <ArchiveBoxIcon class="w-5 h-5" />
+          </IconButton>
 
-                  <IconButton
-                      v-if="!readOnly && showUnzipFile && file?.type === 'zip'"
-                      variant="secondary"
-                      @click="onUnzip(file.path)"
-                      :title="__('NovaFileManager.actions.unzip')"
-                  >
-                      <ArchiveBoxIcon class="w-5 h-5" />
-                  </IconButton>
+          <IconButton
+            @click="copy(file)"
+            variant="secondary"
+            :title="__('NovaFileManager.actions.copy')"
+          >
+            <ClipboardDocumentIcon class="w-5 h-5" />
+          </IconButton>
 
-                  <IconButton
-                      @click="copy(file)"
-                      variant="secondary"
-                      :title="__('NovaFileManager.actions.copy')"
-                  >
-                      <ClipboardDocumentIcon class="w-5 h-5" />
-                  </IconButton>
+          <IconButton
+            :as-anchor="true"
+            :download="file?.name"
+            :href="file?.url"
+            variant="secondary"
+            :title="__('NovaFileManager.actions.download')"
+          >
+            <CloudArrowDownIcon class="w-5 h-5" />
+          </IconButton>
 
-                  <IconButton
-                      :as-anchor="true"
-                      :download="file?.name"
-                      :href="file?.url"
-                      variant="secondary"
-                      :title="__('NovaFileManager.actions.download')"
-                  >
-                      <CloudArrowDownIcon class="w-5 h-5" />
-                  </IconButton>
+          <IconButton
+            v-if="!readOnly && showRenameFile"
+            variant="secondary"
+            @click="openModal(`rename-file-${file?.id}`)"
+            :title="__('NovaFileManager.actions.rename')"
+          >
+            <PencilSquareIcon class="w-5 h-5" />
+          </IconButton>
 
-                  <IconButton
-                      v-if="!readOnly && showRenameFile"
-                      variant="secondary"
-                      @click="openModal(`rename-file-${file?.id}`)"
-                      :title="__('NovaFileManager.actions.rename')"
-                  >
-                      <PencilSquareIcon class="w-5 h-5" />
-                  </IconButton>
+          <IconButton
+            ref="buttonRef"
+            @click="closePreview"
+            :title="__('NovaFileManager.actions.close')"
+          >
+            <XMarkIcon class="w-5 h-5" />
+          </IconButton>
+        </div>
+      </div>
 
-                  <IconButton
-                      ref="buttonRef"
-                      @click="closePreview"
-                      :title="__('NovaFileManager.actions.close')"
-                  >
-                      <XMarkIcon class="w-5 h-5" />
-                  </IconButton>
+      <div class="overflow-hidden flex flex-col md:flex-row gap-4 w-full">
+        <div
+          class="block relative w-full md:w-4/6 overflow-hidden rounded-lg bg-gray-500/10 flex items-center justify-center"
+        >
+          <ImageLoader
+            v-if="file?.type === 'image'"
+            :src="file.url"
+            :is-thumbnail="false"
+            :full-width="false"
+            class="relative"
+          />
+
+          <video
+            v-else-if="file?.type === 'video'"
+            class="w-full max-w-screen max-h-[80vh] relative"
+            controls="controls"
+          >
+            <source :src="file?.url" />
+            Sorry, your browser doesn't support embedded videos.
+          </video>
+
+          <embed
+            v-else-if="file?.type === 'pdf'"
+            :src="file?.url"
+            type="application/pdf"
+            class="w-full max-w-screen h-[80vh]"
+          />
+
+          <DocumentIcon v-else class="h-40 w-40 text-gray-500 m-12" />
+        </div>
+
+        <div class="w-full md:w-2/6">
+          <div>
+            <h3 class="font-medium text-gray-800 dark:text-gray-100">
+              {{ __('NovaFileManager.preview.information') }}
+            </h3>
+            <dl
+              class="mt-2 divide-y divide-gray-200 dark:divide-gray-800/40 border-t border-b border-gray-300 dark:border-gray-800/70"
+            >
+              <div class="flex justify-between py-3 text-sm font-medium">
+                <dt class="text-gray-500">
+                  {{ __('NovaFileManager.meta.size') }}
+                </dt>
+                <dd class="text-gray-400 dark:text-gray-600">
+                  {{ file?.size }}
+                </dd>
               </div>
+
+              <div class="flex justify-between py-3 text-sm font-medium">
+                <dt class="text-gray-500">
+                  {{ __('NovaFileManager.meta.mime') }}
+                </dt>
+                <dd class="text-gray-400 dark:text-gray-600">
+                  {{ file?.mime }}
+                </dd>
+              </div>
+
+              <div class="flex justify-between py-3 text-sm font-medium">
+                <dt class="text-gray-500">
+                  {{ __('NovaFileManager.meta.lastModifiedAt') }}
+                </dt>
+                <dd class="text-gray-400 dark:text-gray-600">
+                  {{ file?.lastModifiedAt }}
+                </dd>
+              </div>
+
+              <template v-for="(value, key) in file?.meta">
+                <div v-if="value" :key="key" class="flex justify-between py-3 text-sm font-medium">
+                  <dt class="text-gray-500">
+                    {{ __(`NovaFileManager.meta.${key}`) }}
+                  </dt>
+                  <dd class="text-gray-400 dark:text-gray-600">
+                    {{ value }}
+                  </dd>
+                </div>
+              </template>
+            </dl>
           </div>
-
-          <div class="overflow-hidden flex flex-col md:flex-row gap-4 w-full">
-              <div
-                  class="block relative w-full md:w-4/6 overflow-hidden rounded-lg bg-gray-500/10 flex items-center justify-center"
-              >
-                  <ImageLoader
-                      v-if="file?.type === 'image'"
-                      :src="file.url"
-                      :is-thumbnail="false"
-                      :full-width="false"
-                      class="relative"
-                  />
-
-                  <video
-                      v-else-if="file?.type === 'video'"
-                      class="w-full max-w-screen max-h-[80vh] relative"
-                      controls="controls"
-                  >
-                      <source :src="file?.url" />
-                      Sorry, your browser doesn't support embedded videos.
-                  </video>
-
-                  <embed
-                      v-else-if="file?.type === 'pdf'"
-                      :src="file?.url"
-                      type="application/pdf"
-                      class="w-full max-w-screen h-[80vh]"
-                  />
-
-                  <DocumentIcon v-else class="h-40 w-40 text-gray-500 m-12" />
-              </div>
-
-              <div class="w-full md:w-2/6">
-                  <div>
-                      <h3 class="font-medium text-gray-800 dark:text-gray-100">
-                          {{ __('NovaFileManager.preview.information') }}
-                      </h3>
-                      <dl
-                          class="mt-2 divide-y divide-gray-200 dark:divide-gray-800/40 border-t border-b border-gray-300 dark:border-gray-800/70"
-                      >
-                          <div class="flex justify-between py-3 text-sm font-medium">
-                              <dt class="text-gray-500">
-                                  {{ __('NovaFileManager.meta.size') }}
-                              </dt>
-                              <dd class="text-gray-400 dark:text-gray-600">
-                                  {{ file?.size }}
-                              </dd>
-                          </div>
-
-                          <div class="flex justify-between py-3 text-sm font-medium">
-                              <dt class="text-gray-500">
-                                  {{ __('NovaFileManager.meta.mime') }}
-                              </dt>
-                              <dd class="text-gray-400 dark:text-gray-600">
-                                  {{ file?.mime }}
-                              </dd>
-                          </div>
-
-                          <div class="flex justify-between py-3 text-sm font-medium">
-                              <dt class="text-gray-500">
-                                  {{ __('NovaFileManager.meta.lastModifiedAt') }}
-                              </dt>
-                              <dd class="text-gray-400 dark:text-gray-600">
-                                  {{ file?.lastModifiedAt }}
-                              </dd>
-                          </div>
-
-                          <template v-for="(value, key) in file?.meta">
-                              <div
-                                  v-if="value"
-                                  :key="key"
-                                  class="flex justify-between py-3 text-sm font-medium"
-                              >
-                                  <dt class="text-gray-500">
-                                      {{ __(`NovaFileManager.meta.${key}`) }}
-                                  </dt>
-                                  <dd class="text-gray-400 dark:text-gray-600">
-                                      {{ value }}
-                                  </dd>
-                              </div>
-                          </template>
-                      </dl>
-                  </div>
-              </div>
-          </div>
-      </DialogPanel>
-    </BaseModal>
+        </div>
+      </div>
+    </DialogPanel>
+  </BaseModal>
 
   <DeleteFileModal v-if="showDeleteFile" :name="`delete-file-${file?.id}`" :on-confirm="onDelete" />
 

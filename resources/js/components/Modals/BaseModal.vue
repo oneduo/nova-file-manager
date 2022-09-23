@@ -13,9 +13,7 @@
         <div class="fixed inset-0 bg-gray-800/20 backdrop-blur-sm transition-opacity" />
       </TransitionChild>
       <div :class="{ dark }" class="fixed z-10 inset-0 overflow-y-auto">
-        <div
-          class="flex items-end sm:items-center justify-center min-h-full p-0 md:p-4"
-        >
+        <div class="flex items-end sm:items-center justify-center min-h-full p-0 md:p-4">
           <TransitionChild
             as="template"
             enter="ease-out duration-300"
