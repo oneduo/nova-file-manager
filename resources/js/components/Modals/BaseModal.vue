@@ -14,7 +14,7 @@
       </TransitionChild>
       <div :class="{ dark }" class="fixed z-10 inset-0 overflow-y-auto">
         <div
-          class="flex items-end sm:items-center justify-center min-h-full p-4 text-center sm:p-0"
+          class="flex items-end sm:items-center justify-center min-h-full p-0 md:p-4"
         >
           <TransitionChild
             as="template"

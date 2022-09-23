@@ -98,7 +98,7 @@ const useStore = defineStore('nova-file-manager', {
       }
 
       Nova.$on('nova-theme-switched', ({ theme }) => {
-        this.dark = theme !== 'dark'
+        this.dark = theme === 'dark'
       })
     },
 
@@ -242,6 +242,10 @@ const useStore = defineStore('nova-file-manager', {
     closeModal({ name }) {
       if (!name) {
         return
+      }
+
+      if (name === 'preview') {
+        this.preview = null
       }
 
       this.modals = this.modals.filter(_name => _name !== name)
@@ -799,7 +803,13 @@ const useStore = defineStore('nova-file-manager', {
   },
   getters: {
     isOpen() {
-      return name => this.modals.includes(name)
+      return name => {
+        if (name === 'preview') {
+          return !!this.preview
+        }
+
+        return this.modals.includes(name)
+      }
     },
     isSelected() {
       return file => !!this.selection?.find(item => item.id === file.id)

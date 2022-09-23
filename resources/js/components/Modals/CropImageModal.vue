@@ -1,69 +1,41 @@
 <template>
-  <BaseModal as="template" class="nova-file-manager" :name="name" v-slot="{ close, dark }">
-    <Dialog :initial-focus="buttonRef" as="div" class="relative z-[60]" @close="close">
-      <TransitionChild
-        as="template"
-        enter="ease-out duration-300"
-        enter-from="opacity-0"
-        enter-to="opacity-100"
-        leave="ease-in duration-200"
-        leave-from="opacity-100"
-        leave-to="opacity-0"
+  <BaseModal as="template" class="nova-file-manager" :name="name">
+      <DialogPanel
+          class="relative bg-gray-100 dark:bg-gray-900 rounded-lg overflow-hidden shadow-xl transform transition-all w-full max-w-7xl p-4 flex flex-col gap-4 h-[80vh] max-h-[80vh]"
       >
-        <div class="fixed inset-0 bg-gray-800/20 backdrop-blur-sm transition-opacity" />
-      </TransitionChild>
-
-      <div :class="['fixed z-10 inset-0 overflow-y-auto', { dark }]">
-        <div class="flex items-center justify-center min-h-full p-4">
-          <TransitionChild
-            as="template"
-            enter="ease-out duration-300"
-            enter-from="opacity-0 translate-y-4 sm:translate-y-0 sm:scale-95"
-            enter-to="opacity-100 translate-y-0 sm:scale-100"
-            leave="ease-in duration-200"
-            leave-from="opacity-100 translate-y-0 sm:scale-100"
-            leave-to="opacity-0 translate-y-4 sm:translate-y-0 sm:scale-95"
+          <div
+              class="w-full flex flex-col flex-col-reverse gap-2 md:flex-row justify-between items-start"
           >
-            <DialogPanel
-              class="relative bg-gray-100 dark:bg-gray-900 rounded-lg overflow-hidden shadow-xl transform transition-all w-full max-w-7xl p-4 flex flex-col gap-4 h-[80vh] max-h-[80vh]"
-            >
-              <div
-                class="w-full flex flex-col flex-col-reverse gap-2 md:flex-row justify-between items-start"
-              >
-                <h2 class="text-lg font-medium text-gray-900 dark:text-gray-400 break-all w-full">
+              <h2 class="text-lg font-medium text-gray-900 dark:text-gray-400 break-all w-full">
                   {{ __('NovaFileManager.actions.cropImage', { image: file.name }) }}
-                </h2>
+              </h2>
 
-                <div class="flex flex-row gap-2 justify-end flex-shrink-0">
+              <div class="flex flex-row gap-2 justify-end flex-shrink-0">
                   <IconButton
-                    ref="buttonRef"
-                    :title="__('NovaFileManager.actions.close')"
-                    @click.prevent.stop="close"
+                      ref="buttonRef"
+                      :title="__('NovaFileManager.actions.close')"
+                      @click.prevent.stop="close"
                   >
-                    <XMarkIcon class="w-5 h-5" />
+                      <XMarkIcon class="w-5 h-5" />
                   </IconButton>
 
                   <IconButton variant="success" @click="openUploadCropModal">
-                    <CheckIcon class="h-5 w-5" />
+                      <CheckIcon class="h-5 w-5" />
                   </IconButton>
-                </div>
               </div>
+          </div>
 
-              <div class="h-full max-h-[70vh]">
-                <vue-cropper
+          <div class="h-full max-h-[70vh]">
+              <vue-cropper
                   ref="cropper"
                   :containerStyle="containerStyle"
                   :src="file.url"
                   alt="file.name"
                   :viewMode="1"
-                >
-                </vue-cropper>
-              </div>
-            </DialogPanel>
-          </TransitionChild>
-        </div>
-      </div>
-    </Dialog>
+              >
+              </vue-cropper>
+          </div>
+      </DialogPanel>
   </BaseModal>
 
   <UploadCropModal
@@ -78,7 +50,7 @@
 <script setup>
 import { computed, ref } from 'vue'
 import VueCropper from 'vue-cropperjs'
-import { Dialog, DialogPanel, TransitionChild } from '@headlessui/vue'
+import { DialogPanel } from '@headlessui/vue'
 import { CheckIcon, XMarkIcon } from '@heroicons/vue/24/outline'
 import IconButton from '@/components/Elements/IconButton'
 import Entity from '@/types/Entity'
