@@ -26,7 +26,11 @@ const useTourStore = defineStore('nova-file-manager/tour', {
 
       const self = this
 
-      this.steps().map(step => {
+      this.steps().forEach(step => {
+        if (!document.querySelector(`[data-tour='${step.key}']`)) {
+          return
+        }
+
         const tourStep = self.tour.addStep({
           id: step.key,
           text: `<div class="gap-2 flex flex-row items-center"><span class="mr-2 flex-shrink-0 rounded-lg bg-indigo-900/60 p-2">💡</span>${step.label}</div>`,
@@ -53,6 +57,11 @@ const useTourStore = defineStore('nova-file-manager/tour', {
         if (step.preloadConfetti) {
           tourStep.on('before-show', () => this.loadConfetti())
         }
+      })
+
+      this.tour.on('complete', async () => {
+        const canvas = await self.showConfetti()
+        canvas.remove()
       })
 
       this.tour.start()
@@ -169,12 +178,9 @@ const useTourStore = defineStore('nova-file-manager/tour', {
             {
               label: 'Finish',
               text: '🎉 Done',
-              action: async () => {
+              action: () => {
                 self.tour?.complete()
                 self.dismiss()
-
-                const canvas = await self.showConfetti()
-                canvas.remove()
               },
             },
           ],
