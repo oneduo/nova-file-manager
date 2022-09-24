@@ -9,3 +9,4 @@ auth.json
 .env
 /docs/node_modules
 /docs/.vitepress/dist
+.npmrc

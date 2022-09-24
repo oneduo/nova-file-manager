@@ -22,12 +22,15 @@
           <input
             id="name"
             v-model="value"
-            :placeholder="__('Type your cropped image name here')"
+            :placeholder="__('NovaFileManager.actions.uploadCrop')"
             class="block w-full border-0 p-0 bg-gray-100 dark:bg-gray-900 placeholder-gray-400 sm:text-sm text-black dark:text-white focus:outline-none focus:ring-0"
             name="name"
             type="text"
           />
         </div>
+        <p class="mt-2 text-xs text-gray-400" id="name-description">
+          {{ __('NovaFileManager.edit.originalName', { name: file.name }) }}
+        </p>
       </div>
     </template>
     <template v-slot:submitButton>
@@ -48,8 +51,13 @@ import { computed, onMounted, ref } from 'vue'
 import Button from '@/components/Elements/Button'
 import InputModal from '@/components/Modals/InputModal'
 import { useStore } from '@/store'
+import Entity from '@/types/Entity'
 
 const props = defineProps({
+  file: {
+    type: Entity,
+    required: true,
+  },
   name: {
     type: String,
     required: true,
@@ -58,9 +66,13 @@ const props = defineProps({
     type: Function,
     required: true,
   },
-  data: {
-    type: Object,
+  destFile: {
+    type: File,
     required: true,
+  },
+  destName: {
+    type: String,
+    required: false,
   },
 })
 
@@ -69,10 +81,10 @@ const store = useStore()
 const value = ref(null)
 
 onMounted(() => {
-  value.value = props.data?.name
+  value.value = props.destName ?? ''
 })
 
-const image = computed(() => URL.createObjectURL(props.data?.blob))
+const image = computed(() => URL.createObjectURL(props.destFile))
 
 // ACTIONS
 const closeModal = name => store.closeModal({ name })

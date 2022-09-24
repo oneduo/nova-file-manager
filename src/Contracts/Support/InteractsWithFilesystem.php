@@ -87,5 +87,7 @@ interface InteractsWithFilesystem extends ResolvesUrl
 
     public function validateUploadUsing(Closure $callback): static;
 
+    public function pinturaOptions(array $options): static;
+
     public function options(): array;
 }

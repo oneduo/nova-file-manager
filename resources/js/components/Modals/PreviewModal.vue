@@ -20,10 +20,18 @@
             <TrashIcon class="w-5 h-5" />
           </IconButton>
           <IconButton
-            v-if="!readOnly && showCropImage && file?.type === 'image'"
+            v-if="!readOnly && showCropImage && !usePinturaEditor && file?.type === 'image'"
             variant="secondary"
             @click="openModal(`crop-image-${file?.id}`)"
             :title="__('NovaFileManager.actions.cropImage', { image: file?.name })"
+          >
+            <CropIcon class="w-5 h-5" />
+          </IconButton>
+          <IconButton
+            v-if="!readOnly && showCropImage && usePinturaEditor && file?.type === 'image'"
+            variant="secondary"
+            @click="openModal(`edit-image-${file?.id}`)"
+            :title="__('NovaFileManager.actions.editImage', { image: file?.name })"
           >
             <CropIcon class="w-5 h-5" />
           </IconButton>
@@ -154,28 +162,39 @@
           </div>
         </div>
       </div>
+
+      <DeleteFileModal
+        v-if="showDeleteFile"
+        :name="`delete-file-${file?.id}`"
+        :on-confirm="onDelete"
+      />
+
+      <CropImageModal
+        v-if="showCropImage && isCropModalOpened"
+        :name="`crop-image-${file?.id}`"
+        :file="file"
+        :on-confirm="onEditImage"
+      />
+
+      <EditImageModal
+        v-if="showCropImage && isEditModalOpened"
+        :name="`edit-image-${file?.id}`"
+        :file="file"
+        :on-confirm="onEditImage"
+      />
+
+      <RenameFileModal
+        v-if="showRenameFile"
+        :name="`rename-file-${file?.id}`"
+        :from="file?.name"
+        :on-submit="onRename"
+      />
     </DialogPanel>
   </BaseModal>
-
-  <DeleteFileModal v-if="showDeleteFile" :name="`delete-file-${file?.id}`" :on-confirm="onDelete" />
-
-  <CropImageModal
-    v-if="showCropImage"
-    :name="`crop-image-${file?.id}`"
-    :file="file"
-    :on-confirm="onEditImage"
-  />
-
-  <RenameFileModal
-    v-if="showRenameFile"
-    :name="`rename-file-${file?.id}`"
-    :from="file?.name"
-    :on-submit="onRename"
-  />
 </template>
 
 <script setup>
-import { ref } from 'vue'
+import { computed, ref } from 'vue'
 import { DialogPanel } from '@headlessui/vue'
 import {
   ArchiveBoxIcon,
@@ -191,8 +210,9 @@ import BaseModal from '@/components/Modals/BaseModal'
 import DeleteFileModal from '@/components/Modals/DeleteFileModal'
 import RenameFileModal from '@/components/Modals/RenameFileModal'
 import CropImageModal from '@/components/Modals/CropImageModal'
+import EditImageModal from '@/components/Modals/EditImageModal'
 import Entity from '@/types/Entity'
-import { useClipboard, usePermissions } from '@/hooks'
+import { useClipboard, usePermissions, usePintura } from '@/hooks'
 import CropIcon from '@/components/Elements/CropIcon'
 import ImageLoader from '@/components/Elements/ImageLoader'
 import { useStore } from '@/store'
@@ -211,9 +231,12 @@ const props = defineProps({
 const store = useStore()
 const { copyToClipboard } = useClipboard()
 const { showRenameFile, showDeleteFile, showCropImage, showUnzipFile } = usePermissions()
+const { usePinturaEditor } = usePintura()
 
 // STATE
 const buttonRef = ref(null)
+const isCropModalOpened = computed(() => store.isOpen(`crop-image-${props.file?.id}`))
+const isEditModalOpened = computed(() => store.isOpen(`edit-image-${props.file?.id}`))
 
 // ACTIONS
 const openModal = name => store.openModal({ name })

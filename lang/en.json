@@ -7,9 +7,11 @@
   "NovaFileManager.actions.delete": "Delete",
   "NovaFileManager.actions.deselect": "Deselect",
   "NovaFileManager.actions.download": "Download",
+  "NovaFileManager.actions.editImage": "Edit image : :image",
   "NovaFileManager.actions.rename": "Rename",
   "NovaFileManager.actions.submit": "Submit",
   "NovaFileManager.actions.upload": "Upload",
+  "NovaFileManager.actions.uploadCrop": "Type your edited image name here",
   "NovaFileManager.actions.unzip": "Unzip",
   "NovaFileManager.createFolderTitle": "Create a new folder",
   "NovaFileManager.deleteFileContent": "This will will delete the file from the storage. This action cannot be undone.",
@@ -41,5 +43,7 @@
   "NovaFileManager.toolbar.selection": "selected",
   "NovaFileManager.totalFilesCount": ":count files",
   "NovaFileManager.upload": "Upload a file",
-  "NovaFileManager.uploadCropTitle": "Upload cropped file"
+  "NovaFileManager.uploadCropTitle": "Upload cropped file",
+  "NovaFileManager.edit.originalName": "Original name : :name",
+  "NovaFileManager.pintura.loadingError": "Unable to load Pintura editor"
 }

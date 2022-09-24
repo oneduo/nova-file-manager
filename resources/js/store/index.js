@@ -68,6 +68,10 @@ const useStore = defineStore('nova-file-manager', {
 
     // config
     chunkSize: 50 * 1024 * 1024,
+
+    // pintura
+    usePintura: false,
+    pinturaOptions: {},
   }),
 
   actions: {
@@ -743,6 +747,8 @@ const useStore = defineStore('nova-file-manager', {
       permissions,
       flexibleGroup,
       callback,
+      usePintura,
+      pinturaOptions,
     }) {
       this.isField = true
       this.multiple = multiple
@@ -753,6 +759,8 @@ const useStore = defineStore('nova-file-manager', {
       this.singleDisk = singleDisk
       this.flexibleGroup = flexibleGroup
       this.callback = callback
+      this.usePintura = usePintura
+      this.pinturaOptions = pinturaOptions
 
       this.setSelection({ files: [...initialFiles] })
 
@@ -773,6 +781,8 @@ const useStore = defineStore('nova-file-manager', {
       this.singleDisk = false
       this.flexibleGroup = null
       this.callback = null
+      this.usePintura = false
+      this.pinturaOptions = {}
 
       this.setSelection({ files: [] })
 
@@ -789,7 +799,7 @@ const useStore = defineStore('nova-file-manager', {
       this.closeBrowser()
     },
 
-    prepareTool({ singleDisk, permissions, tour }) {
+    prepareTool({ singleDisk, permissions, tour, usePintura, pinturaOptions }) {
       this.init()
       this.clearSelection()
 
@@ -799,6 +809,8 @@ const useStore = defineStore('nova-file-manager', {
       this.singleDisk = singleDisk
       this.permissions = permissions
       this.tour = tour
+      this.usePintura = usePintura
+      this.pinturaOptions = pinturaOptions
     },
   },
   getters: {
