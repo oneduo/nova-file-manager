@@ -690,7 +690,7 @@ const useStore = defineStore('nova-file-manager', {
      * @returns {Promise<*>}
      */
     async get({ path, params, options = {} }) {
-      return await client().get(`/nova-vendor/nova-file-manager${path ?? '/'}`, {
+      return await client().get(this.url(`/nova-vendor/nova-file-manager${path ?? '/'}`), {
         params,
         ...options,
       })
@@ -704,7 +704,7 @@ const useStore = defineStore('nova-file-manager', {
      * @returns {Promise<*>}
      */
     async post({ path, data }) {
-      return await client().post(`/nova-vendor/nova-file-manager${path ?? '/'}`, data)
+      return await client().post(this.url(`/nova-vendor/nova-file-manager${path ?? '/'}`), data)
     },
 
     payload(params) {
@@ -727,9 +727,9 @@ const useStore = defineStore('nova-file-manager', {
     },
 
     url(url) {
-      const suffifx = this.isField ? `/${this.resource}` : ''
+      const suffix = this.isField ? `/${this.resource}` : ''
 
-      return `${url}${suffifx}`.replace('//', '/')
+      return `${url}${suffix}`.replace('//', '/')
     },
 
     openBrowser({
