@@ -8,6 +8,7 @@ use Illuminate\Foundation\Application;
 use Illuminate\Support\Facades\Route;
 use Illuminate\Support\ServiceProvider;
 use Laravel\Nova\Nova;
+use Laravel\Nova\Http\Middleware\Authenticate;
 use Oneduo\NovaFileManager\Contracts\Filesystem\Upload\Uploader as UploaderContract;
 use Oneduo\NovaFileManager\Contracts\Services\FileManagerContract;
 use Oneduo\NovaFileManager\Filesystem\Upload\Uploader;
@@ -49,7 +50,7 @@ class ToolServiceProvider extends ServiceProvider
             return;
         }
 
-        Nova::router(['nova', Authorize::class], 'nova-file-manager')
+        Nova::router(['nova', Authenticate::class, Authorize::class], 'nova-file-manager')
             ->group(__DIR__.'/../routes/inertia.php');
 
         Route::middleware(['nova:api', Authorize::class])
