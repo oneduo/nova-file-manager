@@ -16,7 +16,7 @@ You may publish the package's configuration by running the following command :
 php artisan vendor:publish --tag="nova-file-manager-config"
 ```
 
-::: info
+::: tip NOTE
 You can find details about the configuration options in the [configuration file section](/configuration).
 :::
 

@@ -8,7 +8,7 @@ The default disk used by the package
 |----------|----------|
 | `string` | `public` |
 
-::: info
+::: warning NOTE
 The default disk must be defined in your `filesystems.php` config.
 :::
 
@@ -20,7 +20,7 @@ Provides a list of available disks to be used by the package
 |------------|--------------|
 | `string[]` | `['public']` |
 
-::: info
+::: warning NOTE
 Each disk must be defined in your `filesystems.php` config.
 :::
 
@@ -88,7 +88,7 @@ Defines the unit for the expiration time
 |----------|-----------|
 | `string` | `minutes` |
 
-::: warning
+::: warning NOTE
 The expiration time must not exceed 1 week
 :::
 
@@ -132,6 +132,6 @@ Toggles whether to show use Pintura image editor
 |--------|---------|
 | `bool` | `false` |
 
-::: info
+::: tip NOTE
 You can find details about the Pintura integration in the [Pintura image editor section](/pintura).
 :::

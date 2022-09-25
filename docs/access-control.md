@@ -49,7 +49,7 @@ class Project extends Resource
 }
 ```
 
-::: info
+::: tip NOTE
 Using one of these methods does impact the resolution of the API call associated with the desired action. In
 other words, in the previous example, setting the visibility of the create folder button to only admin in our app, does
 in fact prevent all API requests that do not match this condition. Preventing the creation of a folder by a non-admin

@@ -87,7 +87,7 @@ class Project extends Resource
     }
 }
 ```
-::: tip
+::: tip NOTE
 You need to set up your field with `multiple` if you plan on having a minimum value greater than one, and if
 you expect your field to have more than one file.
 :::

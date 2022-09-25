@@ -14,7 +14,7 @@ First you may enable Pintura in you `.env` file :
 NOVA_FILE_MANAGER_USE_PINTURA=true
 ```
 
-::: warning
+::: danger IMPORTANT
 You **must** provide your own copy of Pintura assets
 :::
 
