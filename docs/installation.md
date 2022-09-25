@@ -16,7 +16,9 @@ You may publish the package's configuration by running the following command :
 php artisan vendor:publish --tag="nova-file-manager-config"
 ```
 
-> **Note** You can find details about the configuration options in the [configuration file section](/configuration).
+::: info
+You can find details about the configuration options in the [configuration file section](/configuration).
+:::
 
 ## Casting your model attributes
 To use the package, you will need to cast your model attributes to the `Oneduo\NovaFileManager\Casts\Asset` for a single value or `Oneduo\NovaFileManager\Casts\AssetCollection` for multiple values.

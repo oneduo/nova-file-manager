@@ -2,27 +2,31 @@
 
 ## `default_disk`
 
-> The default disk used by the package
+The default disk used by the package
 
 | Type     | Default  |
 |----------|----------|
 | `string` | `public` |
 
-**Note** The default disk must be defined in your `filesystems.php` config.
+::: info
+The default disk must be defined in your `filesystems.php` config.
+:::
 
 ## `available_disks`
 
-> Provides a list of available disks to be used by the package
+Provides a list of available disks to be used by the package
 
 | Type       | Default      |
 |------------|--------------|
 | `string[]` | `['public']` |
 
-**Note** Each disk must be defined in your `filesystems.php` config.
+::: info
+Each disk must be defined in your `filesystems.php` config.
+:::
 
 ## `show_hidden_files`
 
-> Toggles whether or not to show files and directories that start with a "dot"
+Toggles whether to show files and directories that start with a "dot"
 
 | Type   | Default |
 |--------|---------|
@@ -30,7 +34,7 @@
 
 ## `human_readable_size`
 
-> When set to true, the package will display file sizes in a more friendly readable format
+When set to true, the package will display file sizes in a more friendly readable format
 
 | Type   | Default |
 |--------|---------|
@@ -38,7 +42,7 @@
 
 ## `human_readable_datetime`
 
-> When set to true, the package will display dates with `diffForHumans()`
+When set to true, the package will display dates with `diffForHumans()`
 
 | Type   | Default |
 |--------|---------|
@@ -46,7 +50,7 @@
 
 ## `file_analysis.enabled`
 
-> When set to true, the package will use getID3 to parse metadata from the files
+When set to true, the package will use getID3 to parse metadata from the files
 
 | Type   | Default |
 |--------|---------|
@@ -54,7 +58,7 @@
 
 ## `file_analysis.cache.enabled`
 
-> When set to true, the package will cache the file analysis result
+When set to true, the package will cache the file analysis result
 
 | Type   | Default |
 |--------|---------|
@@ -62,7 +66,7 @@
 
 ## `file_analysis.cache.ttl_in_seconds`
 
-> TTL for analysis caching in seconds
+TTL for analysis caching in seconds
 
 | Type  | Default |
 |-------|---------|
@@ -70,7 +74,7 @@
 
 ## `url_signing.enabled`
 
-> When set to true, all the file urls will be signed
+When set to true, all the file urls will be signed
 
 | Type   | Default |
 |--------|---------|
@@ -78,17 +82,19 @@
 
 ## `url_signing.unit`
 
-> Defines the unit for the expiration time
+Defines the unit for the expiration time
 
 | Type     | Default   |
 |----------|-----------|
 | `string` | `minutes` |
 
-**Note** The expiration time must not exceed 1 week
+::: warning
+The expiration time must not exceed 1 week
+:::
 
 ## `url_signing.value`
 
-> Defines the value for the expiration time
+Defines the value for the expiration time
 
 | Type   | Default |
 |--------|---------|
@@ -96,7 +102,7 @@
 
 ## `update_checker.enabled`
 
-> Toggles whether to show the update checker banner
+Toggles whether to show the update checker banner
 
 | Type   | Default |
 |--------|---------|
@@ -104,7 +110,7 @@
 
 ## `update_checker.ttl_in_days`
 
-> TTL for analysis caching the update checker status in days
+TTL for analysis caching the update checker status in days
 
 | Type  | Default |
 |-------|---------|
@@ -112,7 +118,7 @@
 
 ## `tour.enabled`
 
-> Toggles whether to show the package tour
+Toggles whether to show the package tour
 
 | Type   | Default |
 |--------|---------|
@@ -120,9 +126,12 @@
 
 ## `use_pintura`
 
-> Toggles whether to show use Pintura image editor
+Toggles whether to show use Pintura image editor
 
 | Type   | Default |
 |--------|---------|
-| `bool` | `true`  |
+| `bool` | `false` |
 
+::: info
+You can find details about the Pintura integration in the [Pintura image editor section](/pintura).
+:::
