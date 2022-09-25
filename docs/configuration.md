@@ -96,7 +96,7 @@
 
 ## `update_checker.enabled`
 
-> Toggles whether or not to show the update checker banner
+> Toggles whether to show the update checker banner
 
 | Type   | Default |
 |--------|---------|
@@ -109,4 +109,20 @@
 | Type  | Default |
 |-------|---------|
 | `int` | `1`     |
+
+## `tour.enabled`
+
+> Toggles whether to show the package tour
+
+| Type   | Default |
+|--------|---------|
+| `bool` | `true`  |
+
+## `use_pintura`
+
+> Toggles whether to show use Pintura image editor
+
+| Type   | Default |
+|--------|---------|
+| `bool` | `true`  |
 

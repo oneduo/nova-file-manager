@@ -70,6 +70,10 @@ let sidebar = [
       {
         text: 'Update checker',
         link: '/update-checker',
+      },
+      {
+        text: 'Pintura image editor',
+        link: '/pintura',
       }
     ],
   },
@@ -131,9 +135,9 @@ let head = [
     {
       async: true,
       src: 'https://cdn.splitbee.io/sb.js',
-      "data-no-cookie": true,
-      "data-token": "FSBYOWYLYBPB",
-      "data-respect-dnt": true,
+      'data-no-cookie': true,
+      'data-token': 'FSBYOWYLYBPB',
+      'data-respect-dnt': true,
     },
   ],
 ]
@@ -161,7 +165,7 @@ export default {
   head: head,
   title: 'Nova File Manager',
   description:
-    "A file manager tool and field for Laravel Nova. Beautifully designed, and customizable, this tool will provide a plug'n'play solution for your file management needs.",
+    'A file manager tool and field for Laravel Nova. Beautifully designed, and customizable, this tool will provide a plug\'n\'play solution for your file management needs.',
   lastUpdated: false,
   themeConfig: theme,
   ignoreDeadLinks: true,
