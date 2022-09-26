@@ -150,9 +150,11 @@ You have now successfully added a File Manager field to your resource.
 | `url_signing.unit`                   | Defines the unit for the expiration time                                                 | `string`   | `minutes` | The expiration time must not exceed 1 week                        |
 | `url_signing.value`                  | Defines the value for the expiration time                                                | `int`      | `10`      |                                                                   |
 
+For a full list of updated configuration options, please refer to the full documentation at https://oneduo.github.io/nova-file-manager/configuration.html
+
 ## Authors <a name = "authors"></a>
 
-- [Charaf Rezrazi](https://github.com/crezra)
+- [Charaf Rezrazi](https://github.com/rezrazi)
 - [Mikaël Popowicz](https://github.com/mikaelpopowicz)
 
 See also the list of [contributors](https://github.com/oneduo/nova-file-manager/contributors) who
@@ -160,7 +162,7 @@ participated in this project.
 
 ## Screenshots <a name= "screenshots"></a>
 
-You can find more screenshots here https://bbs-lab.github.io/nova-file-manager/screenshots.html.
+You can find more screenshots here https://oneduo.github.io/nova-file-manager/screenshots.html.
 
 ## Changelog
 
@@ -168,7 +170,7 @@ Please see [CHANGELOG](CHANGELOG.md) for more information what has changed recen
 
 ## Security
 
-If you discover any security related issues, please email paris@big-boss-studio.com instead of using the issue tracker.
+If you discover any security related issues, please email charaf@rezrazi.fr instead of using the issue tracker.
 
 ## Contributing
 
@@ -178,8 +180,7 @@ Please see [CONTRIBUTING](CONTRIBUTING.md) for details.
 
 - [getID3() by James Heinrich](https://github.com/JamesHeinrich/getID3)
 - [Laravel Chunk Upload](https://github.com/pionl/laravel-chunk-upload)
-- [Laravel Pint](https://github.com/laravel/pint)
-- [Spatie Laravel Ray](spatie/laravel-ray)
+
 
 ## License
 
