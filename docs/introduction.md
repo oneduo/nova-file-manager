@@ -1,6 +1,9 @@
 ---
 layout:home
 ---
+
+<img src="./images/banner.png">
+
 # Nova File Manager
 
 <div style="display: inline-flex; gap: 5px; margin-top:10px;flex-wrap: wrap">
@@ -28,4 +31,4 @@ play solution for your file management needs.
 - 🔍 A performant local search feature
 - 🤹‍ Allows to save multiple assets on the same field
 
-<img src="./subbanner.png"/>
+<img src="./images/support.png"/>
