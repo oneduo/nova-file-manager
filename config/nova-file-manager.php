@@ -166,4 +166,14 @@ return [
     |
     */
     'hmr' => env('HOT_MODULE_RELOAD', false),
+
+    /*
+    |--------------------------------------------------------------------------
+    | Pintura by PQINA
+    |--------------------------------------------------------------------------
+    |
+    | Enable Pintura editor by PQINA.
+    |
+    */
+    'use_pintura' => env('NOVA_FILE_MANAGER_USE_PINTURA', false),
 ];

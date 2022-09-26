@@ -177,6 +177,8 @@ export default {
         callback: selection => {
           this.value = selection.map(f => this.mapEntity(f))
         },
+        usePintura: this.field.usePintura ?? false,
+        pinturaOptions: this.field.pinturaOptions ?? {},
       })
     },
 

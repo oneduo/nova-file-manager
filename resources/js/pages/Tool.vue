@@ -33,6 +33,8 @@ onBeforeMount(() => {
     singleDisk: props.config.singleDisk,
     permissions: props.config.permissions,
     tour: props.config.tour,
+    usePintura: props.config.usePintura || false,
+    pinturaOptions: props.config.pinturaOptions || {},
   })
 
   store.loadFromQueryString()

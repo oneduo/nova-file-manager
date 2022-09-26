@@ -155,7 +155,8 @@ class BaseRequest extends NovaRequest
     protected function failedAuthorization(): void
     {
         throw ValidationException::withMessages([
-            $this->authorizationAttribute() => __('nova-file-manager::errors.authorization.unauthorized', ['action' => $this->authorizationActionAttribute()]),
+            $this->authorizationAttribute() => __('nova-file-manager::errors.authorization.unauthorized',
+                ['action' => $this->authorizationActionAttribute()]),
         ]);
     }
 

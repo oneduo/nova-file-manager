@@ -189,6 +189,7 @@ import {
 import { useSearchStore } from '@/store/search'
 import { useStore } from '@/store'
 import Spinner from '@/components/Elements/Spinner'
+import debounce from 'lodash/debounce'
 
 const searchStore = useSearchStore()
 const store = useStore()
@@ -236,7 +237,7 @@ const tips = computed(() => [
 const close = () => searchStore.close()
 const onSelect = item => searchStore.select({ item })
 
-const onSearch = event => {
-  searchStore.setSearch({ search: event.target.value })
-}
+const onSearch = debounce(({ target: { value } }) => {
+  searchStore.setSearch({ search: value })
+}, Nova.config('debounce'))
 </script>

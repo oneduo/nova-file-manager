@@ -3,9 +3,7 @@
 The package provides some convenient methods to control how the users access the different features provided by the file
 manager, such as creating a folder, upload a file or deleting it. With granular control in mind, you can use these
 methods to build your access control flow with freedom and flexibility.
-
->**Note** Please note that using all these features are not supported when used within Flexible fields or any other type of field that serializes the data as JSON.
-> 
+ 
 ## Showing or hiding buttons
 
 Say for instance your app relies on a role/permission based system, in which you may want to grant the ability of
@@ -51,10 +49,12 @@ class Project extends Resource
 }
 ```
 
->**Info:** Using one of these methods does impact the resolution of the API call associated with the desired action. In
+::: tip NOTE
+Using one of these methods does impact the resolution of the API call associated with the desired action. In
 other words, in the previous example, setting the visibility of the create folder button to only admin in our app, does
 in fact prevent all API requests that do not match this condition. Preventing the creation of a folder by a non-admin
 user.
+:::
 
 ## Restricting access to specific actions
 

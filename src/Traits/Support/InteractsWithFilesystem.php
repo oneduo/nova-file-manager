@@ -49,6 +49,8 @@ trait InteractsWithFilesystem
 
     protected ?Closure $uploadValidator = null;
 
+    protected array $pinturaOptions = [];
+
     public function filesystem(Closure $callback): static
     {
         $this->filesystemCallback = $callback;
@@ -303,6 +305,13 @@ trait InteractsWithFilesystem
         return $this;
     }
 
+    public function pinturaOptions(array $options): static
+    {
+        $this->pinturaOptions = array_merge($this->pinturaOptions, $options);
+
+        return $this;
+    }
+
     public function options(): array
     {
         return with(app(NovaRequest::class), function (NovaRequest $request) {
@@ -322,6 +331,8 @@ trait InteractsWithFilesystem
                         'unzip' => $this->shouldShowUnzipFile($request),
                     ],
                 ],
+                'usePintura' => config('nova-file-manager.use_pintura'),
+                'pinturaOptions' => $this->pinturaOptions,
             ];
         });
     }

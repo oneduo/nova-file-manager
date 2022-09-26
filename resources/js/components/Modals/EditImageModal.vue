@@ -7,7 +7,7 @@
         class="w-full flex flex-col flex-col-reverse gap-2 md:flex-row justify-between items-start"
       >
         <h2 class="text-lg font-medium text-gray-900 dark:text-gray-400 break-all w-full">
-          {{ __('NovaFileManager.actions.cropImage', { image: file.name }) }}
+          {{ __('NovaFileManager.actions.editImage', { image: file.name }) }}
         </h2>
 
         <div class="flex flex-row gap-2 justify-end flex-shrink-0">
@@ -24,41 +24,39 @@
           </IconButton>
         </div>
       </div>
-
-      <div class="h-full max-h-[70vh]">
-        <vue-cropper
-          ref="cropper"
-          :containerStyle="containerStyle"
-          :src="file.url"
-          alt="file.name"
-          :viewMode="1"
-        >
-        </vue-cropper>
+      <div
+        v-if="loadingError"
+        class="h-full max-h-[70vh] flex flex-col items-center justify-center space-y-4"
+      >
+        <ExclamationCircleIcon class="w-16 h-16 text-red-500" />
+        <p class="text-red-500 text-xl">
+          {{ __('NovaFileManager.pintura.loadingError') }}
+        </p>
       </div>
-
+      <div v-else class="h-full max-h-[70vh]" ref="editorRef"></div>
       <UploadCropModal
         v-if="uploadIsOpen"
         :file="file"
         name="upload-crop"
         :on-submit="submitCrop"
         :dest-file="destFile"
-        :dest-name="destName"
       />
     </DialogPanel>
   </BaseModal>
 </template>
 
 <script setup>
-import { computed, ref } from 'vue'
-import VueCropper from 'vue-cropperjs'
+import { computed, ref, watchEffect } from 'vue'
 import { DialogPanel } from '@headlessui/vue'
 import { CheckIcon, XMarkIcon } from '@heroicons/vue/24/outline'
+import { ExclamationCircleIcon } from '@heroicons/vue/24/solid'
 import IconButton from '@/components/Elements/IconButton'
 import Entity from '@/types/Entity'
 import BaseModal from '@/components/Modals/BaseModal'
 import UploadCropModal from '@/components/Modals/UploadCropModal'
 import { useStore } from '@/store'
 import 'cropperjs/dist/cropper.css'
+import { usePintura } from '@/hooks'
 
 const props = defineProps({
   file: {
@@ -79,23 +77,33 @@ const store = useStore()
 
 //STATE
 const buttonRef = ref(null)
-const cropper = ref(null)
+const loadingError = ref(null)
 const destFile = ref(null)
 const uploadIsOpen = computed(() => store.isOpen('upload-crop'))
+const editorRef = ref(null)
+const editor = ref(null)
+const { pinturaOptions } = usePintura()
 
-const containerStyle = computed(() => ({
-  height: '100%',
-  minHeight: '60vh',
-}))
+watchEffect(() => {
+  if (editorRef.value && !editor.value) {
+    try {
+      const { appendEditor, editorOptions } = window.Nova.config.NovaFileManagerEditor
 
-const destName = computed(() => {
-  const data = cropper.value.getData()
+      editor.value = appendEditor(editorRef.value, {
+        ...editorOptions,
+        ...pinturaOptions.value,
+        src: props.file.url,
+        enableButtonExport: false,
+      })
 
-  const suffix = `${Math.round(data.width)}_${Math.round(data.height)}_${Math.round(
-    data.x
-  )}_${Math.round(data.y)}`
-
-  return props.file?.name.replace(props.file?.extension, `${suffix}.${props.file?.extension}`)
+      if (editor.value) {
+        editor.value.on('loaderror', ({ error }) => Nova.error(error.message))
+      }
+    } catch (e) {
+      loadingError.value = true
+      console.error(e)
+    }
+  }
 })
 
 // ACTIONS
@@ -103,10 +111,8 @@ const openModal = name => store.openModal({ name })
 const closeModal = name => store.closeModal({ name })
 
 const openUploadCropModal = () => {
-  cropper.value.getCroppedCanvas().toBlob(blob => {
-    destFile.value = new File([blob], props.file.name, {
-      type: props.file.mime,
-    })
+  editor.value.processImage().then(({ dest }) => {
+    destFile.value = dest
 
     openModal('upload-crop')
   })

@@ -1,4 +1,4 @@
-<img src="./docs/banner.png"/>
+<img src="./docs/images/banner.png"/>
 <h3 align="left">Nova File Manager</h3>
 
 <div align="left">
@@ -31,9 +31,9 @@ A file manager tool and field for Laravel Nova. Beautifully designed, and custom
 
 
 
-<a href="https://oneduo.github.io/nova-file-manager/"><img src="./docs/images/documentation_banner.png"/></a>
+<a href="https://oneduo.github.io/nova-file-manager/"><img src="./docs/images/documentation.png"/></a>
 
-<img src="./docs/subbanner.png"/>
+<img src="./docs/images/support.png"/>
 
 ## Table of Contents
 
