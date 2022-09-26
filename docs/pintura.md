@@ -4,67 +4,51 @@
 <img src="./images/pintura.png"/>
 <br>
 
-The package provides an integration with [Pintura image editor by PQINA](https://pqina.nl/pintura/?affiliate_id=775099219).
+The package provides an integration with Pintura image editor.
+
+This is a cool library made by [Rik Schennink](https://github.com/rikschennink) that provides a full-fledged image
+editor right into the file manager, it is beautifully crafted and feature-rich, and we really like and we hope you will
+too.
+
+Please note, that this is a **paid** library not included by default in Nova File Manager, and a valid license is
+required to use it.
+
+To learn more, and/or purchase a license, please visit
+the [Pintura image editor by PQINA](https://pqina.nl/pintura/?affiliate_id=775099219).
+
+::: tip
+The provided link is an affiliate, and we will receive a commission if you purchase a license using this link. It is a
+form of support for the package, and we really appreciate it.
+:::
+
 
 ## Integration
 
-First you may enable Pintura in you `.env` file :
+First you need enable Pintura in you `.env` file :
 
 ```sh
 NOVA_FILE_MANAGER_USE_PINTURA=true
 ```
 
 ::: danger IMPORTANT
-You **must** provide your own copy of Pintura assets
+You **must** provide your own copy of Pintura assets, once you have purchased a license, you can download the js and css files from your dashboard.
 :::
 
-You may override the **Laravel Nova** layout :
+Once you have your Pintura assets, you have to load them into your application, there's many options to do so, for instance you may place your assets in the `public` directory, and appending them by overriding the default `layout.blade.php` :
 
-```php{14,53-62}
-<!DOCTYPE html>
-<html lang="{{ str_replace('_', '-', app()->getLocale()) }}" dir="{{ \Laravel\Nova\Nova::rtlEnabled() ? 'rtl' : 'ltr' }}" class="h-full font-sans antialiased">
+```php{7,21-30}
 <head>
-    <meta name="theme-color" content="#fff">
-    <meta charset="utf-8">
-    <meta name="csrf-token" content="{{ csrf_token() }}">
-    <meta name="viewport" content="width=device-width"/>
-    <meta name="locale" content="{{ str_replace('_', '-', app()->getLocale()) }}"/>
-
+    <!-- ... -->
     @include('nova::partials.meta')
 
     <!-- Styles -->
     <link rel="stylesheet" href="{{ mix('app.css', 'vendor/nova') }}">
     <link rel="stylesheet" href="{{ asset('pintura.css') }}">
-
-    @if ($styles = \Laravel\Nova\Nova::availableStyles(request()))
-    <!-- Tool Styles -->
-        @foreach($styles as $asset)
-            <link rel="stylesheet" href="{!! $asset->url() !!}">
-        @endforeach
-    @endif
-
-    <script>
-        if (localStorage.novaTheme === 'dark' || (!('novaTheme' in localStorage) && window.matchMedia('(prefers-color-scheme: dark)').matches)) {
-            document.documentElement.classList.add('dark')
-        } else {
-            document.documentElement.classList.remove('dark')
-        }
-    </script>
+    
+    <!-- ... -->
 </head>
-<body class="min-w-site text-sm font-medium min-h-full text-gray-500 dark:text-gray-400 bg-gray-100 dark:bg-gray-900">
-    @inertia
-    <div class="relative z-50">
-      <div id="notifications" name="notifications"></div>
-    </div>
-    <div>
-      <div id="dropdowns" name="dropdowns"></div>
-      <div id="modals" name="modals"></div>
-    </div>
-
-    <!-- Scripts -->
-    <script src="{{ mix('manifest.js', 'vendor/nova') }}"></script>
-    <script src="{{ mix('vendor.js', 'vendor/nova') }}"></script>
-    <script src="{{ mix('app.js', 'vendor/nova') }}"></script>
+<body>
+    <!-- ... -->
 
     <!-- Build Nova Instance -->
     <script>
@@ -78,7 +62,7 @@ You may override the **Laravel Nova** layout :
     
       const editorOptions = {}
     
-      window.Nova.config.novaFileManagerEditor = {
+      window.Nova.config.NovaFileManagerEditor = {
         appendEditor: appendDefaultEditor,
         editorOptions,
       }
@@ -90,20 +74,22 @@ You may override the **Laravel Nova** layout :
             <script src="{!! $asset->url() !!}"></script>
         @endforeach
     @endif
-
-    <!-- Start Nova -->
-    <script defer>
-        Nova.liftOff()
-    </script>
+    
+    <!-- ... -->
 </body>
 </html>
 ```
 
-The `editorOptions` object will be used to create the editor instance. You may make your own integration, but make sure to provide the `window.Nova.config.novaFileManagerEditor` object. 
+::: danger IMPORTANT
+Pintura must be loaded before the File Manager tool script, therefore the script must be placed before the tool scripts foreach loop.
+:::
+
+The `editorOptions` object will be used to create the editor instance. You may make your own integration, but make sure
+to provide the `window.Nova.config.NovaFileManagerEditor` object.
 
 ## Passing options to field/tool
 
-You also may provide pintura options to the tool or a field :
+You may provide Pintura-specific options to the tool or a resource field :
 
 ```php{15-22}
 // app/Nova/Project.php
@@ -118,7 +104,7 @@ class Project extends Resource
     public function fields(NovaRequest $request): array
     {
         return [
-            // ... any other fields
+            // ...
             FileManager::make(__('Attachments'), 'attachments')
                 ->pinturaOptions([
                     'cropSelectPresetOptions' => [
@@ -133,3 +119,5 @@ class Project extends Resource
 }
 
 ```
+
+The complete list of available options can be found at https://pqina.nl/pintura/docs/v8/api/plugins/
