@@ -53,7 +53,7 @@ class FileController extends Controller
         event(new FileRenamed($manager->disk, $request->from, $request->to));
 
         return response()->json([
-            'message' => __('nova-file-manager::messages.file.create'),
+            'message' => __('nova-file-manager::messages.file.rename'),
         ]);
     }
 
