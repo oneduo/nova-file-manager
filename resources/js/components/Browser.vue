@@ -132,7 +132,9 @@ const unsubscribe = store.$onAction(({ name, store, after }) => {
         'deleteFolder',
       ].includes(name)
     ) {
-      store.data()
+      if (store.errors === null) {
+        store.data()
+      }
     }
   })
 })
