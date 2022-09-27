@@ -2,6 +2,90 @@
 
 All notable changes to `nova-file-manager` will be documented in this file
 
+## v0.7.0 - 2022-09-27
+
+![feature](https://user-images.githubusercontent.com/2086576/192314603-bcb1a95a-5ee4-438d-98fb-d9901ac1194d.png)
+
+This release comes packed with new features, improvements and fixes.
+
+### 🍍 Pinia
+
+The package moved to Pinia, a store and state management library set to become the new default for Vue projects. Since this project is still pretty young, we aim to ensure a long support of the libraries and tools we use. Pinia keeps the same paradigm as Vuex, and does provides many enhancements and improvements to the existing Vuex library.
+
+### 📖 Folder upload support
+
+You want to upload a folder and all of its content ? We got you covered ! Just drag and drop your folders and we will handle the rest.
+
+![ezgif com-gif-maker (2)](https://user-images.githubusercontent.com/81156495/192477947-1c1a024e-7327-4ce2-bc70-f7187e4bf62f.gif)
+
+### 🔍 Spotlight search
+
+Where's my car dude ?
+
+With this new release, we introduce a new spotlight-like search feature, it will allow quick access to your folders and files.
+
+![spotlight-dark](https://user-images.githubusercontent.com/81156495/192477149-c24a3618-a34b-4005-a364-da89ce633d28.png)
+
+### 🧭 Onboarding tour
+
+Want to give your users a guided tour of the file manager ? We got you !
+You can now enable a quick and short tour of the tool to guide your users.
+
+### 💼 Unzip archives
+
+What is that ? A zip archive ? Arrrrghh
+
+We used to say that before, but zip files do not scare us anymore, you can unzip and put your content outside the archive right from the file manager. Easy, quick, simple.
+
+### ✨ PDF Viewer
+
+Do you even PDF ?
+
+Just slap a PDF embed viewer in the tool, this way it is more convenient and could spare you linking the wrong files to the wrong person.
+
+### 💄 Pintura Image Editor
+
+![pintura-light](https://user-images.githubusercontent.com/81156495/192477190-f558f6a7-9756-4ab4-b362-78d120761a21.png)
+
+Looking for a fully featured image editor ? We got you covered. We are pleased to announce we have added a new integration for Pintura, an image editor by [Rik Schennink](https://github.com/rikschennink)
+
+Please note that Pintura is a paid library and is not included in Nova File Manager.
+
+You need to acquire a license and then follow the steps in the documentation to set up your integration.
+
+Learn more about [Pintura image editor by PQINA](https://pqina.nl/pintura/?affiliate_id=775099219). (Affiliate link)
+
+### 🚨 BREAKING CHANGE - VENDOR NAME CHANGE
+
+With this new release, we have moved to a new vendor, we have updated our repo and the packagist registry for our package. This change should not introduce any unwanted behavior, however, if you encounter any issues you may need to run **one (or all) of the following commands** :
+
+```bash
+rm -rf vendor/
+
+```
+```bash
+composer install oneduo/nova-file-manager
+
+```
+```bash
+composer rm bbs-lab/nova-file-manager
+
+```
+> **Note**
+In case you're experiencing trouble setting up the package with the new vendor, please open a new issue and we will look into it.
+
+### What's Changed
+
+- [0.7.x] Improving components, store and backend handlers by @crezra in https://github.com/oneduo/nova-file-manager/pull/82
+- Add the Authenticate middleware, without which the side menu does not appear by @vesper8 in https://github.com/oneduo/nova-file-manager/pull/84
+- Add Pintura image editor support by @mikaelpopowicz in https://github.com/oneduo/nova-file-manager/pull/85
+
+### New Contributors
+
+- @vesper8 made their first contribution in https://github.com/oneduo/nova-file-manager/pull/84
+
+**Full Changelog**: https://github.com/oneduo/nova-file-manager/compare/v0.6.4...v0.7.0
+
 ## v0.6.4 - 2022-09-10
 
 ### What's Changed
