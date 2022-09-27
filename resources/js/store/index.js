@@ -261,6 +261,10 @@ const useStore = defineStore('nova-file-manager', {
       this.errors = new Errors(errors)
     },
 
+    resetErrors() {
+      this.errors = null
+    },
+
     /**
      * Add a file to the upload queue
      *
@@ -505,6 +509,8 @@ const useStore = defineStore('nova-file-manager', {
           }),
         })
 
+        this.resetErrors()
+
         Nova.success(response.data.message)
 
         this.closeModal({ name: 'create-folder' })
@@ -523,15 +529,18 @@ const useStore = defineStore('nova-file-manager', {
           path: '/folders/rename',
           data: this.payload({
             path: this.path,
-            oldPath: escape(from),
-            newPath: escape(`${this.path ?? ''}/${to}`),
+            from: escape(from).replace('//', '/'),
+            to: escape(`${this.path ?? ''}/${to}`).replace('//', '/'),
           }),
         })
+
+        this.resetErrors()
 
         Nova.success(response.data.message)
 
         this.closeModal({ name: `rename-folder-${id}` })
       } catch (error) {
+        console.log(error.response?.data?.errors)
         this.setErrors({
           errors: {
             renameFolder: errors(error.response?.data?.errors),
@@ -548,6 +557,8 @@ const useStore = defineStore('nova-file-manager', {
             path: path,
           }),
         })
+
+        this.resetErrors()
 
         Nova.success(response.data.message)
 
@@ -624,10 +635,12 @@ const useStore = defineStore('nova-file-manager', {
           path: '/files/rename',
           data: this.payload({
             path: this.path,
-            oldPath: escape(from),
-            newPath: escape(`${this.path ?? ''}/${to}`),
+            from: escape(from).replace('//', '/'),
+            to: escape(`${this.path ?? ''}/${to}`).replace('//', '/'),
           }),
         })
+
+        this.resetErrors()
 
         Nova.success(response.data.message)
 
@@ -636,7 +649,9 @@ const useStore = defineStore('nova-file-manager', {
         this.closeModal({ name: `rename-file-${id}` })
       } catch (error) {
         this.setErrors({
-          renameFile: errors(error.response?.data?.errors),
+          errors: {
+            renameFile: errors(error.response?.data?.errors),
+          },
         })
       }
     },
@@ -650,6 +665,8 @@ const useStore = defineStore('nova-file-manager', {
           }),
         })
 
+        this.resetErrors()
+
         Nova.success(response.data.message)
 
         this.preview = null
@@ -659,7 +676,9 @@ const useStore = defineStore('nova-file-manager', {
         this.clearSelection()
       } catch (error) {
         this.setErrors({
-          deleteFile: errors(error.response?.data?.errors),
+          errors: {
+            deleteFile: errors(error.response?.data?.errors),
+          },
         })
       }
     },
@@ -673,6 +692,8 @@ const useStore = defineStore('nova-file-manager', {
           }),
         })
 
+        this.resetErrors()
+
         Nova.success(response.data.message)
 
         this.preview = null
@@ -680,7 +701,9 @@ const useStore = defineStore('nova-file-manager', {
         this.clearSelection()
       } catch (error) {
         this.setErrors({
-          unzipFile: errors(error.response?.data?.errors),
+          errors: {
+            unzipFile: errors(error.response?.data?.errors),
+          },
         })
       }
     },
@@ -761,6 +784,7 @@ const useStore = defineStore('nova-file-manager', {
       this.callback = callback
       this.usePintura = usePintura
       this.pinturaOptions = pinturaOptions
+      this.errors = null
 
       this.setSelection({ files: [...initialFiles] })
 
@@ -783,6 +807,7 @@ const useStore = defineStore('nova-file-manager', {
       this.callback = null
       this.usePintura = false
       this.pinturaOptions = {}
+      this.errors = null
 
       this.setSelection({ files: [] })
 
@@ -811,6 +836,7 @@ const useStore = defineStore('nova-file-manager', {
       this.tour = tour
       this.usePintura = usePintura
       this.pinturaOptions = pinturaOptions
+      this.errors = null
     },
   },
   getters: {
