@@ -8,7 +8,8 @@
 ![PHP](https://img.shields.io/badge/PHP-8-blue.svg)
 ![Laravel Nova](https://img.shields.io/badge/laravel%2Fnova-4-cyan.svg)
 [![Latest Version on Packagist](https://img.shields.io/packagist/v/oneduo/nova-file-manager.svg)](https://packagist.org/packages/oneduo/nova-file-manager)
-[![Total Downloads](https://img.shields.io/packagist/dt/oneduo/nova-file-manager.svg)](https://packagist.org/packages/oneduo/nova-file-manager)
+[![Total Downloads](https://img.shields.io/packagist/dt/bbs-lab/nova-file-manager.svg)](https://packagist.org/packages/bbs-lab/nova-file-manager)
+[![Downloads](https://img.shields.io/packagist/dt/oneduo/nova-file-manager.svg)](https://packagist.org/packages/oneduo/nova-file-manager)
 [![Run tests](https://github.com/oneduo/nova-file-manager/actions/workflows/tests.yml/badge.svg?branch=main)](https://github.com/oneduo/nova-file-manager/actions/workflows/tests.yml)
 </div>
 
