@@ -136,7 +136,7 @@ let head = [
       async: true,
       src: 'https://cdn.splitbee.io/sb.js',
       'data-no-cookie': true,
-      'data-token': 'FSBYOWYLYBPB',
+      'data-token': 'UKRJ075UT8Z4',
       'data-respect-dnt': true,
     },
   ],
