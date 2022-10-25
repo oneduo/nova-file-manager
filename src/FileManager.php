@@ -23,6 +23,13 @@ class FileManager extends Field implements InteractsWithFilesystem
 
     public ?int $limit = null;
 
+    /**
+     * Indicates if the field value should be displayed as HTML.
+     *
+     * @var bool
+     */
+    public bool $asHtml = false;
+
     public Closure $storageCallback;
 
     public function __construct($name, $attribute = null, Closure $storageCallback = null)
@@ -42,6 +49,18 @@ class FileManager extends Field implements InteractsWithFilesystem
     public function limit(?int $limit = null): static
     {
         $this->limit = $limit;
+
+        return $this;
+    }
+
+    /**
+     * Display the field as raw HTML using Vue.
+     *
+     * @return $this
+     */
+    public function asHtml(): static
+    {
+        $this->asHtml = true;
 
         return $this;
     }
@@ -149,6 +168,7 @@ class FileManager extends Field implements InteractsWithFilesystem
             [
                 'multiple' => $this->multiple,
                 'limit' => $this->multiple ? $this->limit : 1,
+                'asHtml' => $this->asHtml,
             ],
             $this->options(),
         );
