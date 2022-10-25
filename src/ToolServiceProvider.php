@@ -31,8 +31,14 @@ class ToolServiceProvider extends ServiceProvider
         $this->config();
         $this->translations();
 
-        Nova::serving(static function () {
-            Nova::translations(__DIR__.'/../lang/en.json');
+        Nova::serving(function () {
+            Nova::translations(
+                array_merge(
+                    trans('nova-file-manager::ui', [], 'en'),
+                    trans('nova-file-manager::ui'),
+                )
+            );
+
             Nova::style('nova-file-manager', __DIR__.'/../dist/css/tool.css');
 
             // [WARNING - internal use only] This is for local development only. DO NOT ENABLE.
