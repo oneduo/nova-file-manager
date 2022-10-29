@@ -2,6 +2,15 @@
 
 All notable changes to `nova-file-manager` will be documented in this file
 
+## v0.7.1 - 2022-10-29
+
+### What's Changed
+
+- Add ability to resolve display as html. by @mikaelpopowicz in https://github.com/oneduo/nova-file-manager/pull/93
+- Use php style translations. by @mikaelpopowicz in https://github.com/oneduo/nova-file-manager/pull/95
+
+**Full Changelog**: https://github.com/oneduo/nova-file-manager/compare/v0.7.0...v0.7.1
+
 ## v0.7.0 - 2022-09-27
 
 ![feature](https://user-images.githubusercontent.com/2086576/192314603-bcb1a95a-5ee4-438d-98fb-d9901ac1194d.png)
@@ -62,13 +71,16 @@ With this new release, we have moved to a new vendor, we have updated our repo a
 ```bash
 rm -rf vendor/
 
+
 ```
 ```bash
 composer install oneduo/nova-file-manager
 
+
 ```
 ```bash
 composer rm bbs-lab/nova-file-manager
+
 
 ```
 > **Note**
