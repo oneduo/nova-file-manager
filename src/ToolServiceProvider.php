@@ -32,12 +32,15 @@ class ToolServiceProvider extends ServiceProvider
         $this->translations();
 
         Nova::serving(function () {
-            Nova::translations(
-                array_merge(
-                    trans('nova-file-manager::ui', [], 'en'),
-                    trans('nova-file-manager::ui'),
-                )
-            );
+            $translations = trans('nova-file-manager::ui');
+
+            if (!is_array($translations)) {
+                $translations = [];
+            }
+
+            $translations = array_merge(trans('nova-file-manager::ui', [], 'en'), $translations);
+
+            Nova::translations($translations);
 
             Nova::style('nova-file-manager', __DIR__.'/../dist/css/tool.css');
 
