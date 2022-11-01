@@ -2,6 +2,18 @@
 
 All notable changes to `nova-file-manager` will be documented in this file
 
+## v0.7.2 - 2022-11-01
+
+### What's Changed
+
+- Fix error translation by @pblaravel in https://github.com/oneduo/nova-file-manager/pull/96
+
+### New Contributors
+
+- @pblaravel made their first contribution in https://github.com/oneduo/nova-file-manager/pull/96
+
+**Full Changelog**: https://github.com/oneduo/nova-file-manager/compare/v0.7.1...v0.7.2
+
 ## v0.7.1 - 2022-10-29
 
 ### What's Changed
@@ -72,14 +84,17 @@ With this new release, we have moved to a new vendor, we have updated our repo a
 rm -rf vendor/
 
 
+
 ```
 ```bash
 composer install oneduo/nova-file-manager
 
 
+
 ```
 ```bash
 composer rm bbs-lab/nova-file-manager
+
 
 
 ```
