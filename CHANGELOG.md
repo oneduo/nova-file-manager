@@ -2,6 +2,14 @@
 
 All notable changes to `nova-file-manager` will be documented in this file
 
+## v0.7.3 - 2022-11-14
+
+### What's Changed
+
+- fix(filesystem): fix singleDisk value in store on form field. by @mikaelpopowicz in https://github.com/oneduo/nova-file-manager/pull/99
+
+**Full Changelog**: https://github.com/oneduo/nova-file-manager/compare/v0.7.2...v0.7.3
+
 ## v0.7.2 - 2022-11-01
 
 ### What's Changed
@@ -85,15 +93,18 @@ rm -rf vendor/
 
 
 
+
 ```
 ```bash
 composer install oneduo/nova-file-manager
 
 
 
+
 ```
 ```bash
 composer rm bbs-lab/nova-file-manager
+
 
 
 
