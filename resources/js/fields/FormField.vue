@@ -171,7 +171,7 @@ export default {
         resource: this.resourceName ?? null,
         resourceId: this.resourceId ?? null,
         attribute: this.flexibleGroup.length ? this.field.sortableUriKey : this.field.attribute,
-        singleDisk: this.field.customDisk ?? false,
+        singleDisk: this.field.singleDisk ?? false,
         permissions: this.field.permissions ?? {},
         flexibleGroup: this.flexibleGroup,
         callback: selection => {
