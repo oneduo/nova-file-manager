@@ -32,7 +32,7 @@
 
 <script setup>
 import { DialogPanel, DialogTitle } from '@headlessui/vue'
-import BaseModal from '@/components/Modals/BaseModal'
+import BaseModal from './BaseModal.vue'
 
 defineProps({
   name: {

@@ -26,15 +26,14 @@
 </template>
 
 <script>
-import { CopiesToClipboard } from 'laravel-nova'
 import { mapActions, mapState } from 'pinia'
-import FieldCard from '@/components/Cards/FieldCard'
-import Entity from '@/types/Entity'
-import PreviewModal from '@/components/Modals/PreviewModal'
-import { useStore } from '@/store'
+import FieldCard from '../components/Cards/FieldCard.vue'
+import Entity from '../types/Entity'
+import PreviewModal from '../components/Modals/PreviewModal.vue'
+import { useStore } from '../store'
 
 export default {
-  mixins: [CopiesToClipboard],
+  mixins: [window.LaravelNova.CopiesToClipboard],
 
   components: {
     PreviewModal,

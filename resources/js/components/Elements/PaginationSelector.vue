@@ -3,7 +3,7 @@
 </template>
 
 <script setup>
-import Select from '@/components/Elements/Select'
+import Select from './Select.vue'
 import { range } from 'lodash/util'
 
 defineProps({

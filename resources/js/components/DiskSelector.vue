@@ -3,7 +3,7 @@
 </template>
 
 <script setup>
-import Select from '@/components/Elements/Select'
+import Select from '../components/Elements/Select.vue'
 
 defineProps({
   disk: {

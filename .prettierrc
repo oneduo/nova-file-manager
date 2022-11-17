@@ -9,5 +9,5 @@
   "semi": false,
   "requirePragma": false,
   "proseWrap": "preserve",
-  "arrowParens": "avoid",
+  "arrowParens": "avoid"
 }

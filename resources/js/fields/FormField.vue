@@ -87,7 +87,6 @@
 </template>
 
 <script>
-import { FormField, HandlesValidationErrors } from 'laravel-nova'
 import { mapActions, mapState } from 'pinia'
 import { CloudIcon } from '@heroicons/vue/24/outline'
 import {
@@ -96,14 +95,14 @@ import {
   TransitionChild,
   TransitionRoot,
 } from '@headlessui/vue'
-import Browser from '@/components/Browser'
 import draggable from 'vuedraggable'
-import FieldCard from '@/components/Cards/FieldCard'
-import Entity from '@/types/Entity'
-import { useStore } from '@/store'
+import Browser from '../components/Browser.vue'
+import FieldCard from '../components/Cards/FieldCard.vue'
+import Entity from '../types/Entity'
+import { useStore } from '../store'
 
 export default {
-  mixins: [FormField, HandlesValidationErrors],
+  mixins: [window.LaravelNova.FormField, window.LaravelNova.HandlesValidationErrors],
 
   components: {
     FieldCard,

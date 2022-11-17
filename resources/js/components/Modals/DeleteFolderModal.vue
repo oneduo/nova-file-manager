@@ -23,8 +23,8 @@
 <script setup>
 import { computed } from 'vue'
 import { ExclamationCircleIcon } from '@heroicons/vue/24/outline'
-import ConfirmModal from '@/components/Modals/ConfirmModal'
-import Button from '@/components/Elements/Button'
+import ConfirmModal from './ConfirmModal.vue'
+import Button from '../Elements/Button.vue'
 
 defineProps({
   name: {

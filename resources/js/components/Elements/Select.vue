@@ -53,7 +53,7 @@
 <script setup>
 import { Menu, MenuButton, MenuItem, MenuItems } from '@headlessui/vue'
 import { CheckIcon, ChevronDownIcon } from '@heroicons/vue/24/solid'
-import Spinner from '@/components/Elements/Spinner'
+import Spinner from './Spinner.vue'
 
 defineProps({
   current: {

@@ -1,10 +1,11 @@
 import { acceptHMRUpdate, defineStore } from 'pinia'
+// @ts-ignore
 import { Errors } from 'form-backend-validation'
-import errors from '@/helpers/errors'
 import escape from 'lodash/escape'
 import Resumable from 'resumablejs'
 import { range } from 'lodash/util'
-import { client } from '@/helpers/client'
+import errors from '../helpers/errors'
+import { client } from '../helpers/client'
 
 const useStore = defineStore('nova-file-manager', {
   state: () => ({

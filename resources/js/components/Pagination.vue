@@ -79,7 +79,7 @@
 <script setup>
 import { computed } from 'vue'
 import { ChevronLeftIcon, ChevronRightIcon } from '@heroicons/vue/24/solid'
-import { useStore } from '@/store'
+import { useStore } from '../store'
 
 const store = useStore()
 

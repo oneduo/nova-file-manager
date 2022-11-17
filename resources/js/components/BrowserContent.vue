@@ -45,10 +45,10 @@
 <script setup>
 import { Disclosure, DisclosureButton, DisclosurePanel } from '@headlessui/vue'
 import { ChevronDownIcon, ChevronRightIcon } from '@heroicons/vue/24/outline'
-import FileGrid from '@/components/FileGrid'
-import DirectoryGrid from '@/components/DirectoryGrid'
-import List from '@/components/List'
-import Empty from '@/components/Empty'
+import FileGrid from '../components/FileGrid.vue'
+import DirectoryGrid from '../components/DirectoryGrid.vue'
+import List from '../components/List.vue'
+import Empty from '../components/Empty.vue'
 
 defineProps({
   view: {

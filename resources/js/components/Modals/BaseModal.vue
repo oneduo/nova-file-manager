@@ -34,7 +34,7 @@
 <script setup>
 import { Dialog, TransitionChild, TransitionRoot } from '@headlessui/vue'
 import { computed, onBeforeUnmount } from 'vue'
-import { useStore } from '@/store'
+import { useStore } from '../../store'
 
 const props = defineProps({
   name: {

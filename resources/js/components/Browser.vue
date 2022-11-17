@@ -28,17 +28,17 @@
 
 <script setup>
 import { computed, onBeforeUnmount, onMounted, ref, watch } from 'vue'
-import Toolbar from '@/components/Toolbar'
-import Pagination from '@/components/Pagination'
-import Spinner from '@/components/Elements/Spinner'
-import BrowserContent from '@/components/BrowserContent'
-import UploadQueueModal from '@/components/Modals/UploadQueueModal'
-import { usePermissions } from '@/hooks'
-import { useStore } from '@/store'
-import BrowserDragzone from '@/components/Elements/BrowserDragzone'
-import dataTransferFiles from '@/helpers/data-transfer'
-import Spotlight from '@/components/Modals/Spotlight'
-import Tour from '@/components/Elements/Tour'
+import Toolbar from '../components/Toolbar.vue'
+import Pagination from '../components/Pagination.vue'
+import Spinner from '../components/Elements/Spinner.vue'
+import BrowserContent from '../components/BrowserContent.vue'
+import UploadQueueModal from '../components/Modals/UploadQueueModal.vue'
+import { usePermissions } from '../hooks'
+import { useStore } from '../store'
+import BrowserDragzone from '../components/Elements/BrowserDragzone.vue'
+import dataTransferFiles from '../helpers/data-transfer'
+import Spotlight from '../components/Modals/Spotlight.vue'
+import Tour from '../components/Elements/Tour.vue'
 
 const store = useStore()
 

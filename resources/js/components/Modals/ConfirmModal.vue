@@ -53,8 +53,8 @@ const variants = {
 <script setup>
 import { computed } from 'vue'
 import { DialogPanel, DialogTitle } from '@headlessui/vue'
-import { useErrors } from '@/hooks'
-import BaseModal from '@/components/Modals/BaseModal'
+import { useErrors } from '../../hooks'
+import BaseModal from './BaseModal.vue'
 
 const props = defineProps({
   name: {

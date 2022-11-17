@@ -67,23 +67,6 @@
                     </p>
                   </div>
                 </div>
-                <!--                <template v-else>-->
-                <!--                  <div class="w-full flex flex-row justify-between items-center">-->
-                <!--                    <h1 class="text-xs uppercase text-gray-400 font-bold">Queue</h1>-->
-                <!--                  </div>-->
-                <!--                  <ul class="grid grid-cols-2 md:grid-cols-4 gap-6">-->
-                <!--                    <template v-for="item in queue" :key="item.id">-->
-                <!--                      <File-->
-                <!--                        :file="entityTransformer(item.file)"-->
-                <!--                        :is-uploading="true"-->
-                <!--                        :is-uploaded="item.status"-->
-                <!--                        :upload-ratio="item.ratio"-->
-                <!--                        :selected="false"-->
-                <!--                        class="cursor-default"-->
-                <!--                      />-->
-                <!--                    </template>-->
-                <!--                  </ul>-->
-                <!--                </template>-->
               </div>
             </DialogPanel>
           </TransitionChild>
@@ -97,8 +80,8 @@
 import { computed, ref, watch } from 'vue'
 import { Dialog, DialogPanel, TransitionChild, TransitionRoot } from '@headlessui/vue'
 import { CloudArrowUpIcon } from '@heroicons/vue/24/outline'
-import { useStore } from '@/store'
-import dataTransferFiles from '@/helpers/data-transfer'
+import { useStore } from '../../store'
+import dataTransferFiles from '../../helpers/data-transfer'
 
 const props = defineProps({
   name: {

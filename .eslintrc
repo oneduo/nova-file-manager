@@ -1,39 +1,51 @@
 {
-    "env" : {
-        "browser" : true,
-        "node" : true
-    },
-    "extends" : [
-        "eslint:recommended",
-        "plugin:vue/essential",
-        "prettier"
+  "env": {
+    "browser": true,
+    "node": true
+  },
+  "extends": [
+    "eslint:recommended",
+    "plugin:vue/essential",
+    "prettier"
+  ],
+  "parserOptions": {
+    "sourceType": "module",
+    "ecmaVersion": 2020
+  },
+  "globals": {
+    "Nova": true
+  },
+  "rules": {
+    "indent": [
+      "error",
+      2
     ],
-    "parserOptions" : {
-        "sourceType": "module",
-        "ecmaVersion": 2020
-    },
-    "globals": {
-        "Nova": true
-    },
-    "rules" : {
-        "indent" : [
-            "error",
-            2
-        ],
-        "linebreak-style" : [
-            "error",
-            "unix"
-        ],
-        "quotes" : [
-            "error",
-            "single"
-        ],
-        "semi" : [
-            "error",
-            "never"
-        ],
-        "vue/no-multiple-template-root": "off",
-        "vue/multi-word-component-names": "off",
-        "vue/no-v-for-template-key": "off"
-    }
+    "linebreak-style": [
+      "error",
+      "unix"
+    ],
+    "quotes": [
+      "error",
+      "single"
+    ],
+    "semi": [
+      "error",
+      "never"
+    ],
+    "vue/no-multiple-template-root": "off",
+    "vue/multi-word-component-names": "off",
+    "vue/no-v-for-template-key": "off"
+  },
+  "plugins": [
+    "import"
+  ],
+  "settings": {
+    "import/extensions": [
+      "error",
+      "ignorePackages",
+      {
+        "vue": "always"
+      }
+    ]
+  }
 }

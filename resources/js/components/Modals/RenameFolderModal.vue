@@ -49,9 +49,9 @@
 
 <script setup>
 import { onMounted, ref } from 'vue'
-import Button from '@/components/Elements/Button'
-import InputModal from '@/components/Modals/InputModal'
-import { useErrors } from '@/hooks'
+import Button from '../Elements/Button.vue'
+import InputModal from './InputModal.vue'
+import { useErrors } from '../../hooks'
 
 const props = defineProps({
   name: {

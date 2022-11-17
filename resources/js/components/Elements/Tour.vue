@@ -5,8 +5,8 @@
 <script setup>
 import { computed, onMounted } from 'vue'
 import Shepherd from 'shepherd.js'
-import { useTourStore } from '@/store/tour'
-import { useStore } from '@/store'
+import { useTourStore } from '../../store/tour'
+import { useStore } from '../../store'
 
 const store = useStore()
 const tourStore = useTourStore()

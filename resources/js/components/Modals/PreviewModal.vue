@@ -205,17 +205,17 @@ import {
   TrashIcon,
   XMarkIcon,
 } from '@heroicons/vue/24/outline'
-import IconButton from '@/components/Elements/IconButton'
-import BaseModal from '@/components/Modals/BaseModal'
-import DeleteFileModal from '@/components/Modals/DeleteFileModal'
-import RenameFileModal from '@/components/Modals/RenameFileModal'
-import CropImageModal from '@/components/Modals/CropImageModal'
-import EditImageModal from '@/components/Modals/EditImageModal'
-import Entity from '@/types/Entity'
-import { useClipboard, usePermissions, usePintura } from '@/hooks'
-import CropIcon from '@/components/Elements/CropIcon'
-import ImageLoader from '@/components/Elements/ImageLoader'
-import { useStore } from '@/store'
+import IconButton from '../Elements/IconButton.vue'
+import BaseModal from '../Modals/BaseModal.vue'
+import DeleteFileModal from '../Modals/DeleteFileModal.vue'
+import RenameFileModal from '../Modals/RenameFileModal.vue'
+import CropImageModal from '../Modals/CropImageModal.vue'
+import EditImageModal from '../Modals/EditImageModal.vue'
+import Entity from '../../types/Entity'
+import { useClipboard, usePermissions, usePintura } from '../../hooks'
+import CropIcon from '../Elements/CropIcon.vue'
+import ImageLoader from '../Elements/ImageLoader.vue'
+import { useStore } from '../../store'
 
 const props = defineProps({
   file: {

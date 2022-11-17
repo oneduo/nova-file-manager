@@ -105,14 +105,14 @@
 <script setup>
 import { computed } from 'vue'
 import { DocumentIcon, FolderIcon } from '@heroicons/vue/24/outline'
-import DeleteFolderModal from '@/components/Modals/DeleteFolderModal'
 import { EllipsisHorizontalIcon } from '@heroicons/vue/24/solid'
 import { Menu, MenuButton, MenuItem, MenuItems } from '@headlessui/vue'
-import RenameFolderModal from '@/components/Modals/RenameFolderModal'
-import PreviewModal from '@/components/Modals/PreviewModal'
-import { usePermissions } from '@/hooks'
-import { useStore } from '@/store'
-import { entity } from '@/transformers/entityTransformer'
+import DeleteFolderModal from './Modals/DeleteFolderModal.vue'
+import RenameFolderModal from './Modals/RenameFolderModal.vue'
+import PreviewModal from './Modals/PreviewModal.vue'
+import { usePermissions } from '../hooks'
+import { useStore } from '../store'
+import { entity } from '../transformers/entityTransformer'
 
 const store = useStore()
 const { showRenameFolder, showDeleteFolder } = usePermissions()

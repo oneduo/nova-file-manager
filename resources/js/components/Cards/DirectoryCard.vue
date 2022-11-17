@@ -67,10 +67,10 @@
 import { Menu, MenuButton, MenuItem, MenuItems } from '@headlessui/vue'
 import { FolderIcon } from '@heroicons/vue/24/outline'
 import { EllipsisVerticalIcon } from '@heroicons/vue/24/solid'
-import RenameFolderModal from '@/components/Modals/RenameFolderModal'
-import DeleteFolderModal from '@/components/Modals/DeleteFolderModal'
-import { usePermissions } from '@/hooks'
-import { useStore } from '@/store'
+import RenameFolderModal from '../Modals/RenameFolderModal.vue'
+import DeleteFolderModal from '../Modals/DeleteFolderModal.vue'
+import { usePermissions } from '../../hooks'
+import { useStore } from '../../store'
 
 const props = defineProps({
   id: {

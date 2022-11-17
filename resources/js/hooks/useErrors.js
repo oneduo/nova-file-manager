@@ -1,5 +1,5 @@
 import { computed } from 'vue'
-import { useStore } from '@/store'
+import { useStore } from '../store'
 
 export function useErrors(name) {
   const store = useStore()

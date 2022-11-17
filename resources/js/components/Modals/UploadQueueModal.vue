@@ -27,10 +27,10 @@
 <script setup>
 import { computed } from 'vue'
 import { DialogPanel } from '@headlessui/vue'
-import File from '@/components/Cards/File'
-import entityTransformer from '@/transformers/entityTransformer'
-import BaseModal from '@/components/Modals/BaseModal'
-import { useStore } from '@/store'
+import File from '../Cards/File.vue'
+import entityTransformer from '../../transformers/entityTransformer'
+import BaseModal from '../Modals/BaseModal.vue'
+import { useStore } from '../../store'
 
 const store = useStore()
 

@@ -19,10 +19,10 @@
 
 <script setup>
 import { computed } from 'vue'
-import PreviewModal from '@/components/Modals/PreviewModal'
-import File from '@/components/Cards/File'
-import { entity } from '@/transformers/entityTransformer'
-import { useStore } from '@/store'
+import PreviewModal from './Modals/PreviewModal.vue'
+import File from './Cards/File.vue'
+import { entity } from '../transformers/entityTransformer'
+import { useStore } from '../store'
 
 defineProps({
   files: {

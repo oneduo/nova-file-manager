@@ -16,7 +16,7 @@
 </template>
 
 <script setup>
-import DirectoryCard from '@/components/Cards/DirectoryCard'
+import DirectoryCard from './Cards/DirectoryCard.vue'
 import { defineProps } from 'vue'
 
 defineProps({

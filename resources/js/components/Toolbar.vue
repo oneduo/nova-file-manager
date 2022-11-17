@@ -87,17 +87,17 @@ import {
   FolderPlusIcon,
   MagnifyingGlassIcon,
 } from '@heroicons/vue/24/outline'
-import DiskSelector from '@/components/DiskSelector'
-import PaginationSelector from '@/components/Elements/PaginationSelector'
-import Breadcrumbs from '@/components/Breadcrumbs'
-import IconButton from '@/components/Elements/IconButton'
-import ViewToggle from '@/components/Elements/ViewToggle'
-import UploadModal from '@/components/Modals/UploadModal'
-import CreateFolderModal from '@/components/Modals/CreateFolderModal'
-import { usePermissions } from '@/hooks'
+import DiskSelector from '../components/DiskSelector.vue'
+import PaginationSelector from '../components/Elements/PaginationSelector.vue'
+import Breadcrumbs from '../components/Breadcrumbs.vue'
+import IconButton from '../components/Elements/IconButton.vue'
+import ViewToggle from '../components/Elements/ViewToggle.vue'
+import UploadModal from '../components/Modals/UploadModal.vue'
+import CreateFolderModal from '../components/Modals/CreateFolderModal.vue'
+import { usePermissions } from '../hooks'
 import { computed } from 'vue'
-import { useStore } from '@/store'
-import { useSearchStore } from '@/store/search'
+import { useStore } from '../store'
+import { useSearchStore } from '../store/search'
 
 const store = useStore()
 const searchStore = useSearchStore()

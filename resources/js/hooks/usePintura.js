@@ -1,5 +1,5 @@
-import { useStore } from '@/store'
 import { computed } from 'vue'
+import { useStore } from '../store'
 
 export function usePintura() {
   const store = useStore()

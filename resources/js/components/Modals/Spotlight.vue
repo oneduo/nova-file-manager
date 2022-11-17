@@ -186,9 +186,9 @@ import {
   TransitionChild,
   TransitionRoot,
 } from '@headlessui/vue'
-import { useSearchStore } from '@/store/search'
-import { useStore } from '@/store'
-import Spinner from '@/components/Elements/Spinner'
+import { useSearchStore } from '../../store/search'
+import { useStore } from '../../store'
+import Spinner from '../Elements/Spinner.vue'
 import debounce from 'lodash/debounce'
 
 const searchStore = useSearchStore()

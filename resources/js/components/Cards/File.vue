@@ -115,9 +115,9 @@ import {
   PlayIcon,
   XCircleIcon,
 } from '@heroicons/vue/24/solid'
-import Spinner from '@/components/Elements/Spinner'
-import Entity from '@/types/Entity'
-import ImageLoader from '@/components/Elements/ImageLoader'
+import Spinner from '../Elements/Spinner.vue'
+import Entity from '../../types/Entity'
+import ImageLoader from '../Elements/ImageLoader.vue'
 
 const props = defineProps({
   file: {

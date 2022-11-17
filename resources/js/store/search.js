@@ -1,5 +1,5 @@
 import { defineStore } from 'pinia'
-import { useStore } from '@/store'
+import { useStore } from './'
 import axios from 'axios'
 
 const modifiers = {

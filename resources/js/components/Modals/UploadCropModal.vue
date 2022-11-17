@@ -48,10 +48,10 @@
 
 <script setup>
 import { computed, onMounted, ref } from 'vue'
-import Button from '@/components/Elements/Button'
-import InputModal from '@/components/Modals/InputModal'
-import { useStore } from '@/store'
-import Entity from '@/types/Entity'
+import Button from '../Elements/Button.vue'
+import InputModal from './InputModal.vue'
+import { useStore } from '../../store'
+import Entity from '../../types/Entity'
 
 const props = defineProps({
   file: {

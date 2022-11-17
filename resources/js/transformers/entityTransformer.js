@@ -1,4 +1,4 @@
-import Entity from '@/types/Entity'
+import Entity from '../types/Entity'
 
 export default function entityTransformer(file) {
   return new Entity(

@@ -10,9 +10,9 @@
 
 <script setup>
 import { computed } from 'vue'
-import Entity from '@/types/Entity'
-import File from '@/components/Cards/File'
-import { useStore } from '@/store'
+import Entity from '../../types/Entity'
+import File from './File.vue'
+import { useStore } from '../../store'
 
 const store = useStore()
 

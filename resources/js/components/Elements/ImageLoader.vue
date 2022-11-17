@@ -6,7 +6,7 @@
 
 <script setup>
 import { computed, onMounted, ref } from 'vue'
-import Spinner from '@/components/Elements/Spinner'
+import Spinner from './Spinner.vue'
 
 const props = defineProps({
   src: {

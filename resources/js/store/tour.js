@@ -1,6 +1,6 @@
 import { defineStore } from 'pinia'
 import Shepherd from 'shepherd.js'
-import { useStore } from '@/store/index'
+import { useStore } from './'
 
 const useTourStore = defineStore('nova-file-manager/tour', {
   state: () => ({
@@ -33,7 +33,7 @@ const useTourStore = defineStore('nova-file-manager/tour', {
 
         const tourStep = self.tour.addStep({
           id: step.key,
-          text: `<div class="gap-2 flex flex-row items-center"><span class="mr-2 flex-shrink-0 rounded-lg bg-indigo-900/60 p-2">💡</span>${step.label}</div>`,
+          text: `<div class='gap-2 flex flex-row items-center'><span class='mr-2 flex-shrink-0 rounded-lg bg-indigo-900/60 p-2'>💡</span>${step.label}</div>`,
           attachTo: {
             element: `[data-tour="${step.key}"]`,
             on: step.position ?? 'bottom-start',
