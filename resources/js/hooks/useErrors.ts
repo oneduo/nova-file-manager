@@ -1,8 +1,8 @@
 import { computed } from 'vue'
-import { useStore } from '../store'
+import useBrowserStore from '@/stores/browser'
 
-export function useErrors(name) {
-  const store = useStore()
+export function useErrors(name: string) {
+  const store = useBrowserStore()
 
   const errors = computed(() => store.errors)
   const hasErrors = computed(() => errors.value?.has(name))

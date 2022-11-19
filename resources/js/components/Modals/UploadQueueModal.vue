@@ -1,3 +1,22 @@
+<script setup lang="ts">
+import { DialogPanel } from '@headlessui/vue'
+import { computed } from 'vue'
+import File from '@/components/Cards/File.vue'
+import BaseModal from '@/components/Modals/BaseModal.vue'
+import nativeFileToEntity from '@/helpers/transformers'
+import useBrowserStore from '@/stores/browser'
+
+const store = useBrowserStore()
+
+interface Props {
+  name: string
+}
+
+defineProps<Props>()
+
+const queue = computed(() => store.queue)
+</script>
+
 <template>
   <BaseModal as="template" class="nova-file-manager" :name="name">
     <DialogPanel
@@ -10,7 +29,7 @@
         <ul class="grid grid-cols-2 md:grid-cols-4 gap-6">
           <template v-for="item in queue" :key="item.id">
             <File
-              :file="entityTransformer(item.file)"
+              :file="nativeFileToEntity(item.file)"
               :is-uploading="true"
               :is-uploaded="item.status"
               :upload-ratio="item.ratio"
@@ -23,20 +42,3 @@
     </DialogPanel>
   </BaseModal>
 </template>
-
-<script setup>
-import { computed } from 'vue'
-import { DialogPanel } from '@headlessui/vue'
-import File from '../Cards/File.vue'
-import entityTransformer from '../../transformers/entityTransformer'
-import BaseModal from '../Modals/BaseModal.vue'
-import { useStore } from '../../store'
-
-const store = useStore()
-
-defineProps({
-  name: String,
-})
-
-const queue = computed(() => store.queue)
-</script>

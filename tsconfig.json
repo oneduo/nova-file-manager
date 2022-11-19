@@ -15,7 +15,16 @@
     ],
     "skipLibCheck": true,
     "noEmit": true,
-    "outDir": "dist"
+    "outDir": "dist",
+    "paths": {
+      "@/*": [
+        "*"
+      ],
+      "__types": [
+        "@types"
+      ]
+    },
+    "baseUrl": "resources/js"
   },
   "include": [
     "resources/**/*.ts",

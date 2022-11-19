@@ -117,7 +117,7 @@ In case you're experiencing trouble setting up the package with the new vendor, 
 
 ### What's Changed
 
-- fix(upload): fix an issue where a file could not be uploaded in a subdirectory when a file with same name exists in the root directory by @mikaelpopowicz in https://github.com/oneduo/nova-file-manager/pull/79
+- fix(upload): fix an issue where a file could not be uploaded in a subdirectory when a file with same name exists in the root folder by @mikaelpopowicz in https://github.com/oneduo/nova-file-manager/pull/79
 
 **Full Changelog**: https://github.com/oneduo/nova-file-manager/compare/v0.6.3...v0.6.4
 

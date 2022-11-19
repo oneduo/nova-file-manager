@@ -1,105 +1,18 @@
-<template>
-  <div class="flex flex-col gap-y-4 pt-4">
-    <div
-      class="flex items-center justify-between flex-wrap sm:flex-nowrap gap-2 gap-y-2 flex-col-reverse sm:flex-row"
-    >
-      <div class="flex flex-row items-center gap-2 w-full flex-wrap sm:flex-nowrap">
-        <DiskSelector
-          v-if="!singleDisk"
-          :disk="disk"
-          :disks="disks"
-          :set-disk="setDisk"
-          :is-loading="isFetchingDisks"
-          data-tour="nfm-disk-selector"
-        />
-
-        <PaginationSelector
-          :per-page="Number(perPage)"
-          :per-page-options="perPageOptions"
-          :set-per-page="setPerPage"
-          data-tour="nfm-pagination-selector"
-        />
-
-        <ViewToggle :current="view" :set-view="setView" data-tour="nfm-view-toggle" />
-      </div>
-      <div class="flex flex-row gap-x-2 justify-end w-full sm:w-auto flex-shrink-0">
-        <div class="p-2 rounded-md font-semibold text-xs text-gray-400" v-if="selection?.length">
-          <span
-            :class="limit !== null && selection.length > limit ? 'text-red-500' : 'text-blue-500'"
-          >
-            {{ selection.length }}
-          </span>
-
-          <template v-if="!!limit">/{{ limit }}</template>
-
-          {{ __('NovaFileManager.toolbar.selection') }}
-
-          <button @click="clearSelection" class="underline">
-            {{ __('NovaFileManager.toolbar.clear') }}
-          </button>
-        </div>
-
-        <IconButton @click="openSearch" data-tour="nfm-spotlight-search-button">
-          <MagnifyingGlassIcon class="w-5 h-5" />
-        </IconButton>
-
-        <IconButton
-          v-if="showCreateFolder"
-          @click="openModal('create-folder')"
-          data-tour="nfm-create-folder-button"
-        >
-          <FolderPlusIcon class="w-5 h-5" />
-        </IconButton>
-
-        <IconButton
-          v-if="showUploadFile"
-          variant="primary"
-          @click="openUploadModal"
-          data-tour="nfm-upload-file-button"
-        >
-          <CloudArrowUpIcon class="h-5 w-5" />
-        </IconButton>
-
-        <IconButton
-          v-if="isField"
-          variant="success"
-          @click="confirm"
-          :disabled="!!limit && selection?.length > limit"
-          data-tour="nfm-confirm-selection-button"
-        >
-          <CheckIcon class="h-5 w-5" />
-        </IconButton>
-      </div>
-    </div>
-
-    <Breadcrumbs :items="breadcrumbs" :set-path="setPath" />
-  </div>
-
-  <UploadModal v-if="showUploadFile" name="upload" :queue="queue" :upload="upload" />
-
-  <CreateFolderModal v-if="showCreateFolder" :on-submit="createFolder" name="create-folder" />
-</template>
-
-<script setup>
-import {
-  CheckIcon,
-  CloudArrowUpIcon,
-  FolderPlusIcon,
-  MagnifyingGlassIcon,
-} from '@heroicons/vue/24/outline'
-import DiskSelector from '../components/DiskSelector.vue'
-import PaginationSelector from '../components/Elements/PaginationSelector.vue'
-import Breadcrumbs from '../components/Breadcrumbs.vue'
-import IconButton from '../components/Elements/IconButton.vue'
-import ViewToggle from '../components/Elements/ViewToggle.vue'
-import UploadModal from '../components/Modals/UploadModal.vue'
-import CreateFolderModal from '../components/Modals/CreateFolderModal.vue'
-import { usePermissions } from '../hooks'
+<script setup lang="ts">
+import { CheckIcon, CloudArrowUpIcon, FolderPlusIcon, MagnifyingGlassIcon } from '@heroicons/vue/24/outline'
 import { computed } from 'vue'
-import { useStore } from '../store'
-import { useSearchStore } from '../store/search'
+import Breadcrumbs from '@/components/Breadcrumbs.vue'
+import DiskSelector from '@/components/DiskSelector.vue'
+import IconButton from '@/components/Elements/IconButton.vue'
+import PaginationSelector from '@/components/Elements/PaginationSelector.vue'
+import ViewToggle from '@/components/Elements/ViewToggle.vue'
+import CreateFolderModal from '@/components/Modals/CreateFolderModal.vue'
+import UploadModal from '@/components/Modals/UploadModal.vue'
+import { usePermissions } from '@/hooks'
+import useBrowserStore from '@/stores/browser'
+import useSearchStore from '@/stores/search'
 
-const store = useStore()
+const store = useBrowserStore()
 const searchStore = useSearchStore()
 
 const { showCreateFolder, showUploadFile } = usePermissions()
@@ -134,3 +47,71 @@ const openUploadModal = () => {
   openModal(queue.value.length ? 'queue' : 'upload')
 }
 </script>
+<template>
+  <div class="flex flex-col gap-y-4 pt-4">
+    <div class="flex items-center justify-between flex-wrap sm:flex-nowrap gap-2 gap-y-2 flex-col-reverse sm:flex-row">
+      <div class="flex flex-row items-center gap-2 w-full flex-wrap sm:flex-nowrap">
+        <DiskSelector
+          v-if="!singleDisk"
+          :disk="disk"
+          :disks="disks"
+          :set-disk="setDisk"
+          :is-loading="isFetchingDisks"
+          data-tour="nfm-disk-selector"
+        />
+
+        <PaginationSelector
+          :per-page="Number(perPage)"
+          :per-page-options="perPageOptions"
+          :set-per-page="setPerPage"
+          data-tour="nfm-pagination-selector"
+        />
+
+        <ViewToggle :current="view" :set-view="setView" data-tour="nfm-view-toggle" />
+      </div>
+      <div class="flex flex-row gap-x-2 justify-end w-full sm:w-auto flex-shrink-0">
+        <div class="p-2 rounded-md font-semibold text-xs text-gray-400" v-if="selection?.length">
+          <span :class="limit !== null && selection.length > limit ? 'text-red-500' : 'text-blue-500'">
+            {{ selection.length }}
+          </span>
+
+          <template v-if="!!limit">/{{ limit }}</template>
+
+          {{ __('NovaFileManager.toolbar.selection') }}
+
+          <button @click="clearSelection" class="underline">
+            {{ __('NovaFileManager.toolbar.clear') }}
+          </button>
+        </div>
+
+        <IconButton @click="openSearch" data-tour="nfm-spotlight-search-button">
+          <MagnifyingGlassIcon class="w-5 h-5" />
+        </IconButton>
+
+        <IconButton v-if="showCreateFolder" @click="openModal('create-folder')" data-tour="nfm-create-folder-button">
+          <FolderPlusIcon class="w-5 h-5" />
+        </IconButton>
+
+        <IconButton v-if="showUploadFile" variant="primary" @click="openUploadModal" data-tour="nfm-upload-file-button">
+          <CloudArrowUpIcon class="h-5 w-5" />
+        </IconButton>
+
+        <IconButton
+          v-if="isField"
+          variant="success"
+          @click="confirm"
+          :disabled="!!limit && selection?.length > limit"
+          data-tour="nfm-confirm-selection-button"
+        >
+          <CheckIcon class="h-5 w-5" />
+        </IconButton>
+      </div>
+    </div>
+
+    <Breadcrumbs :items="breadcrumbs" :set-path="setPath" />
+  </div>
+
+  <UploadModal v-if="showUploadFile" name="upload" :queue="queue" :upload="upload" />
+
+  <CreateFolderModal v-if="showCreateFolder" :on-submit="createFolder" name="create-folder" />
+</template>

@@ -1,8 +1,8 @@
 import { computed } from 'vue'
-import { useStore } from '../store'
+import useBrowserStore from '@/stores/browser'
 
 export function usePintura() {
-  const store = useStore()
+  const store = useBrowserStore()
 
   const usePinturaEditor = computed(() => store.usePintura)
   const pinturaOptions = computed(() => store.pinturaOptions)

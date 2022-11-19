@@ -2,9 +2,23 @@ import vue from '@vitejs/plugin-vue'
 import { resolve } from 'path'
 import { defineConfig } from 'vite'
 import tsconfigPaths from 'vite-tsconfig-paths'
+import alias from '@rollup/plugin-alias'
 
 export default defineConfig({
-  plugins: [vue(), tsconfigPaths()],
+  plugins: [
+    vue(),
+    tsconfigPaths({
+      root: resolve(__dirname, 'resources/js'),
+    }),
+    alias({
+      entries: [
+        {
+          find: '@',
+          replacement: resolve(__dirname, 'resources/js'),
+        },
+      ],
+    }),
+  ],
 
   root: resolve(__dirname, 'resources'),
 

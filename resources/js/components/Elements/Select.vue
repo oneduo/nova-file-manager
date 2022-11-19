@@ -1,3 +1,20 @@
+<script setup lang="ts">
+import { Menu, MenuButton, MenuItem, MenuItems } from '@headlessui/vue'
+import { CheckIcon, ChevronDownIcon } from '@heroicons/vue/24/solid'
+import Spinner from '@/components/Elements/Spinner.vue'
+
+interface Props {
+  current?: string | number
+  options: (string | number)[]
+  onClick: (option: string | number) => void
+  isLoading?: boolean
+}
+
+withDefaults(defineProps<Props>(), {
+  isLoading: false,
+})
+</script>
+
 <template>
   <Menu as="div" class="relative inline-block text-left shrink-0">
     <div class="group">
@@ -49,27 +66,3 @@
     </transition>
   </Menu>
 </template>
-
-<script setup>
-import { Menu, MenuButton, MenuItem, MenuItems } from '@headlessui/vue'
-import { CheckIcon, ChevronDownIcon } from '@heroicons/vue/24/solid'
-import Spinner from './Spinner.vue'
-
-defineProps({
-  current: {
-    type: [String, Number],
-  },
-  options: {
-    type: Array,
-    default: () => [],
-  },
-  onClick: {
-    type: Function,
-    required: true,
-  },
-  isLoading: {
-    type: Boolean,
-    default: false,
-  },
-})
-</script>

@@ -1,3 +1,22 @@
+<script setup lang="ts">
+import { ExclamationCircleIcon } from '@heroicons/vue/24/outline'
+import { computed } from 'vue'
+import Button from '@/components/Elements/Button.vue'
+import ConfirmModal from '@/components/Modals/ConfirmModal.vue'
+
+interface Props {
+  isOpen?: boolean
+  name: string
+  onConfirm: () => void
+}
+
+withDefaults(defineProps<Props>(), {
+  isOpen: false,
+})
+
+const icon = computed(() => ExclamationCircleIcon)
+</script>
+
 <template>
   <ConfirmModal
     :content="__('NovaFileManager.deleteFileContent')"
@@ -20,29 +39,3 @@
     </template>
   </ConfirmModal>
 </template>
-
-<script setup>
-import { computed } from 'vue'
-import { ExclamationCircleIcon } from '@heroicons/vue/24/outline'
-import ConfirmModal from './ConfirmModal.vue'
-import Button from '../Elements/Button.vue'
-
-defineProps({
-  isOpen: {
-    type: Boolean,
-    default: false,
-  },
-  name: {
-    type: String,
-    required: true,
-  },
-  onConfirm: {
-    type: Function,
-  },
-  onClose: {
-    type: Function,
-  },
-})
-
-const icon = computed(() => ExclamationCircleIcon)
-</script>

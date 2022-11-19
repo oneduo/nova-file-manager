@@ -7,5 +7,18 @@ declare module '*.vue' {
 }
 
 declare global {
-  interface Window { Nova: Nova; }
+  interface Window {
+    Nova: Nova & {
+      config: {
+        NovaFileManagerEditor: any
+      }
+    }
+    confetti: any
+  }
+}
+
+declare module 'form-backend-validation' {
+  interface Errors {
+    [key: any]: any
+  }
 }

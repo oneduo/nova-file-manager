@@ -34,7 +34,7 @@ NOVA_FILE_MANAGER_USE_PINTURA=true
 You **must** provide your own copy of Pintura assets, once you have purchased a license, you can download the js and css files from your dashboard.
 :::
 
-Once you have your Pintura assets, you have to load them into your application, there's many options to do so, for instance you may place your assets in the `public` directory, and appending them by overriding the default `layout.blade.php` :
+Once you have your Pintura assets, you have to load them into your application, there's many options to do so, for instance you may place your assets in the `public` folder, and appending them by overriding the default `layout.blade.php` :
 
 ```php{7,21-30}
 <head>

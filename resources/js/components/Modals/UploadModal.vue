@@ -1,3 +1,52 @@
+<script setup lang="ts">
+import { Dialog, DialogPanel, TransitionChild, TransitionRoot } from '@headlessui/vue'
+import { CloudArrowUpIcon } from '@heroicons/vue/24/outline'
+import { QueueEntry } from '__types'
+import { computed, ref, watch } from 'vue'
+import { QUEUE_MODAL_NAME } from '@/constants'
+import dataTransferFiles from '@/helpers/data-transfer'
+import useBrowserStore from '@/stores/browser'
+
+interface Props {
+  name: string
+  queue: QueueEntry[]
+  upload: (files: File[]) => void
+}
+
+const props = defineProps<Props>()
+
+// STATE
+const active = ref(false)
+const files = ref([])
+
+const store = useBrowserStore()
+const isOpen = computed(() => store.isOpen(props.name))
+const darkMode = computed(() => store.dark)
+
+// ACTIONS
+const dragEnter = () => (active.value = true)
+const dragLeave = () => (active.value = false)
+const dragDrop = async e => (files.value = await dataTransferFiles(e.dataTransfer.items))
+const onChange = e => (files.value = e.target.files)
+const closeModal = () => store.closeModal({ name: props.name })
+const openModal = name => store.openModal({ name })
+
+const submit = () => {
+  if (files.value.length) {
+    props.upload(files.value)
+  }
+
+  closeModal()
+
+  openModal(QUEUE_MODAL_NAME)
+
+  active.value = false
+}
+
+// HOOKS
+watch(files, () => submit())
+</script>
+
 <template>
   <TransitionRoot :show="isOpen" as="template" class="nova-file-manager">
     <Dialog
@@ -19,17 +68,12 @@
         leave-to="opacity-0"
       >
         <div
-          :class="[
-            'fixed inset-0  backdrop-blur-sm transition-opacity',
-            active ? 'bg-blue-900/20' : 'bg-gray-800/20',
-          ]"
+          :class="['fixed inset-0  backdrop-blur-sm transition-opacity', active ? 'bg-blue-900/20' : 'bg-gray-800/20']"
         />
       </TransitionChild>
 
       <div :class="darkMode && 'dark'" class="fixed z-10 inset-0 overflow-y-auto">
-        <div
-          class="flex items-end sm:items-center justify-center min-h-full p-4 text-center sm:p-0"
-        >
+        <div class="flex items-end sm:items-center justify-center min-h-full p-4 text-center sm:p-0">
           <TransitionChild
             as="template"
             enter="ease-out duration-300"
@@ -44,9 +88,7 @@
             >
               <div class="flex flex-col justify-center gap-6 rounded-md px-6 pt-5 pb-6">
                 <div v-if="!queue.length" class="space-y-1 text-center p-12">
-                  <CloudArrowUpIcon
-                    :class="['mx-auto h-12 w-12 text-blue-500', active && 'animate-bounce']"
-                  />
+                  <CloudArrowUpIcon :class="['mx-auto h-12 w-12 text-blue-500', active && 'animate-bounce']" />
                   <div class="flex text-sm text-gray-600">
                     <label
                       class="relative cursor-pointer rounded-md font-medium text-blue-500 hover:underline focus-within:outline-"
@@ -75,55 +117,3 @@
     </Dialog>
   </TransitionRoot>
 </template>
-
-<script setup>
-import { computed, ref, watch } from 'vue'
-import { Dialog, DialogPanel, TransitionChild, TransitionRoot } from '@headlessui/vue'
-import { CloudArrowUpIcon } from '@heroicons/vue/24/outline'
-import { useStore } from '../../store'
-import dataTransferFiles from '../../helpers/data-transfer'
-
-const props = defineProps({
-  name: {
-    type: String,
-    default: 'upload',
-  },
-  queue: {
-    type: Array,
-  },
-  upload: {
-    type: Function,
-  },
-})
-
-// STATE
-const active = ref(false)
-const files = ref([])
-
-const store = useStore()
-const isOpen = computed(() => store.isOpen(props.name))
-const darkMode = computed(() => store.dark)
-
-// ACTIONS
-const dragEnter = () => (active.value = true)
-const dragLeave = () => (active.value = false)
-const dragDrop = async e => (files.value = await dataTransferFiles(e.dataTransfer.items))
-const onChange = e => (files.value = e.target.files)
-const closeModal = () => store.closeModal({ name: props.name })
-const openModal = name => store.openModal({ name })
-
-const submit = () => {
-  if (files.value.length) {
-    props.upload(files.value)
-  }
-
-  closeModal()
-
-  openModal('queue')
-
-  active.value = false
-}
-
-// HOOKS
-watch(files, () => submit())
-</script>

@@ -1,7 +1,21 @@
+<script setup lang="ts">
+import { MagnifyingGlassIcon } from '@heroicons/vue/24/outline'
+import debounce from 'lodash/debounce'
+import { computed } from 'vue'
+import useBrowserStore from '@/stores/browser'
+
+const store = useBrowserStore()
+
+// STATE
+const search = computed(() => store.search)
+
+const setSearch = debounce(({ target: { value } }) => {
+  store.setSearch({ search: value })
+}, window.Nova.config('debounce'))
+</script>
+
 <template>
-  <div
-    class="relative rounded-md w-full md:w-64 md:focus-within:w-full md:duration-500 md:transition-all"
-  >
+  <div class="relative rounded-md w-full md:w-64 md:focus-within:w-full md:duration-500 md:transition-all">
     <div class="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
       <MagnifyingGlassIcon aria-hidden="true" class="h-4 w-4 text-gray-400" />
     </div>
@@ -14,19 +28,3 @@
     />
   </div>
 </template>
-
-<script setup>
-import { computed } from 'vue'
-import { MagnifyingGlassIcon } from '@heroicons/vue/24/outline'
-import debounce from 'lodash/debounce'
-import { useStore } from '@/store'
-
-const store = useStore()
-
-// STATE
-const search = computed(() => store.search)
-
-const setSearch = debounce(({ target: { value } }) => {
-  store.setSearch({ search: value })
-}, Nova.config('debounce'))
-</script>

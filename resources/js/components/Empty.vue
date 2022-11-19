@@ -1,3 +1,11 @@
+<script setup lang="ts">
+interface Props {
+  title: string
+  subtitle: string
+}
+
+defineProps<Props>()
+</script>
 <template>
   <div class="text-center py-8">
     <svg class="h-16 mx-auto" viewBox="0 0 647.63626 632.17383" xmlns="http://www.w3.org/2000/svg">
@@ -44,16 +52,3 @@
     </p>
   </div>
 </template>
-
-<script setup>
-defineProps({
-  title: {
-    type: String,
-    default: null,
-  },
-  subtitle: {
-    type: String,
-    default: null,
-  },
-})
-</script>

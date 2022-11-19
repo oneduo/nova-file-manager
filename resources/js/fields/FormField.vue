@@ -15,12 +15,7 @@
               v-bind="dragOptions"
             >
               <template #item="{ element }">
-                <FieldCard
-                  :field="field"
-                  :file="element"
-                  class="cursor-grab"
-                  :on-deselect="deselectFile"
-                />
+                <FieldCard :field="field" :file="element" class="cursor-grab" :on-deselect="deselectFile" />
               </template>
             </draggable>
           </div>
@@ -31,10 +26,7 @@
               type="button"
               @click="openBrowserModal"
             >
-              <CloudIcon
-                aria-hidden="true"
-                class="-ml-1 mr-2 h-5 w-5 text-gray-400 dark:text-gray-200"
-              />
+              <CloudIcon aria-hidden="true" class="-ml-1 mr-2 h-5 w-5 text-gray-400 dark:text-gray-200" />
               {{ __('NovaFileManager.openBrowser') }}
             </button>
           </div>
@@ -43,12 +35,7 @@
     </template>
   </DefaultField>
 
-  <TransitionRoot
-    v-if="displayModal"
-    :show="isBrowserOpen"
-    as="template"
-    class="nova-file-manager w-full"
-  >
+  <TransitionRoot v-if="displayModal" :show="isBrowserOpen" as="template" class="nova-file-manager w-full">
     <DialogModal as="div" class="relative" @close="closeBrowserModal">
       <TransitionChild
         as="template"
@@ -87,19 +74,14 @@
 </template>
 
 <script>
-import { mapActions, mapState } from 'pinia'
+import { Dialog as DialogModal, DialogPanel, TransitionChild, TransitionRoot } from '@headlessui/vue'
 import { CloudIcon } from '@heroicons/vue/24/outline'
-import {
-  Dialog as DialogModal,
-  DialogPanel,
-  TransitionChild,
-  TransitionRoot,
-} from '@headlessui/vue'
+import { mapActions, mapState } from 'pinia'
 import draggable from 'vuedraggable'
-import Browser from '../components/Browser.vue'
-import FieldCard from '../components/Cards/FieldCard.vue'
+import Browser from '@/components/Browser.vue'
+import FieldCard from '@/components/Cards/FieldCard.vue'
+import useBrowserStore from '@/stores/browser'
 import Entity from '../types/Entity'
-import { useStore } from '../store'
 
 export default {
   mixins: [window.LaravelNova.FormField, window.LaravelNova.HandlesValidationErrors],
@@ -132,7 +114,7 @@ export default {
   },
 
   computed: {
-    ...mapState(useStore, ['dark', 'disk', 'isBrowserOpen']),
+    ...mapState(useBrowserStore, ['dark', 'disk', 'isBrowserOpen']),
 
     dragOptions() {
       return {
@@ -144,7 +126,7 @@ export default {
   },
 
   methods: {
-    ...mapActions(useStore, ['init', 'closeBrowser', 'openBrowser']),
+    ...mapActions(useBrowserStore, ['init', 'closeBrowser', 'openBrowser']),
 
     fill(formData) {
       if (this.value?.length) {
@@ -154,8 +136,8 @@ export default {
             this.value?.map(file => ({
               path: file.path,
               disk: file.disk,
-            }))
-          )
+            })),
+          ),
         )
       }
     },
@@ -202,7 +184,7 @@ export default {
         file.lastModifiedAt,
         file.type,
         file.exists,
-        file.disk
+        file.disk,
       ),
 
     resolveFlexible(component) {

@@ -1,6 +1,8 @@
+import axios, { Canceler } from 'axios'
 import { defineStore } from 'pinia'
-import { useStore } from './'
-import axios from 'axios'
+import { is } from 'typescript-is'
+import { Entity, Folder } from '@/@types'
+import useBrowserStore from '@/stores/browser'
 
 const modifiers = {
   folders: '#',
@@ -14,13 +16,13 @@ const useSearchStore = defineStore('nova-file-manager/search', {
     isLoading: false,
     query: '',
     search: '',
-    folders: undefined,
-    files: undefined,
+    folders: undefined as any[] | undefined,
+    files: undefined as Entity[] | undefined,
     isFolderOnly: false,
     isFileOnly: false,
     help: false,
-    hasResults: false,
-    request: undefined,
+    hasResults: false as boolean | undefined,
+    canceler: undefined as { cancel: Canceler } | undefined,
   }),
 
   actions: {
@@ -46,7 +48,7 @@ const useSearchStore = defineStore('nova-file-manager/search', {
      * @param {string|null|undefined} search
      * @returns {Promise<void>}
      */
-    async setSearch({ search }) {
+    async setSearch({ search }: { search: string | null | undefined }) {
       if (!search?.length) {
         this.reset()
 
@@ -95,15 +97,15 @@ const useSearchStore = defineStore('nova-file-manager/search', {
         return
       }
 
-      if (this.request) {
-        this.request.cancel('[nova-file-manager] new search request triggered')
+      if (this.canceler) {
+        this.canceler.cancel('[nova-file-manager] new search request triggered')
       }
 
       const source = axios.CancelToken.source()
 
-      this.request = { cancel: source.cancel }
+      this.canceler = { cancel: source.cancel }
 
-      const store = useStore()
+      const store = useBrowserStore()
 
       const response = await store
         .get({
@@ -126,7 +128,7 @@ const useSearchStore = defineStore('nova-file-manager/search', {
       if (!response || response.status !== 200) {
         this.isLoading = false
 
-        Nova.error('An error occurred while searching')
+        window.Nova.error('An error occurred while searching')
 
         console.error(response)
 
@@ -143,20 +145,23 @@ const useSearchStore = defineStore('nova-file-manager/search', {
         this.files = data?.files
       }
 
-      this.hasResults = this.folders?.length || this.files?.length
+      this.hasResults = !!this.folders?.length || !!this.files?.length
 
       this.isLoading = false
     },
-    async select({ item }) {
+
+    async select({ item }: { item: Entity | Folder }) {
       this.close()
 
-      const store = useStore()
+      const store = useBrowserStore()
 
-      if (item.exists) {
+      if (is<Entity>(item)) {
         store.setPreview({ preview: item })
-      } else {
-        await store.setPath({ path: item.path })
+
+        return
       }
+
+      await store.setPath({ path: item.path })
     },
 
     reset() {
@@ -171,4 +176,4 @@ const useSearchStore = defineStore('nova-file-manager/search', {
   },
 })
 
-export { useSearchStore }
+export default useSearchStore

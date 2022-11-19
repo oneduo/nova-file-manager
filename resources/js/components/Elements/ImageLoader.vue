@@ -1,26 +1,17 @@
-<template>
-  <div class="flex justify-center items-center h-full max-h-[80vh]" ref="card" :class="cardClasses">
-    <Spinner v-if="loading" class="w-6 h-6" />
-  </div>
-</template>
-
-<script setup>
+<script setup lang="ts">
 import { computed, onMounted, ref } from 'vue'
 import Spinner from './Spinner.vue'
 
-const props = defineProps({
-  src: {
-    type: String,
-    required: true,
-  },
-  fullWidth: {
-    type: Boolean,
-    default: true,
-  },
-  isThumbnail: {
-    type: Boolean,
-    default: true,
-  },
+interface Props {
+  src: string
+  alt: string
+  fullWidth: boolean
+  isThumbnail: boolean
+}
+
+const props = withDefaults(defineProps<Props>(), {
+  fullWidth: true,
+  isThumbnail: true,
 })
 
 const emit = defineEmits(['missing'])
@@ -28,7 +19,7 @@ const emit = defineEmits(['missing'])
 const loading = ref(true)
 const missing = ref(false)
 
-const card = ref(null)
+const card = ref(null as HTMLDivElement | null)
 
 const cardClasses = computed(() => {
   return {
@@ -37,7 +28,7 @@ const cardClasses = computed(() => {
 })
 
 onMounted(() => {
-  new Promise((resolve, reject) => {
+  new Promise<HTMLImageElement>((resolve, reject) => {
     let image = new Image()
 
     image.addEventListener('load', () => resolve(image))
@@ -50,7 +41,7 @@ onMounted(() => {
       image.classList.add(props.isThumbnail ? 'object-cover' : 'object-contain')
       image.draggable = false
 
-      card.value.appendChild(image)
+      card.value?.appendChild(image)
     })
     .catch(() => {
       missing.value = true
@@ -62,3 +53,9 @@ onMounted(() => {
     })
 })
 </script>
+
+<template>
+  <div class="flex justify-center items-center h-full max-h-[80vh]" ref="card" :class="cardClasses">
+    <Spinner v-if="loading" class="w-6 h-6" />
+  </div>
+</template>

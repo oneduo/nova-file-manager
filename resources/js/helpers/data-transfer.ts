@@ -1,3 +1,4 @@
+// @ts-nocheck
 /**
  *
  * @param {DataTransferItemList} dataTransferItems
@@ -22,7 +23,7 @@ export default async function (dataTransferItems) {
         err => {
           checkErr(err)
           reject(err)
-        }
+        },
       )
     })
   }
@@ -30,9 +31,9 @@ export default async function (dataTransferItems) {
   const dirReadEntries = (dirReader, path) => {
     return new Promise((resolve, reject) => {
       dirReader.readEntries(
-        async entries => {
+        async (entries: FileSystemEntry[]) => {
           let files = []
-          for (let entry of entries) {
+          for (const entry of entries) {
             const itemFiles = await getFilesFromEntry(entry, path)
             files = files.concat(itemFiles)
           }
@@ -41,7 +42,7 @@ export default async function (dataTransferItems) {
         err => {
           checkErr(err)
           reject(err)
-        }
+        },
       )
     })
   }
@@ -58,20 +59,19 @@ export default async function (dataTransferItems) {
     return files
   }
 
-  const getFilesFromEntry = async (entry, path = '') => {
+  const getFilesFromEntry = async (entry: FileSystemEntry, path = '') => {
     if (entry.isFile) {
       const file = await readFile(entry, path)
       return [file]
     }
     if (entry.isDirectory) {
-      const files = await readDir(entry, path)
-      return files
+      return await readDir(entry, path)
     }
     // throw new Error('Entry not isFile and not isDirectory - unable to get files')
   }
 
   let files = []
-  let entries = []
+  const entries = []
 
   // Pull out all entries before reading them
   for (let i = 0, ii = dataTransferItems.length; i < ii; i++) {
@@ -79,7 +79,7 @@ export default async function (dataTransferItems) {
   }
 
   // Recursively read through all entries
-  for (let entry of entries) {
+  for (const entry of entries) {
     const newFiles = await getFilesFromEntry(entry)
     files = files.concat(newFiles)
   }

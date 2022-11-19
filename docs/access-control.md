@@ -127,7 +127,7 @@ class Project extends Resource
                     if (!$request->user()?->can('delete-folder', ['folder' => $request->input('path')])) {
                     
                         throw ValidationException::withMessages([
-                            // folder for directory operations, and file for file operations
+                            // folder for folder operations, and file for file operations
                             // must return a string[]
                             'folder' => [
                                 'You are not allowed to delete this folder',
@@ -146,7 +146,7 @@ class Project extends Resource
 ## On-demand filesystem
 
 By default, the package shows the file manager using the configured disks. However, you may want to define a particular
-disk or directory based on your own business logic.
+disk or folder based on your own business logic.
 
 For instance, having a multi role/permission based app, let's say you have 2 user groups, Managers and Employees. You
 want to restrict each user group inside a closed user-land filesystem, in such a way that no user group can access the

@@ -19,8 +19,8 @@
 </template>
 
 <script setup>
-import { computed } from 'vue'
 import isNil from 'lodash/isNil'
+import { computed } from 'vue'
 
 const props = defineProps({
   field: {
@@ -31,9 +31,7 @@ const props = defineProps({
 
 const filled = value => !isNil(value)
 
-const usesCustomizedDisplay = computed(
-  () => props.field.usesCustomizedDisplay && filled(props.field.displayedAs)
-)
+const usesCustomizedDisplay = computed(() => props.field.usesCustomizedDisplay && filled(props.field.displayedAs))
 const fieldHasValue = computed(() => !!props.field.value?.length)
 const fieldValue = computed(() => {
   if (!usesCustomizedDisplay.value && !fieldHasValue.value) {

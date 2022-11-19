@@ -1,13 +1,16 @@
 {
-  "printWidth": 100,
+  "printWidth": 120,
   "tabWidth": 2,
   "useTabs": false,
   "singleQuote": true,
-  "trailingComma": "es5",
+  "trailingComma": "all",
   "bracketSpacing": true,
-  "jsxBracketSameLine": false,
   "semi": false,
   "requirePragma": false,
   "proseWrap": "preserve",
+  "importOrder": [
+    "^@/(.*)$",
+    "^[./]"
+  ],
   "arrowParens": "avoid"
 }

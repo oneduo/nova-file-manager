@@ -1,3 +1,29 @@
+<script setup lang="ts">
+import { onMounted, ref } from 'vue'
+import Button from '@/components/Elements/Button.vue'
+import InputModal from '@/components/Modals/InputModal.vue'
+import { useErrors } from '@/hooks'
+
+interface Props {
+  name: string
+  onSubmit: (value: string) => void
+  from: string
+}
+
+const props = defineProps<Props>()
+
+const { hasErrors, errorsList } = useErrors('renameFolder')
+
+//STATE
+let value = ref(null as string | null)
+
+// HOOKS
+onMounted(() => (value.value = props.from))
+
+// ACTIONS
+const submit = () => value.value && props.onSubmit(value.value)
+</script>
+
 <template>
   <InputModal :name="name" :on-submit="submit" :title="__('NovaFileManager.renameFolderTitle')">
     <template v-slot:inputs>
@@ -5,9 +31,7 @@
         <div
           :class="[
             'w-full border rounded-md space-y-2 px-3 py-2 bg-gray-100 dark:bg-gray-900 shadow-sm focus-within:ring-1 focus-within:ring-blue-600 focus-within:border-blue-600',
-            !hasErrors
-              ? 'border-gray-400 dark:border-gray-700'
-              : 'border-red-400 dark:border-red-700',
+            !hasErrors ? 'border-gray-400 dark:border-gray-700' : 'border-red-400 dark:border-red-700',
           ]"
         >
           <label class="block text-xs font-medium text-gray-700 dark:text-gray-200" for="name">
@@ -23,12 +47,7 @@
           />
         </div>
         <template v-if="hasErrors">
-          <p
-            v-for="(error, index) in errorsList"
-            id="email-error"
-            :key="index"
-            class="mt-2 text-sm text-red-600"
-          >
+          <p v-for="(error, index) in errorsList" id="email-error" :key="index" class="mt-2 text-sm text-red-600">
             {{ error }}
           </p>
         </template>
@@ -46,36 +65,3 @@
     </template>
   </InputModal>
 </template>
-
-<script setup>
-import { onMounted, ref } from 'vue'
-import Button from '../Elements/Button.vue'
-import InputModal from './InputModal.vue'
-import { useErrors } from '../../hooks'
-
-const props = defineProps({
-  name: {
-    type: String,
-    required: true,
-  },
-  onSubmit: {
-    type: Function,
-    required: true,
-  },
-  from: {
-    type: String,
-    required: true,
-  },
-})
-
-const { hasErrors, errorsList } = useErrors('renameFolder')
-
-//STATE
-let value = ref(null)
-
-// HOOKS
-onMounted(() => (value.value = props.from))
-
-// ACTIONS
-const submit = () => props.onSubmit(value.value)
-</script>

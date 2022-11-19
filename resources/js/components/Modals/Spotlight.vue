@@ -1,11 +1,77 @@
+<script setup lang="ts">
+import {
+  Combobox,
+  ComboboxInput,
+  ComboboxOption,
+  ComboboxOptions,
+  Dialog,
+  DialogPanel,
+  TransitionChild,
+  TransitionRoot,
+} from '@headlessui/vue'
+import { MagnifyingGlassIcon } from '@heroicons/vue/20/solid'
+import { DocumentIcon, ExclamationTriangleIcon, FolderIcon, LifebuoyIcon } from '@heroicons/vue/24/outline'
+import { Entity, Folder } from '__types'
+import debounce from 'lodash/debounce'
+import { computed, onMounted } from 'vue'
+import { SPOTLIGHT_MODIFIERS, SPOTLIGHT_SHORTCUT } from '@/constants'
+import useBrowserStore from '@/stores/browser'
+import useSearchStore from '@/stores/search'
+import Spinner from '../Elements/Spinner.vue'
+
+const searchStore = useSearchStore()
+const store = useBrowserStore()
+
+// HOOKS
+onMounted(() => {
+  window.addEventListener('keydown', function (e) {
+    if (e.metaKey && e.code === SPOTLIGHT_SHORTCUT) {
+      searchStore.open()
+    }
+  })
+})
+
+// STATE
+const dark = computed(() => store.dark)
+const folders = computed(() => searchStore.folders)
+const files = computed(() => searchStore.files)
+const query = computed(() => searchStore.query)
+const isSearching = computed(() => searchStore.isLoading)
+const isOpen = computed(() => searchStore.isOpen)
+const hasResults = computed(() => searchStore.hasResults)
+const isFolderOnly = computed(() => searchStore.isFolderOnly)
+const isFileOnly = computed(() => searchStore.isFileOnly)
+const help = computed(() => searchStore.help)
+
+const tips = computed(() => [
+  {
+    key: SPOTLIGHT_MODIFIERS.folders,
+    label: 'for folders',
+    active: isFolderOnly.value,
+  },
+  {
+    key: SPOTLIGHT_MODIFIERS.files,
+    label: 'for files',
+    active: isFileOnly.value,
+  },
+  {
+    key: SPOTLIGHT_MODIFIERS.help,
+    label: 'for help',
+    active: help.value,
+  },
+])
+
+// ACTIONS
+const close = () => searchStore.close()
+const onSelect = (item: Entity | Folder) => searchStore.select({ item })
+
+const onSearch = debounce(({ target: { value } }) => {
+  searchStore.setSearch({ search: value })
+}, window.Nova.config('debounce'))
+</script>
+
 <template>
-  <TransitionRoot
-    :show="isOpen"
-    as="template"
-    class="nova-file-manager"
-    @after-leave="close"
-    appear
-  >
+  <TransitionRoot :show="isOpen" as="template" class="nova-file-manager" @after-leave="close" appear>
     <Dialog as="div" class="relative z-[60]" @close="close">
       <TransitionChild
         as="template"
@@ -40,11 +106,7 @@
                   v-if="!isSearching || help"
                 />
 
-                <Spinner
-                  class="pointer-events-none absolute top-3.5 left-4 h-5 w-5"
-                  aria-hidden="true"
-                  v-else
-                />
+                <Spinner class="pointer-events-none absolute top-3.5 left-4 h-5 w-5" aria-hidden="true" v-else />
 
                 <ComboboxInput
                   class="h-12 w-full border-0 bg-transparent pl-11 pr-4 text-gray-800 dark:text-gray-200 placeholder-gray-400 focus:outline-none sm:text-sm"
@@ -76,10 +138,7 @@
                         ]"
                       >
                         <FolderIcon
-                          :class="[
-                            'h-6 w-6 flex-none',
-                            active ? 'text-white' : 'text-gray-400 dark:text-gray-400',
-                          ]"
+                          :class="['h-6 w-6 flex-none', active ? 'text-white' : 'text-gray-400 dark:text-gray-400']"
                           aria-hidden="true"
                         />
                         <span class="ml-3 flex-auto truncate">{{ folder.name }}</span>
@@ -106,10 +165,7 @@
                         ]"
                       >
                         <DocumentIcon
-                          :class="[
-                            'h-6 w-6 flex-none',
-                            active ? 'text-white' : 'text-gray-400 dark:text-gray-400',
-                          ]"
+                          :class="['h-6 w-6 flex-none', active ? 'text-white' : 'text-gray-400 dark:text-gray-400']"
                           aria-hidden="true"
                         />
                         <span class="ml-3 flex-auto truncate">{{ file.name }}</span>
@@ -129,10 +185,7 @@
                 </p>
               </div>
 
-              <div
-                v-if="query?.length && !isSearching && !hasResults"
-                class="py-14 px-6 text-center text-sm sm:px-14"
-              >
+              <div v-if="query?.length && !isSearching && !hasResults" class="py-14 px-6 text-center text-sm sm:px-14">
                 <ExclamationTriangleIcon class="mx-auto h-6 w-6" aria-hidden="true" />
                 <p class="mt-4 font-semibold text-gray-900 dark:text-gray-400">
                   {{ __('NovaFileManager.spotlight.noResults') }}
@@ -166,78 +219,3 @@
     </Dialog>
   </TransitionRoot>
 </template>
-
-<script setup>
-import { computed, onMounted } from 'vue'
-import { MagnifyingGlassIcon } from '@heroicons/vue/20/solid'
-import {
-  DocumentIcon,
-  ExclamationTriangleIcon,
-  FolderIcon,
-  LifebuoyIcon,
-} from '@heroicons/vue/24/outline'
-import {
-  Combobox,
-  ComboboxInput,
-  ComboboxOption,
-  ComboboxOptions,
-  Dialog,
-  DialogPanel,
-  TransitionChild,
-  TransitionRoot,
-} from '@headlessui/vue'
-import { useSearchStore } from '../../store/search'
-import { useStore } from '../../store'
-import Spinner from '../Elements/Spinner.vue'
-import debounce from 'lodash/debounce'
-
-const searchStore = useSearchStore()
-const store = useStore()
-
-// HOOKS
-onMounted(() => {
-  window.addEventListener('keydown', function (e) {
-    if (e.metaKey && e.code === 'KeyK') {
-      searchStore.open()
-    }
-  })
-})
-
-// STATE
-const dark = computed(() => store.dark)
-const folders = computed(() => searchStore.folders)
-const files = computed(() => searchStore.files)
-const query = computed(() => searchStore.query)
-const isSearching = computed(() => searchStore.isLoading)
-const isOpen = computed(() => searchStore.isOpen)
-const hasResults = computed(() => searchStore.hasResults)
-const isFolderOnly = computed(() => searchStore.isFolderOnly)
-const isFileOnly = computed(() => searchStore.isFileOnly)
-const help = computed(() => searchStore.help)
-
-const tips = computed(() => [
-  {
-    key: '#',
-    label: 'for folders',
-    active: isFolderOnly.value,
-  },
-  {
-    key: '>',
-    label: 'for files',
-    active: isFileOnly.value,
-  },
-  {
-    key: '?',
-    label: 'for help',
-    active: help.value,
-  },
-])
-
-// ACTIONS
-const close = () => searchStore.close()
-const onSelect = item => searchStore.select({ item })
-
-const onSearch = debounce(({ target: { value } }) => {
-  searchStore.setSearch({ search: value })
-}, Nova.config('debounce'))
-</script>

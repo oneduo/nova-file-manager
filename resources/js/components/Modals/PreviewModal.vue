@@ -1,11 +1,80 @@
+<script setup lang="ts">
+import { DialogPanel } from '@headlessui/vue'
+import {
+  ArchiveBoxIcon,
+  ClipboardDocumentIcon,
+  CloudArrowDownIcon,
+  DocumentIcon,
+  PencilSquareIcon,
+  TrashIcon,
+  XMarkIcon,
+} from '@heroicons/vue/24/outline'
+import { Entity } from '__types'
+import { computed, ref } from 'vue'
+import CropIcon from '@/components/Elements/CropIcon.vue'
+import IconButton from '@/components/Elements/IconButton.vue'
+import ImageLoader from '@/components/Elements/ImageLoader.vue'
+import BaseModal from '@/components/Modals/BaseModal.vue'
+import CropImageModal from '@/components/Modals/CropImageModal.vue'
+import DeleteFileModal from '@/components/Modals/DeleteFileModal.vue'
+import EditImageModal from '@/components/Modals/EditImageModal.vue'
+import RenameFileModal from '@/components/Modals/RenameFileModal.vue'
+import { QUEUE_MODAL_NAME } from '@/constants'
+import { useClipboard, usePermissions, usePintura } from '@/hooks'
+import useBrowserStore from '@/stores/browser'
+
+interface Props {
+  file: Entity
+  readOnly: boolean
+}
+
+const props = withDefaults(defineProps<Props>(), {
+  readOnly: false,
+})
+
+const store = useBrowserStore()
+const { copy: clipboardCopy } = useClipboard()
+const { showRenameFile, showDeleteFile, showCropImage, showUnzipFile } = usePermissions()
+const { usePinturaEditor } = usePintura()
+
+// STATE
+const buttonRef = ref(null)
+const isCropModalOpened = computed(() => store.isOpen(`crop-image-${props.file?.id}`))
+const isEditModalOpened = computed(() => store.isOpen(`edit-image-${props.file?.id}`))
+
+// ACTIONS
+const openModal = (name: string) => store.openModal({ name })
+const onRename = (value: string) => store.renameFile({ id: props.file.id, from: props.file.path, to: value })
+const onDelete = () => store.deleteFile({ id: props.file.id, path: props.file.path })
+const onUnzip = (path: string) => store.unzipFile({ path })
+
+const closePreview = () => {
+  store.preview = null
+
+  store.fixPortal()
+}
+
+const onEditImage = (file: File) => {
+  closePreview()
+
+  openModal(QUEUE_MODAL_NAME)
+
+  store.upload({ files: [file] })
+}
+
+const copy = (file: Entity) => {
+  clipboardCopy(file.url)
+
+  window.Nova.success('OK!')
+}
+</script>
+
 <template>
   <BaseModal as="template" class="nova-file-manager" name="preview">
     <DialogPanel
       class="relative bg-gray-100 dark:bg-gray-900 rounded-lg overflow-hidden shadow-xl transform transition-all w-full max-w-7xl p-4 flex flex-col gap-4"
     >
-      <div
-        class="w-full flex flex-col flex-col-reverse gap-y-2 md:flex-row justify-between items-start"
-      >
+      <div class="w-full flex flex-col flex-col-reverse gap-y-2 md:flex-row justify-between items-start">
         <h2 class="text-lg font-medium text-gray-900 dark:text-gray-400 break-all w-full">
           {{ file?.name }}
         </h2>
@@ -45,11 +114,7 @@
             <ArchiveBoxIcon class="w-5 h-5" />
           </IconButton>
 
-          <IconButton
-            @click="copy(file)"
-            variant="secondary"
-            :title="__('NovaFileManager.actions.copy')"
-          >
+          <IconButton @click="copy(file)" variant="secondary" :title="__('NovaFileManager.actions.copy')">
             <ClipboardDocumentIcon class="w-5 h-5" />
           </IconButton>
 
@@ -72,11 +137,7 @@
             <PencilSquareIcon class="w-5 h-5" />
           </IconButton>
 
-          <IconButton
-            ref="buttonRef"
-            @click="closePreview"
-            :title="__('NovaFileManager.actions.close')"
-          >
+          <IconButton ref="buttonRef" @click="closePreview" :title="__('NovaFileManager.actions.close')">
             <XMarkIcon class="w-5 h-5" />
           </IconButton>
         </div>
@@ -92,6 +153,7 @@
             :is-thumbnail="false"
             :full-width="false"
             class="relative"
+            :alt="file.name"
           />
 
           <video
@@ -163,11 +225,7 @@
         </div>
       </div>
 
-      <DeleteFileModal
-        v-if="showDeleteFile"
-        :name="`delete-file-${file?.id}`"
-        :on-confirm="onDelete"
-      />
+      <DeleteFileModal v-if="showDeleteFile" :name="`delete-file-${file?.id}`" :on-confirm="onDelete" />
 
       <CropImageModal
         v-if="showCropImage && isCropModalOpened"
@@ -192,75 +250,3 @@
     </DialogPanel>
   </BaseModal>
 </template>
-
-<script setup>
-import { computed, ref } from 'vue'
-import { DialogPanel } from '@headlessui/vue'
-import {
-  ArchiveBoxIcon,
-  ClipboardDocumentIcon,
-  CloudArrowDownIcon,
-  DocumentIcon,
-  PencilSquareIcon,
-  TrashIcon,
-  XMarkIcon,
-} from '@heroicons/vue/24/outline'
-import IconButton from '../Elements/IconButton.vue'
-import BaseModal from '../Modals/BaseModal.vue'
-import DeleteFileModal from '../Modals/DeleteFileModal.vue'
-import RenameFileModal from '../Modals/RenameFileModal.vue'
-import CropImageModal from '../Modals/CropImageModal.vue'
-import EditImageModal from '../Modals/EditImageModal.vue'
-import Entity from '../../types/Entity'
-import { useClipboard, usePermissions, usePintura } from '../../hooks'
-import CropIcon from '../Elements/CropIcon.vue'
-import ImageLoader from '../Elements/ImageLoader.vue'
-import { useStore } from '../../store'
-
-const props = defineProps({
-  file: {
-    type: Entity,
-    required: true,
-  },
-  readOnly: {
-    type: Boolean,
-    default: false,
-  },
-})
-
-const store = useStore()
-const { copyToClipboard } = useClipboard()
-const { showRenameFile, showDeleteFile, showCropImage, showUnzipFile } = usePermissions()
-const { usePinturaEditor } = usePintura()
-
-// STATE
-const buttonRef = ref(null)
-const isCropModalOpened = computed(() => store.isOpen(`crop-image-${props.file?.id}`))
-const isEditModalOpened = computed(() => store.isOpen(`edit-image-${props.file?.id}`))
-
-// ACTIONS
-const openModal = name => store.openModal({ name })
-const onRename = value => store.renameFile({ id: props.file.id, from: props.file.path, to: value })
-const onDelete = () => store.deleteFile({ id: props.file.id, path: props.file.path })
-const onUnzip = path => store.unzipFile({ path })
-
-const closePreview = () => {
-  store.preview = null
-
-  store.fixPortal()
-}
-
-const onEditImage = file => {
-  closePreview()
-
-  openModal('queue')
-
-  store.upload({ files: [file] })
-}
-
-const copy = file => {
-  copyToClipboard(file.url)
-
-  Nova.success('Copied !')
-}
-</script>

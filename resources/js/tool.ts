@@ -1,11 +1,11 @@
-import Tool from './pages/Tool.vue'
-import IndexField from './fields/IndexField.vue'
-import DetailField from './fields/DetailField.vue'
-import FormField from './fields/FormField.vue'
 import { createPinia } from 'pinia'
 import '../css/tool.css'
+import DetailField from './fields/DetailField.vue'
+import FormField from './fields/FormField.vue'
+import IndexField from './fields/IndexField.vue'
+import Tool from './pages/Tool.vue'
 
-window.Nova.booting((app: any) => {
+window.Nova.booting(app => {
   app.use(createPinia())
 
   window.Nova.inertia('NovaFileManager', Tool)

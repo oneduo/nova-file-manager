@@ -1,3 +1,35 @@
+<script setup lang="ts">
+import { Entity } from '__types'
+import { computed } from 'vue'
+import File from '@/components/Cards/File.vue'
+import useBrowserStore from '@/stores/browser'
+
+const store = useBrowserStore()
+
+interface Props {
+  file: Entity
+  detail: boolean
+  field: any
+  onDeselect?: (file: Entity) => void
+}
+
+const props = defineProps<Props>()
+
+// STATE
+const singleDisk = computed(() => store.singleDisk)
+
+// ACTIONS
+const openPreview = (file: Entity) => (store.preview = file)
+
+const preview = (file: Entity) => {
+  if (!props.detail) {
+    return
+  }
+
+  file.exists && openPreview(file)
+}
+</script>
+
 <template>
   <File
     :file="file"
@@ -7,44 +39,3 @@
     @click.prevent.stop="preview(file)"
   />
 </template>
-
-<script setup>
-import { computed } from 'vue'
-import Entity from '../../types/Entity'
-import File from './File.vue'
-import { useStore } from '../../store'
-
-const store = useStore()
-
-const props = defineProps({
-  file: {
-    type: Entity,
-    required: true,
-  },
-  detail: {
-    type: Boolean,
-    default: false,
-  },
-  field: {
-    type: Object,
-    required: true,
-  },
-  onDeselect: {
-    type: Function,
-  },
-})
-
-// STATE
-const singleDisk = computed(() => store.singleDisk)
-
-// ACTIONS
-const openPreview = file => (store.preview = file)
-
-const preview = file => {
-  if (!props.detail) {
-    return
-  }
-
-  file.exists && openPreview(file)
-}
-</script>

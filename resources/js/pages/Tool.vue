@@ -1,22 +1,19 @@
 <script setup lang="ts">
 import { computed, onBeforeMount } from 'vue'
-import Browser from '../components/Browser.vue'
-import UpdateChecker from '../components/Elements/UpdateChecker.vue'
-import { useStore } from '../store/index'
+import { ToolProps } from '@/@types'
+import Browser from '@/components/Browser.vue'
+import UpdateChecker from '@/components/Elements/UpdateChecker.vue'
+import { useTranslation } from '@/hooks'
+import useBrowserStore from '@/stores/browser'
 
-const store = useStore()
+const store = useBrowserStore()
+const { __ } = useTranslation()
 
-interface Props {
-  foo: string
-  bar?: number
+type Props = {
+  config: ToolProps
 }
 
-const props = defineProps({
-  config: {
-    type: Object,
-    required: true,
-  },
-})
+const props = defineProps<Props>()
 
 const dark = computed(() => store.dark)
 
@@ -36,7 +33,9 @@ onBeforeMount(() => {
 <template>
   <div class="nova-file-manager">
     <div :class="{ dark }">
-      <Head :title="__('NovaFileManager.title')" />
+      <Head :title="__('NovaFileManager.title')">
+        <title>{{ __('NovaFileManager.title') }}</title>
+      </Head>
 
       <Heading class="mb-6" data-tour="nfm-tool-title">{{ __('NovaFileManager.title') }}</Heading>
 
@@ -46,4 +45,3 @@ onBeforeMount(() => {
     </div>
   </div>
 </template>
-
