@@ -4,7 +4,7 @@ import { CheckIcon, XMarkIcon } from '@heroicons/vue/24/outline'
 import { Entity } from '__types__'
 import 'cropperjs/dist/cropper.css'
 import { computed, ref } from 'vue'
-import { CropperData, VueCropperMethods } from 'vue-cropperjs'
+import { CropperData, VueCropperMethods, default as VueCropper } from 'vue-cropperjs'
 import { UPLOAD_CROP_MODAL_NAME } from '@/constants'
 import useBrowserStore from '@/stores/browser'
 import IconButton from '../Elements/IconButton.vue'
@@ -23,7 +23,7 @@ const store = useBrowserStore()
 
 //STATE
 const buttonRef = ref(null)
-const cropper = ref(null as VueCropperMethods)
+const cropper = ref(null as VueCropperMethods | null)
 const destFile = ref(null as File | null)
 const uploadIsOpen = computed(() => store.isOpen(UPLOAD_CROP_MODAL_NAME))
 
@@ -33,7 +33,7 @@ const containerStyle = computed(() => ({
 }))
 
 const destName = computed(() => {
-  const data = cropper.value.getData() as CropperData
+  const data = cropper.value?.getData() as CropperData
 
   const suffix = `${Math.round(data.width)}_${Math.round(data.height)}_${Math.round(data.x)}_${Math.round(data.y)}`
 
@@ -45,7 +45,11 @@ const openModal = (name: string) => store.openModal({ name })
 const closeModal = (name: string) => store.closeModal({ name })
 
 const openUploadCropModal = () => {
-  cropper.value.getCroppedCanvas().toBlob((blob: Blob) => {
+  cropper.value?.getCroppedCanvas().toBlob((blob: Blob | null) => {
+    if (blob === null) {
+      return
+    }
+
     destFile.value = new File([blob], props.file.name, {
       type: props.file.mime,
     })
@@ -92,7 +96,7 @@ const submitCrop = (name: string) => {
       </div>
 
       <div class="h-full max-h-[70vh]">
-        <vue-cropper ref="cropper" :containerStyle="containerStyle" :src="file.url" :alt="file.name" :viewMode="1" />
+        <VueCropper ref="cropper" :containerStyle="containerStyle" :src="file.url" :alt="file.name" :viewMode="1" />
       </div>
 
       <UploadCropModal
