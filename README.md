@@ -1,5 +1,9 @@
 <img src="./docs/images/banner.png"/>
-<h3 align="left">Nova File Manager</h3>
+<img src="./docs/images/tiles.png"/>
+
+
+<a href="https://oneduo.github.io/nova-file-manager/" taget="_blank"><img src="./docs/images/documentation.png"/></a>
+# Nova File Manager
 
 <div align="left">
 
@@ -22,26 +26,32 @@ A file manager tool and field for Laravel Nova. Beautifully designed, and custom
 
 ⚡️ Blazing fast  
 📦️ Laravel Nova 4 compatible  
-💅 Built with Tailwindcss 3, Vue 3 and Vuex  
+💅 Built with Tailwindcss 3, Vue 3 and Pinia  
+🪨 Rock solid codebase built with Typescript  
 💽 Multi disk and filesystem support  
-🧩 Supports chunk uploads  
+🧩 Supports chunk and resumable uploads  
 🔧 Various customization and configuration options  
-🔍 A performant local search feature  
-🤹‍ Allows to save multiple assets on the same field
+🔍 A performant local search feature with Spotlight  
+🤹‍ Can save multiple assets from the same field  
+🔐 Access control and authorization gates  
+✂️ Built-in crop tool and image editor  
+📇 Built-in PDF viewer  
+🗂️ Drag and drop upload, with entire folder upload support  
+🗃️ Supports unzipping files  
+🚩 Onboarding tour for new users
 </p>
 
 
 
-<a href="https://oneduo.github.io/nova-file-manager/"><img src="./docs/images/documentation.png"/></a>
 
 <img src="./docs/images/support.png"/>
 
 ## Table of Contents
 
 - [Getting Started](#getting_started)
-  - [Prerequisites](#prerequisites)
-  - [Installing](#installing)
-  - [Configuration](#configuration)
+    - [Prerequisites](#prerequisites)
+    - [Installing](#installing)
+    - [Configuration](#configuration)
 - [Usage](#usage)
 - [Configuration](#configuration-file)
 - [Authors](#authors)
@@ -82,7 +92,8 @@ You may publish the package's configuration by running the following command :
 php artisan vendor:publish --tag="nova-file-manager-config"
 ```
 
-> **Note** You can find details about the configuration options in the [configuration file section](#configuration-file).
+> **Note** You can find details about the configuration options in
+> the [configuration file section](#configuration-file).
 
 ## Usage <a name="usage"></a>
 
@@ -138,10 +149,10 @@ You have now successfully added a File Manager field to your resource.
 ## Configuration file <a name = "configuration-file"></a>
 
 | Key                                  | Description                                                                              | Type       | Default   | Notes                                                             |
-| ------------------------------------ | ---------------------------------------------------------------------------------------- | ---------- | --------- | ----------------------------------------------------------------- |
+|--------------------------------------|------------------------------------------------------------------------------------------|------------|-----------|-------------------------------------------------------------------|
 | `default_disk`                       | The default disk used by the package                                                     | `string`   | `public`  | The default disk must be defined in your `filesystems.php` config |
 | `available_disks`                    | Provides a list of available disks to be used by the package                             | `string[]` | -         |                                                                   |
-| `show_hidden_files`                  | Toggles whether or not to show files and folders that start with a "dot"             | `bool`     | `false`   |                                                                   |
+| `show_hidden_files`                  | Toggles whether or not to show files and folders that start with a "dot"                 | `bool`     | `false`   |                                                                   |
 | `human_readable_size`                | When set to true, the package will display file sizes in a more friendly readable format | `bool`     | `true`    |                                                                   |
 | `human_readable_datetime`            | When set to true, the package will display dates with `diffForHumans()`                  | `bool`     | `true`    |                                                                   |
 | `file_analysis.enable`               | When set to true, the package will use getID3 to parse metadata from the files           | `bool`     | `true`    |                                                                   |
@@ -151,7 +162,8 @@ You have now successfully added a File Manager field to your resource.
 | `url_signing.unit`                   | Defines the unit for the expiration time                                                 | `string`   | `minutes` | The expiration time must not exceed 1 week                        |
 | `url_signing.value`                  | Defines the value for the expiration time                                                | `int`      | `10`      |                                                                   |
 
-For a full list of updated configuration options, please refer to the full documentation at https://oneduo.github.io/nova-file-manager/configuration.html
+For a full list of updated configuration options, please refer to the full documentation
+at https://oneduo.github.io/nova-file-manager/configuration.html
 
 ## Authors <a name = "authors"></a>
 
@@ -181,7 +193,6 @@ Please see [CONTRIBUTING](CONTRIBUTING.md) for details.
 
 - [getID3() by James Heinrich](https://github.com/JamesHeinrich/getID3)
 - [Laravel Chunk Upload](https://github.com/pionl/laravel-chunk-upload)
-
 
 ## License
 
