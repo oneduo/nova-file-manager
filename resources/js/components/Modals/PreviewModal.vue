@@ -9,7 +9,7 @@ import {
   TrashIcon,
   XMarkIcon,
 } from '@heroicons/vue/24/outline'
-import { Entity } from '__types'
+import { Entity } from '__types__'
 import { computed, ref } from 'vue'
 import CropIcon from '@/components/Elements/CropIcon.vue'
 import IconButton from '@/components/Elements/IconButton.vue'

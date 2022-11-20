@@ -1,7 +1,7 @@
 <script setup lang="ts">
 import { Disclosure, DisclosureButton, DisclosurePanel } from '@headlessui/vue'
 import { ChevronDownIcon, ChevronRightIcon } from '@heroicons/vue/24/outline'
-import { Entity, Folder, View } from '__types'
+import { Entity, Folder, View } from '__types__'
 import Empty from '@/components/Empty.vue'
 import FileGrid from '@/components/FileGrid.vue'
 import FolderGrid from '@/components/FolderGrid.vue'

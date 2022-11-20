@@ -2,7 +2,7 @@
 import { DialogPanel } from '@headlessui/vue'
 import { CheckIcon, XMarkIcon } from '@heroicons/vue/24/outline'
 import { ExclamationCircleIcon } from '@heroicons/vue/24/solid'
-import { Entity } from '__types'
+import { Entity } from '__types__'
 import 'cropperjs/dist/cropper.css'
 import { computed, ref, watchEffect } from 'vue'
 import IconButton from '@/components/Elements/IconButton.vue'

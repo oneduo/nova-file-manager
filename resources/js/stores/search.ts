@@ -1,7 +1,7 @@
+import { Entity, Folder } from '__types__'
 import axios, { Canceler } from 'axios'
 import { defineStore } from 'pinia'
 import { is } from 'typescript-is'
-import { Entity, Folder } from '@/@types'
 import useBrowserStore from '@/stores/browser'
 
 const modifiers = {

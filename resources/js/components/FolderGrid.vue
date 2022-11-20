@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import type { Folder as FolderType } from '__types'
+import type { Folder as FolderType } from '__types__'
 import { defineProps } from 'vue'
 import Folder from '@/components/Cards/Folder.vue'
 

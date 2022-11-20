@@ -68,6 +68,41 @@ export type ErrorsBag = {
   errors: Errors
 }
 
+export type NovaField = {
+  attribute: string
+  component: string
+  dependentComponentKey: string
+  dependsOn?: any
+  displayedAs?: any
+  fullWidth: boolean
+  helpText?: any
+  indexName: string
+  name: string
+  nullable: boolean
+  panel: string
+  placeholder?: any
+  prefixComponent: boolean
+  readonly: boolean
+  required: boolean
+  sortable: boolean
+  sortableUriKey: string
+  stacked: boolean
+  textAlign: string
+  uniqueKey: string
+  usesCustomizedDisplay: boolean
+  validationKey: string
+  value: Entity[]
+  visible: boolean
+  wrapping: boolean
+  multiple: boolean
+  limit: number
+  asHtml: boolean
+  singleDisk: boolean
+  permissions: PermissionsCollection
+  usePintura: boolean
+  pinturaOptions?: PinturaOptions
+}
+
 export type Pagination = {
   current_page: number
   last_page: number

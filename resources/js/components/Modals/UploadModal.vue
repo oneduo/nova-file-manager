@@ -1,7 +1,7 @@
 <script setup lang="ts">
 import { Dialog, DialogPanel, TransitionChild, TransitionRoot } from '@headlessui/vue'
 import { CloudArrowUpIcon } from '@heroicons/vue/24/outline'
-import { QueueEntry } from '__types'
+import { QueueEntry } from '__types__'
 import { computed, ref, watch } from 'vue'
 import { QUEUE_MODAL_NAME } from '@/constants'
 import dataTransferFiles from '@/helpers/data-transfer'

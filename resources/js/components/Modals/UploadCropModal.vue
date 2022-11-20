@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { Entity } from '__types'
+import { Entity } from '__types__'
 import { computed, onMounted, ref } from 'vue'
 import Button from '@/components/Elements/Button.vue'
 import InputModal from '@/components/Modals/InputModal.vue'

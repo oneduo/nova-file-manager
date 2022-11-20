@@ -11,7 +11,7 @@ import {
 } from '@headlessui/vue'
 import { MagnifyingGlassIcon } from '@heroicons/vue/20/solid'
 import { DocumentIcon, ExclamationTriangleIcon, FolderIcon, LifebuoyIcon } from '@heroicons/vue/24/outline'
-import { Entity, Folder } from '__types'
+import { Entity, Folder } from '__types__'
 import debounce from 'lodash/debounce'
 import { computed, onMounted } from 'vue'
 import { SPOTLIGHT_MODIFIERS, SPOTLIGHT_SHORTCUT } from '@/constants'

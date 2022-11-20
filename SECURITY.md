@@ -2,4 +2,4 @@
 
 ## Reporting a Vulnerability
 
-If you discover any security related issues, please email paris@big-boss-studio.com instead of using the issue tracker.
+If you discover any security related issues, please email security@oneduo.dev instead of using the issue tracker.

@@ -1,4 +1,4 @@
-import { Entity } from '__types'
+import { Entity } from '__types__'
 
 export default function nativeFileToEntity(file: File) {
   return {

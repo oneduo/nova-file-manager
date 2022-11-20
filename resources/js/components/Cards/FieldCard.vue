@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { Entity } from '__types'
+import { Entity, NovaField } from '__types__'
 import { computed } from 'vue'
 import File from '@/components/Cards/File.vue'
 import useBrowserStore from '@/stores/browser'
@@ -9,7 +9,7 @@ const store = useBrowserStore()
 interface Props {
   file: Entity
   detail: boolean
-  field: any
+  field: NovaField
   onDeselect?: (file: Entity) => void
 }
 

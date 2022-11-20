@@ -7,8 +7,8 @@ namespace Oneduo\NovaFileManager;
 use Illuminate\Foundation\Application;
 use Illuminate\Support\Facades\Route;
 use Illuminate\Support\ServiceProvider;
-use Laravel\Nova\Nova;
 use Laravel\Nova\Http\Middleware\Authenticate;
+use Laravel\Nova\Nova;
 use Oneduo\NovaFileManager\Contracts\Filesystem\Upload\Uploader as UploaderContract;
 use Oneduo\NovaFileManager\Contracts\Services\FileManagerContract;
 use Oneduo\NovaFileManager\Filesystem\Upload\Uploader;
@@ -18,7 +18,7 @@ use Oneduo\NovaFileManager\Services\FileManagerService;
 class ToolServiceProvider extends ServiceProvider
 {
     /**
-     * Bootstrap any application services.
+     * Bootstrap the tool services
      *
      * @return void
      */
@@ -32,24 +32,8 @@ class ToolServiceProvider extends ServiceProvider
         $this->translations();
 
         Nova::serving(function () {
-            $translations = trans('nova-file-manager::ui');
-
-            if (!is_array($translations)) {
-                $translations = [];
-            }
-
-            $translations = array_merge(trans('nova-file-manager::ui', [], 'en'), $translations);
-
-            Nova::translations($translations);
-
-            Nova::style('nova-file-manager', __DIR__ . '/../dist/css/tool.css');
-
-            // [WARNING - internal use only] This is for local development only. DO NOT ENABLE.
-            if (!config('nova-file-manager.hmr')) {
-                Nova::script('nova-file-manager', __DIR__ . '/../dist/js/tool.js');
-            } else {
-                Nova::remoteScript('http://localhost:8080/js/tool.js');
-            }
+            $this->loadTranslationsToNova();
+            $this->assets();
         });
     }
 
@@ -101,5 +85,27 @@ class ToolServiceProvider extends ServiceProvider
     {
         $this->loadTranslationsFrom(__DIR__ . '/../lang', 'nova-file-manager');
         $this->loadJsonTranslationsFrom(__DIR__ . '/../lang');
+    }
+
+    function assets(): void
+    {
+        Nova::style('nova-file-manager', __DIR__ . '/../dist/css/tool.css');
+        Nova::script('nova-file-manager', __DIR__ . '/../dist/js/tool.js');
+    }
+
+    /**
+     * @return void
+     */
+    function loadTranslationsToNova(): void
+    {
+        $translations = trans('nova-file-manager::ui');
+
+        if (!is_array($translations)) {
+            $translations = [];
+        }
+
+        $translations = array_merge(trans('nova-file-manager::ui', [], 'en'), $translations);
+
+        Nova::translations($translations);
     }
 }

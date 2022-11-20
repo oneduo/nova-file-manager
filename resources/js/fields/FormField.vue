@@ -1,3 +1,142 @@
+<script lang="ts">
+import { Dialog as DialogModal, DialogPanel, TransitionChild, TransitionRoot } from '@headlessui/vue'
+import { CloudIcon } from '@heroicons/vue/24/outline'
+import { Entity, NovaField } from '__types__'
+import { mapActions, mapState } from 'pinia'
+import { defineComponent, PropType } from 'vue'
+import draggable from 'vuedraggable'
+import Browser from '@/components/Browser.vue'
+import FieldCard from '@/components/Cards/FieldCard.vue'
+import useBrowserStore from '@/stores/browser'
+
+export default defineComponent({
+  mixins: [window.LaravelNova.FormField, window.LaravelNova.HandlesValidationErrors],
+
+  components: {
+    FieldCard,
+    Browser,
+    CloudIcon,
+    DialogModal,
+    DialogPanel,
+    TransitionChild,
+    TransitionRoot,
+    draggable,
+  },
+
+  props: {
+    resourceName: {
+      type: String,
+      required: true,
+    },
+    resourceId: {
+      type: [String, Number] as PropType<string | number>,
+      required: true,
+    },
+    field: {
+      type: Object as PropType<NovaField>,
+      required: true,
+    },
+  },
+
+  data: () => ({
+    drag: false,
+    displayModal: false,
+    value: [] as Entity[],
+    flexibleGroup: [],
+  }),
+
+  mounted() {
+    this.init()
+
+    this.value = this.field.value || []
+    this.flexibleGroup = this.resolveFlexible(this)
+  },
+
+  computed: {
+    ...mapState(useBrowserStore, ['dark', 'disk', 'isBrowserOpen']),
+
+    dragOptions() {
+      return {
+        animation: 200,
+        disabled: !this.field?.multiple,
+        ghostClass: 'opacity-0',
+      }
+    },
+  },
+
+  methods: {
+    ...mapActions(useBrowserStore, ['init', 'closeBrowser', 'openBrowser']),
+
+    fill(formData: FormData) {
+      if (this.value?.length) {
+        formData.append(
+          this.field.attribute,
+          JSON.stringify(
+            this.value?.map((file: Entity) => ({
+              path: file.path,
+              disk: file.disk,
+            })),
+          ),
+        )
+      }
+    },
+
+    openBrowserModal() {
+      this.displayModal = true
+
+      this.openBrowser({
+        initialFiles: this.value,
+        multiple: this.field.multiple ?? false,
+        limit: this.field.limit ?? null,
+        resource: this.resourceName ?? null,
+        resourceId: this.resourceId ?? null,
+        attribute: this.flexibleGroup.length ? this.field.sortableUriKey : this.field.attribute,
+        singleDisk: this.field.singleDisk ?? false,
+        permissions: this.field.permissions,
+        flexibleGroup: this.flexibleGroup,
+        callback: selection => {
+          this.value = selection
+        },
+        usePintura: this.field.usePintura ?? false,
+        pinturaOptions: this.field.pinturaOptions ?? {},
+      })
+    },
+
+    closeBrowserModal() {
+      this.displayModal = false
+      this.closeBrowser()
+    },
+
+    deselectFile(file: Entity) {
+      this.value = this.value.filter((f: Entity) => f.id !== file.id)
+    },
+
+    // @ts-ignore
+    resolveFlexible(component) {
+      let elements = []
+
+      let group = component.$parent
+      let parent = component.$parent?.$parent?.$parent?.$parent
+
+      if (parent?.field?.component === 'nova-flexible-content') {
+        elements.unshift(...this.resolveFlexible(parent))
+        elements.push(`${group?.group?.name}:${parent.field.sortableUriKey}`)
+      }
+
+      return elements
+    },
+  },
+
+  watch: {
+    isBrowserOpen(newValue, oldValue) {
+      if (!newValue && oldValue) {
+        this.displayModal = false
+      }
+    },
+  },
+})
+</script>
+
 <template>
   <DefaultField :errors="errors" :field="field" :show-help-text="showHelpText">
     <template #field>
@@ -72,142 +211,3 @@
     </DialogModal>
   </TransitionRoot>
 </template>
-
-<script>
-import { Dialog as DialogModal, DialogPanel, TransitionChild, TransitionRoot } from '@headlessui/vue'
-import { CloudIcon } from '@heroicons/vue/24/outline'
-import { mapActions, mapState } from 'pinia'
-import draggable from 'vuedraggable'
-import Browser from '@/components/Browser.vue'
-import FieldCard from '@/components/Cards/FieldCard.vue'
-import useBrowserStore from '@/stores/browser'
-import Entity from '../types/Entity'
-
-export default {
-  mixins: [window.LaravelNova.FormField, window.LaravelNova.HandlesValidationErrors],
-
-  components: {
-    FieldCard,
-    Browser,
-    CloudIcon,
-    DialogModal,
-    DialogPanel,
-    TransitionChild,
-    TransitionRoot,
-    draggable,
-  },
-
-  props: ['resourceName', 'resourceId', 'field'],
-
-  data: () => ({
-    drag: false,
-    displayModal: false,
-    value: [],
-    flexibleGroup: [],
-  }),
-
-  mounted() {
-    this.init()
-
-    this.value = (this.field.value || []).map(file => this.mapEntity(file))
-    this.flexibleGroup = this.resolveFlexible(this)
-  },
-
-  computed: {
-    ...mapState(useBrowserStore, ['dark', 'disk', 'isBrowserOpen']),
-
-    dragOptions() {
-      return {
-        animation: 200,
-        disabled: !this.field?.multiple,
-        ghostClass: 'opacity-0',
-      }
-    },
-  },
-
-  methods: {
-    ...mapActions(useBrowserStore, ['init', 'closeBrowser', 'openBrowser']),
-
-    fill(formData) {
-      if (this.value?.length) {
-        formData.append(
-          this.field.attribute,
-          JSON.stringify(
-            this.value?.map(file => ({
-              path: file.path,
-              disk: file.disk,
-            })),
-          ),
-        )
-      }
-    },
-
-    openBrowserModal() {
-      this.displayModal = true
-
-      this.openBrowser({
-        initialFiles: this.value,
-        multiple: this.field.multiple ?? false,
-        limit: this.field.limit ?? null,
-        resource: this.resourceName ?? null,
-        resourceId: this.resourceId ?? null,
-        attribute: this.flexibleGroup.length ? this.field.sortableUriKey : this.field.attribute,
-        singleDisk: this.field.customDisk ?? false,
-        permissions: this.field.permissions ?? {},
-        flexibleGroup: this.flexibleGroup,
-        callback: selection => {
-          this.value = selection.map(f => this.mapEntity(f))
-        },
-        usePintura: this.field.usePintura ?? false,
-        pinturaOptions: this.field.pinturaOptions ?? {},
-      })
-    },
-
-    closeBrowserModal() {
-      this.displayModal = false
-      this.closeBrowser()
-    },
-
-    deselectFile(file) {
-      this.value = this.value.filter(f => f.id !== file.id)
-    },
-
-    mapEntity: file =>
-      new Entity(
-        file.id,
-        file.name,
-        file.path,
-        file.size,
-        file.extension,
-        file.mime,
-        file.url,
-        file.lastModifiedAt,
-        file.type,
-        file.exists,
-        file.disk,
-      ),
-
-    resolveFlexible(component) {
-      let elements = []
-
-      let group = component.$parent
-      let parent = component.$parent?.$parent?.$parent?.$parent
-
-      if (parent?.field?.component === 'nova-flexible-content') {
-        elements.unshift(...this.resolveFlexible(parent))
-        elements.push(`${group?.group?.name}:${parent.field.sortableUriKey}`)
-      }
-
-      return elements
-    },
-  },
-
-  watch: {
-    isBrowserOpen(newValue, oldValue) {
-      if (!newValue && oldValue) {
-        this.displayModal = false
-      }
-    },
-  },
-}
-</script>

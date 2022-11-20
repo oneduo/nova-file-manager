@@ -1,6 +1,6 @@
 <script setup lang="ts">
+import { ToolProps } from '__types__'
 import { computed, onBeforeMount } from 'vue'
-import { ToolProps } from '@/@types'
 import Browser from '@/components/Browser.vue'
 import UpdateChecker from '@/components/Elements/UpdateChecker.vue'
 import { useTranslation } from '@/hooks'

@@ -12,7 +12,7 @@ import {
   QueueEntryStatus,
   ToolProps,
   View,
-} from '__types'
+} from '__types__'
 import { AxiosResponse } from 'axios'
 // @ts-ignore todo: fix this
 import { Errors } from 'form-backend-validation'

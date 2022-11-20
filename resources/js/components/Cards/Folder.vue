@@ -2,7 +2,7 @@
 import { Menu, MenuButton, MenuItem, MenuItems } from '@headlessui/vue'
 import { FolderIcon } from '@heroicons/vue/24/outline'
 import { EllipsisVerticalIcon } from '@heroicons/vue/24/solid'
-import type { Folder } from '__types'
+import type { Folder } from '__types__'
 import DeleteFolderModal from '@/components/Modals/DeleteFolderModal.vue'
 import RenameFolderModal from '@/components/Modals/RenameFolderModal.vue'
 import { usePermissions } from '@/hooks'
@@ -31,7 +31,7 @@ const onDelete = () => store.deleteFolder({ id: props.folder.id, path: props.fol
 
 <template>
   <li
-    class="relative col-span-1 flex rounded-md transition duration-100 cursor-pointer bg-gray-200 dark:bg-gray-900 hover:shadow-md rounded-md"
+    class="relative col-span-1 flex rounded-md transition duration-100 cursor-pointer bg-gray-100 dark:bg-gray-900 hover:shadow-md rounded-md"
   >
     <button class="flex w-full flex-row items-center" @click="setPath(folder.path)">
       <span

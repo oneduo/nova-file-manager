@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import { QueueListIcon, Squares2X2Icon } from '@heroicons/vue/24/outline'
-import { View } from '__types'
+import { View } from '__types__'
 import { Component, ref } from 'vue'
 
 interface Props {

@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { Entity } from '__types'
+import { Entity } from '__types__'
 import { computed, onMounted, ref } from 'vue'
 import FieldCard from '@/components/Cards/FieldCard.vue'
 import PreviewModal from '@/components/Modals/PreviewModal.vue'

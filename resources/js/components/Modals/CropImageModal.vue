@@ -1,7 +1,7 @@
 <script setup lang="ts">
 import { DialogPanel } from '@headlessui/vue'
 import { CheckIcon, XMarkIcon } from '@heroicons/vue/24/outline'
-import { Entity } from '__types'
+import { Entity } from '__types__'
 import 'cropperjs/dist/cropper.css'
 import { computed, ref } from 'vue'
 import { CropperData, VueCropperMethods } from 'vue-cropperjs'

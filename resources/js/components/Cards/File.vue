@@ -7,7 +7,7 @@ import {
   PlayIcon,
   XCircleIcon,
 } from '@heroicons/vue/24/solid'
-import { Entity } from '__types'
+import { Entity } from '__types__'
 import { computed } from 'vue'
 import ImageLoader from '../Elements/ImageLoader.vue'
 import Spinner from '../Elements/Spinner.vue'

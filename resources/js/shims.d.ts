@@ -13,6 +13,7 @@ declare global {
         NovaFileManagerEditor: any
       }
     }
+    LaravelNova: any
     confetti: any
   }
 }
