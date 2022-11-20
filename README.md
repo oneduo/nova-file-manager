@@ -44,7 +44,7 @@ A file manager tool and field for Laravel Nova. Beautifully designed, and custom
 
 
 
-<img src="./docs/images/support.png"/>
+<a href="https://novapackages.com/packages/oneduo/nova-file-manager" target="_blank"><img src="./docs/images/support.png"/></a>
 
 ## Table of Contents
 
