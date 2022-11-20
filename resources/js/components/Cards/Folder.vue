@@ -31,11 +31,11 @@ const onDelete = () => store.deleteFolder({ id: props.folder.id, path: props.fol
 
 <template>
   <li
-    class="relative col-span-1 flex rounded-md transition duration-100 cursor-pointer bg-gray-100 dark:bg-gray-900 hover:shadow-md rounded-md"
+    class="relative group col-span-1 flex rounded-md transition duration-100 cursor-pointer bg-gray-100 dark:bg-gray-900 hover:shadow-md rounded-md"
   >
     <button class="flex w-full flex-row items-center" @click="setPath(folder.path)">
       <span
-        class="flex-shrink-0 flex items-center justify-center py-4 pl-3 text-gray-900 dark:text-gray-100 text-sm font-medium"
+        class="flex-shrink-0 flex items-center justify-center py-4 pl-3 text-gray-900 dark:text-gray-100 text-sm font-medium group-hover:opacity-75"
       >
         <FolderIcon class="h-4 w-4" />
       </span>
@@ -57,7 +57,7 @@ const onDelete = () => store.deleteFolder({ id: props.folder.id, path: props.fol
           </MenuButton>
 
           <MenuItems
-            class="z-50 origin-top-right absolute right-0 mt-2 w-36 select-none overflow-hidden bg-white dark:bg-gray-900 rounded-md border border-gray-200 dark:border-gray-700 px-1"
+            class="z-50 origin-top-right absolute right-0 mt-2 w-36 bg-white dark:bg-gray-900 rounded-md border border-gray-200 dark:border-gray-700 px-1"
           >
             <div class="py-1">
               <MenuItem v-if="showRenameFolder">

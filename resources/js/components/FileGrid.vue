@@ -20,8 +20,8 @@ const isSelected = computed(() => store.isSelected)
 const preview = computed(() => store.preview)
 
 // ACTIONS
-const openPreview = file => (store.preview = file)
-const toggleSelection = file => store.toggleSelection({ file })
+const openPreview = (file: Entity) => (store.preview = file)
+const toggleSelection = (file: Entity) => store.toggleSelection({ file })
 </script>
 
 <template>

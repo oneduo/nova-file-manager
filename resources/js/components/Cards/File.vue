@@ -18,8 +18,9 @@ interface Props {
   isUploaded?: boolean
   uploadRatio?: number
   selected: boolean
-  onDeselect: (file: Entity) => void
+  onDeselect?: (file: Entity) => void
   singleDisk?: boolean
+  fieldMode?: boolean
 }
 
 const props = withDefaults(defineProps<Props>(), {
@@ -67,7 +68,7 @@ const name = computed(() => (missing.value ? props.file.path : props.file.name))
         </template>
         <template v-else>
           <div
-            class="m-auto flex h-full w-full items-center justify-center bg-gray-50 dark:bg-gray-900 text-gray-600"
+            class="m-auto flex h-full w-full items-center justify-center bg-gray-50 dark:bg-gray-900 text-gray-500 dark:text-gray-600"
             v-if="isFile"
           >
             <DocumentIcon class="w-16 h-16" v-if="!isUploading" />
@@ -89,8 +90,8 @@ const name = computed(() => (missing.value ? props.file.path : props.file.name))
       </div>
 
       <div class="absolute right-1 top-1" v-if="onDeselect">
-        <button v-if="onDeselect" @click="onDeselect(file)" class="text-red-500">
-          <XCircleIcon class="h-4 w-4" />
+        <button v-if="onDeselect" @click="onDeselect(file)" class="text-red-500 hover:text-red-600 rounded-full">
+          <XCircleIcon class="h-6 w-6" />
         </button>
       </div>
     </div>
@@ -114,7 +115,7 @@ const name = computed(() => (missing.value ? props.file.path : props.file.name))
       class="gap-x-0.5 inline-flex flex-wrap items-center text-xs pointer-events-none block font-medium text-gray-500 text-left break-all"
     >
       <span v-if="file.size">{{ file.size }}</span>
-      <span v-if="!singleDisk && file.disk?.length > 0" class="ml-0.5">&centerdot; {{ file.disk }}</span>
+      <span v-if="fieldMode && !singleDisk && file.disk?.length > 0" class="ml-0.5">&centerdot; {{ file.disk }}</span>
     </div>
 
     <span class="absolute top-1 right-1" v-if="selected">

@@ -36,6 +36,7 @@ const preview = (file: Entity) => {
     :selected="false"
     :on-deselect="onDeselect"
     :single-disk="singleDisk"
+    :field-mode="true"
     @click.prevent.stop="preview(file)"
   />
 </template>
