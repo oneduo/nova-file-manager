@@ -143,7 +143,6 @@ $rules = [
     'whitespace_after_comma_in_array' => true,
 ];
 
-
 $finder = Finder::create()
     ->in([
         __DIR__ . '/src',
