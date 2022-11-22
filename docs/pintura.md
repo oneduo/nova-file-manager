@@ -62,7 +62,7 @@ Once you have your Pintura assets, you have to load them into your application, 
     
       const editorOptions = {}
     
-      window.Nova.config.NovaFileManagerEditor = {
+      window.novaFileManagerEditor = {
         appendEditor: appendDefaultEditor,
         editorOptions,
       }
@@ -85,7 +85,7 @@ Pintura must be loaded before the File Manager tool script, therefore the script
 :::
 
 The `editorOptions` object will be used to create the editor instance. You may make your own integration, but make sure
-to provide the `window.Nova.config.NovaFileManagerEditor` object.
+to provide the `window.novaFileManagerEditor` object.
 
 ## Passing options to field/tool
 
