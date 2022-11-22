@@ -143,12 +143,12 @@ class Project extends Resource
 }
 ```
 
-## On-demand filesystem
+## Specific disk
 
 By default, the package shows the file manager using the configured disks. However, you may want to define a particular
 disk or directory based on your own business logic.
 
-For instance, having a multi role/permission based app, let's say you have 2 user groups, Managers and Employees. You
+For instance, having a role/permission based app, let's say you have 2 user groups, Managers and Employees. You
 want to restrict each user group inside a closed user-land filesystem, in such a way that no user group can access the
 other user group's files.
 
@@ -169,14 +169,25 @@ return [
             'visibility' => 'public',
             'throw' => false,
         ],
+        'employees' => [
+            'driver' => 'local',
+            'root' => storage_path('app/public/employees'),
+            'url' => env('APP_URL').'/storage/employees',
+            'visibility' => 'public',
+            'throw' => false,
+        ],
     ],
 ];
 ```
+
+To do so, you may use the `filesystem()` method, which takes a callback as a parameter, that takes the
+current `NovaRequest` as a parameter, and returns a `string` or a `\Illuminate\Contracts\Filesystem\Filesystem` instance.
 
 ```php
 // app/Nova/Project.php
 
 use Oneduo\NovaFileManager\FileManager;
+use Illuminate\Contracts\Filesystem\Filesystem;
 use Illuminate\Support\Facades\Storage;
 use Laravel\Nova\Http\Requests\NovaRequest;
 
@@ -189,18 +200,17 @@ class Project extends Resource
         return [
             // ... any other fields
             FileManager::make(__('Attachments'), 'attachments')
-                ->filesystem(function (NovaRequest $request) {
-                    return Storage::disk('managers');
+                ->filesystem(function (NovaRequest $request): string|Filesystem {
+                    return $request->user()->role === 'manager' ? 'managers' : 'employees';
                 }),
         ];
     }
 }
 ```
 
-In addition, our tool grants you the ability to define the filesystem on the fly, based on your own logic.
+## On-demand filesystem
 
-To do so, you may use the `filesystem()` method, which takes a callback as a parameter, that takes the
-current `NovaRequest` as a parameter, and returns a `\Illuminate\Contracts\Filesystem\Filesystem` instance.
+In addition, our tool grants you the ability to define the filesystem on the fly, based on your own logic.
 
 In the example below, you build an [on-demand disk](https://laravel.com/docs/9.x/filesystem#on-demand-disks) that has a
 root, a folder based on the current user's role :
@@ -209,6 +219,7 @@ root, a folder based on the current user's role :
 // app/Nova/Project.php
 
 use Oneduo\NovaFileManager\FileManager;
+use Illuminate\Contracts\Filesystem\Filesystem;
 use Illuminate\Support\Facades\Storage;
 use Laravel\Nova\Http\Requests\NovaRequest;
 
@@ -221,7 +232,7 @@ class Project extends Resource
         return [
             // ... any other fields
             FileManager::make(__('Attachments'), 'attachments')
-                ->filesystem(function (NovaRequest $request) {
+                ->filesystem(function (NovaRequest $request): string|Filesystem {
                     // create a filesystem on user basis
                     return Storage::build([
                         'driver' => 'local', // you may use any of the Laravel's builtin filesystem drivers
