@@ -737,6 +737,7 @@ const useBrowserStore = defineStore('nova-file-manager', {
         ...params,
         attribute: this.attribute,
         resource: this.resource,
+        fieldMode: this.isField,
         resourceId: null as string | number | null,
         disk: null as string | null,
         flexible: null as string | null,
