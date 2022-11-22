@@ -2,6 +2,14 @@
 
 All notable changes to `nova-file-manager` will be documented in this file
 
+## v0.7.4 - 2022-11-22
+
+### What's Changed
+
+- fix(pintura): change pintura option variable to avoid collision with Nova by @mikaelpopowicz in https://github.com/oneduo/nova-file-manager/pull/106
+
+**Full Changelog**: https://github.com/oneduo/nova-file-manager/compare/v0.7.3...v0.7.4
+
 ## v0.7.3 - 2022-11-14
 
 ### What's Changed
@@ -94,6 +102,7 @@ rm -rf vendor/
 
 
 
+
 ```
 ```bash
 composer install oneduo/nova-file-manager
@@ -101,9 +110,11 @@ composer install oneduo/nova-file-manager
 
 
 
+
 ```
 ```bash
 composer rm bbs-lab/nova-file-manager
+
 
 
 
