@@ -17,7 +17,7 @@ const props = defineProps<Props>()
 
 const store = useBrowserStore()
 
-const value = ref(null)
+const value = ref<string | null>(null)
 
 onMounted(() => {
   value.value = props.destName ?? ''
@@ -26,7 +26,7 @@ onMounted(() => {
 const image = computed(() => URL.createObjectURL(props.destFile))
 
 // ACTIONS
-const closeModal = name => store.closeModal({ name })
+const closeModal = (name: string) => store.closeModal({ name })
 const submit = () => props.onSubmit(value.value)
 </script>
 

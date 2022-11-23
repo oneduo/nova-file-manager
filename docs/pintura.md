@@ -34,7 +34,7 @@ NOVA_FILE_MANAGER_USE_PINTURA=true
 You **must** provide your own copy of Pintura assets, once you have purchased a license, you can download the js and css files from your dashboard.
 :::
 
-Once you have your Pintura assets, you have to load them into your application, there's many options to do so, for instance you may place your assets in the `public` folder, and appending them by overriding the default `layout.blade.php` :
+Once you have your Pintura assets, you have to load them into your application, there's many options to do so, for instance you may place your assets in the `public` directory, and appending them by overriding the default `layout.blade.php` :
 
 ```php{7,21-30}
 <head>
@@ -62,8 +62,8 @@ Once you have your Pintura assets, you have to load them into your application, 
     
       const editorOptions = {}
     
-      window.Nova.config.NovaFileManagerEditor = {
-        appendEditor: appendDefaultEditor,
+      window.novaFileManagerEditor = {
+        appendDefaultEditor,
         editorOptions,
       }
     </script>
@@ -85,7 +85,7 @@ Pintura must be loaded before the File Manager tool script, therefore the script
 :::
 
 The `editorOptions` object will be used to create the editor instance. You may make your own integration, but make sure
-to provide the `window.Nova.config.NovaFileManagerEditor` object.
+to provide the `window.novaFileManagerEditor` object.
 
 ## Passing options to field/tool
 

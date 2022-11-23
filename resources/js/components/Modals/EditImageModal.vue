@@ -34,9 +34,9 @@ const { pinturaOptions } = usePintura()
 watchEffect(() => {
   if (editorRef.value && !editor.value) {
     try {
-      const { appendEditor, editorOptions } = window.Nova.config.NovaFileManagerEditor
+      const { appendDefaultEditor, editorOptions } = window.novaFileManagerEditor
 
-      editor.value = appendEditor(editorRef.value, {
+      editor.value = appendDefaultEditor(editorRef.value, {
         ...editorOptions,
         ...pinturaOptions.value,
         src: props.file.url,
