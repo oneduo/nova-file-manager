@@ -27,7 +27,7 @@ const image = computed(() => URL.createObjectURL(props.destFile))
 
 // ACTIONS
 const closeModal = (name: string) => store.closeModal({ name })
-const submit = () => props.onSubmit(value.value)
+const submit = () => value.value && props.onSubmit(value.value)
 </script>
 
 <template>
@@ -41,10 +41,7 @@ const submit = () => props.onSubmit(value.value)
       </div>
       <div>
         <div
-          :class="[
-            'w-full border rounded-md space-y-2 px-3 py-2 bg-gray-100 dark:bg-gray-900 shadow-sm focus-within:ring-1 focus-within:ring-blue-600 focus-within:border-blue-600',
-            !hasErrors ? 'border-gray-400 dark:border-gray-700' : 'border-red-400 dark:border-red-700',
-          ]"
+          class="w-full border rounded-md space-y-2 px-3 py-2 bg-gray-100 dark:bg-gray-900 shadow-sm focus-within:ring-1 focus-within:ring-blue-600 focus-within:border-blue-600 border-gray-400 dark:border-gray-700"
         >
           <label class="block text-xs font-medium text-gray-700 dark:text-gray-200" for="name">
             {{ __('Name') }}

@@ -8,7 +8,7 @@ declare module '*.vue' {
 
 declare global {
   interface PinturaIntegrationConfig {
-    appendDefaultEditor: (...args: any[]) => any,
+    appendDefaultEditor: (...args: any[]) => any
     editorOptions: Record<any, any>
   }
 
@@ -18,8 +18,6 @@ declare global {
     novaFileManagerEditor: PinturaIntegrationConfig
     LaravelNova: any
     confetti: any
-
-
   }
 }
 

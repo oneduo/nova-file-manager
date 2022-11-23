@@ -23,7 +23,7 @@ const store = useBrowserStore()
 
 //STATE
 const buttonRef = ref(null)
-const cropper = ref(null as VueCropperMethods | null)
+const cropper = ref<VueCropperMethods | null>(null)
 const destFile = ref(null as File | null)
 const uploadIsOpen = computed(() => store.isOpen(UPLOAD_CROP_MODAL_NAME))
 
@@ -46,7 +46,7 @@ const closeModal = (name: string) => store.closeModal({ name })
 
 const openUploadCropModal = () => {
   cropper.value?.getCroppedCanvas().toBlob((blob: Blob | null) => {
-    if (blob === null) {
+    if (!blob) {
       return
     }
 
@@ -96,7 +96,7 @@ const submitCrop = (name: string) => {
       </div>
 
       <div class="h-full max-h-[70vh]">
-        <VueCropper ref="cropper" :containerStyle="containerStyle" :src="file.url" :alt="file.name" :viewMode="1" />
+        <vue-cropper ref="cropper" :containerStyle="containerStyle" :src="file.url" :alt="file.name" :viewMode="1" />
       </div>
 
       <UploadCropModal
