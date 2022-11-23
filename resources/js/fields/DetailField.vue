@@ -22,7 +22,6 @@ const preview = computed(() => store.preview)
 
 const copy = (file: Entity) => {
   selected.value = file
-  console.log(file.url)
   clipboardCopy(file.url)
 
   setTimeout(() => {

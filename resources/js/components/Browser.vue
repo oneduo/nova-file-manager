@@ -46,7 +46,6 @@ onMounted(() => {
 })
 
 const dragEnter = () => {
-  console.log('her')
   if (!showUploadFile.value) {
     return
   }
