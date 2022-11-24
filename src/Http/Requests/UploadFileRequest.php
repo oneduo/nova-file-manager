@@ -46,7 +46,7 @@ class UploadFileRequest extends BaseRequest
     {
         return [
             'disk' => ['sometimes', 'string', new DiskExistsRule()],
-            'path' => ['required', 'string', new ExistsInFilesystem($this)],
+            'path' => ['required', 'string'],
             'file' => array_merge(
                 ['required', 'file', new FileMissingInFilesystem($this)],
                 $this->element()->getUploadRules(),

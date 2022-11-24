@@ -6,10 +6,17 @@ use Illuminate\Http\UploadedFile;
 use Illuminate\Support\Facades\Event;
 use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Str;
+use Laravel\Nova\Nova;
 use Oneduo\NovaFileManager\Contracts\Services\FileManagerContract;
 use Oneduo\NovaFileManager\Events\FileDeleted;
+use Oneduo\NovaFileManager\Events\FileDeleting;
 use Oneduo\NovaFileManager\Events\FileRenamed;
+use Oneduo\NovaFileManager\Events\FileRenaming;
+use Oneduo\NovaFileManager\Events\FileUnzipped;
+use Oneduo\NovaFileManager\Events\FileUnzipping;
 use Oneduo\NovaFileManager\Events\FileUploaded;
+use Oneduo\NovaFileManager\Events\FileUploading;
+use Oneduo\NovaFileManager\NovaFileManager;
 use function Pest\Laravel\postJson;
 
 beforeEach(function () {
@@ -17,9 +24,8 @@ beforeEach(function () {
     Storage::fake($this->disk);
 });
 
-it('can upload file', function () {
+it('can upload file to the root folder', function () {
     Event::fake();
-    Storage::fake('local');
 
     postJson(
         uri: route('nova-file-manager.files.upload'),
@@ -38,9 +44,85 @@ it('can upload file', function () {
     Storage::disk($this->disk)->assertExists($path);
 
     Event::assertDispatched(
-        event: FileUploaded::class,
-        callback: fn (FileUploaded $event) => $event->disk === $this->disk && $event->path === $path,
+        event: FileUploading::class,
+        callback: function (FileUploading $event) use ($path) {
+            return $event->filesystem === Storage::disk($this->disk)
+                && $event->disk === $this->disk
+                && $event->path === $path;
+        },
     );
+
+    Event::assertDispatched(
+        event: FileUploaded::class,
+        callback: function (FileUploaded $event) use ($path) {
+            return $event->filesystem === Storage::disk($this->disk)
+                && $event->disk === $this->disk
+                && $event->path === $path;
+        },
+    );
+});
+
+it('can upload file to a nested folder', function () {
+    Event::fake();
+
+    Storage::disk($this->disk)->makeDirectory($folder = 'test');
+
+    postJson(
+        uri: route('nova-file-manager.files.upload'),
+        data: [
+            'disk' => $this->disk,
+            'path' => $folder,
+            'file' => UploadedFile::fake()->image($file = 'image.jpeg'),
+            'resumableFilename' => $file,
+        ],
+    )
+        ->assertOk()
+        ->assertJson([
+            'message' => __('nova-file-manager::messages.file.upload'),
+        ]);
+
+    Storage::disk($this->disk)->assertExists($path = "{$folder}/{$file}");
+
+    Event::assertDispatched(
+        event: FileUploading::class,
+        callback: function (FileUploading $event) use ($path) {
+            return $event->filesystem === Storage::disk($this->disk)
+                && $event->disk === $this->disk
+                && $event->path === $path;
+        },
+    );
+
+    Event::assertDispatched(
+        event: FileUploaded::class,
+        callback: function (FileUploaded $event) use ($path) {
+            return $event->filesystem === Storage::disk($this->disk)
+                && $event->disk === $this->disk
+                && $event->path === $path;
+        },
+    );
+});
+
+it('can prevent folder creation on upload', function () {
+    Nova::$tools = [
+        NovaFileManager::make()
+            ->canCreateFolder(fn() => false),
+    ];
+
+    postJson(
+        uri: route('nova-file-manager.files.upload'),
+        data: [
+            'disk' => $this->disk,
+            'path' => '/',
+            'file' => UploadedFile::fake()->image($file = 'image.jpeg'),
+            'resumableFilename' => $path = "upload/{$file}",
+        ],
+    )
+        ->assertUnprocessable()
+        ->assertJsonValidationErrors([
+            'file' => [
+                __('nova-file-manager::errors.authorization.unauthorized', ['action' => 'create folder'])
+            ]
+        ]);
 });
 
 it('can rename a file', function () {
@@ -64,9 +146,21 @@ it('can rename a file', function () {
     Storage::disk($this->disk)->assertExists($new);
 
     Event::assertDispatched(
+        event: FileRenaming::class,
+        callback: function (FileRenaming $event) use ($path, $new) {
+            return $event->filesystem === Storage::disk($this->disk)
+                && $event->disk === $this->disk
+                && $event->from === $path && $event->to === $new;
+        },
+    );
+
+    Event::assertDispatched(
         event: FileRenamed::class,
-        callback: fn (FileRenamed $event
-        ) => $event->disk === $this->disk && $event->from === $path && $event->to === $new,
+        callback: function (FileRenamed $event) use ($path, $new) {
+            return $event->filesystem === Storage::disk($this->disk)
+                && $event->disk === $this->disk
+                && $event->from === $path && $event->to === $new;
+        },
     );
 });
 
@@ -92,9 +186,21 @@ it('cannot rename a non existing file', function () {
         ]);
 
     Event::assertNotDispatched(
+        event: FileRenaming::class,
+        callback: function (FileRenaming $event) use ($path, $new) {
+            return $event->filesystem === Storage::disk($this->disk)
+                && $event->disk === $this->disk
+                && $event->from === $path && $event->to === $new;
+        },
+    );
+
+    Event::assertNotDispatched(
         event: FileRenamed::class,
-        callback: fn (FileRenamed $event
-        ) => $event->disk === $this->disk && $event->from === $path && $event->to === $new,
+        callback: function (FileRenamed $event) use ($path, $new) {
+            return $event->filesystem === Storage::disk($this->disk)
+                && $event->disk === $this->disk
+                && $event->from === $path && $event->to === $new;
+        },
     );
 });
 
@@ -107,7 +213,7 @@ it('cannot rename a file to an existing name', function () {
     Storage::disk($this->disk)->assertExists($fisrt);
     Storage::disk($this->disk)->assertExists($second);
 
-    $response = postJson(
+    postJson(
         uri: route('nova-file-manager.files.rename'),
         data: [
             'disk' => $this->disk,
@@ -122,9 +228,20 @@ it('cannot rename a file to an existing name', function () {
         ]);
 
     Event::assertNotDispatched(
+        event: FileRenaming::class,
+        callback: function (FileRenaming $event) use ($fisrt, $second) {
+            return $event->filesystem === Storage::disk($this->disk)
+                && $event->disk === $this->disk
+                && $event->from === $fisrt && $event->to === $second;
+        },
+    );
+
+    Event::assertNotDispatched(
         event: FileRenamed::class,
         callback: function (FileRenamed $event) use ($fisrt, $second) {
-            return $event->disk === $this->disk && $event->from === $fisrt && $event->to === $second;
+            return $event->filesystem === Storage::disk($this->disk)
+                && $event->disk === $this->disk
+                && $event->from === $fisrt && $event->to === $second;
         },
     );
 });
@@ -135,6 +252,7 @@ it('throws an exception if the filesystem cannot rename the file', function () {
     $mock = mock(FileManagerContract::class)->expect(
         rename: fn (string $from, string $to) => false,
         filesystem: fn () => Storage::disk($this->disk),
+        getDisk: fn() => $this->disk,
     );
 
     app()->instance(FileManagerContract::class, $mock);
@@ -157,10 +275,21 @@ it('throws an exception if the filesystem cannot rename the file', function () {
             ],
         ]);
 
+    Event::assertDispatched(
+        event: FileRenaming::class,
+        callback: function (FileRenaming $event) use ($path, $new) {
+            return $event->filesystem === Storage::disk($this->disk)
+                && $event->disk === $this->disk
+                && $event->from === $path && $event->to === $new;
+        },
+    );
+
     Event::assertNotDispatched(
         event: FileRenamed::class,
         callback: function (FileRenamed $event) use ($path, $new) {
-            return $event->disk === $this->disk && $event->from === $path && $event->to === $new;
+            return $event->filesystem === Storage::disk($this->disk)
+                && $event->disk === $this->disk
+                && $event->from === $path && $event->to === $new;
         },
     );
 });
@@ -184,9 +313,20 @@ it('can delete a file', function () {
     Storage::disk($this->disk)->assertMissing($path);
 
     Event::assertDispatched(
+        event: FileDeleting::class,
+        callback: function (FileDeleting $event) use ($path) {
+            return $event->filesystem === Storage::disk($this->disk)
+                && $event->disk === $this->disk &&
+                $event->path === $path;
+        },
+    );
+
+    Event::assertDispatched(
         event: FileDeleted::class,
         callback: function (FileDeleted $event) use ($path) {
-            return $event->disk === $this->disk && $event->path === $path;
+            return $event->filesystem === Storage::disk($this->disk)
+                && $event->disk === $this->disk &&
+                $event->path === $path;
         },
     );
 });
@@ -212,19 +352,31 @@ it('can delete a non existing file', function () {
         ]);
 
     Event::assertNotDispatched(
+        event: FileDeleting::class,
+        callback: function (FileDeleting $event) use ($path) {
+            return $event->filesystem === Storage::disk($this->disk)
+                && $event->disk === $this->disk
+                && $event->path === $path;
+        },
+    );
+
+    Event::assertNotDispatched(
         event: FileDeleted::class,
         callback: function (FileDeleted $event) use ($path) {
-            return $event->disk === $this->disk && $event->path === $path;
+            return $event->filesystem === Storage::disk($this->disk)
+                && $event->disk === $this->disk
+                && $event->path === $path;
         },
     );
 });
 
-it('throw an exception if the filesystem cannot delete the file', function () {
+it('throws an exception if the filesystem cannot delete the file', function () {
     Event::fake();
 
     $mock = mock(FileManagerContract::class)->expect(
         delete: fn (string $path) => false,
         filesystem: fn () => Storage::disk($this->disk),
+        getDisk: fn() => $this->disk,
     );
 
     app()->instance(FileManagerContract::class, $mock);
@@ -246,10 +398,116 @@ it('throw an exception if the filesystem cannot delete the file', function () {
             ],
         ]);
 
+    Event::assertDispatched(
+        event: FileDeleting::class,
+        callback: function (FileDeleting $event) use ($path) {
+            return $event->filesystem === Storage::disk($this->disk)
+                && $event->disk === $this->disk
+                && $event->path === $path;
+        },
+    );
+
     Event::assertNotDispatched(
         event: FileDeleted::class,
         callback: function (FileDeleted $event) use ($path) {
-            return $event->disk === $this->disk && $event->path === $path;
+            return $event->filesystem === Storage::disk($this->disk)
+                && $event->disk === $this->disk
+                && $event->path === $path;
+        },
+    );
+});
+
+it('can unzip an archive', function () {
+    Event::fake();
+
+    Storage::disk($this->disk)->put(
+        path: $path = 'archive.zip',
+        contents: file_get_contents(base_path('../../../../tests/Fixture/storage/oneduo.zip'))
+    );
+
+    Storage::disk($this->disk)->assertExists($path);
+
+    postJson(
+        uri: route('nova-file-manager.files.unzip'),
+        data: [
+            'disk' => $this->disk,
+            'path' => $path,
+        ],
+    )
+        ->assertOk()
+        ->assertJson([
+            'message' => __('nova-file-manager::messages.file.unzip'),
+        ]);
+
+    Storage::disk($this->disk)->assertExists('archive/oneduo/confidential/secret.txt');
+
+    Event::assertDispatched(
+        event: FileUnzipping::class,
+        callback: function (FileUnzipping $event) use ($path) {
+            return $event->filesystem === Storage::disk($this->disk)
+                && $event->disk === $this->disk
+                && $event->path === $path;
+        },
+    );
+
+    Event::assertDispatched(
+        event: FileUnzipped::class,
+        callback: function (FileUnzipped $event) use ($path) {
+            return $event->filesystem === Storage::disk($this->disk)
+                && $event->disk === $this->disk
+                && $event->path === $path;
+        },
+    );
+});
+
+it('throws an exception if the filesystem cannot unzip the archive', function () {
+    Event::fake();
+
+    $mock = mock(FileManagerContract::class)->expect(
+        unzip: fn (string $path) => false,
+        filesystem: fn () => Storage::disk($this->disk),
+        getDisk: fn() => $this->disk,
+    );
+
+    app()->instance(FileManagerContract::class, $mock);
+
+    Storage::disk($this->disk)->put(
+        path: $path = 'archive.zip',
+        contents: file_get_contents(base_path('../../../../tests/Fixture/storage/oneduo.zip'))
+    );
+
+    Storage::disk($this->disk)->assertExists($path);
+
+    postJson(
+        uri: route('nova-file-manager.files.unzip'),
+        data: [
+            'disk' => $this->disk,
+            'path' => $path,
+        ],
+    )
+        ->assertJsonValidationErrors([
+            'path' => [
+                __('nova-file-manager::errors.file.unzip'),
+            ],
+        ]);
+
+    Storage::disk($this->disk)->assertMissing('archive/oneduo/confidential/secret.txt');
+
+    Event::assertDispatched(
+        event: FileUnzipping::class,
+        callback: function (FileUnzipping $event) use ($path) {
+            return $event->filesystem === Storage::disk($this->disk)
+                && $event->disk === $this->disk
+                && $event->path === $path;
+        },
+    );
+
+    Event::assertNotDispatched(
+        event: FileUnzipped::class,
+        callback: function (FileUnzipped $event) use ($path) {
+            return $event->filesystem === Storage::disk($this->disk)
+                && $event->disk === $this->disk
+                && $event->path === $path;
         },
     );
 });

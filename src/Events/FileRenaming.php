@@ -7,7 +7,7 @@ namespace Oneduo\NovaFileManager\Events;
 use Illuminate\Contracts\Filesystem\Filesystem;
 use Illuminate\Foundation\Events\Dispatchable;
 
-class FolderRenamed
+class FileRenaming
 {
     use Dispatchable;
 

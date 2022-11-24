@@ -12,16 +12,16 @@ use Oneduo\NovaFileManager\Rules\ExistsInFilesystem;
  */
 class UnzipFileRequest extends BaseRequest
 {
+    public function authorize(): bool
+    {
+        return $this->canUnzipArchive();
+    }
+
     public function rules(): array
     {
         return [
             'disk' => ['sometimes', 'string', new DiskExistsRule()],
             'path' => ['required', 'string', new ExistsInFilesystem($this)],
         ];
-    }
-
-    public function authorize(): bool
-    {
-        return $this->canDeleteFile();
     }
 }

@@ -2,6 +2,7 @@
 
 declare(strict_types=1);
 
+use Illuminate\Contracts\Filesystem\Filesystem;
 use Illuminate\Foundation\Auth\User;
 use Illuminate\Support\Arr;
 use Illuminate\Support\Facades\Storage;
@@ -131,6 +132,46 @@ it('can retrieve files from field with a custom filesystem', function () {
             ],
         ]);
 });
+
+it('can retrieve files from field with a custom url resolver', function () {
+    Nova::$tools = [
+        NovaFileManager::make()
+            ->resolveUrlUsing(function (NovaRequest $request, string $path, string $disk, Filesystem $filesystem) {
+                return 'https://oneduo.github.io/assets/'.ltrim($path, '/');
+            }),
+    ];
+
+    Storage::disk($this->disk)->put($path = Str::random().'.txt', Str::random());
+    Storage::disk($this->disk)->makeDirectory('oneduo');
+
+    actingAs($this->user)
+        ->getJson(uri: route('nova-file-manager.data'))
+        ->assertOk()
+        ->assertJson([
+            'disk' => $this->disk,
+            'breadcrumbs' => [],
+            'folders' => [
+                [
+                    'path' => '/oneduo',
+                    'name' => 'oneduo',
+                ]
+            ],
+            'files' => [
+                [
+                    'path' => $path,
+                    'url' => "https://oneduo.github.io/assets/{$path}",
+                ],
+            ],
+            'pagination' => [
+                'current_page' => 1,
+                'last_page' => 1,
+                'from' => 1,
+                'to' => 1,
+                'total' => 1,
+            ],
+        ]);
+});
+
 it('cannot retrieve files from field with the wrong attribute', function () {
     Nova::resources([
         TestResource::class,

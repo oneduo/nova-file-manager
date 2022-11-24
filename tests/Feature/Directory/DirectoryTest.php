@@ -6,8 +6,11 @@ use Illuminate\Support\Facades\Event;
 use Illuminate\Support\Facades\Storage;
 use Oneduo\NovaFileManager\Contracts\Services\FileManagerContract;
 use Oneduo\NovaFileManager\Events\FolderCreated;
+use Oneduo\NovaFileManager\Events\FolderCreating;
 use Oneduo\NovaFileManager\Events\FolderDeleted;
+use Oneduo\NovaFileManager\Events\FolderDeleting;
 use Oneduo\NovaFileManager\Events\FolderRenamed;
+use Oneduo\NovaFileManager\Events\FolderRenaming;
 use function Pest\Laravel\postJson;
 
 beforeEach(function () {
@@ -32,8 +35,21 @@ it('can create a directory', function () {
     Storage::disk($this->disk)->assertExists($path);
 
     Event::assertDispatched(
+        event: FolderCreating::class,
+        callback: function (FolderCreating $event) use ($path) {
+            return $event->filesystem === Storage::disk($this->disk)
+                && $event->disk === $this->disk
+                && $event->path === $path;
+        },
+    );
+
+    Event::assertDispatched(
         event: FolderCreated::class,
-        callback: fn (FolderCreated $event) => $event->disk === $this->disk && $event->path === $path,
+        callback: function (FolderCreated $event) use ($path) {
+            return $event->filesystem === Storage::disk($this->disk)
+                && $event->disk === $this->disk
+                && $event->path === $path;
+        },
     );
 });
 
@@ -43,6 +59,7 @@ it('throws an exception if the filesystem cannot create the directory', function
     $mock = mock(FileManagerContract::class)->expect(
         mkdir: fn ($path) => false,
         filesystem: fn () => Storage::disk($this->disk),
+        getDisk: fn() => $this->disk,
     );
 
     app()->instance(FileManagerContract::class, $mock);
@@ -62,9 +79,23 @@ it('throws an exception if the filesystem cannot create the directory', function
             ],
         ]);
 
+    Event::assertDispatched(
+        event: FolderCreating::class,
+        callback: function (FolderCreating $event) use ($path) {
+            return $event->filesystem === Storage::disk($this->disk)
+                && $event->disk === $this->disk
+                && $event->path === $path;
+        },
+    );
+
+
     Event::assertNotDispatched(
         event: FolderCreated::class,
-        callback: fn (FolderDeleted $event) => $event->disk === $this->disk && $event->path === $path,
+        callback: function (FolderDeleted $event) use ($path) {
+            return $event->filesystem === Storage::disk($this->disk)
+                && $event->disk === $this->disk
+                && $event->path === $path;
+        },
     );
 });
 
@@ -106,10 +137,23 @@ it('can rename a directory', function () {
     Storage::disk($this->disk)->assertExists($new);
 
     Event::assertDispatched(
-        event: FolderRenamed::class,
-        callback: fn (FolderRenamed $event) => $event->disk === $this->disk
+        event: FolderRenaming::class,
+        callback: function (FolderRenaming $event) use ($old, $new) {
+            return $event->filesystem === Storage::disk($this->disk)
+            && $event->disk === $this->disk
             && $event->from === $old
-            && $event->to === $new,
+            && $event->to === $new;
+        },
+    );
+
+    Event::assertDispatched(
+        event: FolderRenamed::class,
+        callback: function (FolderRenamed $event) use ($old, $new) {
+            return $event->filesystem === Storage::disk($this->disk)
+            && $event->disk === $this->disk
+            && $event->from === $old
+            && $event->to === $new;
+        },
     );
 });
 
@@ -119,6 +163,7 @@ it('returns validation error when the filesystem can not rename the directory', 
     $mock = mock(FileManagerContract::class)->expect(
         rename: fn ($path) => false,
         filesystem: fn () => Storage::disk($this->disk),
+        getDisk: fn() => $this->disk,
     );
 
     app()->instance(FileManagerContract::class, $mock);
@@ -141,11 +186,24 @@ it('returns validation error when the filesystem can not rename the directory', 
             ],
         ]);
 
+    Event::assertDispatched(
+        event: FolderRenaming::class,
+        callback: function (FolderRenaming $event) use ($old, $new) {
+            return $event->filesystem === Storage::disk($this->disk)
+                && $event->disk === $this->disk
+                && $event->from === $old
+                && $event->to === $new;
+        },
+    );
+
     Event::assertNotDispatched(
         event: FolderRenamed::class,
-        callback: fn (FolderRenamed $event) => $event->disk === $this->disk
-            && $event->from === $old
-            && $event->to === $new,
+        callback: function (FolderRenamed $event) use ($old, $new) {
+            return $event->filesystem === Storage::disk($this->disk)
+                && $event->disk === $this->disk
+                && $event->from === $old
+                && $event->to === $new;
+        },
     );
 });
 
@@ -206,8 +264,21 @@ it('can delete a directory', function () {
     Storage::disk($this->disk)->assertMissing($path);
 
     Event::assertDispatched(
+        event: FolderDeleting::class,
+        callback: function (FolderDeleting $event) use ($path) {
+            return $event->filesystem === Storage::disk($this->disk)
+                && $event->disk === $this->disk
+                && $event->path === $path;
+        },
+    );
+
+    Event::assertDispatched(
         event: FolderDeleted::class,
-        callback: fn (FolderDeleted $event) => $event->disk === $this->disk && $event->path === $path,
+        callback: function (FolderDeleted $event) use ($path) {
+            return $event->filesystem === Storage::disk($this->disk)
+                && $event->disk === $this->disk
+                && $event->path === $path;
+        },
     );
 });
 
@@ -232,8 +303,21 @@ it('cannot delete a directory which doesnt exist', function () {
         ]);
 
     Event::assertNotDispatched(
+        event: FolderDeleting::class,
+        callback: function (FolderDeleting $event) use ($path) {
+            return $event->filesystem === Storage::disk($this->disk)
+                && $event->disk === $this->disk
+                && $event->path === $path;
+        },
+    );
+
+    Event::assertNotDispatched(
         event: FolderDeleted::class,
-        callback: fn (FolderDeleted $event) => $event->disk === $this->disk && $event->path === $path,
+        callback: function (FolderDeleted $event) use ($path) {
+            return $event->filesystem === Storage::disk($this->disk)
+                && $event->disk === $this->disk
+                && $event->path === $path;
+        },
     );
 });
 
@@ -243,6 +327,7 @@ it('throws an exception if the filesystem cannot delete the directory', function
     $mock = mock(FileManagerContract::class)->expect(
         rmdir: fn ($path) => false,
         filesystem: fn () => Storage::disk($this->disk),
+        getDisk: fn() => $this->disk,
     );
 
     app()->instance(FileManagerContract::class, $mock);
@@ -264,8 +349,21 @@ it('throws an exception if the filesystem cannot delete the directory', function
             ],
         ]);
 
+    Event::assertDispatched(
+        event: FolderDeleting::class,
+        callback: function (FolderDeleting $event) use ($path) {
+            return $event->filesystem === Storage::disk($this->disk)
+                && $event->disk === $this->disk
+                && $event->path === $path;
+        },
+    );
+
     Event::assertNotDispatched(
         event: FolderDeleted::class,
-        callback: fn (FolderDeleted $event) => $event->disk === $this->disk && $event->path === $path,
+        callback: function (FolderDeleted $event) use ($path) {
+            return $event->filesystem === Storage::disk($this->disk)
+                && $event->disk === $this->disk
+                && $event->path === $path;
+        },
     );
 });

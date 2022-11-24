@@ -9,8 +9,11 @@ use Illuminate\Routing\Controller;
 use Illuminate\Validation\ValidationException;
 use Oneduo\NovaFileManager\Contracts\Filesystem\Upload\Uploader;
 use Oneduo\NovaFileManager\Events\FileDeleted;
+use Oneduo\NovaFileManager\Events\FileDeleting;
 use Oneduo\NovaFileManager\Events\FileRenamed;
+use Oneduo\NovaFileManager\Events\FileRenaming;
 use Oneduo\NovaFileManager\Events\FileUnzipped;
+use Oneduo\NovaFileManager\Events\FileUnzipping;
 use Oneduo\NovaFileManager\Http\Requests\DeleteFileRequest;
 use Oneduo\NovaFileManager\Http\Requests\RenameFileRequest;
 use Oneduo\NovaFileManager\Http\Requests\UnzipFileRequest;
@@ -42,6 +45,8 @@ class FileController extends Controller
     {
         $manager = $request->manager();
 
+        event(new FileRenaming($manager->filesystem(), $manager->getDisk(), $request->from, $request->to));
+
         $result = $manager->rename($request->from, $request->to);
 
         if (!$result) {
@@ -50,7 +55,7 @@ class FileController extends Controller
             ]);
         }
 
-        event(new FileRenamed($manager->disk, $request->from, $request->to));
+        event(new FileRenamed($manager->filesystem(), $manager->getDisk(), $request->from, $request->to));
 
         return response()->json([
             'message' => __('nova-file-manager::messages.file.rename'),
@@ -67,6 +72,8 @@ class FileController extends Controller
     {
         $manager = $request->manager();
 
+        event(new FileDeleting($manager->filesystem(), $manager->getDisk(), $request->path));
+
         $result = $manager->delete($request->path);
 
         if (!$result) {
@@ -75,7 +82,7 @@ class FileController extends Controller
             ]);
         }
 
-        event(new FileDeleted($manager->disk, $request->path));
+        event(new FileDeleted($manager->filesystem(), $manager->getDisk(), $request->path));
 
         return response()->json([
             'message' => __('nova-file-manager::messages.file.delete'),
@@ -92,6 +99,8 @@ class FileController extends Controller
     {
         $manager = $request->manager();
 
+        event(new FileUnzipping($manager->filesystem(), $manager->getDisk(), $request->path));
+
         $result = $manager->unzip($request->path);
 
         if (!$result) {
@@ -100,7 +109,7 @@ class FileController extends Controller
             ]);
         }
 
-        event(new FileUnzipped($manager->disk, $request->path));
+        event(new FileUnzipped($manager->filesystem(), $manager->getDisk(), $request->path));
 
         return response()->json([
             'message' => __('nova-file-manager::messages.file.unzip'),
