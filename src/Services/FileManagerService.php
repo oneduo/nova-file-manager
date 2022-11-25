@@ -37,7 +37,7 @@ class FileManagerService implements FileManagerContract, ResolvesUrlContract
         public int $perPage = 15,
         public ?string $search = null,
     ) {
-        $this->disk($disk ?? config('nova-file-manager.default_disk'));
+        $this->setDisk($disk ?? config('nova-file-manager.default_disk'));
 
         $this->shouldShowHiddenFiles = config('nova-file-manager.show_hidden_files');
     }
@@ -48,7 +48,7 @@ class FileManagerService implements FileManagerContract, ResolvesUrlContract
      * @param  string|\Illuminate\Contracts\Filesystem\Filesystem  $disk
      * @return $this
      */
-    public function disk(string|Filesystem $disk): self
+    public function setDisk(string|Filesystem $disk): self
     {
         if ($disk instanceof Filesystem) {
             $this->disk = 'default';
@@ -62,6 +62,11 @@ class FileManagerService implements FileManagerContract, ResolvesUrlContract
         }
 
         return $this;
+    }
+
+    public function getDisk(): string
+    {
+        return $this->disk;
     }
 
     /**
@@ -351,7 +356,7 @@ class FileManagerService implements FileManagerContract, ResolvesUrlContract
      */
     public function mapIntoEntity(): Closure
     {
-        return fn (string $path) => $this->makeEntity($path, $this->disk);
+        return fn (string $path) => $this->makeEntity($path, $this->getDisk());
     }
 
     /**

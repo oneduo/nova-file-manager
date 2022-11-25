@@ -25,7 +25,7 @@ class IndexController extends Controller
             ->onEachSide(1);
 
         return response()->json([
-            'disk' => $manager->disk,
+            'disk' => $manager->getDisk(),
             'breadcrumbs' => $manager->breadcrumbs(),
             'folders' => $manager->directories(),
             'files' => $paginator->items(),

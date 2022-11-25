@@ -7,11 +7,11 @@ namespace Oneduo\NovaFileManager\Events;
 use Illuminate\Contracts\Filesystem\Filesystem;
 use Illuminate\Foundation\Events\Dispatchable;
 
-class FolderRenamed
+class FileUnzipping
 {
     use Dispatchable;
 
-    public function __construct(public Filesystem $filesystem, public string $disk, public string $from, public string $to)
+    public function __construct(public Filesystem $filesystem, public string $disk, public string $path)
     {
     }
 }
