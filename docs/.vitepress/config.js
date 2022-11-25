@@ -140,6 +140,13 @@ let head = [
       'data-respect-dnt': true,
     },
   ],
+  [
+    'meta',
+    {
+      name: 'google-site-verification',
+      content: 'zlILfRO4xTnxXfjeu4aoXjAHh_-vqjXUbB2eHraagcw',
+    },
+  ],
 ]
 
 let theme = {
