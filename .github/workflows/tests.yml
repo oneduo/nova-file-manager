@@ -62,11 +62,12 @@ jobs:
         run: ./vendor/bin/testbench-dusk nova:publish
 
       - name: Execute tests
-        run: ./vendor/bin/pest --coverage-clover coverage.xml
+        run: ./vendor/bin/pest --coverage-clover ./coverage.xml
         env:
           CI: true
           DB_PORT: ${{ job.services.mysql.ports[3306] }}
           DB_USERNAME: root
+          XDEBUG_MODE: coverage
 
       - name: Upload to Codecov
         uses: codecov/codecov-action@v2
