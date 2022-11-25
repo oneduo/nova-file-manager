@@ -10,3 +10,4 @@ auth.json
 /docs/node_modules
 /docs/.vitepress/dist
 .npmrc
+coverage.xml
