@@ -11,6 +11,7 @@
 [![Total Downloads](https://img.shields.io/packagist/dt/bbs-lab/nova-file-manager.svg)](https://packagist.org/packages/bbs-lab/nova-file-manager)
 [![Downloads](https://img.shields.io/packagist/dt/oneduo/nova-file-manager.svg)](https://packagist.org/packages/oneduo/nova-file-manager)
 [![Run tests](https://github.com/oneduo/nova-file-manager/actions/workflows/tests.yml/badge.svg?branch=main)](https://github.com/oneduo/nova-file-manager/actions/workflows/tests.yml)
+[![codecov](https://codecov.io/github/oneduo/nova-file-manager/branch/main/graph/badge.svg?token=L6LXFBA9JX)](https://codecov.io/github/oneduo/nova-file-manager)
 </div>
 
 ---
