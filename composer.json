@@ -75,7 +75,7 @@
     ],
     "test": [
       "./vendor/bin/testbench-dusk nova:publish",
-      "XDEBUG_MODE=coverage ./vendor/bin/pest --coverage"
+      "XDEBUG_MODE=coverage ./vendor/bin/pest --coverage --coverage-clover ./coverage.xml"
     ]
   },
   "config": {

@@ -30,7 +30,9 @@ interface FileManagerContract
 
     public function directories(): Collection;
 
-    public function disk(string|Filesystem $disk): self;
+    public function setDisk(string|Filesystem $disk): self;
+
+    public function getDisk(): string;
 
     public function entityClassForType(string $type): string;
 

@@ -8,6 +8,7 @@ use Illuminate\Http\UploadedFile;
 use Illuminate\Validation\ValidationException;
 use Oneduo\NovaFileManager\Contracts\Filesystem\Upload\Uploader as UploaderContract;
 use Oneduo\NovaFileManager\Events\FileUploaded;
+use Oneduo\NovaFileManager\Events\FileUploading;
 use Oneduo\NovaFileManager\Http\Requests\UploadFileRequest;
 use Pion\Laravel\ChunkUpload\Exceptions\UploadMissingFileException;
 use Pion\Laravel\ChunkUpload\Handler\HandlerFactory;
@@ -55,13 +56,19 @@ class Uploader implements UploaderContract
             ]);
         }
 
+        $folderPath = dirname($request->filePath());
+        $filePath = $file->getClientOriginalName();
+        $testPath = ltrim(str_replace('//', '/', "{$folderPath}/{$filePath}"), '/');
+
+        event(new FileUploading($request->manager()->filesystem(), $request->manager()->getDisk(), $testPath));
+
         $path = $request->manager()->filesystem()->putFileAs(
-            path: dirname($request->filePath()),
+            path: $folderPath,
             file: $file,
-            name: $file->getClientOriginalName(),
+            name: $filePath,
         );
 
-        event(new FileUploaded($request->manager()->disk, $path));
+        event(new FileUploaded($request->manager()->filesystem(), $request->manager()->getDisk(), $path));
 
         return [
             'message' => __('nova-file-manager::messages.file.upload'),

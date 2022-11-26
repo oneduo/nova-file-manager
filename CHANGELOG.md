@@ -2,6 +2,30 @@
 
 All notable changes to `nova-file-manager` will be documented in this file
 
+## v0.7.5 - 2022-11-25
+
+### What's Changed
+
+- Improve events by @mikaelpopowicz in https://github.com/oneduo/nova-file-manager/pull/109
+
+**Full Changelog**: https://github.com/oneduo/nova-file-manager/compare/v0.7.4...v0.7.5
+
+## v0.7.4 - 2022-11-22
+
+### What's Changed
+
+- fix(pintura): change pintura option variable to avoid collision with Nova by @mikaelpopowicz in https://github.com/oneduo/nova-file-manager/pull/106
+
+**Full Changelog**: https://github.com/oneduo/nova-file-manager/compare/v0.7.3...v0.7.4
+
+## v0.7.3 - 2022-11-14
+
+### What's Changed
+
+- fix(filesystem): fix singleDisk value in store on form field. by @mikaelpopowicz in https://github.com/oneduo/nova-file-manager/pull/99
+
+**Full Changelog**: https://github.com/oneduo/nova-file-manager/compare/v0.7.2...v0.7.3
+
 ## v0.7.2 - 2022-11-01
 
 ### What's Changed
@@ -85,15 +109,24 @@ rm -rf vendor/
 
 
 
+
+
+
 ```
 ```bash
 composer install oneduo/nova-file-manager
 
 
 
+
+
+
 ```
 ```bash
 composer rm bbs-lab/nova-file-manager
+
+
+
 
 
 

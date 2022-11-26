@@ -18,6 +18,7 @@ class TestResourceWithOnDemandFilesystem extends Resource
     {
         return [
             FileManager::make('Image')
+                ->multiple()
                 ->filesystem(function (NovaRequest $request) {
                     return Storage::build([
                         'driver' => 'local',

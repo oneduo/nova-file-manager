@@ -8,8 +8,11 @@ use Illuminate\Http\JsonResponse;
 use Illuminate\Routing\Controller;
 use Illuminate\Validation\ValidationException;
 use Oneduo\NovaFileManager\Events\FolderCreated;
+use Oneduo\NovaFileManager\Events\FolderCreating;
 use Oneduo\NovaFileManager\Events\FolderDeleted;
+use Oneduo\NovaFileManager\Events\FolderDeleting;
 use Oneduo\NovaFileManager\Events\FolderRenamed;
+use Oneduo\NovaFileManager\Events\FolderRenaming;
 use Oneduo\NovaFileManager\Http\Requests\CreateFolderRequest;
 use Oneduo\NovaFileManager\Http\Requests\DeleteFolderRequest;
 use Oneduo\NovaFileManager\Http\Requests\RenameFolderRequest;
@@ -24,9 +27,11 @@ class FolderController extends Controller
      */
     public function create(CreateFolderRequest $request): JsonResponse
     {
-        $result = $request->manager()->mkdir(
-            $path = trim($request->path)
-        );
+        $path = trim($request->path);
+
+        event(new FolderCreating($request->manager()->filesystem(), $request->manager()->getDisk(), $path));
+
+        $result = $request->manager()->mkdir($path);
 
         if (!$result) {
             throw ValidationException::withMessages([
@@ -34,7 +39,7 @@ class FolderController extends Controller
             ]);
         }
 
-        event(new FolderCreated($request->manager()->disk, $path));
+        event(new FolderCreated($request->manager()->filesystem(), $request->manager()->getDisk(), $path));
 
         return response()->json([
             'message' => __('nova-file-manager::messages.folder.create'),
@@ -52,6 +57,8 @@ class FolderController extends Controller
         $from = $request->from;
         $to = $request->to;
 
+        event(new FolderRenaming($request->manager()->filesystem(), $request->manager()->getDisk(), $from, $to));
+
         $result = $request->manager()->rename($from, $to);
 
         if (!$result) {
@@ -60,7 +67,7 @@ class FolderController extends Controller
             ]);
         }
 
-        event(new FolderRenamed($request->manager()->disk, $from, $to));
+        event(new FolderRenamed($request->manager()->filesystem(), $request->manager()->getDisk(), $from, $to));
 
         return response()->json([
             'message' => __('nova-file-manager::messages.folder.rename'),
@@ -77,6 +84,8 @@ class FolderController extends Controller
     {
         $path = $request->path;
 
+        event(new FolderDeleting($request->manager()->filesystem(), $request->manager()->getDisk(), $path));
+
         $result = $request->manager()->rmdir($path);
 
         if (!$result) {
@@ -85,7 +94,7 @@ class FolderController extends Controller
             ]);
         }
 
-        event(new FolderDeleted($request->manager()->disk, $path));
+        event(new FolderDeleted($request->manager()->filesystem(), $request->manager()->getDisk(), $path));
 
         return response()->json([
             'message' => __('nova-file-manager::messages.folder.delete'),
