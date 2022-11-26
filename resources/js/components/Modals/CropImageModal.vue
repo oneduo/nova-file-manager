@@ -4,12 +4,12 @@ import { CheckIcon, XMarkIcon } from '@heroicons/vue/24/outline'
 import { Entity } from '__types__'
 import 'cropperjs/dist/cropper.css'
 import { computed, ref } from 'vue'
-import { CropperData, VueCropperMethods, default as VueCropper } from 'vue-cropperjs'
+import { CropperData, default as VueCropper, VueCropperMethods } from 'vue-cropperjs'
+import IconButton from '@/components/Elements/IconButton.vue'
+import BaseModal from '@/components/Modals/BaseModal.vue'
+import UploadCropModal from '@/components/Modals/UploadCropModal.vue'
 import { UPLOAD_CROP_MODAL_NAME } from '@/constants'
 import useBrowserStore from '@/stores/browser'
-import IconButton from '../Elements/IconButton.vue'
-import BaseModal from './BaseModal.vue'
-import UploadCropModal from './UploadCropModal.vue'
 
 interface Props {
   file: Entity
@@ -22,9 +22,9 @@ const props = defineProps<Props>()
 const store = useBrowserStore()
 
 //STATE
-const buttonRef = ref(null)
+const buttonRef = ref<HTMLButtonElement | HTMLAnchorElement>()
 const cropper = ref<VueCropperMethods | null>(null)
-const destFile = ref(null as File | null)
+const destFile = ref<File>()
 const uploadIsOpen = computed(() => store.isOpen(UPLOAD_CROP_MODAL_NAME))
 
 const containerStyle = computed(() => ({
@@ -67,7 +67,7 @@ const submitCrop = (name: string) => {
     type: props.file.mime,
   })
 
-  closeModal('upload-crop')
+  closeModal(UPLOAD_CROP_MODAL_NAME)
   closeModal(props.name)
 
   props.onConfirm(file)

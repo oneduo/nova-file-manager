@@ -23,12 +23,12 @@ const props = defineProps<Props>()
 const store = useBrowserStore()
 
 //STATE
-const buttonRef = ref(null)
-const loadingError = ref(null as boolean | null)
-const destFile = ref(null)
-const uploadIsOpen = computed(() => store.isOpen('upload-crop'))
-const editorRef = ref(null)
-const editor = ref(null)
+const buttonRef = ref<HTMLButtonElement | HTMLAnchorElement>()
+const loadingError = ref<boolean>()
+const destFile = ref<File>()
+const uploadIsOpen = computed(() => store.isOpen(UPLOAD_CROP_MODAL_NAME))
+const editorRef = ref<any>()
+const editor = ref<any>()
 const { pinturaOptions } = usePintura()
 
 watchEffect(() => {

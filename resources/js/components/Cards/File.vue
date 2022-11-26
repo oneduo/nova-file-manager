@@ -9,8 +9,8 @@ import {
 } from '@heroicons/vue/24/solid'
 import { Entity } from '__types__'
 import { computed } from 'vue'
-import ImageLoader from '../Elements/ImageLoader.vue'
-import Spinner from '../Elements/Spinner.vue'
+import ImageLoader from '@/components/Elements/ImageLoader.vue'
+import Spinner from '@/components/Elements/Spinner.vue'
 
 interface Props {
   file: Entity
@@ -33,6 +33,7 @@ const isFile = computed(() => props.file.type !== 'image' && props.file.type !==
 const missing = computed(() => !props.file.exists)
 const name = computed(() => (missing.value ? props.file.path : props.file.name))
 </script>
+
 <template>
   <button
     class="relative cursor-pointer focus:rounded-md group focus:outline-none flex flex-col items-start"
@@ -79,7 +80,7 @@ const name = computed(() => (missing.value ? props.file.path : props.file.name))
           <template v-if="isVideo">
             <video class="pointer-events-none w-full h-full object-cover">
               <source :src="file.url" />
-              Sorry, your browser doesn't support embedded videos.
+              {{ __("Sorry, your browser doesn't support embedded videos.") }}
             </video>
 
             <div class="absolute m-auto flex items-center justify-center bg-transparent" v-if="!isUploading">

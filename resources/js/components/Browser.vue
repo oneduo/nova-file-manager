@@ -90,7 +90,7 @@ watch(dragFiles, () => submit())
 const unsubscribe = store.$onAction(({ name, store, after }) => {
   after(() => {
     if (WATCHABLE_ACTIONS.includes(name)) {
-      if (store.errors === null) {
+      if (!store.errors) {
         store.data()
       }
     }

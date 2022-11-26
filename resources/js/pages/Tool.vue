@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { ToolProps } from '__types__'
+import { Config } from '__types__'
 import { computed, onBeforeMount } from 'vue'
 import Browser from '@/components/Browser.vue'
 import UpdateChecker from '@/components/Elements/UpdateChecker.vue'
@@ -10,7 +10,7 @@ const store = useBrowserStore()
 const { __ } = useTranslation()
 
 type Props = {
-  config: ToolProps
+  config: Config
 }
 
 const props = defineProps<Props>()

@@ -1,3 +1,33 @@
+<script setup lang="ts">
+import { onMounted, ref } from 'vue'
+import Button from '@/components/Elements/Button.vue'
+import InputModal from '@/components/Modals/InputModal.vue'
+import { useErrors } from '@/hooks'
+
+interface Props {
+  name: string
+  onSubmit: (value: string) => void
+}
+
+const props = defineProps<Props>()
+
+const value = ref<string>()
+
+onMounted(() => (value.value = undefined))
+
+const { hasErrors, errorsList } = useErrors('createFolder')
+
+const submit = () => {
+  if (!value.value) {
+    return
+  }
+
+  props.onSubmit(value.value)
+
+  value.value = undefined
+}
+</script>
+
 <template>
   <InputModal :name="name" :on-submit="submit" :title="__('NovaFileManager.createFolderTitle')">
     <template v-slot:inputs>
@@ -41,33 +71,3 @@
     </template>
   </InputModal>
 </template>
-
-<script setup>
-import { onMounted, ref } from 'vue'
-import { useErrors } from '../../hooks'
-import Button from '../Elements/Button.vue'
-import InputModal from './InputModal.vue'
-
-const props = defineProps({
-  name: {
-    type: String,
-    required: true,
-  },
-  onSubmit: {
-    type: Function,
-    required: true,
-  },
-})
-
-const value = ref(null)
-
-onMounted(() => (value.value = null))
-
-const { hasErrors, errorsList } = useErrors('createFolder')
-
-const submit = () => {
-  props.onSubmit(value.value)
-
-  value.value = null
-}
-</script>

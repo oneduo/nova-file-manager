@@ -12,7 +12,7 @@ withDefaults(defineProps<Props>(), {
   current: 'grid',
 })
 
-const views = ref([
+const views = ref<{ name: View; icon: Component }[]>([
   {
     name: 'list',
     icon: QueueListIcon,
@@ -21,7 +21,7 @@ const views = ref([
     name: 'grid',
     icon: Squares2X2Icon,
   },
-] as { name: View; icon: Component }[])
+])
 
 const selectedClass = 'bg-white dark:bg-gray-700 text-blue-500 shadow-sm'
 const unselectedClass = 'text-gray-400 dark:hover:text-white hover:text-black'

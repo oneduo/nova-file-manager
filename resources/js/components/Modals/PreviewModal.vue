@@ -38,7 +38,7 @@ const { showRenameFile, showDeleteFile, showCropImage, showUnzipFile } = usePerm
 const { usePinturaEditor } = usePintura()
 
 // STATE
-const buttonRef = ref(null)
+const buttonRef = ref<HTMLButtonElement | HTMLAnchorElement>()
 const isCropModalOpened = computed(() => store.isOpen(`crop-image-${props.file?.id}`))
 const isEditModalOpened = computed(() => store.isOpen(`edit-image-${props.file?.id}`))
 
@@ -49,7 +49,7 @@ const onDelete = () => store.deleteFile({ id: props.file.id, path: props.file.pa
 const onUnzip = (path: string) => store.unzipFile({ path })
 
 const closePreview = () => {
-  store.preview = null
+  store.preview = undefined
 
   store.fixPortal()
 }

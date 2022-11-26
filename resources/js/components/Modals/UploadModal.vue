@@ -17,7 +17,7 @@ const props = defineProps<Props>()
 
 // STATE
 const active = ref(false)
-const files = ref([])
+const files = ref<File[] | FileList>()
 
 const store = useBrowserStore()
 const isOpen = computed(() => store.isOpen(props.name))
@@ -26,14 +26,20 @@ const darkMode = computed(() => store.dark)
 // ACTIONS
 const dragEnter = () => (active.value = true)
 const dragLeave = () => (active.value = false)
-const dragDrop = async e => (files.value = await dataTransferFiles(e.dataTransfer.items))
-const onChange = e => (files.value = e.target.files)
+const dragDrop = async (e: DragEvent) => (files.value = await dataTransferFiles(e.dataTransfer?.items))
+const onChange = (e: Event) => (files.value = (e.target as HTMLInputElement).files ?? [])
 const closeModal = () => store.closeModal({ name: props.name })
-const openModal = name => store.openModal({ name })
+const openModal = (name: string) => store.openModal({ name })
 
 const submit = () => {
-  if (files.value.length) {
-    props.upload(files.value)
+  if (files.value?.length) {
+    if (files.value instanceof FileList) {
+      props.upload(Array.from(files.value))
+    }
+
+    if (files.value instanceof Array) {
+      props.upload(files.value)
+    }
   }
 
   closeModal()

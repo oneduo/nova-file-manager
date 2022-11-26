@@ -16,10 +16,10 @@ const props = withDefaults(defineProps<Props>(), {
 
 const emit = defineEmits(['missing'])
 
-const loading = ref(true)
-const missing = ref(false)
+const loading = ref<boolean>(true)
+const missing = ref<boolean>(false)
 
-const card = ref(null as HTMLDivElement | null)
+const card = ref<HTMLDivElement>()
 
 const cardClasses = computed(() => {
   return {
@@ -32,7 +32,7 @@ onMounted(() => {
     let image = new Image()
 
     image.addEventListener('load', () => resolve(image))
-    image.addEventListener('error', () => reject())
+    image.addEventListener('error', event => reject(event))
 
     image.src = props.src
   })

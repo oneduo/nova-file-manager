@@ -3,6 +3,7 @@ import {
   ApiResponse,
   Breadcrumb,
   BrowserConfig,
+  Config,
   Entity,
   Folder,
   Pagination,
@@ -10,7 +11,6 @@ import {
   PinturaOptions,
   QueueEntry,
   QueueEntryStatus,
-  ToolProps,
   View,
 } from '__types__'
 import { AxiosResponse } from 'axios'
@@ -20,36 +20,80 @@ import escape from 'lodash/escape'
 import range from 'lodash/range'
 import { acceptHMRUpdate, defineStore } from 'pinia'
 import Resumable from 'resumablejs'
-import { PREVIEW_MODAL_NAME, QUEUE_MODAL_NAME, UPLOAD_MODAL_NAME } from '@/constants'
+import { BROWSER_MODAL_NAME, PREVIEW_MODAL_NAME, QUEUE_MODAL_NAME, UPLOAD_MODAL_NAME } from '@/constants'
 import { client } from '@/helpers/client'
 import { csrf } from '@/helpers/csrf'
 import errors from '@/helpers/errors'
 
+interface State {
+  path?: string
+  disk?: string
+  disks?: string[]
+  page?: number
+  search?: string
+  perPage?: number
+  perPageOptions: number[]
+  view: View
+  modals: string[]
+  callback?: (selection: Entity[] | undefined) => any
+
+  files?: Entity[]
+  folders?: Folder[]
+  breadcrumbs?: Breadcrumb[]
+  pagination?: Pagination
+  errors?: Errors
+  selection?: Entity[]
+  preview?: Entity
+  limit?: number
+  queue: QueueEntry[]
+  multiple?: boolean
+
+  ready: boolean
+  isField: boolean
+  isFetchingDisks: boolean
+  isFetchingData: boolean
+  isUploading: boolean
+
+  dark?: boolean
+  tour: boolean
+
+  resource?: string
+  resourceId?: string | number
+  attribute?: string
+  singleDisk: boolean
+  flexibleGroup: string[]
+  fieldInit?: () => void
+  permissions?: PermissionsCollection
+  chunkSize: number
+  usePintura: boolean
+  pinturaOptions?: PinturaOptions
+}
+
 const useBrowserStore = defineStore('nova-file-manager', {
-  state: () => ({
+  state: (): State => ({
     // browser state
-    path: null as string | null,
-    disk: null as string | null,
-    disks: null as string[] | null,
-    page: null as number | null,
-    search: null as string | null,
-    perPage: 15 as number | null,
+    path: undefined,
+    disk: undefined,
+    disks: undefined,
+    page: undefined,
+    search: undefined,
+    perPage: 15,
     perPageOptions: range(10, 50, 10),
-    view: 'grid' as View,
-    modals: [] as string[],
-    callback: undefined as ((...params: any[]) => any) | undefined,
+    view: 'grid',
+    modals: [],
+    callback: () => {},
 
     // files, folders and other data
-    files: null as Entity[] | null,
-    folders: null as Folder[] | null,
-    breadcrumbs: null as Breadcrumb[] | null,
-    pagination: null as Pagination | null,
-    errors: null as Errors | null,
-    selection: undefined as Entity[] | undefined,
-    preview: null as Entity | null,
-    limit: 1 as number | null,
-    queue: [] as QueueEntry[],
-    multiple: false as boolean | null,
+    files: undefined,
+    folders: undefined,
+    breadcrumbs: undefined,
+    pagination: undefined,
+    errors: undefined,
+    selection: undefined,
+    preview: undefined,
+    limit: undefined,
+    queue: [],
+    multiple: undefined,
 
     // status
     ready: false,
@@ -59,15 +103,15 @@ const useBrowserStore = defineStore('nova-file-manager', {
     isUploading: false,
 
     // common
-    dark: undefined as boolean | undefined,
+    dark: undefined,
     tour: false,
 
     // field specific state
-    resource: null as string | null,
-    resourceId: null as string | number | null,
-    attribute: null as string | number | null,
+    resource: undefined,
+    resourceId: undefined,
+    attribute: undefined,
     singleDisk: false,
-    flexibleGroup: [] as any[],
+    flexibleGroup: [],
     fieldInit: undefined,
 
     // permissions
@@ -84,14 +128,14 @@ const useBrowserStore = defineStore('nova-file-manager', {
         delete: true,
         unzip: true,
       },
-    } as PermissionsCollection | undefined,
+    },
 
     // config
     chunkSize: 50 * 1024 * 1024,
 
     // pintura
-    usePintura: false as boolean | undefined,
-    pinturaOptions: {} as PinturaOptions | undefined,
+    usePintura: false,
+    pinturaOptions: {},
   }),
 
   actions: {
@@ -172,7 +216,7 @@ const useBrowserStore = defineStore('nova-file-manager', {
       }
     },
 
-    saveToLocalStorage({ values }: { values: Record<string, string | number | null> }) {
+    saveToLocalStorage({ values }: { values: Record<string, string | number | null | undefined> }) {
       if (this.isField || !values) {
         return
       }
@@ -249,7 +293,7 @@ const useBrowserStore = defineStore('nova-file-manager', {
      */
     closeModal({ name }: { name: string }) {
       if (name === PREVIEW_MODAL_NAME) {
-        this.preview = null
+        this.preview = undefined
       }
 
       this.modals = this.modals.filter(_name => _name !== name)
@@ -336,7 +380,7 @@ const useBrowserStore = defineStore('nova-file-manager', {
      * @param {{[key:string]: string|null}} parameters
      * @returns
      */
-    setQueryString({ parameters }: { parameters: Record<string, string | number | null> }) {
+    setQueryString({ parameters }: { parameters: Record<string, string | number | null | undefined> }) {
       if (this.isField) {
         return
       }
@@ -380,11 +424,8 @@ const useBrowserStore = defineStore('nova-file-manager', {
 
     /**
      * Set the current path
-     *
-     * @param path
-     * @returns {Promise<void>}
      */
-    async setPath({ path }: { path: string | null }) {
+    async setPath({ path }: { path: string | undefined }) {
       this.reset()
 
       this.path = path
@@ -394,11 +435,8 @@ const useBrowserStore = defineStore('nova-file-manager', {
 
     /**
      * Set the current disk
-     *
-     * @param {string|null} disk
-     * @returns {Promise<void>}
      */
-    async setDisk({ disk }: { disk: string | null }) {
+    async setDisk({ disk }: { disk: string | undefined }) {
       this.reset()
 
       this.disk = disk
@@ -410,11 +448,8 @@ const useBrowserStore = defineStore('nova-file-manager', {
 
     /**
      * Set the current per page
-     *
-     * @param {number|null} perPage
-     * @returns {Promise<void>}
      */
-    async setPerPage({ perPage }: { perPage: number | null }) {
+    async setPerPage({ perPage }: { perPage: number | undefined }) {
       this.perPage = perPage
 
       this.page = 1
@@ -426,11 +461,8 @@ const useBrowserStore = defineStore('nova-file-manager', {
 
     /**
      * Set the current page
-     *
-     * @param {number|null} page
-     * @returns {Promise<void>}
      */
-    async setPage({ page }: { page: number | null }) {
+    async setPage({ page }: { page: number | undefined }) {
       this.page = page
 
       this.setQueryString({ parameters: { page } })
@@ -449,17 +481,14 @@ const useBrowserStore = defineStore('nova-file-manager', {
 
     /**
      * Set the search query
-     *
-     * @param {search|null} search
-     * @returns {Promise<void>}
      */
-    setSearch({ search }: { search: string | null }) {
+    setSearch({ search }: { search: string | undefined }) {
       this.search = search
 
       this.setQueryString({ parameters: { search } })
     },
 
-    setPreview({ preview }: { preview: Entity | null }) {
+    setPreview({ preview }: { preview: Entity | undefined }) {
       this.preview = preview
     },
 
@@ -646,7 +675,7 @@ const useBrowserStore = defineStore('nova-file-manager', {
 
         window.Nova.success(response.data.message)
 
-        this.preview = null
+        this.preview = undefined
 
         this.closeModal({ name: `rename-file-${id}` })
       } catch (error) {
@@ -671,7 +700,7 @@ const useBrowserStore = defineStore('nova-file-manager', {
 
         window.Nova.success(response.data.message)
 
-        this.preview = null
+        this.preview = undefined
 
         this.closeModal({ name: `delete-file-${id}` })
 
@@ -698,7 +727,7 @@ const useBrowserStore = defineStore('nova-file-manager', {
 
         window.Nova.success(response.data.message)
 
-        this.preview = null
+        this.preview = undefined
 
         this.clearSelection()
       } catch (error) {
@@ -712,11 +741,6 @@ const useBrowserStore = defineStore('nova-file-manager', {
 
     /**
      * GET request wrapper
-     *
-     * @param {string|null|undefined} path
-     * @param {Object|null|undefined} params
-     * @param {Object|null|undefined} options
-     * @returns {Promise<*>}
      */
     async get({ path, params, options = {} }: { path?: string; params?: object; options?: object }) {
       return await client().get(this.url(`/nova-vendor/nova-file-manager${path ?? '/'}`), {
@@ -733,14 +757,22 @@ const useBrowserStore = defineStore('nova-file-manager', {
     },
 
     payload(params: object) {
-      let data = {
+      let data: {
+        [key: string]: any
+        attribute?: string
+        resource?: string
+        fieldMode: boolean
+        resourceId?: string | number
+        disk?: string
+        flexible?: string
+      } = {
         ...params,
         attribute: this.attribute,
         resource: this.resource,
         fieldMode: this.isField,
-        resourceId: null as string | number | null,
-        disk: null as string | null,
-        flexible: null as string | null,
+        resourceId: undefined,
+        disk: undefined,
+        flexible: undefined,
       }
 
       if (this.resourceId) {
@@ -798,38 +830,32 @@ const useBrowserStore = defineStore('nova-file-manager', {
       this.callback = callback
       this.usePintura = usePintura
       this.pinturaOptions = pinturaOptions
-      this.errors = null
-
-      this.setSelection({ files: [...initialFiles] })
-
+      this.errors = undefined
       this.permissions = permissions
+      this.disk = undefined
 
-      this.disk = null
-
-      this.openModal({ name: 'browser' })
+      this.openModal({ name: BROWSER_MODAL_NAME })
+      this.setSelection({ files: [...initialFiles] })
     },
 
     closeBrowser() {
       this.isField = false
-      this.multiple = null
-      this.limit = null
-      this.resource = null
-      this.resourceId = null
-      this.attribute = null
+      this.multiple = undefined
+      this.limit = undefined
+      this.resource = undefined
+      this.resourceId = undefined
+      this.attribute = undefined
       this.singleDisk = false
       this.flexibleGroup = []
       this.callback = undefined
       this.usePintura = false
       this.pinturaOptions = {}
-      this.errors = null
+      this.errors = undefined
+      this.permissions = undefined
+      this.disk = undefined
 
       this.setSelection({ files: [] })
-
-      this.permissions = undefined
-
-      this.disk = null
-
-      this.closeModal({ name: 'browser' })
+      this.closeModal({ name: BROWSER_MODAL_NAME })
     },
 
     confirm() {
@@ -838,11 +864,11 @@ const useBrowserStore = defineStore('nova-file-manager', {
       this.closeBrowser()
     },
 
-    prepareTool({ singleDisk, permissions, tour, usePintura, pinturaOptions }: ToolProps) {
+    prepareTool({ singleDisk, permissions, tour, usePintura, pinturaOptions }: Config) {
       this.init()
       this.clearSelection()
 
-      this.limit = null
+      this.limit = undefined
       this.isField = false
       this.multiple = true
       this.singleDisk = singleDisk
@@ -850,7 +876,7 @@ const useBrowserStore = defineStore('nova-file-manager', {
       this.tour = tour
       this.usePintura = usePintura
       this.pinturaOptions = pinturaOptions
-      this.errors = null
+      this.errors = undefined
     },
   },
   getters: {

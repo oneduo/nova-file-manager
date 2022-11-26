@@ -7,9 +7,9 @@ const store = useBrowserStore()
 
 const pagination = computed(() => store.pagination)
 
-const { current_page: currentPage, last_page: lastPage, from, to, total, links } = pagination.value
+const { current_page: currentPage, last_page: lastPage, from, to, total, links } = pagination.value!
 
-const setPage = page => store.setPage({ page })
+const setPage = (page: number) => store.setPage({ page })
 </script>
 
 <template>

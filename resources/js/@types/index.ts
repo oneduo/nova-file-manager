@@ -15,33 +15,26 @@ export type Breadcrumb = {
 
 export type BrowserConfig = {
   initialFiles: Entity[]
-  multiple: boolean
-  limit: number | null
-  resource: string | null
-  resourceId: string | number
-  attribute: string
+  multiple?: boolean
+  limit?: number
+  resource?: string
+  resourceId?: string | number
+  attribute?: string
   singleDisk: boolean
-  permissions: PermissionsCollection
+  permissions?: PermissionsCollection
   flexibleGroup: any[]
   callback?: (...params: any[]) => any
-  usePintura?: boolean
+  usePintura: boolean
   pinturaOptions?: PinturaOptions
 }
 
 export type Config = {
-  outdated: boolean
-  tour: boolean
   singleDisk: boolean
   permissions: PermissionsCollection
+  tour: boolean
   usePintura: boolean
   pinturaOptions: PinturaOptions
-}
-
-export interface Folder {
-  id: string
-  disk?: string
-  name: string
-  path: string
+  outdated?: boolean
 }
 
 export type Entity = {
@@ -50,14 +43,16 @@ export type Entity = {
   path: string
   disk: string
   size: string
-  type: string
+  type: EntityType
   extension: string
   mime: string
   url: string
   lastModifiedAt: string
-  exists: boolean
-  meta: Record<string, any>
+  exists?: boolean
+  meta?: Record<string, any>
 }
+
+export type EntityType = 'image' | 'video' | 'audio' | 'document' | 'archive' | 'other'
 
 export type Errors = {
   [key: string]: string[]
@@ -66,6 +61,13 @@ export type Errors = {
 export type ErrorsBag = {
   message: string
   errors: Errors
+}
+
+export type Folder = {
+  id: string
+  disk?: string
+  name: string
+  path: string
 }
 
 export type NovaField = {
@@ -141,14 +143,5 @@ export type QueueEntry = {
 }
 
 export type View = 'grid' | 'list'
-
-export type ToolProps = {
-  singleDisk: boolean
-  permissions: PermissionsCollection
-  tour: boolean
-  usePintura: boolean
-  pinturaOptions: PinturaOptions
-  outdated?: boolean
-}
 
 export type Maybe<T> = T | null | undefined

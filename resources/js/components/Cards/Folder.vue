@@ -19,14 +19,18 @@ const { showRenameFolder, showDeleteFolder } = usePermissions()
 
 // ACTIONS
 const openModal = (name: string) => store.openModal({ name })
+
 const setPath = (path: string) => store.setPath({ path })
-const onRename = (value: string) =>
-  store.renameFolder({
+
+const onDelete = () => store.deleteFolder({ id: props.folder.id, path: props.folder.path })
+
+const onRename = (value: string) => {
+  return store.renameFolder({
     id: props.folder.id,
     from: props.folder.path,
     to: value,
   })
-const onDelete = () => store.deleteFolder({ id: props.folder.id, path: props.folder.path })
+}
 </script>
 
 <template>

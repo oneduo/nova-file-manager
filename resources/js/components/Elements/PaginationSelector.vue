@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import range from 'lodash/range'
-import Select from './Select.vue'
+import Select from '@/components/Elements/Select.vue'
 
 interface Props {
   perPage: number

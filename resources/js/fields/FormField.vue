@@ -89,7 +89,7 @@ export default defineComponent({
         multiple: this.field.multiple ?? false,
         limit: this.field.limit ?? null,
         resource: this.resourceName ?? null,
-        resourceId: this.resourceId ?? null,
+        resourceId: this.resourceId,
         attribute: this.flexibleGroup.length ? this.field.sortableUriKey : this.field.attribute,
         singleDisk: this.field.singleDisk ?? false,
         permissions: this.field.permissions,

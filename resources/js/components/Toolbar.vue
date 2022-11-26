@@ -1,5 +1,6 @@
 <script setup lang="ts">
 import { CheckIcon, CloudArrowUpIcon, FolderPlusIcon, MagnifyingGlassIcon } from '@heroicons/vue/24/outline'
+import { View } from '__types__'
 import { computed } from 'vue'
 import Breadcrumbs from '@/components/Breadcrumbs.vue'
 import DiskSelector from '@/components/DiskSelector.vue'
@@ -32,15 +33,15 @@ const selection = computed(() => store.selection)
 const limit = computed(() => store.limit)
 
 // ACTIONS
-const setDisk = disk => store.setDisk({ disk })
-const setPerPage = perPage => store.setPerPage({ perPage })
-const setPath = path => store.setPath({ path })
-const setView = view => store.setView({ view })
-const openModal = name => store.openModal({ name })
+const setDisk = (disk: string) => store.setDisk({ disk })
+const setPerPage = (perPage: number) => store.setPerPage({ perPage })
+const setPath = (path: string) => store.setPath({ path })
+const setView = (view: View) => store.setView({ view })
+const openModal = (name: string) => store.openModal({ name })
 const clearSelection = () => store.clearSelection()
-const upload = files => store.upload({ files })
+const upload = (files: File[]) => store.upload({ files })
 const confirm = () => store.confirm()
-const createFolder = path => store.createFolder({ path })
+const createFolder = (path: string) => store.createFolder({ path })
 const openSearch = () => searchStore.open()
 
 const openUploadModal = () => {
