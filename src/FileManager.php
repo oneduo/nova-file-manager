@@ -139,7 +139,7 @@ class FileManager extends Field implements InteractsWithFilesystem
 
         if (is_array($value)) {
             if ($this->multiple) {
-                $value = collect($value)->map(fn (array $asset) => new Asset(...$asset));
+                $value = collect($value)->map(fn (array|object $asset) => new Asset(... (array) $asset));
             } else {
                 $value = collect([new Asset(...$value)]);
             }
