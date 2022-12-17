@@ -87,16 +87,13 @@ class ToolServiceProvider extends ServiceProvider
         $this->loadJsonTranslationsFrom(__DIR__ . '/../lang');
     }
 
-    function assets(): void
+    public function assets(): void
     {
         Nova::style('nova-file-manager', __DIR__ . '/../dist/css/tool.css');
         Nova::script('nova-file-manager', __DIR__ . '/../dist/js/tool.js');
     }
 
-    /**
-     * @return void
-     */
-    function loadTranslationsToNova(): void
+    public function loadTranslationsToNova(): void
     {
         $translations = trans('nova-file-manager::ui');
 
