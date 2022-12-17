@@ -1,8 +1,9 @@
 <img src="./docs/images/banner.png"/>
-<img src="./docs/images/tiles.png"/>
-
 
 <a href="https://oneduo.github.io/nova-file-manager/" taget="_blank"><img src="./docs/images/documentation.png"/></a>
+
+<a href="https://novapackages.com/packages/oneduo/nova-file-manager" target="_blank"><img src="./docs/images/support.png"/></a>
+
 # Nova File Manager
 
 <div align="left">
@@ -42,10 +43,6 @@ A file manager tool and field for Laravel Nova. Beautifully designed, and custom
 🚩 Onboarding tour for new users
 </p>
 
-
-
-
-<a href="https://novapackages.com/packages/oneduo/nova-file-manager" target="_blank"><img src="./docs/images/support.png"/></a>
 
 ## Table of Contents
 
