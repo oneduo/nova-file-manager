@@ -2,6 +2,14 @@
 
 All notable changes to `nova-file-manager` will be documented in this file
 
+## v0.7.6 - 2023-01-10
+
+### What's Changed
+
+- fix(store): input not being trimmed before request by @Rezrazi in https://github.com/oneduo/nova-file-manager/pull/120
+
+**Full Changelog**: https://github.com/oneduo/nova-file-manager/compare/v0.7.5...v0.7.6
+
 ## v0.7.5 - 2022-11-25
 
 ### What's Changed
@@ -112,6 +120,7 @@ rm -rf vendor/
 
 
 
+
 ```
 ```bash
 composer install oneduo/nova-file-manager
@@ -121,9 +130,11 @@ composer install oneduo/nova-file-manager
 
 
 
+
 ```
 ```bash
 composer rm bbs-lab/nova-file-manager
+
 
 
 
