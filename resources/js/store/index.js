@@ -505,7 +505,7 @@ const useStore = defineStore('nova-file-manager', {
         const response = await this.post({
           path: '/folders/create',
           data: this.payload({
-            path: escape(`${this.path ?? ''}/${path}`),
+            path: escape(`${this.path?.trim() ?? ''}/${path.trim()}`),
           }),
         })
 
@@ -530,7 +530,7 @@ const useStore = defineStore('nova-file-manager', {
           data: this.payload({
             path: this.path,
             from: escape(from).replace('//', '/'),
-            to: escape(`${this.path ?? ''}/${to}`).replace('//', '/'),
+            to: escape(`${this.path?.trim() ?? ''}/${to.trim()}`).replace('//', '/'),
           }),
         })
 
@@ -636,7 +636,7 @@ const useStore = defineStore('nova-file-manager', {
           data: this.payload({
             path: this.path,
             from: escape(from).replace('//', '/'),
-            to: escape(`${this.path ?? ''}/${to}`).replace('//', '/'),
+            to: escape(`${this.path?.trim() ?? ''}/${to.trim()}`).replace('//', '/'),
           }),
         })
 
