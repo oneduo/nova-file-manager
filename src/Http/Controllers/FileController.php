@@ -24,8 +24,8 @@ class FileController extends Controller
     /**
      * Upload a file from the tool
      *
-     * @param  \Oneduo\NovaFileManager\Http\Requests\UploadFileRequest  $request
-     * @param  \Oneduo\NovaFileManager\Contracts\Filesystem\Upload\Uploader  $uploader
+     * @param \Oneduo\NovaFileManager\Http\Requests\UploadFileRequest $request
+     * @param \Oneduo\NovaFileManager\Contracts\Filesystem\Upload\Uploader $uploader
      * @return \Illuminate\Http\JsonResponse
      */
     public function upload(UploadFileRequest $request, Uploader $uploader): JsonResponse
@@ -38,7 +38,7 @@ class FileController extends Controller
     /**
      * Rename a file
      *
-     * @param  \Oneduo\NovaFileManager\Http\Requests\RenameFileRequest  $request
+     * @param \Oneduo\NovaFileManager\Http\Requests\RenameFileRequest $request
      * @return \Illuminate\Http\JsonResponse
      */
     public function rename(RenameFileRequest $request): JsonResponse
@@ -65,24 +65,26 @@ class FileController extends Controller
     /**
      * Delete a file
      *
-     * @param  \Oneduo\NovaFileManager\Http\Requests\DeleteFileRequest  $request
+     * @param \Oneduo\NovaFileManager\Http\Requests\DeleteFileRequest $request
      * @return \Illuminate\Http\JsonResponse
      */
     public function delete(DeleteFileRequest $request): JsonResponse
     {
         $manager = $request->manager();
 
-        event(new FileDeleting($manager->filesystem(), $manager->getDisk(), $request->path));
+        foreach ($request->paths as $path) {
+            event(new FileDeleting($manager->filesystem(), $manager->getDisk(), $path));
 
-        $result = $manager->delete($request->path);
+            $result = $manager->delete($path);
 
-        if (!$result) {
-            throw ValidationException::withMessages([
-                'path' => [__('nova-file-manager::errors.file.delete')],
-            ]);
+            if (!$result) {
+                throw ValidationException::withMessages([
+                    'paths' => [__('nova-file-manager::errors.file.delete')],
+                ]);
+            }
+
+            event(new FileDeleted($manager->filesystem(), $manager->getDisk(), $path));
         }
-
-        event(new FileDeleted($manager->filesystem(), $manager->getDisk(), $request->path));
 
         return response()->json([
             'message' => __('nova-file-manager::messages.file.delete'),
@@ -92,7 +94,7 @@ class FileController extends Controller
     /**
      * Unzip an archive
      *
-     * @param  \Oneduo\NovaFileManager\Http\Requests\UnzipFileRequest  $request
+     * @param \Oneduo\NovaFileManager\Http\Requests\UnzipFileRequest $request
      * @return \Illuminate\Http\JsonResponse
      */
     public function unzip(UnzipFileRequest $request): JsonResponse

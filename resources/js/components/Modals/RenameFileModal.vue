@@ -3,6 +3,7 @@ import { onMounted, ref } from 'vue'
 import Button from '@/components/Elements/Button.vue'
 import InputModal from '@/components/Modals/InputModal.vue'
 import { useErrors } from '@/hooks'
+import {OPERATIONS} from "@/constants";
 
 interface Props {
   name: string
@@ -12,7 +13,7 @@ interface Props {
 
 const props = defineProps<Props>()
 
-const { hasErrors, errorsList } = useErrors('renameFile')
+const { hasErrors, errorsList } = useErrors(OPERATIONS.RENAME_FILE)
 
 // STATE
 const value = ref(null as string | null | undefined)
@@ -47,7 +48,7 @@ const submit = () => value.value && props.onSubmit(value.value)
           />
         </div>
         <template v-if="hasErrors">
-          <p v-for="(error, index) in errorsList" :key="index" id="email-error" class="mt-2 text-sm text-red-600">
+          <p v-for="error in errorsList" class="mt-2 text-sm text-red-600">
             {{ error }}
           </p>
         </template>

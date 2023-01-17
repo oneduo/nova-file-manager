@@ -10,44 +10,46 @@ const modifiers = {
   help: '?',
 }
 
+interface State {
+  isOpen: boolean
+  isLoading: boolean
+  query: string
+  search: string
+  folders: Folder[] | undefined
+  files: Entity[] | undefined
+  isFolderOnly: boolean
+  isFileOnly: boolean
+  help: boolean
+  hasResults?: boolean
+  canceler: { cancel: Canceler } | undefined
+}
+
 const useSearchStore = defineStore('nova-file-manager/search', {
-  state: () => ({
+  state: (): State => ({
     isOpen: false,
     isLoading: false,
     query: '',
     search: '',
-    folders: undefined as any[] | undefined,
-    files: undefined as Entity[] | undefined,
+    folders: undefined,
+    files: undefined,
     isFolderOnly: false,
     isFileOnly: false,
     help: false,
-    hasResults: false as boolean | undefined,
-    canceler: undefined as { cancel: Canceler } | undefined,
+    hasResults: false,
+    canceler: undefined,
   }),
 
   actions: {
-    /**
-     * Open spotlight search
-     */
     open() {
       this.isOpen = true
       this.files = []
       this.folders = []
     },
 
-    /**
-     * Close spotlight search
-     */
     close() {
       this.isOpen = false
     },
 
-    /**
-     * Set the search query
-     *
-     * @param {string|null|undefined} search
-     * @returns {Promise<void>}
-     */
     async setSearch({ search }: { search: string | null | undefined }) {
       if (!search?.length) {
         this.reset()
@@ -129,8 +131,6 @@ const useSearchStore = defineStore('nova-file-manager/search', {
         this.isLoading = false
 
         window.Nova.error('An error occurred while searching')
-
-        console.error(response)
 
         return
       }

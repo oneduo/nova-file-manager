@@ -38,7 +38,8 @@
     "vue/no-v-for-template-key": "off"
   },
   "plugins": [
-    "import"
+    "import",
+    "tailwindcss"
   ],
   "settings": {
     "import/extensions": [

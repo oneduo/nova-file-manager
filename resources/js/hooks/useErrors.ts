@@ -1,12 +1,15 @@
+import { storeToRefs } from 'pinia'
 import { computed } from 'vue'
 import useBrowserStore from '@/stores/browser'
 
-export function useErrors(name: string) {
+export function useErrors(attribute: string) {
   const store = useBrowserStore()
 
-  const errors = computed(() => store.errors)
-  const hasErrors = computed(() => errors.value?.has(name))
-  const errorsList = computed(() => errors.value?.get(name))
+  const { error } = storeToRefs(store)
 
-  return { errors, hasErrors, errorsList }
+  return {
+    message: computed(() => error?.value?.bag?.message),
+    invalid: computed(() => error?.value?.attribute === attribute),
+    errors: computed(() => error?.value?.bag?.errors),
+  }
 }

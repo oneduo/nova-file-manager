@@ -90,7 +90,7 @@ watch(dragFiles, () => submit())
 const unsubscribe = store.$onAction(({ name, store, after }) => {
   after(() => {
     if (WATCHABLE_ACTIONS.includes(name)) {
-      if (!store.errors) {
+      if (!store.error) {
         store.data()
       }
     }
@@ -103,7 +103,7 @@ onBeforeUnmount(() => {
 </script>
 
 <template>
-  <div class="flex flex-1 items-stretch overflow-hidden rounded-md w-full min-h-[50vh]">
+  <div class="flex flex-1 items-stretch rounded-md w-full min-h-[50vh]">
     <main class="relative flex-1 overflow-y-auto bg-gray-50 dark:bg-gray-800">
       <div class="w-full px-4 space-y-4 mb-4">
         <Toolbar />

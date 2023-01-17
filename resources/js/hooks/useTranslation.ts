@@ -3,8 +3,6 @@ export function useTranslation() {
     let translation = window.Nova.config('translations')[key] ? window.Nova.config('translations')[key] : key
 
     Object.entries(replace ?? {}).forEach(([key, value]) => {
-      key = String(key)
-
       if (value === null) {
         console.error(`Translation '${translation}' for key '${key}' contains a null replacement.`)
 
@@ -13,7 +11,7 @@ export function useTranslation() {
 
       value = String(value)
 
-      const searches = [':' + key, ':' + key.toUpperCase(), ':' + key.charAt(0).toUpperCase() + key.slice(1)]
+      const searches = [`:${key}`, `:${key.toUpperCase()}`, `:${key.charAt(0).toUpperCase()}${key.slice(1)}`]
 
       const replacements = [value, value.toUpperCase(), value.charAt(0).toUpperCase() + value.slice(1)]
 

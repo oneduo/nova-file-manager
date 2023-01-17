@@ -19,7 +19,7 @@ import CropImageModal from '@/components/Modals/CropImageModal.vue'
 import DeleteFileModal from '@/components/Modals/DeleteFileModal.vue'
 import EditImageModal from '@/components/Modals/EditImageModal.vue'
 import RenameFileModal from '@/components/Modals/RenameFileModal.vue'
-import { QUEUE_MODAL_NAME } from '@/constants'
+import { MODALS, QUEUE_MODAL_NAME } from "@/constants";
 import { useClipboard, usePermissions, usePintura } from '@/hooks'
 import useBrowserStore from '@/stores/browser'
 
@@ -45,7 +45,7 @@ const isEditModalOpened = computed(() => store.isOpen(`edit-image-${props.file?.
 // ACTIONS
 const openModal = (name: string) => store.openModal({ name })
 const onRename = (value: string) => store.renameFile({ id: props.file.id, from: props.file.path, to: value })
-const onDelete = () => store.deleteFile({ id: props.file.id, path: props.file.path })
+const onDelete = () => store.deleteFiles({ id: props.file.id, paths: [props.file.path] })
 const onUnzip = (path: string) => store.unzipFile({ path })
 
 const closePreview = () => {
@@ -83,7 +83,7 @@ const copy = (file: Entity) => {
           <IconButton
             v-if="!readOnly && showDeleteFile"
             variant="danger"
-            @click="openModal(`delete-file-${file?.id}`)"
+            @click="openModal(`${MODALS.DELETE_FILES}-${file?.id}`)"
             :title="__('NovaFileManager.actions.delete')"
           >
             <TrashIcon class="w-5 h-5" />
@@ -225,7 +225,7 @@ const copy = (file: Entity) => {
         </div>
       </div>
 
-      <DeleteFileModal v-if="showDeleteFile" :name="`delete-file-${file?.id}`" :on-confirm="onDelete" />
+      <DeleteFileModal v-if="showDeleteFile" :name="`${MODALS.DELETE_FILES}-${file?.id}`" :on-confirm="onDelete" />
 
       <CropImageModal
         v-if="showCropImage && isCropModalOpened"

@@ -8,7 +8,7 @@ use Oneduo\NovaFileManager\Rules\DiskExistsRule;
 use Oneduo\NovaFileManager\Rules\ExistsInFilesystem;
 
 /**
- * @property-read string $path
+ * @property-read string[] $paths
  */
 class DeleteFileRequest extends BaseRequest
 {
@@ -21,7 +21,8 @@ class DeleteFileRequest extends BaseRequest
     {
         return [
             'disk' => ['sometimes', 'string', new DiskExistsRule()],
-            'path' => ['required', 'string', new ExistsInFilesystem($this)],
+            'paths' => ['required', 'array'],
+            'paths.*' => ['required', 'string', new ExistsInFilesystem($this)],
         ];
     }
 }

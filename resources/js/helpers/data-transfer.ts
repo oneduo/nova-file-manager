@@ -1,87 +1,95 @@
-// @ts-nocheck
-/**
- *
- * @param {DataTransferItemList} dataTransferItems
- * @returns {Promise<*[]>}
- */
-export default async function (dataTransferItems) {
-  const checkErr = err => {
-    if (err.name !== 'EncodingError') return
-    const infoMsg =
-      `${err.name} occured within datatransfer-files-promise module\n` +
-      `Error message: "${err.message}"\n` +
-      'Try serving html over http if currently you are running it from the filesystem.'
-    console.warn(infoMsg)
-  }
+export default async function (dataTransferItems: DataTransferItemList) {
+  const isDirectory = (entry: FileSystemEntry): entry is FileSystemDirectoryEntry => entry.isDirectory
 
-  const readFile = (entry, path = '') => {
+  const isFile = (entry: FileSystemEntry): entry is FileSystemFileEntry => entry.isFile
+
+  const readFile = (entry: FileSystemEntry, path = ''): Promise<File> => {
     return new Promise((resolve, reject) => {
+      if (!isFile(entry)) {
+        return
+      }
+
       entry.file(
-        file => {
-          resolve(new File([file], path + file.name, { type: file.type }))
-        },
-        err => {
-          checkErr(err)
-          reject(err)
-        },
+        file => resolve(new File([file], path + file.name, { type: file.type })),
+        err => reject(err),
       )
     })
   }
 
-  const dirReadEntries = (dirReader, path) => {
+  const dirReadEntries = (dirReader: FileSystemDirectoryReader, path: string): Promise<File[]> => {
     return new Promise((resolve, reject) => {
       dirReader.readEntries(
         async (entries: FileSystemEntry[]) => {
-          let files = []
+          let files: File[] = []
+
           for (const entry of entries) {
             const itemFiles = await getFilesFromEntry(entry, path)
-            files = files.concat(itemFiles)
+
+            if (itemFiles !== undefined) {
+              files = files.concat(itemFiles)
+            }
           }
+
           resolve(files)
         },
-        err => {
-          checkErr(err)
-          reject(err)
-        },
+        err => reject(err),
       )
     })
   }
 
-  const readDir = async (entry, path) => {
+  const readDir = async (entry: FileSystemEntry, path: string) => {
+    if (!isDirectory(entry)) {
+      return []
+    }
+
     const dirReader = entry.createReader()
+
     const newPath = path + entry.name + '/'
-    let files = []
-    let newFiles
+
+    let files: File[] = []
+
+    let newFiles: File[] = []
+
     do {
       newFiles = await dirReadEntries(dirReader, newPath)
+
       files = files.concat(newFiles)
     } while (newFiles.length > 0)
+
     return files
   }
 
-  const getFilesFromEntry = async (entry: FileSystemEntry, path = '') => {
+  const getFilesFromEntry = async (entry: FileSystemEntry | null, path = '') => {
+    if (!entry) {
+      throw new Error('Entry not isFile and not isDirectory - unable to get files')
+    }
+
     if (entry.isFile) {
       const file = await readFile(entry, path)
+
       return [file]
     }
+
     if (entry.isDirectory) {
       return await readDir(entry, path)
     }
-    // throw new Error('Entry not isFile and not isDirectory - unable to get files')
   }
 
-  let files = []
-  const entries = []
+  let files: File[] = []
+  const entries: (FileSystemEntry | null)[] = []
 
-  // Pull out all entries before reading them
-  for (let i = 0, ii = dataTransferItems.length; i < ii; i++) {
+  const total = dataTransferItems.length
+
+  for (let i = 0; i < total; i++) {
     entries.push(dataTransferItems[i].webkitGetAsEntry())
   }
 
-  // Recursively read through all entries
   for (const entry of entries) {
     const newFiles = await getFilesFromEntry(entry)
-    files = files.concat(newFiles)
+
+    if (newFiles !== undefined) {
+      files = files.concat(newFiles)
+    }
   }
 
   return files

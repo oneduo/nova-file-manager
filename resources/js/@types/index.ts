@@ -143,5 +143,3 @@ export type QueueEntry = {
 }
 
 export type View = 'grid' | 'list'
-
-export type Maybe<T> = T | null | undefined

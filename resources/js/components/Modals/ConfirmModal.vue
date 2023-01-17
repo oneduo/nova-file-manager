@@ -1,7 +1,7 @@
 <script setup lang="ts">
 import { DialogPanel, DialogTitle } from '@headlessui/vue'
 import { Component, computed } from 'vue'
-import { useErrors } from '../../hooks'
+import { useErrors } from '@/hooks'
 import BaseModal from './BaseModal.vue'
 
 const variants = {
@@ -27,7 +27,7 @@ const props = withDefaults(defineProps<Props>(), {
 const { hasErrors, errorsList } = useErrors(props.attribute)
 
 // STATE
-const iconColorClass = computed(() => (props.variant ? variants[props.variant].iconColor : null))
+const iconColorClass = computed(() => (props.variant ? variants[props.variant].iconColor : ''))
 const iconBackgroundClass = computed(() => (props.variant ? variants[props.variant].iconBackground : ''))
 </script>
 
@@ -52,7 +52,7 @@ const iconBackgroundClass = computed(() => (props.variant ? variants[props.varia
             </p>
           </div>
           <template v-if="hasErrors">
-            <p v-for="(error, index) in errorsList" :key="index" id="email-error" class="mt-2 text-sm text-red-600">
+            <p v-for="(error, index) in errorsList" :key="index" class="mt-2 text-sm text-red-600">
               {{ error }}
             </p>
           </template>

@@ -1,5 +1,6 @@
 <script setup lang="ts">
 import { computed } from 'vue'
+import Spinner from '@/components/Elements/Spinner.vue'
 
 const variants = {
   primary: 'bg-blue-500 dark:bg-blue-600/50 focus:outline-blue-500',
@@ -14,17 +15,17 @@ interface Props {
   variant: keyof typeof variants
   type: 'button' | 'submit' | 'reset'
   href?: string
+  loading?: boolean
 }
 
 const props = withDefaults(defineProps<Props>(), {
   variant: 'secondary',
   type: 'button',
+  loading: false,
 })
 
 const style = computed(() => variants[props.variant])
 </script>
-
-<script></script>
 
 <template>
   <component
@@ -36,6 +37,7 @@ const style = computed(() => variants[props.variant])
     :href="href"
     :type="type"
   >
+    <Spinner v-if="loading" class="mr-2 w-3 h-3" />
     <slot />
   </component>
 </template>
