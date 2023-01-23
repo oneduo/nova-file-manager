@@ -2,6 +2,18 @@
 
 All notable changes to `nova-file-manager` will be documented in this file
 
+## v0.7.7 - 2023-01-23
+
+### What's Changed
+
+- Update FileManager.php by @Human018 in https://github.com/oneduo/nova-file-manager/pull/111
+
+### New Contributors
+
+- @Human018 made their first contribution in https://github.com/oneduo/nova-file-manager/pull/111
+
+**Full Changelog**: https://github.com/oneduo/nova-file-manager/compare/v0.7.6...v0.7.7
+
 ## v0.7.6 - 2023-01-10
 
 ### What's Changed
@@ -121,6 +133,7 @@ rm -rf vendor/
 
 
 
+
 ```
 ```bash
 composer install oneduo/nova-file-manager
@@ -131,9 +144,11 @@ composer install oneduo/nova-file-manager
 
 
 
+
 ```
 ```bash
 composer rm bbs-lab/nova-file-manager
+
 
 
 
