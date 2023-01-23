@@ -2,6 +2,18 @@
 
 All notable changes to `nova-file-manager` will be documented in this file
 
+## v0.7.8 - 2023-01-23
+
+### What's Changed
+
+- Return string representation of Asset by @miagg in https://github.com/oneduo/nova-file-manager/pull/123
+
+### New Contributors
+
+- @miagg made their first contribution in https://github.com/oneduo/nova-file-manager/pull/123
+
+**Full Changelog**: https://github.com/oneduo/nova-file-manager/compare/v0.7.7...v0.7.8
+
 ## v0.7.7 - 2023-01-23
 
 ### What's Changed
@@ -134,6 +146,7 @@ rm -rf vendor/
 
 
 
+
 ```
 ```bash
 composer install oneduo/nova-file-manager
@@ -145,9 +158,11 @@ composer install oneduo/nova-file-manager
 
 
 
+
 ```
 ```bash
 composer rm bbs-lab/nova-file-manager
+
 
 
 
