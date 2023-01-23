@@ -53,6 +53,6 @@ class Asset implements Arrayable, JsonSerializable
     
     public function __toString(): string
     {
-        return return json_encode($this, JSON_THROW_ON_ERROR);
+        return return json_encode($this->jsonSerialize(), JSON_THROW_ON_ERROR);
     }
 }
