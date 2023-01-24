@@ -14,6 +14,7 @@ use Oneduo\NovaFileManager\Contracts\Services\FileManagerContract;
 use Oneduo\NovaFileManager\Contracts\Support\InteractsWithFilesystem;
 use Oneduo\NovaFileManager\FileManager;
 use Oneduo\NovaFileManager\NovaFileManager;
+use Outl1ne\NovaSettings\NovaSettings;
 
 /**
  * @property-read ?string $disk
@@ -49,8 +50,36 @@ class BaseRequest extends NovaRequest
         return filter_var($this->fieldMode, FILTER_VALIDATE_BOOL) ? $this->resolveField() : $this->resolveTool();
     }
 
+    protected function resolveFieldFromNovaSettingsResource()
+    {
+        return collect(data_get(NovaSettings::getFields(), $this->input('resourceId')))
+            ->map(function ($fields) {
+                return is_callable($fields) ? $fields() : $fields;
+            })
+            ->flatten()
+            ->map(function ($field) {
+                 return $field->component === 'panel' ? $field->data : $field;
+            })
+            ->flatten()
+            ->where('component','nova-file-manager-field')
+            ->where('attribute', $this->input('attribute'))
+            ->firstOrFail();
+    }
+
+    protected function hasNovaSettingsToolRegistered(): bool
+    {
+        return !!current(array_filter(Nova::registeredTools(), function($tool) {
+            return get_class($tool) === 'Outl1ne\NovaSettings\NovaSettings';
+        }));
+    }
+
     public function resolveField(): ?InteractsWithFilesystem
     {
+        // Is it a nova-setting resource ?
+        if ($this->input('resource') === 'nova-settings' && $this->hasNovaSettingsToolRegistered()) {
+            return $this->resolveFieldFromNovaSettingsResource();
+        }
+
         $resource = !(empty($this->resourceId)) ? $this->findResourceOrFail() : $this->newResource();
 
         $fields = $this->has('flexible')
