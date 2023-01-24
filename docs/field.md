@@ -1,6 +1,6 @@
 # Using the field
 
-## Using the field on a Nova Resource
+## Basic usage
 
 You can start using the field by adding a `FileManager` field to your Nova resource :
 
@@ -27,7 +27,7 @@ class Project extends Resource
 
 <img src="./images/field.png" alt="field"/>
 
-## Multiple selection on the form field
+## Multiple selection
 
 When using the `FileManager` field on your Nova resource, you can tell the tool to allow multiple selection for your
 attribute.
@@ -92,7 +92,7 @@ You need to set up your field with `multiple` if you plan on having a minimum va
 you expect your field to have more than one file.
 :::
 
-## Registering a custom URL resolver for your fields
+## Custom URL resolver
 
 When using a multi-disk setup, the disk is saved alongside the path of your asset, however, if these two files come from
 different filesystems, you may want to generate an URL with your own custom business logic.
@@ -127,6 +127,69 @@ class User extends Resource
                     return $filesystem->url($path);
                 })
                 ->limit(3),
+        ];
+    }
+}
+```
+
+## Third-party compatibility
+
+You may want to use the field inside a custom field or a tool (e.g [Nova Settings](https://github.com/outl1ne/nova-settings) or [Laravel Nova Flexible Content](https://github.com/whitecube/nova-flexible-content)). Some extra configuration is needed to be able to resolve the field during api calls.
+
+You may register a wrapper which is callback to configure the field (filesystem, permission, etc.) :
+
+```php
+// app/Providers/NovaServiceProvider.php
+<?php
+
+namespace App\Providers;
+
+use Illuminate\Support\Facades\Gate;
+use Laravel\Nova\Fields\Text;
+use Laravel\Nova\Http\Requests\NovaRequest;
+use Laravel\Nova\Nova;
+use Laravel\Nova\NovaApplicationServiceProvider;
+use Oneduo\NovaFileManager\Casts\Asset;
+use Oneduo\NovaFileManager\Casts\AssetCollection;
+use Oneduo\NovaFileManager\FileManager;
+use Oneduo\NovaFileManager\NovaFileManager;
+use Outl1ne\NovaSettings\NovaSettings;
+
+class NovaServiceProvider extends NovaApplicationServiceProvider
+{
+    public function boot()
+    {
+        parent::boot();
+
+        NovaSettings::addSettingsFields(function () {
+            return [
+                Text::make('Some setting', 'some_setting'),
+                FileManager::make('An image', 'image')
+                    ->wrapper('my_wrapper'), // indicate which wrapper to use
+            ];
+        }, [
+            'image' => AssetCollection::class, // do not forget to cast
+        ]);
+    }
+
+    // ...
+
+    public function register()
+    {
+        FileManager::registerWrapper('my_wrapper', function (FileManager $field) {
+            // configure the field as you used to
+            return $field
+                ->multiple()
+                // ...
+                ->filesystem(fn() => 'public');
+        });
+    }
+    
+    public function tools()
+    {
+        return [
+            NovaFileManager::make(),
+            NovaSettings::make(),
         ];
     }
 }
