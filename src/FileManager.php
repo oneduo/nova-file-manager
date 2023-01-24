@@ -203,7 +203,7 @@ class FileManager extends Field implements InteractsWithFilesystem
             return null;
         }
 
-        return $callback();
+        return $callback(static::make('wrapped'));
     }
 
     public function applyWrapper(): static
@@ -217,6 +217,10 @@ class FileManager extends Field implements InteractsWithFilesystem
         }
 
         $this->prepareStorageCallback($wrapper->storageCallback);
+
+        $this->multiple = $wrapper->multiple;
+        $this->limit = $wrapper->limit;
+        $this->asHtml = $wrapper->asHtml;
 
         $this->merge($wrapper);
 
