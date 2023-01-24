@@ -52,7 +52,7 @@ class BaseRequest extends NovaRequest
     protected function resolveFieldFromNovaSettingsResource()
     {
         // Retrieve the NovaSettings tool fields
-        if (class_exists($novaSettingsClass = 'Outl1ne\NovaSettings\NovaSettinsgs')) {
+        if (class_exists($novaSettingsClass = 'Outl1ne\NovaSettings\NovaSettings')) {
             $fields = $novaSettingsClass::getFields();
         } else {
             throw ValidationException::withMessages([
