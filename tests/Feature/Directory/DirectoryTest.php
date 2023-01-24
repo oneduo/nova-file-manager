@@ -59,7 +59,7 @@ it('throws an exception if the filesystem cannot create the directory', function
     $mock = mock(FileManagerContract::class)->expect(
         mkdir: fn ($path) => false,
         filesystem: fn () => Storage::disk($this->disk),
-        getDisk: fn() => $this->disk,
+        getDisk: fn () => $this->disk,
     );
 
     app()->instance(FileManagerContract::class, $mock);
@@ -87,7 +87,6 @@ it('throws an exception if the filesystem cannot create the directory', function
                 && $event->path === $path;
         },
     );
-
 
     Event::assertNotDispatched(
         event: FolderCreated::class,
@@ -163,7 +162,7 @@ it('returns validation error when the filesystem can not rename the directory', 
     $mock = mock(FileManagerContract::class)->expect(
         rename: fn ($path) => false,
         filesystem: fn () => Storage::disk($this->disk),
-        getDisk: fn() => $this->disk,
+        getDisk: fn () => $this->disk,
     );
 
     app()->instance(FileManagerContract::class, $mock);
@@ -327,7 +326,7 @@ it('throws an exception if the filesystem cannot delete the directory', function
     $mock = mock(FileManagerContract::class)->expect(
         rmdir: fn ($path) => false,
         filesystem: fn () => Storage::disk($this->disk),
-        getDisk: fn() => $this->disk,
+        getDisk: fn () => $this->disk,
     );
 
     app()->instance(FileManagerContract::class, $mock);

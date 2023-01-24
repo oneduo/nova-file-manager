@@ -21,6 +21,7 @@ use Oneduo\NovaFileManager\NovaFileManager;
  * @property-read ?string $resource
  * @property-read ?string $resourceId
  * @property-read ?string $fieldMode
+ * @property-read ?string $wrapper
  */
 class BaseRequest extends NovaRequest
 {
@@ -51,6 +52,10 @@ class BaseRequest extends NovaRequest
 
     public function resolveField(): ?InteractsWithFilesystem
     {
+        if (!empty($this->wrapper) && $field = FileManager::forWrapper($this->wrapper)) {
+            return $field;
+        }
+
         $resource = !(empty($this->resourceId)) ? $this->findResourceOrFail() : $this->newResource();
 
         $fields = $this->has('flexible')

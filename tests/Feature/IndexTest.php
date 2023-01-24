@@ -154,7 +154,7 @@ it('can retrieve files from field with a custom url resolver', function () {
                 [
                     'path' => '/oneduo',
                     'name' => 'oneduo',
-                ]
+                ],
             ],
             'files' => [
                 [
