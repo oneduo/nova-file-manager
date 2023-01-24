@@ -14,7 +14,6 @@ use Oneduo\NovaFileManager\Contracts\Services\FileManagerContract;
 use Oneduo\NovaFileManager\Contracts\Support\InteractsWithFilesystem;
 use Oneduo\NovaFileManager\FileManager;
 use Oneduo\NovaFileManager\NovaFileManager;
-use Outl1ne\NovaSettings\NovaSettings;
 
 /**
  * @property-read ?string $disk
@@ -52,13 +51,23 @@ class BaseRequest extends NovaRequest
 
     protected function resolveFieldFromNovaSettingsResource()
     {
-        return collect(data_get(NovaSettings::getFields(), $this->input('resourceId')))
+        // Retrieve the NovaSettings tool fields
+        if (class_exists($novaSettingsClass = 'Outl1ne\NovaSettings\NovaSettinsgs')) {
+            $fields = $novaSettingsClass::getFields();
+        } else {
+            throw ValidationException::withMessages([
+                $this->authorizationAttribute() => 'The NovaSettings tool is not installed.',
+            ]);
+        }
+
+        // Get the FileManager field
+        return collect(data_get($fields, $this->input('resourceId')))
             ->map(function ($fields) {
                 return is_callable($fields) ? $fields() : $fields;
             })
             ->flatten()
             ->map(function ($field) {
-                 return $field->component === 'panel' ? $field->data : $field;
+                return $field->component === 'panel' ? $field->data : $field;
             })
             ->flatten()
             ->where('component','nova-file-manager-field')
