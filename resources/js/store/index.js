@@ -28,6 +28,7 @@ const useStore = defineStore('nova-file-manager', {
     selection: undefined,
     preview: null,
     limit: 1,
+    wrapper: null,
     queue: [],
     multiple: false,
 
@@ -493,6 +494,7 @@ const useStore = defineStore('nova-file-manager', {
 
       const { data } = await this.get({
         path: '/disks/available',
+        wrapper: this.wrapper,
       })
 
       this.disks = data
@@ -750,6 +752,7 @@ const useStore = defineStore('nova-file-manager', {
           this.flexibleGroup?.length && {
           flexible: this.flexibleGroup.join('.'),
         }),
+        wrapper: this.wrapper,
       }
     },
 
@@ -763,6 +766,7 @@ const useStore = defineStore('nova-file-manager', {
       initialFiles,
       multiple,
       limit,
+      wrapper,
       resource,
       resourceId,
       attribute,
@@ -776,6 +780,7 @@ const useStore = defineStore('nova-file-manager', {
       this.isField = true
       this.multiple = multiple
       this.limit = limit
+      this.wrapper = wrapper
       this.resource = resource
       this.resourceId = resourceId
       this.attribute = attribute

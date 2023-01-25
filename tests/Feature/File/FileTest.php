@@ -105,7 +105,7 @@ it('can upload file to a nested folder', function () {
 it('can prevent folder creation on upload', function () {
     Nova::$tools = [
         NovaFileManager::make()
-            ->canCreateFolder(fn() => false),
+            ->canCreateFolder(fn () => false),
     ];
 
     postJson(
@@ -120,8 +120,8 @@ it('can prevent folder creation on upload', function () {
         ->assertUnprocessable()
         ->assertJsonValidationErrors([
             'file' => [
-                __('nova-file-manager::errors.authorization.unauthorized', ['action' => 'create folder'])
-            ]
+                __('nova-file-manager::errors.authorization.unauthorized', ['action' => 'create folder']),
+            ],
         ]);
 });
 
@@ -252,7 +252,7 @@ it('throws an exception if the filesystem cannot rename the file', function () {
     $mock = mock(FileManagerContract::class)->expect(
         rename: fn (string $from, string $to) => false,
         filesystem: fn () => Storage::disk($this->disk),
-        getDisk: fn() => $this->disk,
+        getDisk: fn () => $this->disk,
     );
 
     app()->instance(FileManagerContract::class, $mock);
@@ -376,7 +376,7 @@ it('throws an exception if the filesystem cannot delete the file', function () {
     $mock = mock(FileManagerContract::class)->expect(
         delete: fn (string $path) => false,
         filesystem: fn () => Storage::disk($this->disk),
-        getDisk: fn() => $this->disk,
+        getDisk: fn () => $this->disk,
     );
 
     app()->instance(FileManagerContract::class, $mock);
@@ -466,7 +466,7 @@ it('throws an exception if the filesystem cannot unzip the archive', function ()
     $mock = mock(FileManagerContract::class)->expect(
         unzip: fn (string $path) => false,
         filesystem: fn () => Storage::disk($this->disk),
-        getDisk: fn() => $this->disk,
+        getDisk: fn () => $this->disk,
     );
 
     app()->instance(FileManagerContract::class, $mock);
