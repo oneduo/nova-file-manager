@@ -22,6 +22,8 @@ export default defineConfig({
     }),
   ],
 
+  root: resolve(__dirname, 'resources'),
+
   define: {
     'process.env': process.env, // Vite ditched process.env, so we need to pass it in
   },
