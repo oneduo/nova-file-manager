@@ -152,7 +152,7 @@ class FileManagerService implements FileManagerContract, ResolvesUrlContract
     {
         $this->filterCallbacks[] = $this->shouldShowHiddenFiles
             ? static fn () => true
-            : static fn (string $path) => !str($path)->startsWith('.');
+            : static fn (string $path) => !str($path)->afterLast('/')->startsWith('.');
     }
 
     /**
