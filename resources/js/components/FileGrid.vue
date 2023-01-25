@@ -37,8 +37,8 @@ const toggleSelection = (file: Entity) => store.toggleSelection({ file })
         @click="toggleSelection(file)"
         @dblclick="openPreview(file)"
       />
-
-      <PreviewModal :file="file" v-if="!!preview && preview.id === file.id" />
     </template>
+
+    <PreviewModal :file="preview" v-if="!!preview" />
   </div>
 </template>

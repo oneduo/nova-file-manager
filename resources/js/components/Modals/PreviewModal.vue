@@ -19,7 +19,7 @@ import CropImageModal from '@/components/Modals/CropImageModal.vue'
 import DeleteFileModal from '@/components/Modals/DeleteFileModal.vue'
 import EditImageModal from '@/components/Modals/EditImageModal.vue'
 import RenameFileModal from '@/components/Modals/RenameFileModal.vue'
-import { MODALS, QUEUE_MODAL_NAME } from '@/constants'
+import { MODALS, PREVIEW_MODAL_NAME, QUEUE_MODAL_NAME } from '@/constants'
 import { useClipboard, usePermissions, usePintura } from '@/hooks'
 import useBrowserStore from '@/stores/browser'
 
@@ -70,7 +70,7 @@ const copy = (file: Entity) => {
 </script>
 
 <template>
-  <BaseModal as="template" class="nova-file-manager" name="preview">
+  <BaseModal as="template" class="nova-file-manager" :name="PREVIEW_MODAL_NAME">
     <DialogPanel
       class="relative bg-gray-100 dark:bg-gray-900 rounded-lg overflow-hidden shadow-xl transform transition-all w-full max-w-7xl p-4 flex flex-col gap-4"
     >

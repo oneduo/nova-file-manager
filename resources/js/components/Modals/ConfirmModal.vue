@@ -24,7 +24,7 @@ const props = withDefaults(defineProps<Props>(), {
   variant: 'danger',
 })
 
-const { hasErrors, errorsList } = useErrors(props.attribute)
+const { invalid, errors } = useErrors(props.attribute)
 
 // STATE
 const iconColorClass = computed(() => (props.variant ? variants[props.variant].iconColor : ''))
@@ -51,8 +51,8 @@ const iconBackgroundClass = computed(() => (props.variant ? variants[props.varia
               {{ content }}
             </p>
           </div>
-          <template v-if="hasErrors">
-            <p v-for="(error, index) in errorsList" :key="index" class="mt-2 text-sm text-red-600">
+          <template v-if="invalid">
+            <p v-for="(error, index) in errors" :key="`confirm_modal_error_${index}`" class="mt-2 text-sm text-red-600">
               {{ error }}
             </p>
           </template>

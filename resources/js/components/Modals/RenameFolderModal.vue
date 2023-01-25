@@ -49,8 +49,12 @@ const submit = () => value.value && props.onSubmit(value.value)
           />
         </div>
         <template v-if="invalid">
-          <ul v-for="(errors, index) in errors" :key="index" class="mt-2 text-sm text-red-600">
-            <li v-for="error in errors">
+          <ul
+            v-for="(field, index) in errors"
+            :key="`rename_folder_modal_field_${index}`"
+            class="mt-2 text-sm text-red-600"
+          >
+            <li v-for="(error, errorIndex) in field" :key="`rename_folder_modal_field_${index}_error_${errorIndex}`">
               {{ error }}
             </li>
           </ul>

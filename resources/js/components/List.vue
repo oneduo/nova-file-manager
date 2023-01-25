@@ -17,6 +17,7 @@ const { showRenameFolder, showDeleteFolder } = usePermissions()
 const files = computed(() => store.files)
 const folders = computed(() => store.folders)
 const isSelected = computed(() => store.isSelected)
+const preview = computed(() => store.preview)
 
 // ACTIONS
 const onFolderRename = (id: string, from: string, to: string) => store.renameFile({ id, from, to })
@@ -124,10 +125,10 @@ const openModal = (name: string) => store.openModal({ name })
               </div>
             </div>
           </td>
-
-          <PreviewModal :file="file" />
         </tr>
       </template>
+
+      <PreviewModal :file="preview" v-if="!!preview" />
     </tbody>
   </table>
 </template>

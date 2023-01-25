@@ -78,7 +78,7 @@ const name = computed(() => (missing.value ? props.file.path : props.file.name))
           <ImageLoader v-if="isImage" :src="file.url" :alt="file.name" />
 
           <template v-if="isVideo">
-            <video class="pointer-events-none w-full h-full object-cover">
+            <video class="pointer-events-none w-full h-full object-contain">
               <source :src="file.url" />
               {{ __("Sorry, your browser doesn't support embedded videos.") }}
             </video>

@@ -17,6 +17,7 @@ export type BrowserConfig = {
   initialFiles: Entity[]
   multiple?: boolean
   limit?: number
+  wrapper?: string
   resource?: string
   resourceId?: string | number
   attribute?: string
@@ -68,6 +69,7 @@ export type Folder = {
   disk?: string
   name: string
   path: string
+  type: string
 }
 
 export type NovaField = {

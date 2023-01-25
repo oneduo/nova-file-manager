@@ -1,7 +1,7 @@
 import { Entity, Folder } from '__types__'
 import axios, { Canceler } from 'axios'
 import { defineStore } from 'pinia'
-import { is } from 'typescript-is'
+import { SPOTLIGHT_ENTRY_TYPE_FOLDER } from '@/constants'
 import useBrowserStore from '@/stores/browser'
 
 const modifiers = {
@@ -155,8 +155,8 @@ const useSearchStore = defineStore('nova-file-manager/search', {
 
       const store = useBrowserStore()
 
-      if (is<Entity>(item)) {
-        store.setPreview({ preview: item })
+      if (item.type !== SPOTLIGHT_ENTRY_TYPE_FOLDER) {
+        store.setPreview({ preview: item as Entity })
 
         return
       }
