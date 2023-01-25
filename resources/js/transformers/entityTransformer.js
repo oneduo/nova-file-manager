@@ -25,6 +25,7 @@ export function entity(file) {
     file.url,
     file.lastModifiedAt,
     file.type,
-    file.exists
+    file.exists,
+    file.disk
   )
 }
