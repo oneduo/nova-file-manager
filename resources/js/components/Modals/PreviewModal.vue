@@ -1,16 +1,16 @@
 <template>
   <BaseModal as="template" class="nova-file-manager" name="preview">
     <DialogPanel
-      class="relative bg-gray-100 dark:bg-gray-900 rounded-lg overflow-hidden shadow-xl transform transition-all w-full max-w-7xl p-4 flex flex-col gap-4"
+      class="relative flex flex-col w-full gap-4 p-4 overflow-hidden transition-all transform bg-gray-100 rounded-lg shadow-xl dark:bg-gray-900 max-w-7xl"
     >
       <div
-        class="w-full flex flex-col flex-col-reverse gap-y-2 md:flex-row justify-between items-start"
+        class="flex flex-col flex-col-reverse items-start justify-between w-full gap-y-2 md:flex-row"
       >
-        <h2 class="text-lg font-medium text-gray-900 dark:text-gray-400 break-all w-full">
+        <h2 class="w-full text-lg font-medium text-gray-900 break-all dark:text-gray-400">
           {{ file?.name }}
         </h2>
 
-        <div class="flex flex-row gap-2 justify-end flex-shrink-0">
+        <div class="flex flex-row justify-end flex-shrink-0 gap-2">
           <IconButton
             v-if="!readOnly && showDeleteFile"
             variant="danger"
@@ -73,6 +73,16 @@
           </IconButton>
 
           <IconButton
+            v-if="store.isField && !store.multiple"
+            variant="success"
+            @click="selectFile(file)"
+            :disabled="!!limit && selection?.length > limit"
+            data-tour="nfm-confirm-selection-button"
+          >
+            <CheckIcon class="w-5 h-5" />
+          </IconButton>
+
+          <IconButton
             ref="buttonRef"
             @click="closePreview"
             :title="__('NovaFileManager.actions.close')"
@@ -82,9 +92,9 @@
         </div>
       </div>
 
-      <div class="overflow-hidden flex flex-col md:flex-row gap-4 w-full">
+      <div class="flex flex-col w-full gap-4 overflow-hidden md:flex-row">
         <div
-          class="block relative w-full md:w-4/6 overflow-hidden rounded-lg bg-gray-500/10 flex items-center justify-center"
+          class="relative flex items-center justify-center block w-full overflow-hidden rounded-lg md:w-4/6 bg-gray-500/10"
         >
           <ImageLoader
             v-if="file?.type === 'image'"
@@ -110,7 +120,7 @@
             class="w-full max-w-screen h-[80vh]"
           />
 
-          <DocumentIcon v-else class="h-40 w-40 text-gray-500 m-12" />
+          <DocumentIcon v-else class="w-40 h-40 m-12 text-gray-500" />
         </div>
 
         <div class="w-full md:w-2/6">
@@ -119,7 +129,7 @@
               {{ __('NovaFileManager.preview.information') }}
             </h3>
             <dl
-              class="mt-2 divide-y divide-gray-200 dark:divide-gray-800/40 border-t border-b border-gray-300 dark:border-gray-800/70"
+              class="mt-2 border-t border-b border-gray-300 divide-y divide-gray-200 dark:divide-gray-800/40 dark:border-gray-800/70"
             >
               <div class="flex justify-between py-3 text-sm font-medium">
                 <dt class="text-gray-500">
@@ -204,6 +214,7 @@ import {
   PencilSquareIcon,
   TrashIcon,
   XMarkIcon,
+  CheckIcon,
 } from '@heroicons/vue/24/outline'
 import IconButton from '@/components/Elements/IconButton'
 import BaseModal from '@/components/Modals/BaseModal'
@@ -243,6 +254,12 @@ const openModal = name => store.openModal({ name })
 const onRename = value => store.renameFile({ id: props.file.id, from: props.file.path, to: value })
 const onDelete = () => store.deleteFile({ id: props.file.id, path: props.file.path })
 const onUnzip = path => store.unzipFile({ path })
+
+const selectFile = file => {
+  store.clearSelection()
+  store.selectFile({ file })
+  store.confirm()
+}
 
 const closePreview = () => {
   store.preview = null
