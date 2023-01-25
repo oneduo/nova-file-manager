@@ -2,6 +2,14 @@
 
 All notable changes to `nova-file-manager` will be documented in this file
 
+## v0.7.9 - 2023-01-25
+
+### What's Changed
+
+- Fix hidden files within folders by @miagg in https://github.com/oneduo/nova-file-manager/pull/129
+
+**Full Changelog**: https://github.com/oneduo/nova-file-manager/compare/v0.7.8...v0.7.9
+
 ## v0.7.8 - 2023-01-23
 
 ### What's Changed
@@ -147,6 +155,7 @@ rm -rf vendor/
 
 
 
+
 ```
 ```bash
 composer install oneduo/nova-file-manager
@@ -159,9 +168,11 @@ composer install oneduo/nova-file-manager
 
 
 
+
 ```
 ```bash
 composer rm bbs-lab/nova-file-manager
+
 
 
 
