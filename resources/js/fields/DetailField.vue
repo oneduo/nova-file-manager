@@ -3,7 +3,7 @@
     <template v-if="field.value" v-slot:value>
       <div class="nova-file-manager">
         <div :class="{ dark }">
-          <ul class="grid grid-cols-2 md:grid-cols-4 gap-2 mb-2 w-full" role="group">
+          <ul class="grid w-full grid-cols-2 gap-2 mb-2 md:grid-cols-4" role="group">
             <template v-for="file in field.value" :key="file.id">
               <FieldCard
                 :field="field"
@@ -83,7 +83,8 @@ export default {
         file.lastModifiedAt,
         file.type,
         file.exists,
-        file.disk
+        file.disk,
+        file.meta
       ),
   },
 }
