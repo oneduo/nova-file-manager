@@ -19,7 +19,7 @@ import CropImageModal from '@/components/Modals/CropImageModal.vue'
 import DeleteFileModal from '@/components/Modals/DeleteFileModal.vue'
 import EditImageModal from '@/components/Modals/EditImageModal.vue'
 import RenameFileModal from '@/components/Modals/RenameFileModal.vue'
-import { MODALS, QUEUE_MODAL_NAME } from "@/constants";
+import { MODALS, QUEUE_MODAL_NAME } from '@/constants'
 import { useClipboard, usePermissions, usePintura } from '@/hooks'
 import useBrowserStore from '@/stores/browser'
 

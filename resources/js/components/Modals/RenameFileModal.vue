@@ -2,8 +2,8 @@
 import { onMounted, ref } from 'vue'
 import Button from '@/components/Elements/Button.vue'
 import InputModal from '@/components/Modals/InputModal.vue'
+import { OPERATIONS } from '@/constants'
 import { useErrors } from '@/hooks'
-import {OPERATIONS} from "@/constants";
 
 interface Props {
   name: string

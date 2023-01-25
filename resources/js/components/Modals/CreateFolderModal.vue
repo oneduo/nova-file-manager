@@ -52,8 +52,8 @@ const submit = () => {
         />
       </div>
       <template v-if="invalid">
-        <ul v-for="(errors, index) in errors" :key="index" class="mt-2 text-sm text-red-600">
-          <li v-for="error in errors">
+        <ul v-for="(entry, index) in errors" :key="`entry_${index}`" class="mt-2 text-sm text-red-600">
+          <li v-for="(error, errorIndex) in entry" :key="`error_${errorIndex}`">
             {{ error }}
           </li>
         </ul>

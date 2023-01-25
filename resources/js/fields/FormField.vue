@@ -88,6 +88,7 @@ export default defineComponent({
         initialFiles: this.value,
         multiple: this.field.multiple ?? false,
         limit: this.field.limit ?? null,
+        wrapper: this.field.wrapper ?? null,
         resource: this.resourceName ?? null,
         resourceId: this.resourceId,
         attribute: this.flexibleGroup.length ? this.field.sortableUriKey : this.field.attribute,

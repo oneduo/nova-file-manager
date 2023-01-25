@@ -40,7 +40,7 @@ export default async function attempt({ operation, endpoint, data, modal, callba
   } catch (error: unknown) {
     store.loadingOperation = undefined
 
-    const bag = (error as ApiError).response?.data;
+    const bag = (error as ApiError).response?.data
 
     window.Nova.error(bag?.message || 'An error occurred')
 
