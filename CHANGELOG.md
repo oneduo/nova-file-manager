@@ -2,6 +2,14 @@
 
 All notable changes to `nova-file-manager` will be documented in this file
 
+## v0.7.10 - 2023-01-25
+
+### What's Changed
+
+- Improve third party package compatibility by @mikaelpopowicz in https://github.com/oneduo/nova-file-manager/pull/127
+
+**Full Changelog**: https://github.com/oneduo/nova-file-manager/compare/v0.7.9...v0.7.10
+
 ## v0.7.9 - 2023-01-25
 
 ### What's Changed
@@ -156,6 +164,7 @@ rm -rf vendor/
 
 
 
+
 ```
 ```bash
 composer install oneduo/nova-file-manager
@@ -169,9 +178,11 @@ composer install oneduo/nova-file-manager
 
 
 
+
 ```
 ```bash
 composer rm bbs-lab/nova-file-manager
+
 
 
 
