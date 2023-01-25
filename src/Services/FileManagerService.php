@@ -45,7 +45,7 @@ class FileManagerService implements FileManagerContract, ResolvesUrlContract
     /**
      * Set the current disk used by the service
      *
-     * @param string|\Illuminate\Contracts\Filesystem\Filesystem $disk
+     * @param  string|\Illuminate\Contracts\Filesystem\Filesystem  $disk
      * @return $this
      */
     public function setDisk(string|Filesystem $disk): self
@@ -72,7 +72,7 @@ class FileManagerService implements FileManagerContract, ResolvesUrlContract
     /**
      * Set the current path used by the service
      *
-     * @param string $path
+     * @param  string  $path
      * @return $this
      */
     public function path(string $path): self
@@ -85,7 +85,7 @@ class FileManagerService implements FileManagerContract, ResolvesUrlContract
     /**
      * Toggle the visibility of hidden files
      *
-     * @param bool $show
+     * @param  bool  $show
      * @return $this
      */
     public function showHiddenFiles(bool $show = true): self
@@ -119,7 +119,7 @@ class FileManagerService implements FileManagerContract, ResolvesUrlContract
         $this->applySearchCallback();
 
         return collect($this->filesystem->files($this->path))
-            ->filter(fn(string $file) => $this->applyFilterCallbacks($file));
+            ->filter(fn (string $file) => $this->applyFilterCallbacks($file));
     }
 
     /**
@@ -132,9 +132,9 @@ class FileManagerService implements FileManagerContract, ResolvesUrlContract
         $this->omitHiddenFilesAndDirectories();
 
         return collect($this->filesystem->directories($this->path))
-            ->filter(fn(string $folder) => $this->applyFilterCallbacks($folder))
+            ->filter(fn (string $folder) => $this->applyFilterCallbacks($folder))
             // we map the folder to an array with an id, path and name
-            ->map(fn(string $path) => [
+            ->map(fn (string $path) => [
                 'id' => sha1($path),
                 'path' => str($path)->start(DIRECTORY_SEPARATOR),
                 'name' => pathinfo($path, PATHINFO_BASENAME),
@@ -151,8 +151,8 @@ class FileManagerService implements FileManagerContract, ResolvesUrlContract
     public function omitHiddenFilesAndDirectories(): void
     {
         $this->filterCallbacks[] = $this->shouldShowHiddenFiles
-            ? static fn() => true
-            : static fn(string $path) => !str($path)->startsWith('.');
+            ? static fn () => true
+            : static fn (string $path) => !str($path)->afterLast('/')->startsWith('.');
     }
 
     /**
@@ -173,7 +173,7 @@ class FileManagerService implements FileManagerContract, ResolvesUrlContract
             }
 
             // join words with .* expression
-            $words = implode('.*', array_map(fn(string $word) => preg_quote($word, '/'), $words));
+            $words = implode('.*', array_map(fn (string $word) => preg_quote($word, '/'), $words));
 
             return preg_match("/(.*{$words}.*)/i", $path);
         };
@@ -182,7 +182,7 @@ class FileManagerService implements FileManagerContract, ResolvesUrlContract
     /**
      * Callback used to apply all the registered filters
      *
-     * @param string $value
+     * @param  string  $value
      * @return bool
      */
     public function applyFilterCallbacks(string $value): bool
@@ -209,13 +209,13 @@ class FileManagerService implements FileManagerContract, ResolvesUrlContract
         str($this->path)
             ->ltrim(DIRECTORY_SEPARATOR)
             ->explode(DIRECTORY_SEPARATOR)
-            ->filter(fn(string $item) => !blank($item))
+            ->filter(fn (string $item) => !blank($item))
             ->each(function (string $item) use ($paths) {
-                return $paths->push($paths->last() . DIRECTORY_SEPARATOR . $item);
+                return $paths->push($paths->last().DIRECTORY_SEPARATOR.$item);
             });
 
         // we map the folders to match the breadcrumbs format
-        return $paths->map(fn(string $item) => [
+        return $paths->map(fn (string $item) => [
             'id' => sha1($item),
             'path' => $item,
             'name' => str($item)->afterLast('/'),
@@ -226,7 +226,7 @@ class FileManagerService implements FileManagerContract, ResolvesUrlContract
     /**
      * Create a new directory in the current path
      *
-     * @param string $path
+     * @param  string  $path
      * @return bool
      */
     public function mkdir(string $path): bool
@@ -241,7 +241,7 @@ class FileManagerService implements FileManagerContract, ResolvesUrlContract
     /**
      * Remove a directory from the disk
      *
-     * @param string $path
+     * @param  string  $path
      * @return bool
      */
     public function rmdir(string $path): bool
@@ -252,8 +252,8 @@ class FileManagerService implements FileManagerContract, ResolvesUrlContract
     /**
      * Rename a directory or file in the disk
      *
-     * @param string $from
-     * @param string $to
+     * @param  string  $from
+     * @param  string  $to
      * @return bool
      */
     public function rename(string $from, string $to): bool
@@ -264,7 +264,7 @@ class FileManagerService implements FileManagerContract, ResolvesUrlContract
     /**
      * Remove a file from the disk
      *
-     * @param string $path
+     * @param  string  $path
      * @return bool
      */
     public function delete(string $path): bool
@@ -277,7 +277,7 @@ class FileManagerService implements FileManagerContract, ResolvesUrlContract
      *
      * Note: ext-zip is required
      *
-     * @param string $path
+     * @param  string  $path
      * @return bool
      */
     public function unzip(string $path): bool
@@ -298,7 +298,7 @@ class FileManagerService implements FileManagerContract, ResolvesUrlContract
         $zip->open($this->filesystem->path($path));
 
         // create the target folder
-        $destination = (string)str($path)->replace('.zip', '');
+        $destination = (string) str($zip->filename)->basename()->replace('.zip', '');
 
         if (!$this->mkdir($destination)) {
             return false;
@@ -313,7 +313,7 @@ class FileManagerService implements FileManagerContract, ResolvesUrlContract
     /**
      * Paginate the directories and files in the current path from the current disk
      *
-     * @param \Illuminate\Support\Collection $data
+     * @param  \Illuminate\Support\Collection  $data
      * @return \Illuminate\Pagination\LengthAwarePaginator
      *
      * @throws \Illuminate\Contracts\Container\BindingResolutionException
@@ -336,8 +336,8 @@ class FileManagerService implements FileManagerContract, ResolvesUrlContract
     /**
      * Set the pagination parameters
      *
-     * @param int $page
-     * @param int $perPage
+     * @param  int  $page
+     * @param  int  $perPage
      * @return $this
      */
     public function forPage(int $page, int $perPage): self
@@ -356,14 +356,14 @@ class FileManagerService implements FileManagerContract, ResolvesUrlContract
      */
     public function mapIntoEntity(): Closure
     {
-        return fn(string $path) => $this->makeEntity($path, $this->getDisk());
+        return fn (string $path) => $this->makeEntity($path, $this->getDisk());
     }
 
     /**
      * Create a new entity from the given path
      *
-     * @param string $path
-     * @param string $disk
+     * @param  string  $path
+     * @param  string  $disk
      * @return \Oneduo\NovaFileManager\Entities\Entity
      */
     public function makeEntity(string $path, string $disk): Entity
@@ -383,22 +383,22 @@ class FileManagerService implements FileManagerContract, ResolvesUrlContract
     /**
      * Get the corresponding class for the given file type
      *
-     * @param string $type
+     * @param  string  $type
      * @return class-string
      */
     public function entityClassForType(string $type): string
     {
-        return config('nova-file-manager.entities.' . $type) ?? config('nova-file-manager.entities.default');
+        return config('nova-file-manager.entities.'.$type) ?? config('nova-file-manager.entities.default');
     }
 
     /**
      * Static helper
      *
-     * @param string|\Illuminate\Contracts\Filesystem\Filesystem|null $disk
-     * @param string|null $path
-     * @param int $page
-     * @param int $perPage
-     * @param string|null $search
+     * @param  string|\Illuminate\Contracts\Filesystem\Filesystem|null  $disk
+     * @param  string|null  $path
+     * @param  int  $page
+     * @param  int  $perPage
+     * @param  string|null  $search
      * @return static
      */
     public static function make(

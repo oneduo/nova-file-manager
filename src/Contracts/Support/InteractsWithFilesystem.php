@@ -9,7 +9,7 @@ use Illuminate\Contracts\Filesystem\Filesystem;
 use Laravel\Nova\Http\Requests\NovaRequest;
 
 /**
- * @property ?\Closure $filesystemCallback
+ * @property ?\Closure $filesystem
  */
 interface InteractsWithFilesystem extends ResolvesUrl
 {
@@ -41,6 +41,10 @@ interface InteractsWithFilesystem extends ResolvesUrl
 
     public function showDeleteFile(Closure $callback): static;
 
+    public function showUnzipFile(Closure $callback): static;
+
+    public function shouldShowUnzipFile(NovaRequest $request): bool;
+
     public function shouldShowDeleteFile(NovaRequest $request): bool;
 
     public function showCropImage(Closure $callback): static;
@@ -71,6 +75,10 @@ interface InteractsWithFilesystem extends ResolvesUrl
 
     public function resolveCanDeleteFile(NovaRequest $request): bool;
 
+    public function canUnzipFile(Closure $callback): static;
+
+    public function resolveCanUnzipFile(NovaRequest $request): bool;
+
     public function hasUploadValidator(): bool;
 
     public function getUploadValidator(): ?Closure;
@@ -90,4 +98,6 @@ interface InteractsWithFilesystem extends ResolvesUrl
     public function pinturaOptions(array $options): static;
 
     public function options(): array;
+
+    public function merge(self $other): static;
 }

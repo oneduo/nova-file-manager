@@ -32,6 +32,10 @@ class FileManager extends Field implements InteractsWithFilesystem
 
     public Closure $storageCallback;
 
+    public static array $wrappers = [];
+
+    public ?string $wrapper = null;
+
     public function __construct($name, $attribute = null, Closure $storageCallback = null)
     {
         parent::__construct($name, $attribute);
@@ -65,11 +69,20 @@ class FileManager extends Field implements InteractsWithFilesystem
         return $this;
     }
 
+    public function wrapper(string $name): static
+    {
+        $this->wrapper = $name;
+
+        return $this;
+    }
+
     /**
      * @throws \JsonException
      */
     protected function fillAttribute(NovaRequest $request, $requestAttribute, $model, $attribute)
     {
+        $this->applyWrapper();
+
         $result = call_user_func(
             $this->storageCallback,
             $request,
@@ -139,11 +152,13 @@ class FileManager extends Field implements InteractsWithFilesystem
 
         if (is_array($value)) {
             if ($this->multiple) {
-                $value = collect($value)->map(fn (array $asset) => new Asset(...$asset));
+                $value = collect($value)->map(fn (array|object $asset) => new Asset(...(array) $asset));
             } else {
                 $value = collect([new Asset(...$value)]);
             }
         }
+
+        $this->applyWrapper();
 
         return $value
             ->map(function (Asset $asset) {
@@ -163,14 +178,52 @@ class FileManager extends Field implements InteractsWithFilesystem
 
     public function jsonSerialize(): array
     {
+        $this->applyWrapper();
+
         return array_merge(
             parent::jsonSerialize(),
             [
                 'multiple' => $this->multiple,
                 'limit' => $this->multiple ? $this->limit : 1,
                 'asHtml' => $this->asHtml,
+                'wrapper' => $this->wrapper,
             ],
             $this->options(),
         );
+    }
+
+    public static function registerWrapper(string $name, Closure $callback): void
+    {
+        static::$wrappers[$name] = $callback;
+    }
+
+    public static function forWrapper(string $name): ?static
+    {
+        if (!$callback = (static::$wrappers[$name] ?? null)) {
+            return null;
+        }
+
+        return $callback(static::make('wrapped'));
+    }
+
+    public function applyWrapper(): static
+    {
+        if (empty($this->wrapper)) {
+            return $this;
+        }
+
+        if (!$wrapper = static::forWrapper($this->wrapper)) {
+            return $this;
+        }
+
+        $this->prepareStorageCallback($wrapper->storageCallback);
+
+        $this->multiple = $wrapper->multiple;
+        $this->limit = $wrapper->limit;
+        $this->asHtml = $wrapper->asHtml;
+
+        $this->merge($wrapper);
+
+        return $this;
     }
 }

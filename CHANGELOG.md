@@ -2,6 +2,54 @@
 
 All notable changes to `nova-file-manager` will be documented in this file
 
+## v0.7.10 - 2023-01-25
+
+### What's Changed
+
+- Improve third party package compatibility by @mikaelpopowicz in https://github.com/oneduo/nova-file-manager/pull/127
+
+**Full Changelog**: https://github.com/oneduo/nova-file-manager/compare/v0.7.9...v0.7.10
+
+## v0.7.9 - 2023-01-25
+
+### What's Changed
+
+- Fix hidden files within folders by @miagg in https://github.com/oneduo/nova-file-manager/pull/129
+
+**Full Changelog**: https://github.com/oneduo/nova-file-manager/compare/v0.7.8...v0.7.9
+
+## v0.7.8 - 2023-01-23
+
+### What's Changed
+
+- Return string representation of Asset by @miagg in https://github.com/oneduo/nova-file-manager/pull/123
+
+### New Contributors
+
+- @miagg made their first contribution in https://github.com/oneduo/nova-file-manager/pull/123
+
+**Full Changelog**: https://github.com/oneduo/nova-file-manager/compare/v0.7.7...v0.7.8
+
+## v0.7.7 - 2023-01-23
+
+### What's Changed
+
+- Update FileManager.php by @Human018 in https://github.com/oneduo/nova-file-manager/pull/111
+
+### New Contributors
+
+- @Human018 made their first contribution in https://github.com/oneduo/nova-file-manager/pull/111
+
+**Full Changelog**: https://github.com/oneduo/nova-file-manager/compare/v0.7.6...v0.7.7
+
+## v0.7.6 - 2023-01-10
+
+### What's Changed
+
+- fix(store): input not being trimmed before request by @Rezrazi in https://github.com/oneduo/nova-file-manager/pull/120
+
+**Full Changelog**: https://github.com/oneduo/nova-file-manager/compare/v0.7.5...v0.7.6
+
 ## v0.7.5 - 2022-11-25
 
 ### What's Changed
@@ -112,6 +160,11 @@ rm -rf vendor/
 
 
 
+
+
+
+
+
 ```
 ```bash
 composer install oneduo/nova-file-manager
@@ -121,9 +174,19 @@ composer install oneduo/nova-file-manager
 
 
 
+
+
+
+
+
 ```
 ```bash
 composer rm bbs-lab/nova-file-manager
+
+
+
+
+
 
 
 

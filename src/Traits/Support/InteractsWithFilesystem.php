@@ -8,65 +8,66 @@ use Closure;
 use Illuminate\Contracts\Filesystem\Filesystem;
 use Illuminate\Contracts\Validation\Rule;
 use Laravel\Nova\Http\Requests\NovaRequest;
+use Oneduo\NovaFileManager\Contracts\Support\InteractsWithFilesystem as InteractsWithFilesystemContract;
 
 trait InteractsWithFilesystem
 {
     use ResolvesUrl;
 
-    protected ?Closure $filesystemCallback = null;
+    public ?Closure $filesystem = null;
 
-    protected ?Closure $canCreateFolder = null;
+    public ?Closure $canCreateFolder = null;
 
-    protected ?Closure $canDeleteFile = null;
+    public ?Closure $canRenameFolder = null;
 
-    protected ?Closure $canDeleteFolder = null;
+    public ?Closure $canDeleteFolder = null;
 
-    protected ?Closure $canRenameFile = null;
+    public ?Closure $canUploadFile = null;
 
-    protected ?Closure $canRenameFolder = null;
+    public ?Closure $canRenameFile = null;
 
-    protected ?Closure $canUnzipFile = null;
+    public ?Closure $canDeleteFile = null;
 
-    protected ?Closure $canUploadFile = null;
+    public ?Closure $canUnzipFile = null;
 
-    protected ?Closure $showCreateFolder = null;
+    public ?Closure $showCreateFolder = null;
 
-    protected ?Closure $showCropImage = null;
+    public ?Closure $showRenameFolder = null;
 
-    protected ?Closure $showDeleteFile = null;
+    public ?Closure $showDeleteFolder = null;
 
-    protected ?Closure $showDeleteFolder = null;
+    public ?Closure $showUploadFile = null;
 
-    protected ?Closure $showRenameFile = null;
+    public ?Closure $showRenameFile = null;
 
-    protected ?Closure $showRenameFolder = null;
+    public ?Closure $showDeleteFile = null;
 
-    protected ?Closure $showUnzipFile = null;
+    public ?Closure $showUnzipFile = null;
 
-    protected ?Closure $showUploadFile = null;
+    public ?Closure $showCropImage = null;
 
-    protected array $uploadRules = [];
+    public array $uploadRules = [];
 
-    protected ?Closure $uploadValidator = null;
+    public ?Closure $uploadValidator = null;
 
-    protected array $pinturaOptions = [];
+    public array $pinturaOptions = [];
 
     public function filesystem(Closure $callback): static
     {
-        $this->filesystemCallback = $callback;
+        $this->filesystem = $callback;
 
         return $this;
     }
 
     public function hasCustomFilesystem(): bool
     {
-        return $this->filesystemCallback !== null && is_callable($this->filesystemCallback);
+        return $this->filesystem !== null && is_callable($this->filesystem);
     }
 
     public function resolveFilesystem(NovaRequest $request): Filesystem|string|null
     {
         return $this->hasCustomFilesystem()
-            ? call_user_func($this->filesystemCallback, $request)
+            ? call_user_func($this->filesystem, $request)
             : null;
     }
 
@@ -152,6 +153,13 @@ trait InteractsWithFilesystem
         return is_callable($this->showDeleteFile)
             ? call_user_func($this->showDeleteFile, $request)
             : true;
+    }
+
+    public function showUnzipFile(Closure $callback): static
+    {
+        $this->showUnzipFile = $callback;
+
+        return $this;
     }
 
     public function shouldShowUnzipFile(NovaRequest $request): bool
@@ -259,11 +267,18 @@ trait InteractsWithFilesystem
             : $this->shouldShowDeleteFile($request);
     }
 
+    public function canUnzipFile(Closure $callback): static
+    {
+        $this->canUnzipFile = $callback;
+
+        return $this;
+    }
+
     public function resolveCanUnzipFile(NovaRequest $request): bool
     {
         return is_callable($this->canUnzipFile)
             ? call_user_func($this->canUnzipFile, $request)
-            : $this->shouldShowDeleteFile($request);
+            : $this->shouldShowUnzipFile($request);
     }
 
     public function hasUploadValidator(): bool
@@ -335,5 +350,45 @@ trait InteractsWithFilesystem
                 'pinturaOptions' => $this->pinturaOptions,
             ];
         });
+    }
+
+    public function merge(InteractsWithFilesystemContract $other): static
+    {
+        if ($other->hasUrlResolver()) {
+            $this->resolveUrlUsing($other->getUrlResolver());
+        }
+
+        $map = [
+            'filesystem',
+            'canCreateFolder',
+            'canRenameFolder',
+            'canDeleteFolder',
+            'canUploadFile',
+            'canRenameFile',
+            'canDeleteFile',
+            'canUnzipFile',
+            'showCreateFolder',
+            'showRenameFolder',
+            'showDeleteFolder',
+            'showUploadFile',
+            'showRenameFile',
+            'showDeleteFile',
+            'showUnzipFile',
+            'showCropImage',
+            'uploadRules',
+            'pinturaOptions',
+        ];
+
+        foreach ($map as $attribute) {
+            if ($other->{$attribute}) {
+                $this->{$attribute}($other->{$attribute});
+            }
+        }
+
+        if ($other->uploadValidator) {
+            $this->validateUploadUsing($other->uploadValidator);
+        }
+
+        return $this;
     }
 }
