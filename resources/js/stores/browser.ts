@@ -88,8 +88,7 @@ const useBrowserStore = defineStore('nova-file-manager/browser', {
     perPageOptions: range(10, 50, 10),
     view: 'grid',
     modals: [],
-    callback: () => {
-    },
+    callback: () => {},
 
     // files, folders and other data
     files: undefined,
@@ -752,20 +751,20 @@ const useBrowserStore = defineStore('nova-file-manager/browser', {
     },
 
     openBrowser({
-                  initialFiles,
-                  multiple,
-                  limit,
-                  wrapper,
-                  resource,
-                  resourceId,
-                  attribute,
-                  singleDisk,
-                  permissions,
-                  flexibleGroup,
-                  callback,
-                  usePintura,
-                  pinturaOptions,
-                }: BrowserConfig) {
+      initialFiles,
+      multiple,
+      limit,
+      wrapper,
+      resource,
+      resourceId,
+      attribute,
+      singleDisk,
+      permissions,
+      flexibleGroup,
+      callback,
+      usePintura,
+      pinturaOptions,
+    }: BrowserConfig) {
       this.isField = true
       this.multiple = multiple
       this.limit = limit
