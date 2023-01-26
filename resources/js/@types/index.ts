@@ -73,6 +73,7 @@ export type Folder = {
 }
 
 export type NovaField = {
+  asHtml: boolean
   attribute: string
   component: string
   dependentComponentKey: string
@@ -81,30 +82,30 @@ export type NovaField = {
   fullWidth: boolean
   helpText?: any
   indexName: string
+  limit: number
+  multiple: boolean
   name: string
   nullable: boolean
   panel: string
+  permissions: PermissionsCollection
+  pinturaOptions?: PinturaOptions
   placeholder?: any
   prefixComponent: boolean
   readonly: boolean
   required: boolean
+  singleDisk: boolean
   sortable: boolean
   sortableUriKey: string
   stacked: boolean
   textAlign: string
   uniqueKey: string
+  usePintura: boolean
   usesCustomizedDisplay: boolean
   validationKey: string
   value: Entity[]
   visible: boolean
+  wrapper: string
   wrapping: boolean
-  multiple: boolean
-  limit: number
-  asHtml: boolean
-  singleDisk: boolean
-  permissions: PermissionsCollection
-  usePintura: boolean
-  pinturaOptions?: PinturaOptions
 }
 
 export type Pagination = {

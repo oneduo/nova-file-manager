@@ -8,6 +8,7 @@ import IconButton from '@/components/Elements/IconButton.vue'
 import PaginationSelector from '@/components/Elements/PaginationSelector.vue'
 import ViewToggle from '@/components/Elements/ViewToggle.vue'
 import CreateFolderModal from '@/components/Modals/CreateFolderModal.vue'
+import DeleteFileModal from '@/components/Modals/DeleteFileModal.vue'
 import UploadModal from '@/components/Modals/UploadModal.vue'
 import { MODALS, OPERATIONS } from '@/constants'
 import { usePermissions } from '@/hooks'
@@ -17,7 +18,7 @@ import useSearchStore from '@/stores/search'
 const store = useBrowserStore()
 const searchStore = useSearchStore()
 
-const { showCreateFolder, showUploadFile } = usePermissions()
+const { showCreateFolder, showUploadFile, showDeleteFile } = usePermissions()
 
 // STATE
 const isField = computed(() => store.isField)
@@ -88,7 +89,7 @@ const openUploadModal = () => {
           </button>
         </div>
 
-        <IconButton @click="deleteSelectedFiles" variant="danger" v-if="selection?.length">
+        <IconButton @click="openModal(MODALS.DELETE_FILES)" variant="danger" v-if="selection?.length">
           <TrashIcon class="w-5 h-5" />
         </IconButton>
 
@@ -130,5 +131,12 @@ const openUploadModal = () => {
     :on-submit="createFolder"
     :name="MODALS.CREATE_FOLDER"
     :loading="loadingOperation === OPERATIONS.CREATE_FOLDER"
+  />
+
+  <DeleteFileModal
+    v-if="showDeleteFile"
+    :name="MODALS.DELETE_FILES"
+    :on-confirm="deleteSelectedFiles"
+    :count="selection?.length"
   />
 </template>

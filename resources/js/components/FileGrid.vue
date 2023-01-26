@@ -3,7 +3,9 @@ import { Entity } from '__types__'
 import { computed } from 'vue'
 import File from '@/components/Cards/File.vue'
 import PreviewModal from '@/components/Modals/PreviewModal.vue'
+import { usePermissions } from '@/hooks'
 import useBrowserStore from '@/stores/browser'
+import { MODALS } from "@/constants";
 
 interface Props {
   files: Entity[]
@@ -14,6 +16,7 @@ withDefaults(defineProps<Props>(), {
 })
 
 const store = useBrowserStore()
+const { showDeleteFile } = usePermissions()
 
 // STATE
 const isSelected = computed(() => store.isSelected)

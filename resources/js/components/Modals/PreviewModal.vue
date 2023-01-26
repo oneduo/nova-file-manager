@@ -41,12 +41,14 @@ const { usePinturaEditor } = usePintura()
 const buttonRef = ref<HTMLButtonElement | HTMLAnchorElement>()
 const isCropModalOpened = computed(() => store.isOpen(`crop-image-${props.file?.id}`))
 const isEditModalOpened = computed(() => store.isOpen(`edit-image-${props.file?.id}`))
+const isField = computed(() => store.isField)
 
 // ACTIONS
 const openModal = (name: string) => store.openModal({ name })
 const onRename = (value: string) => store.renameFile({ id: props.file.id, from: props.file.path, to: value })
-const onDelete = () => store.deleteFiles({ id: props.file.id, paths: [props.file.path] })
+const onDelete = () => store.deleteFiles({ paths: [props.file.path] })
 const onUnzip = (path: string) => store.unzipFile({ path })
+const confirm = () => store.confirm()
 
 const closePreview = () => {
   store.preview = undefined
@@ -139,6 +141,10 @@ const copy = (file: Entity) => {
 
           <IconButton ref="buttonRef" @click="closePreview" :title="__('NovaFileManager.actions.close')">
             <XMarkIcon class="w-5 h-5" />
+          </IconButton>
+
+          <IconButton v-if="isField" variant="success" @click="confirm">
+            <CheckIcon class="h-5 w-5" />
           </IconButton>
         </div>
       </div>

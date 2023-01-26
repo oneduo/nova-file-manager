@@ -88,7 +88,8 @@ const useBrowserStore = defineStore('nova-file-manager/browser', {
     perPageOptions: range(10, 50, 10),
     view: 'grid',
     modals: [],
-    callback: () => {},
+    callback: () => {
+    },
 
     // files, folders and other data
     files: undefined,
@@ -500,7 +501,7 @@ const useBrowserStore = defineStore('nova-file-manager/browser', {
     },
 
     async deleteSelectedFiles() {
-      await this.deleteFiles({ id: '', paths: this.selection?.map(file => file.path) ?? [] })
+      await this.deleteFiles({ paths: this.selection?.map(file => file.path) ?? [] })
     },
 
     /**
@@ -641,14 +642,14 @@ const useBrowserStore = defineStore('nova-file-manager/browser', {
       })
     },
 
-    async deleteFiles({ id, paths }: { id: string; paths: string[] }) {
+    async deleteFiles({ paths }: { paths: string[] }) {
       if (paths.length === 0) {
         return
       }
 
       await attempt({
         operation: OPERATIONS.DELETE_FILE,
-        modal: `${MODALS.DELETE_FILES}-${id}`,
+        modal: MODALS.DELETE_FILES,
         endpoint: ENDPOINTS.DELETE_FILE,
         data: this.payload({
           paths,
@@ -751,20 +752,20 @@ const useBrowserStore = defineStore('nova-file-manager/browser', {
     },
 
     openBrowser({
-      initialFiles,
-      multiple,
-      limit,
-      wrapper,
-      resource,
-      resourceId,
-      attribute,
-      singleDisk,
-      permissions,
-      flexibleGroup,
-      callback,
-      usePintura,
-      pinturaOptions,
-    }: BrowserConfig) {
+                  initialFiles,
+                  multiple,
+                  limit,
+                  wrapper,
+                  resource,
+                  resourceId,
+                  attribute,
+                  singleDisk,
+                  permissions,
+                  flexibleGroup,
+                  callback,
+                  usePintura,
+                  pinturaOptions,
+                }: BrowserConfig) {
       this.isField = true
       this.multiple = multiple
       this.limit = limit

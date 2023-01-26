@@ -35,14 +35,11 @@ const name = computed(() => (missing.value ? props.file.path : props.file.name))
 </script>
 
 <template>
-  <button
-    class="relative cursor-pointer focus:rounded-md group focus:outline-none flex flex-col items-start"
-    :title="name"
-  >
+  <button class="relative cursor-pointer group focus-visible:outline-none flex flex-col items-start" :title="name">
     <div
       :class="[
-        'relative block aspect-square w-full overflow-hidden rounded-lg hover:shadow-md hover:opacity-75 border border-gray-200/50 dark:border-gray-700/50 text-left',
-        'group-focus-visible:outline group-focus-visible:outline-2 group-focus-visible:outline-blue-500/50',
+        'relative block aspect-square w-full h-full overflow-hidden rounded-lg hover:shadow-md hover:opacity-75 border border-gray-200/50 dark:border-gray-700/50 text-left',
+        'group-focus-visible:outline group-focus-visible:outline-2 group-focus-visible:outline-black dark:group-focus-visible:outline-white',
         selected ? 'outline outline-2 outline-blue-500 group-focus-visible:outline-blue-500' : '',
       ]"
     >
@@ -78,7 +75,7 @@ const name = computed(() => (missing.value ? props.file.path : props.file.name))
           <ImageLoader v-if="isImage" :src="file.url" :alt="file.name" />
 
           <template v-if="isVideo">
-            <video class="pointer-events-none w-full h-full object-contain">
+            <video class="pointer-events-none w-full h-full object-cover">
               <source :src="file.url" />
               {{ __("Sorry, your browser doesn't support embedded videos.") }}
             </video>

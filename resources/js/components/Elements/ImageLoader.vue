@@ -37,8 +37,8 @@ onMounted(() => {
     image.src = props.src
   })
     .then(image => {
-      image.className = 'pointer-events-none w-full h-full object-contain'
-      // image.classList.add(props.isThumbnail ? 'object-contain' : 'object-contain')
+      image.className = 'pointer-events-none w-full h-full'
+      image.classList.add(props.isThumbnail ? 'object-cover' : 'object-contain')
       image.draggable = false
 
       card.value?.appendChild(image)
