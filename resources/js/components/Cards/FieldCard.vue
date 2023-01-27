@@ -1,46 +1,29 @@
-<template>
-  <File
-    :file="file"
-    :selected="false"
-    :on-deselect="onDeselect"
-    :single-disk="singleDisk"
-    @click.prevent.stop="preview(file)"
-  />
-</template>
-
-<script setup>
+<script setup lang="ts">
+import { Entity, NovaField } from '__types__'
 import { computed } from 'vue'
-import Entity from '@/types/Entity'
-import File from '@/components/Cards/File'
-import { useStore } from '@/store'
+import File from '@/components/Cards/File.vue'
+import useBrowserStore from '@/stores/browser'
 
-const store = useStore()
+const store = useBrowserStore()
 
-const props = defineProps({
-  file: {
-    type: Entity,
-    required: true,
-  },
-  detail: {
-    type: Boolean,
-    default: false,
-  },
-  field: {
-    type: Object,
-    required: true,
-  },
-  onDeselect: {
-    type: Function,
-  },
+interface Props {
+  file: Entity
+  detail?: boolean
+  field: NovaField
+  onDeselect?: (file: Entity) => void
+}
+
+const props = withDefaults(defineProps<Props>(), {
+  detail: false,
 })
 
 // STATE
 const singleDisk = computed(() => store.singleDisk)
 
 // ACTIONS
-const openPreview = file => (store.preview = file)
+const openPreview = (file: Entity) => (store.preview = file)
 
-const preview = file => {
+const preview = (file: Entity) => {
   if (!props.detail) {
     return
   }
@@ -48,3 +31,14 @@ const preview = file => {
   file.exists && openPreview(file)
 }
 </script>
+
+<template>
+  <File
+    :file="file"
+    :selected="false"
+    :on-deselect="onDeselect"
+    :single-disk="singleDisk"
+    :field-mode="true"
+    @click.prevent.stop="preview(file)"
+  />
+</template>

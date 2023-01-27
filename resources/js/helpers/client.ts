@@ -1,12 +1,12 @@
 import axios from 'axios'
 import isNil from 'lodash/isNil'
+import { csrf } from '@/helpers/csrf'
 
 export function client() {
   const instance = axios.create()
 
   instance.defaults.headers.common['X-Requested-With'] = 'XMLHttpRequest'
-  instance.defaults.headers.common['X-CSRF-TOKEN'] =
-    document.head.querySelector('meta[name="csrf-token"]').content
+  instance.defaults.headers.common['X-CSRF-TOKEN'] = csrf()
 
   instance.interceptors.response.use(
     response => response,
@@ -24,7 +24,7 @@ export function client() {
 
       // Show the user a 500 error
       if (status >= 500) {
-        Nova.$emit('error', error.response.data.message)
+        window.Nova.$emit('error', error.response.data.message)
       }
 
       // Handle Session Timeouts (Unauthorized)
@@ -35,21 +35,21 @@ export function client() {
           return
         }
 
-        Nova.redirectToLogin()
+        window.Nova.redirectToLogin()
       }
 
       // Handle Forbidden
       if (status === 403) {
-        Nova.visit('/403')
+        window.Nova.visit('/403')
       }
 
       // Handle Token Timeouts
       if (status === 419) {
-        Nova.$emit('token-expired')
+        window.Nova.$emit('token-expired')
       }
 
       return Promise.reject(error)
-    }
+    },
   )
 
   return instance

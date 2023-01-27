@@ -1,3 +1,28 @@
+<script setup lang="ts">
+import { Entity, NovaField } from '__types__'
+import isNil from 'lodash/isNil'
+import { computed } from 'vue'
+
+interface Props {
+  field: NovaField
+}
+
+const props = defineProps<Props>()
+
+const filled = (value?: Entity | Entity[] | null) => !isNil(value)
+
+const usesCustomizedDisplay = computed(() => props.field.usesCustomizedDisplay && filled(props.field.displayedAs))
+const fieldHasValue = computed(() => !!props.field.value?.length)
+const shouldDisplayAsHtml = computed(() => props.field.asHtml)
+const fieldValue = computed(() => {
+  if (!usesCustomizedDisplay.value && !fieldHasValue.value) {
+    return null
+  }
+
+  return usesCustomizedDisplay.value ? String(props.field.displayedAs) : props.field.value
+})
+</script>
+
 <template>
   <div :class="`text-${field.textAlign}`">
     <template v-if="usesCustomizedDisplay">
@@ -17,30 +42,3 @@
     </template>
   </div>
 </template>
-
-<script setup>
-import { computed } from 'vue'
-import isNil from 'lodash/isNil'
-
-const props = defineProps({
-  field: {
-    type: Object,
-    required: true,
-  },
-})
-
-const filled = value => !isNil(value)
-
-const usesCustomizedDisplay = computed(
-  () => props.field.usesCustomizedDisplay && filled(props.field.displayedAs)
-)
-const fieldHasValue = computed(() => !!props.field.value?.length)
-const fieldValue = computed(() => {
-  if (!usesCustomizedDisplay.value && !fieldHasValue.value) {
-    return null
-  }
-
-  return usesCustomizedDisplay.value ? String(props.field.displayedAs) : props.field.value
-})
-const shouldDisplayAsHtml = computed(() => props.field.asHtml)
-</script>

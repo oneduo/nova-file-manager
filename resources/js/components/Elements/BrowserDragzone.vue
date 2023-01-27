@@ -1,3 +1,13 @@
+<script setup lang="ts">
+import { CloudArrowUpIcon } from '@heroicons/vue/24/outline'
+
+interface Props {
+  dragLeave: () => void
+}
+
+defineProps<Props>()
+</script>
+
 <template>
   <div
     @dragleave.prevent.self="dragLeave"
@@ -9,14 +19,3 @@
     </p>
   </div>
 </template>
-
-<script setup>
-import { CloudArrowUpIcon } from '@heroicons/vue/24/outline'
-
-defineProps({
-  dragLeave: {
-    type: Function,
-    required: true,
-  },
-})
-</script>

@@ -1,15 +1,15 @@
 import { defineStore } from 'pinia'
 import Shepherd from 'shepherd.js'
-import { useStore } from '@/store/index'
+import useBrowserStore from '@/stores/browser'
 
 const useTourStore = defineStore('nova-file-manager/tour', {
   state: () => ({
-    tour: undefined,
+    tour: undefined as Shepherd.Tour | undefined,
   }),
 
   actions: {
     init() {
-      const store = useStore()
+      const store = useBrowserStore()
 
       if (!store.tour) {
         return
@@ -21,7 +21,7 @@ const useTourStore = defineStore('nova-file-manager/tour', {
 
       this.tour = new Shepherd.Tour({
         useModalOverlay: true,
-        stepsContainer: document.getElementById('tour-container'),
+        stepsContainer: document.getElementById('tour-container') ?? undefined,
       })
 
       const self = this
@@ -31,12 +31,12 @@ const useTourStore = defineStore('nova-file-manager/tour', {
           return
         }
 
-        const tourStep = self.tour.addStep({
+        const tourStep = self.tour?.addStep({
           id: step.key,
           text: `<div class="gap-2 flex flex-row items-center"><span class="mr-2 flex-shrink-0 rounded-lg bg-indigo-900/60 p-2">💡</span>${step.label}</div>`,
           attachTo: {
             element: `[data-tour="${step.key}"]`,
-            on: step.position ?? 'bottom-start',
+            on: (step.position ?? 'bottom-start') as Shepherd.Step.PopperPlacement,
           },
           arrow: false,
           scrollTo: step.scrollTo ?? true,
@@ -55,7 +55,7 @@ const useTourStore = defineStore('nova-file-manager/tour', {
         })
 
         if (step.preloadConfetti) {
-          tourStep.on('before-show', () => this.loadConfetti())
+          tourStep?.on('before-show', () => this.loadConfetti())
         }
       })
 
@@ -72,23 +72,20 @@ const useTourStore = defineStore('nova-file-manager/tour', {
     },
 
     dismiss() {
-      window.localStorage.setItem('nova-file-manager/tour-dismissed', true)
+      window.localStorage.setItem('nova-file-manager/tour-dismissed', 'true')
     },
 
     loadConfetti() {
       const confettijs = document.createElement('script')
 
-      confettijs.setAttribute(
-        'src',
-        'https://cdn.jsdelivr.net/npm/canvas-confetti@1.5.1/dist/confetti.browser.min.js'
-      )
+      confettijs.setAttribute('src', 'https://cdn.jsdelivr.net/npm/canvas-confetti@1.5.1/dist/confetti.browser.min.js')
 
       document.head.appendChild(confettijs)
     },
 
     async showConfetti() {
-      return new Promise(resolve => {
-        const canvas = document.createElement('canvas')
+      return new Promise<HTMLCanvasElement & { confetti: any }>(resolve => {
+        const canvas = document.createElement('canvas') as HTMLCanvasElement & { confetti: any }
         canvas.id = 'confetti-canvas'
         canvas.className = 'absolute bottom-0 left-0 w-full h-full pointer-events-none'
         document.body.appendChild(canvas)
@@ -159,13 +156,11 @@ const useTourStore = defineStore('nova-file-manager/tour', {
         },
         {
           key: 'nfm-directory-grid',
-          label:
-            'Here are your folders in the current path, you can go inside, rename or delete them',
+          label: 'Here are your folders in the current path, you can go inside, rename or delete them',
         },
         {
-          key: 'nfm-file-grid',
-          label:
-            'Here are your files, a single click to select them, and double click to open a preview',
+          key: '',
+          label: 'Here are your files, a single click to select them, and double click to open a preview',
           position: 'bottom',
           scrollTo: false,
           buttons: [
@@ -185,9 +180,15 @@ const useTourStore = defineStore('nova-file-manager/tour', {
             },
           ],
         },
-      ]
+      ] as ({
+        key: string
+        label: string
+        position: Shepherd.Step.PopperPlacement
+        extraClasses?: string
+        preloadConfetti?: boolean
+      } & Shepherd.Step.StepOptions)[]
     },
   },
 })
 
-export { useTourStore }
+export default useTourStore

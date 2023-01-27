@@ -1,3 +1,33 @@
+<script setup lang="ts">
+import { Menu, MenuButton, MenuItem, MenuItems } from '@headlessui/vue'
+import { DocumentIcon, FolderIcon } from '@heroicons/vue/24/outline'
+import { EllipsisHorizontalIcon } from '@heroicons/vue/24/solid'
+import { Entity } from '__types__'
+import { computed } from 'vue'
+import DeleteFolderModal from '@/components/Modals/DeleteFolderModal.vue'
+import PreviewModal from '@/components/Modals/PreviewModal.vue'
+import RenameFolderModal from '@/components/Modals/RenameFolderModal.vue'
+import { usePermissions } from '@/hooks'
+import useBrowserStore from '@/stores/browser'
+
+const store = useBrowserStore()
+const { showRenameFolder, showDeleteFolder } = usePermissions()
+
+// STATE
+const files = computed(() => store.files)
+const folders = computed(() => store.folders)
+const isSelected = computed(() => store.isSelected)
+const preview = computed(() => store.preview)
+
+// ACTIONS
+const onFolderRename = (id: string, from: string, to: string) => store.renameFile({ id, from, to })
+const onFolderDelete = (id: string, path: string) => store.deleteFolder({ id, path })
+const openPreview = (file: Entity) => (store.preview = file)
+const toggleSelection = (file: Entity) => store.toggleSelection({ file })
+const setPath = (path: string) => store.setPath({ path })
+const openModal = (name: string) => store.openModal({ name })
+</script>
+
 <template>
   <table class="min-w-full divide-y divide-gray-300 dark:divide-gray-600/50">
     <tbody class="divide-y divide-gray-200 dark:divide-gray-900/20">
@@ -95,38 +125,10 @@
               </div>
             </div>
           </td>
-          <PreviewModal :file="entity(file)" />
         </tr>
       </template>
+
+      <PreviewModal :file="preview" v-if="!!preview" />
     </tbody>
   </table>
 </template>
-
-<script setup>
-import { computed } from 'vue'
-import { DocumentIcon, FolderIcon } from '@heroicons/vue/24/outline'
-import DeleteFolderModal from '@/components/Modals/DeleteFolderModal'
-import { EllipsisHorizontalIcon } from '@heroicons/vue/24/solid'
-import { Menu, MenuButton, MenuItem, MenuItems } from '@headlessui/vue'
-import RenameFolderModal from '@/components/Modals/RenameFolderModal'
-import PreviewModal from '@/components/Modals/PreviewModal'
-import { usePermissions } from '@/hooks'
-import { useStore } from '@/store'
-import { entity } from '@/transformers/entityTransformer'
-
-const store = useStore()
-const { showRenameFolder, showDeleteFolder } = usePermissions()
-
-// STATE
-const files = computed(() => store.files)
-const folders = computed(() => store.folders)
-const isSelected = computed(() => store.isSelected)
-
-// ACTIONS
-const onFolderRename = (id, from, to) => store.renameFile({ id, from, to })
-const onFolderDelete = (id, path) => store.deleteFolder({ id, path })
-const openPreview = file => (store.preview = file)
-const toggleSelection = file => store.toggleSelection({ file })
-const setPath = path => store.setPath({ path })
-const openModal = name => store.openModal({ name })
-</script>

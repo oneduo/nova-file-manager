@@ -1,3 +1,27 @@
+<script setup lang="ts">
+import { Disclosure, DisclosureButton, DisclosurePanel } from '@headlessui/vue'
+import { ChevronDownIcon, ChevronRightIcon } from '@heroicons/vue/24/outline'
+import { Entity, Folder, View } from '__types__'
+import Empty from '@/components/Empty.vue'
+import FileGrid from '@/components/FileGrid.vue'
+import FolderGrid from '@/components/FolderGrid.vue'
+import List from '@/components/List.vue'
+
+interface Props {
+  view: View
+  files: Entity[]
+  folders: Folder[]
+  filled?: boolean
+}
+
+withDefaults(defineProps<Props>(), {
+  folders: () => [],
+  files: () => [],
+  filled: false,
+  view: 'grid',
+})
+</script>
+
 <template>
   <template v-if="view === 'grid'">
     <div class="space-y-2 mb-2">
@@ -12,7 +36,7 @@
 
         <DisclosurePanel>
           <section aria-labelledby="gallery-heading">
-            <DirectoryGrid :folders="folders" />
+            <FolderGrid :folders="folders" />
           </section>
         </DisclosurePanel>
       </Disclosure>
@@ -41,29 +65,3 @@
 
   <Empty v-if="!filled" />
 </template>
-
-<script setup>
-import { Disclosure, DisclosureButton, DisclosurePanel } from '@headlessui/vue'
-import { ChevronDownIcon, ChevronRightIcon } from '@heroicons/vue/24/outline'
-import FileGrid from '@/components/FileGrid'
-import DirectoryGrid from '@/components/DirectoryGrid'
-import List from '@/components/List'
-import Empty from '@/components/Empty'
-
-defineProps({
-  view: {
-    type: String,
-    default: 'grid',
-  },
-  files: {
-    type: Array,
-  },
-  folders: {
-    type: Array,
-  },
-  filled: {
-    type: Boolean,
-    default: false,
-  },
-})
-</script>

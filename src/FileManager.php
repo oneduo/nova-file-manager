@@ -7,15 +7,18 @@ namespace Oneduo\NovaFileManager;
 use Closure;
 use JsonException;
 use Laravel\Nova\Fields\Field;
+use Laravel\Nova\Fields\SupportsDependentFields;
 use Laravel\Nova\Http\Requests\NovaRequest;
 use Oneduo\NovaFileManager\Contracts\Services\FileManagerContract;
-use Oneduo\NovaFileManager\Contracts\Support\InteractsWithFilesystem;
+use Oneduo\NovaFileManager\Contracts\Support\InteractsWithFilesystem as InteractsWithFilesystemContract;
 use Oneduo\NovaFileManager\Support\Asset;
+use Oneduo\NovaFileManager\Traits\Support\InteractsWithFilesystem;
 use stdClass;
 
-class FileManager extends Field implements InteractsWithFilesystem
+class FileManager extends Field implements InteractsWithFilesystemContract
 {
-    use Traits\Support\InteractsWithFilesystem;
+    use SupportsDependentFields;
+    use InteractsWithFilesystem;
 
     public $component = 'nova-file-manager-field';
 
@@ -23,11 +26,6 @@ class FileManager extends Field implements InteractsWithFilesystem
 
     public ?int $limit = null;
 
-    /**
-     * Indicates if the field value should be displayed as HTML.
-     *
-     * @var bool
-     */
     public bool $asHtml = false;
 
     public Closure $storageCallback;
@@ -57,11 +55,6 @@ class FileManager extends Field implements InteractsWithFilesystem
         return $this;
     }
 
-    /**
-     * Display the field as raw HTML using Vue.
-     *
-     * @return $this
-     */
     public function asHtml(): static
     {
         $this->asHtml = true;
@@ -127,7 +120,7 @@ class FileManager extends Field implements InteractsWithFilesystem
             $files = collect($payload);
 
             if ($this->multiple) {
-                $value = collect($files)->map(fn (array $file) => new Asset(...$file));
+                $value = collect($files)->map(fn(array $file) => new Asset(...$file));
             } else {
                 $value = $files->isNotEmpty() ? new Asset(...$files->first()) : null;
             }
@@ -147,12 +140,12 @@ class FileManager extends Field implements InteractsWithFilesystem
         }
 
         if ($value instanceof stdClass) {
-            $value = (array) $value;
+            $value = (array)$value;
         }
 
         if (is_array($value)) {
             if ($this->multiple) {
-                $value = collect($value)->map(fn (array|object $asset) => new Asset(...(array) $asset));
+                $value = collect($value)->map(fn(array|object $asset) => new Asset(...(array)$asset));
             } else {
                 $value = collect([new Asset(...$value)]);
             }
@@ -164,7 +157,6 @@ class FileManager extends Field implements InteractsWithFilesystem
             ->map(function (Asset $asset) {
                 $disk = $this->resolveFilesystem(app(NovaRequest::class)) ?? $asset->disk;
 
-                /** @var \Oneduo\NovaFileManager\Services\FileManagerService $manager */
                 $manager = app(FileManagerContract::class, ['disk' => $disk]);
 
                 if ($this->hasUrlResolver()) {
@@ -174,22 +166,6 @@ class FileManager extends Field implements InteractsWithFilesystem
                 return $manager->makeEntity($asset->path, $asset->disk);
             })
             ->toArray();
-    }
-
-    public function jsonSerialize(): array
-    {
-        $this->applyWrapper();
-
-        return array_merge(
-            parent::jsonSerialize(),
-            [
-                'multiple' => $this->multiple,
-                'limit' => $this->multiple ? $this->limit : 1,
-                'asHtml' => $this->asHtml,
-                'wrapper' => $this->wrapper,
-            ],
-            $this->options(),
-        );
     }
 
     public static function registerWrapper(string $name, Closure $callback): void
@@ -225,5 +201,21 @@ class FileManager extends Field implements InteractsWithFilesystem
         $this->merge($wrapper);
 
         return $this;
+    }
+
+    public function jsonSerialize(): array
+    {
+        $this->applyWrapper();
+
+        return array_merge(
+            parent::jsonSerialize(),
+            [
+                'multiple' => $this->multiple,
+                'limit' => $this->multiple ? $this->limit : 1,
+                'asHtml' => $this->asHtml,
+                'wrapper' => $this->wrapper,
+            ],
+            $this->options(),
+        );
     }
 }

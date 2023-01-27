@@ -20,11 +20,11 @@ use Oneduo\NovaFileManager\Http\Controllers\IndexController;
 */
 
 Route::as('nova-file-manager.')->middleware('nova')->group(static function () {
-    Route::get('/{resource?}', IndexController::class)->name('data');
-
     Route::prefix('disks')->as('disks.')->group(static function () {
-        Route::get('available/{resource?}', [DiskController::class, 'available'])->name('available');
+        Route::get('/{resource?}', [DiskController::class, 'available'])->name('available');
     });
+
+    Route::get('/{resource?}', IndexController::class)->name('data');
 
     Route::prefix('files')->as('files.')->group(function () {
         Route::post('upload/{resource?}', [FileController::class, 'upload'])->name('upload');

@@ -1,6 +1,8 @@
+import { Entity, Folder } from '__types__'
+import axios, { Canceler } from 'axios'
 import { defineStore } from 'pinia'
-import { useStore } from '@/store'
-import axios from 'axios'
+import { SPOTLIGHT_ENTRY_TYPE_FOLDER } from '@/constants'
+import useBrowserStore from '@/stores/browser'
 
 const modifiers = {
   folders: '#',
@@ -8,8 +10,22 @@ const modifiers = {
   help: '?',
 }
 
+interface State {
+  isOpen: boolean
+  isLoading: boolean
+  query: string
+  search: string
+  folders: Folder[] | undefined
+  files: Entity[] | undefined
+  isFolderOnly: boolean
+  isFileOnly: boolean
+  help: boolean
+  hasResults?: boolean
+  canceler: { cancel: Canceler } | undefined
+}
+
 const useSearchStore = defineStore('nova-file-manager/search', {
-  state: () => ({
+  state: (): State => ({
     isOpen: false,
     isLoading: false,
     query: '',
@@ -20,33 +36,21 @@ const useSearchStore = defineStore('nova-file-manager/search', {
     isFileOnly: false,
     help: false,
     hasResults: false,
-    request: undefined,
+    canceler: undefined,
   }),
 
   actions: {
-    /**
-     * Open spotlight search
-     */
     open() {
       this.isOpen = true
       this.files = []
       this.folders = []
     },
 
-    /**
-     * Close spotlight search
-     */
     close() {
       this.isOpen = false
     },
 
-    /**
-     * Set the search query
-     *
-     * @param {string|null|undefined} search
-     * @returns {Promise<void>}
-     */
-    async setSearch({ search }) {
+    async setSearch({ search }: { search: string | null | undefined }) {
       if (!search?.length) {
         this.reset()
 
@@ -95,15 +99,15 @@ const useSearchStore = defineStore('nova-file-manager/search', {
         return
       }
 
-      if (this.request) {
-        this.request.cancel('[nova-file-manager] new search request triggered')
+      if (this.canceler) {
+        this.canceler.cancel('[nova-file-manager] new search request triggered')
       }
 
       const source = axios.CancelToken.source()
 
-      this.request = { cancel: source.cancel }
+      this.canceler = { cancel: source.cancel }
 
-      const store = useStore()
+      const store = useBrowserStore()
 
       const response = await store
         .get({
@@ -126,9 +130,7 @@ const useSearchStore = defineStore('nova-file-manager/search', {
       if (!response || response.status !== 200) {
         this.isLoading = false
 
-        Nova.error('An error occurred while searching')
-
-        console.error(response)
+        window.Nova.error('An error occurred while searching')
 
         return
       }
@@ -143,20 +145,23 @@ const useSearchStore = defineStore('nova-file-manager/search', {
         this.files = data?.files
       }
 
-      this.hasResults = this.folders?.length || this.files?.length
+      this.hasResults = !!this.folders?.length || !!this.files?.length
 
       this.isLoading = false
     },
-    async select({ item }) {
+
+    async select({ item }: { item: Entity | Folder }) {
       this.close()
 
-      const store = useStore()
+      const store = useBrowserStore()
 
-      if (item.exists) {
-        store.setPreview({ preview: item })
-      } else {
-        await store.setPath({ path: item.path })
+      if (item.type !== SPOTLIGHT_ENTRY_TYPE_FOLDER) {
+        store.setPreview({ preview: item as Entity })
+
+        return
       }
+
+      await store.setPath({ path: item.path })
     },
 
     reset() {
@@ -171,4 +176,4 @@ const useSearchStore = defineStore('nova-file-manager/search', {
   },
 })
 
-export { useSearchStore }
+export default useSearchStore

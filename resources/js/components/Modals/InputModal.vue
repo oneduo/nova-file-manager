@@ -1,3 +1,16 @@
+<script setup lang="ts">
+import { DialogPanel, DialogTitle } from '@headlessui/vue'
+import BaseModal from '@/components/Modals/BaseModal.vue'
+
+interface Props {
+  name: string
+  title: string
+  onSubmit: () => void
+}
+
+defineProps<Props>()
+</script>
+
 <template>
   <BaseModal as="template" class="nova-file-manager" :name="name" v-slot="{ close }">
     <DialogPanel
@@ -7,10 +20,7 @@
         <div class="px-4 pt-5 pb-4 sm:p-6 sm:pb-4">
           <div class="sm:flex sm:items-start">
             <div class="text-left w-full space-y-6">
-              <DialogTitle
-                as="h3"
-                class="text-lg leading-6 font-medium text-gray-700 dark:text-gray-200"
-              >
+              <DialogTitle as="h3" class="text-lg leading-6 font-medium text-gray-700 dark:text-gray-200">
                 {{ title }}
               </DialogTitle>
               <div class="mt-2 w-full space-y-6">
@@ -19,9 +29,7 @@
             </div>
           </div>
         </div>
-        <div
-          class="mt-5 sm:mt-4 px-4 sm:px-6 pb-4 sm:flex sm:flex-row-reverse sm:gap-x-2 space-y-3 sm:space-y-0"
-        >
+        <div class="mt-5 sm:mt-4 px-4 sm:px-6 pb-4 sm:flex sm:flex-row-reverse sm:gap-x-2 space-y-3 sm:space-y-0">
           <slot name="submitButton" />
           <slot name="cancelButton" :close="close" />
         </div>
@@ -29,23 +37,3 @@
     </DialogPanel>
   </BaseModal>
 </template>
-
-<script setup>
-import { DialogPanel, DialogTitle } from '@headlessui/vue'
-import BaseModal from '@/components/Modals/BaseModal'
-
-defineProps({
-  name: {
-    type: String,
-    required: true,
-  },
-  title: {
-    type: String,
-    required: true,
-  },
-  onSubmit: {
-    type: Function,
-    required: true,
-  },
-})
-</script>

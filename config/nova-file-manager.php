@@ -156,19 +156,6 @@ return [
 
     /*
     |--------------------------------------------------------------------------
-    | Hot module reload
-    |--------------------------------------------------------------------------
-    |
-    | [WARNING] This a development feature. It should not be enabled unless you
-    | are actively developing the tool.
-    |
-    | @internal-usage
-    |
-    */
-    'hmr' => env('HOT_MODULE_RELOAD', false),
-
-    /*
-    |--------------------------------------------------------------------------
     | Pintura by PQINA
     |--------------------------------------------------------------------------
     |

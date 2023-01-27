@@ -138,6 +138,7 @@ class FileManagerService implements FileManagerContract, ResolvesUrlContract
                 'id' => sha1($path),
                 'path' => str($path)->start(DIRECTORY_SEPARATOR),
                 'name' => pathinfo($path, PATHINFO_BASENAME),
+                'type' => 'folder',
             ])
             ->sortBy('path')
             ->values();

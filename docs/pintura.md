@@ -63,7 +63,7 @@ Once you have your Pintura assets, you have to load them into your application, 
       const editorOptions = {}
     
       window.novaFileManagerEditor = {
-        appendEditor: appendDefaultEditor,
+        appendDefaultEditor,
         editorOptions,
       }
     </script>

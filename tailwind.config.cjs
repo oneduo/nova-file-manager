@@ -1,5 +1,3 @@
-const colors = require('tailwindcss/colors')
-
 const toRgba = (hexCode, opacity = 50) => {
   let hex = hexCode.replace('#', '');
 
@@ -29,8 +27,9 @@ const flattenColorPalette = (obj, sep='-') => Object.assign(
 
 module.exports = {
   mode: 'jit',
-  content: ['./resources/**/*{js,vue,blade.php}'],
+  content: ['./resources/**/*{js,vue,blade.php,ts}'],
   darkMode: 'class',
+  important: '.nova-file-manager',
   plugins: [
     function ({ addUtilities, theme }) {
       const utilities = {
@@ -45,6 +44,7 @@ module.exports = {
         (utilities[`.bg-stripes-${name}`] = { '--stripes-color': color })
 
       const colors = flattenColorPalette(theme('backgroundColor'))
+
       for (let name in colors) {
         try {
           const [r, g, b, a] = toRgba(colors[name])
@@ -61,5 +61,4 @@ module.exports = {
       addUtilities(utilities)
     },
   ],
-  important: '.nova-file-manager',
 }

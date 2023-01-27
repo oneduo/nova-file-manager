@@ -1,14 +1,10 @@
-<template>
-  <div class="nova-file-manager" :class="{ dark }" id="tour-container"></div>
-</template>
-
-<script setup>
-import { computed, onMounted } from 'vue'
+<script setup lang="ts">
 import Shepherd from 'shepherd.js'
-import { useTourStore } from '@/store/tour'
-import { useStore } from '@/store'
+import { computed, onMounted } from 'vue'
+import useBrowserStore from '@/stores/browser'
+import useTourStore from '@/stores/tour'
 
-const store = useStore()
+const store = useBrowserStore()
 const tourStore = useTourStore()
 
 const dark = computed(() => store.dark)
@@ -19,3 +15,7 @@ onMounted(() => {
   }
 })
 </script>
+
+<template>
+  <div class="nova-file-manager" :class="{ dark }" id="tour-container"></div>
+</template>

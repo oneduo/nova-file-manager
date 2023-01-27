@@ -1,36 +1,107 @@
+import {
+  Breadcrumb,
+  BrowserConfig,
+  Config,
+  Entity,
+  ErrorsBag,
+  Folder,
+  Pagination,
+  PermissionsCollection,
+  PinturaOptions,
+  QueueEntry,
+  QueueEntryStatus,
+  View,
+} from '__types__'
+import { AxiosResponse } from 'axios'
+import range from 'lodash/range'
 import { acceptHMRUpdate, defineStore } from 'pinia'
-import { Errors } from 'form-backend-validation'
-import errors from '@/helpers/errors'
-import escape from 'lodash/escape'
 import Resumable from 'resumablejs'
-import { range } from 'lodash/util'
+import {
+  BROWSER_MODAL_NAME,
+  ENDPOINTS,
+  MODALS,
+  OPERATIONS,
+  PREVIEW_MODAL_NAME,
+  QUEUE_MODAL_NAME,
+  UPLOAD_MODAL_NAME,
+} from '@/constants'
+import attempt from '@/helpers/attempt'
 import { client } from '@/helpers/client'
+import { csrf } from '@/helpers/csrf'
+import sanitize from '@/helpers/sanitize'
 
-const useStore = defineStore('nova-file-manager', {
-  state: () => ({
+interface State {
+  path?: string
+  disk?: string
+  disks?: string[]
+  page?: number
+  search?: string
+  perPage?: number
+  perPageOptions: number[]
+  view: View
+  modals: string[]
+  callback?: (selection: Entity[] | undefined) => any
+
+  files?: Entity[]
+  folders?: Folder[]
+  breadcrumbs?: Breadcrumb[]
+  pagination?: Pagination
+  error?: { attribute: string; bag?: ErrorsBag }
+  selection?: Entity[]
+  preview?: Entity
+  limit?: number
+  wrapper?: string
+  queue: QueueEntry[]
+  multiple?: boolean
+
+  ready: boolean
+  isField: boolean
+  isFetchingDisks: boolean
+  isFetchingData: boolean
+  isUploading: boolean
+  loadingOperation?: string
+
+  dark?: boolean
+  tour: boolean
+
+  resource?: string
+  resourceId?: string | number
+  attribute?: string
+  singleDisk: boolean
+  flexibleGroup: string[]
+  fieldInit?: () => void
+  permissions?: PermissionsCollection
+  chunkSize: number
+  usePintura: boolean
+  pinturaOptions?: PinturaOptions
+}
+
+const useBrowserStore = defineStore('nova-file-manager/browser', {
+  state: (): State => ({
     // browser state
-    path: null,
-    disk: null,
-    disks: null,
-    page: null,
-    search: null,
+    path: undefined,
+    disk: undefined,
+    disks: undefined,
+    page: undefined,
+    search: undefined,
     perPage: 15,
     perPageOptions: range(10, 50, 10),
     view: 'grid',
     modals: [],
+    callback: () => {},
 
     // files, folders and other data
-    files: null,
-    folders: null,
-    breadcrumbs: null,
-    pagination: null,
-    errors: null,
+    files: undefined,
+    folders: undefined,
+    breadcrumbs: undefined,
+    pagination: undefined,
+    error: undefined,
     selection: undefined,
-    preview: null,
-    limit: 1,
-    wrapper: null,
+    preview: undefined,
+    limit: undefined,
+    wrapper: undefined,
     queue: [],
-    multiple: false,
+    multiple: undefined,
 
     // status
     ready: false,
@@ -38,15 +109,16 @@ const useStore = defineStore('nova-file-manager', {
     isFetchingDisks: false,
     isFetchingData: false,
     isUploading: false,
+    loadingOperation: undefined,
 
     // common
     dark: undefined,
     tour: false,
 
     // field specific state
-    resource: null,
-    resourceId: null,
-    attribute: null,
+    resource: undefined,
+    resourceId: undefined,
+    attribute: undefined,
     singleDisk: false,
     flexibleGroup: [],
     fieldInit: undefined,
@@ -102,7 +174,7 @@ const useStore = defineStore('nova-file-manager', {
         this.dark = document.documentElement.classList.contains('dark')
       }
 
-      Nova.$on('nova-theme-switched', ({ theme }) => {
+      window.Nova.$on('nova-theme-switched', ({ theme }: { theme: 'dark' | 'light' }) => {
         this.dark = theme === 'dark'
       })
     },
@@ -123,7 +195,7 @@ const useStore = defineStore('nova-file-manager', {
         const value = window?.localStorage.getItem(`nova-file-manager/${key}`)
 
         if (!!value && value.length) {
-          this[key] = value
+          this.$patch({ [key]: value })
         }
       })
     },
@@ -137,15 +209,13 @@ const useStore = defineStore('nova-file-manager', {
       }
 
       // grab all the query strings in the current url
-      const searchParams = Object.fromEntries(
-        new URLSearchParams(window?.location.search).entries()
-      )
+      const searchParams = Object.fromEntries(new URLSearchParams(window?.location.search).entries())
 
       // loop on each query string
       for (const [key, value] of Object.entries(searchParams)) {
         // if we match one of these keys, we trigger the setter mutation
         if (['path', 'disk', 'page', 'perPage'].includes(key)) {
-          this[key] = value
+          this.$patch({ [key]: value })
         }
       }
 
@@ -155,13 +225,15 @@ const useStore = defineStore('nova-file-manager', {
       }
     },
 
-    saveToLocalStorage({ values }) {
+    saveToLocalStorage({ values }: { values: Record<string, string | number | null | undefined> }) {
       if (this.isField || !values) {
         return
       }
 
       for (const [key, value] of Object.entries(values)) {
-        window?.localStorage.setItem(`nova-file-manager/${key}`, value)
+        if (value) {
+          window?.localStorage.setItem(`nova-file-manager/${key}`, value.toString())
+        }
       }
     },
 
@@ -170,7 +242,7 @@ const useStore = defineStore('nova-file-manager', {
      *
      * @param {Entity} file
      */
-    selectFile({ file }) {
+    selectFile({ file }: { file: Entity }) {
       if (!this.selection) {
         this.selection = [file]
 
@@ -182,19 +254,15 @@ const useStore = defineStore('nova-file-manager', {
 
     /**
      * Remove a file from current selection
-     *
-     * @param {Entity} file
      */
-    deselectFile({ file }) {
-      this.selection = this.selection.filter(item => item.id !== file.id)
+    deselectFile({ file }: { file: Entity }) {
+      this.selection = this.selection?.filter(item => item.id !== file.id)
     },
 
     /**
      * Set current selection
-     *
-     * @param {Entity[]|null|undefined} files
      */
-    setSelection({ files }) {
+    setSelection({ files }: { files?: Entity[] }) {
       this.selection = files
     },
 
@@ -202,25 +270,21 @@ const useStore = defineStore('nova-file-manager', {
      * Clear current selection
      */
     clearSelection() {
-      this.selection = []
+      this.setSelection({ files: undefined })
     },
 
     /**
      * Toggle selection status for a file
-     *
-     * @param {Entity} file
      */
-    toggleSelection({ file }) {
-      const alreadySelected = !!this.isSelected(file)
-
-      if (alreadySelected) {
+    toggleSelection({ file }: { file: Entity }) {
+      if (this.isSelected(file)) {
         this.deselectFile({ file })
 
         return
       }
 
       if (!this.multiple) {
-        this.setSelection({ files: [] })
+        this.clearSelection()
       }
 
       this.selectFile({ file })
@@ -228,29 +292,17 @@ const useStore = defineStore('nova-file-manager', {
 
     /**
      * Action to open a modal
-     *
-     * @param {string} name
      */
-    openModal({ name }) {
-      if (!name) {
-        return
-      }
-
+    openModal({ name }: { name: string }) {
       this.modals.unshift(name)
     },
 
     /**
      * Action to close a modal
-     *
-     * @param {string} name
      */
-    closeModal({ name }) {
-      if (!name) {
-        return
-      }
-
-      if (name === 'preview') {
-        this.preview = null
+    closeModal({ name }: { name: string }) {
+      if (name === PREVIEW_MODAL_NAME) {
+        this.preview = undefined
       }
 
       this.modals = this.modals.filter(_name => _name !== name)
@@ -258,26 +310,24 @@ const useStore = defineStore('nova-file-manager', {
       this.fixPortal()
     },
 
-    setErrors({ errors }) {
-      this.errors = new Errors(errors)
+    setError({ attribute, bag }: { attribute: string; bag?: ErrorsBag }) {
+      this.error = { attribute, bag }
     },
 
-    resetErrors() {
-      this.errors = null
+    resetError() {
+      this.error = undefined
     },
 
     /**
      * Add a file to the upload queue
-     *
-     * @param {File} file
      */
-    queueFile({ file }) {
+    queueFile({ file }: { file: File }) {
       this.queue.push({
         id: file.name,
-        isImage: file.type.includes('image') ?? false,
         ratio: 0,
         status: null,
         file,
+        isImage: file.type.includes('image') ?? false,
       })
     },
 
@@ -288,7 +338,7 @@ const useStore = defineStore('nova-file-manager', {
       this.queue = []
     },
 
-    updateQueue({ id, ratio = 100, status = null }) {
+    updateQueue({ id, ratio = 100, status = null }: { id: string; ratio?: number; status?: QueueEntryStatus }) {
       this.queue = this.queue.map(item => {
         if (item.id === id) {
           return {
@@ -305,8 +355,8 @@ const useStore = defineStore('nova-file-manager', {
 
       if (done && this.queue.length) {
         setTimeout(async () => {
-          this.closeModal({ name: 'upload' })
-          this.closeModal({ name: 'queue' })
+          this.closeModal({ name: UPLOAD_MODAL_NAME })
+          this.closeModal({ name: QUEUE_MODAL_NAME })
 
           this.clearQueue()
 
@@ -339,20 +389,26 @@ const useStore = defineStore('nova-file-manager', {
      * @param {{[key:string]: string|null}} parameters
      * @returns
      */
-    setQueryString({ parameters }) {
+    setQueryString({ parameters }: { parameters: Record<string, string | number | null | undefined> }) {
       if (this.isField) {
         return
       }
 
       const searchParams = new URLSearchParams(window.location.search)
 
-      const page = Nova.app.config.globalProperties.$inertia.page
+      const page = window.Nova.app.config.globalProperties.$inertia.page
 
       for (const [key, value] of Object.entries(parameters)) {
-        if (value?.toString().length > 0) {
-          searchParams.set(key, value)
-        } else {
+        const content = value?.toString()
+
+        if (!content) {
           searchParams.delete(key)
+
+          continue
+        }
+
+        if (content?.length > 0) {
+          searchParams.set(key, content)
         }
       }
 
@@ -369,17 +425,16 @@ const useStore = defineStore('nova-file-manager', {
       const keys = ['page', 'search', 'path']
 
       keys.forEach(key => {
-        this[key] = null
+        this.$patch({
+          [key]: null,
+        })
       })
     },
 
     /**
      * Set the current path
-     *
-     * @param path
-     * @returns {Promise<void>}
      */
-    async setPath({ path }) {
+    async setPath({ path }: { path?: string }) {
       this.reset()
 
       this.path = path
@@ -389,11 +444,8 @@ const useStore = defineStore('nova-file-manager', {
 
     /**
      * Set the current disk
-     *
-     * @param {string|null} disk
-     * @returns {Promise<void>}
      */
-    async setDisk({ disk }) {
+    async setDisk({ disk }: { disk?: string }) {
       this.reset()
 
       this.disk = disk
@@ -405,11 +457,8 @@ const useStore = defineStore('nova-file-manager', {
 
     /**
      * Set the current per page
-     *
-     * @param {number|null} perPage
-     * @returns {Promise<void>}
      */
-    async setPerPage({ perPage }) {
+    async setPerPage({ perPage }: { perPage?: number }) {
       this.perPage = perPage
 
       this.page = 1
@@ -421,11 +470,8 @@ const useStore = defineStore('nova-file-manager', {
 
     /**
      * Set the current page
-     *
-     * @param {number|null} page
-     * @returns {Promise<void>}
      */
-    async setPage({ page }) {
+    async setPage({ page }: { page?: number }) {
       this.page = page
 
       this.setQueryString({ parameters: { page } })
@@ -433,10 +479,8 @@ const useStore = defineStore('nova-file-manager', {
 
     /**
      * Set the view mode
-     *
-     * @param {string|null} view
      */
-    setView({ view }) {
+    setView({ view }: { view: View }) {
       this.view = view
 
       this.saveToLocalStorage({ values: { view } })
@@ -444,18 +488,19 @@ const useStore = defineStore('nova-file-manager', {
 
     /**
      * Set the search query
-     *
-     * @param {search|null} search
-     * @returns {Promise<void>}
      */
-    setSearch({ search }) {
+    setSearch({ search }: { search?: string }) {
       this.search = search
 
       this.setQueryString({ parameters: { search } })
     },
 
-    setPreview({ preview }) {
+    setPreview({ preview }: { preview: Entity | undefined }) {
       this.preview = preview
+    },
+
+    async deleteSelectedFiles() {
+      await this.deleteFiles({ paths: this.selection?.map(file => file.path) ?? [] })
     },
 
     /**
@@ -486,15 +531,12 @@ const useStore = defineStore('nova-file-manager', {
 
     /**
      * Get the disks from the API
-     *
-     * @returns {Promise<void>}
      */
     async getDisks() {
       this.isFetchingDisks = true
 
       const { data } = await this.get({
-        path: '/disks/available',
-        wrapper: this.wrapper,
+        path: ENDPOINTS.DISKS,
       })
 
       this.disks = data
@@ -502,101 +544,56 @@ const useStore = defineStore('nova-file-manager', {
       this.isFetchingDisks = false
     },
 
-    async createFolder({ path }) {
-      try {
-        const response = await this.post({
-          path: '/folders/create',
-          data: this.payload({
-            path: escape(`${this.path?.trim() ?? ''}/${path.trim()}`),
-          }),
-        })
-
-        this.resetErrors()
-
-        Nova.success(response.data.message)
-
-        this.closeModal({ name: 'create-folder' })
-      } catch (error) {
-        this.setErrors({
-          errors: {
-            createFolder: errors(error.response?.data?.errors),
-          },
-        })
-      }
+    async createFolder({ path }: { path: string }) {
+      await attempt({
+        operation: OPERATIONS.CREATE_FOLDER,
+        modal: MODALS.CREATE_FOLDER,
+        endpoint: ENDPOINTS.CREATE_FOLDER,
+        data: this.payload({
+          path: sanitize(`${this.path ?? ''}/${sanitize(path)}`, { escape: false }),
+        }),
+      })
     },
 
-    async renameFolder({ id, from, to }) {
-      try {
-        const response = await this.post({
-          path: '/folders/rename',
-          data: this.payload({
-            path: this.path,
-            from: escape(from).replace('//', '/'),
-            to: escape(`${this.path?.trim() ?? ''}/${to.trim()}`).replace('//', '/'),
-          }),
-        })
-
-        this.resetErrors()
-
-        Nova.success(response.data.message)
-
-        this.closeModal({ name: `rename-folder-${id}` })
-      } catch (error) {
-        console.log(error.response?.data?.errors)
-        this.setErrors({
-          errors: {
-            renameFolder: errors(error.response?.data?.errors),
-          },
-        })
-      }
+    async renameFolder({ id, from, to }: { id: string; from: string; to: string }) {
+      await attempt({
+        operation: OPERATIONS.RENAME_FOLDER,
+        modal: `${MODALS.RENAME_FOLDER}-${id}`,
+        endpoint: ENDPOINTS.RENAME_FOLDER,
+        data: this.payload({
+          path: this.path,
+          from: sanitize(from, { escape: false }),
+          to: sanitize(`${this.path ?? ''}/${sanitize(to)}`, { escape: false }),
+        }),
+      })
     },
 
-    async deleteFolder({ id, path }) {
-      try {
-        const response = await this.post({
-          path: '/folders/delete',
-          data: this.payload({
-            path: path,
-          }),
-        })
-
-        this.resetErrors()
-
-        Nova.success(response.data.message)
-
-        this.closeModal({ name: `delete-folder-${id}` })
-      } catch (error) {
-        this.setErrors({
-          errors: {
-            deleteFolder: errors(error.response?.data?.errors),
-          },
-        })
-      }
+    async deleteFolder({ id, path }: { id: string; path: string }) {
+      await attempt({
+        operation: OPERATIONS.DELETE_FOLDER,
+        modal: `${MODALS.DELETE_FOLDER}-${id}`,
+        endpoint: ENDPOINTS.DELETE_FOLDER,
+        data: this.payload({
+          path: path,
+        }),
+      })
     },
 
-    /**
-     *
-     * @param {File[]} files
-     * @returns {Promise<void>}
-     */
-    upload({ files }) {
+    upload({ files }: { files: File[] }) {
       this.isUploading = true
 
       const uploader = new Resumable({
         chunkSize: this.chunkSize,
         simultaneousUploads: 1,
         testChunks: false,
-        throttleProgressCallbacks: 1,
-        target: this.url('/nova-vendor/nova-file-manager/files/upload'),
+        target: this.url(ENDPOINTS.UPLOAD),
         query: this.payload({
           path: this.path ?? '/',
         }),
-        minFileSize: 0,
         headers: {
           Accept: 'application/json',
-          'X-CSRF-TOKEN': document.head.querySelector('meta[name="csrf-token"]').content,
+          'X-CSRF-TOKEN': csrf(),
         },
-        permanentErrors: [400, 404, 409, 415, 422, 500, 501],
       })
 
       files.forEach(file => {
@@ -617,7 +614,7 @@ const useStore = defineStore('nova-file-manager', {
       uploader.on('fileProgress', file => {
         this.updateQueue({
           id: file.fileName,
-          ratio: Math.floor(file.progress() * 100),
+          ratio: Math.floor(file.progress(false) * 100),
         })
       })
 
@@ -627,98 +624,62 @@ const useStore = defineStore('nova-file-manager', {
           status: false,
         })
 
-        Nova.error(JSON.parse(message).message)
+        window.Nova.error(JSON.parse(message).message)
       })
     },
 
-    async renameFile({ id, from, to }) {
-      try {
-        const response = await this.post({
-          path: '/files/rename',
-          data: this.payload({
-            path: this.path,
-            from: escape(from).replace('//', '/'),
-            to: escape(`${this.path?.trim() ?? ''}/${to.trim()}`).replace('//', '/'),
-          }),
-        })
-
-        this.resetErrors()
-
-        Nova.success(response.data.message)
-
-        this.preview = null
-
-        this.closeModal({ name: `rename-file-${id}` })
-      } catch (error) {
-        this.setErrors({
-          errors: {
-            renameFile: errors(error.response?.data?.errors),
-          },
-        })
-      }
+    async renameFile({ id, from, to }: { id: string; from: string; to: string }) {
+      await attempt({
+        operation: OPERATIONS.RENAME_FILE,
+        modal: `${MODALS.RENAME_FILE}-${id}`,
+        endpoint: ENDPOINTS.RENAME_FILE,
+        data: this.payload({
+          path: this.path,
+          from: sanitize(from, { escape: false }),
+          to: sanitize(`${this.path ?? ''}/${sanitize(to)}`, { escape: false }),
+        }),
+      })
     },
 
-    async deleteFile({ id, path }) {
-      try {
-        const response = await this.post({
-          path: '/files/delete',
-          data: this.payload({
-            path: path,
-          }),
-        })
-
-        this.resetErrors()
-
-        Nova.success(response.data.message)
-
-        this.preview = null
-
-        this.closeModal({ name: `delete-file-${id}` })
-
-        this.clearSelection()
-      } catch (error) {
-        this.setErrors({
-          errors: {
-            deleteFile: errors(error.response?.data?.errors),
-          },
-        })
+    async deleteFiles({ paths }: { paths: string[] }) {
+      if (paths.length === 0) {
+        return
       }
+
+      await attempt({
+        operation: OPERATIONS.DELETE_FILE,
+        modal: MODALS.DELETE_FILES,
+        endpoint: ENDPOINTS.DELETE_FILE,
+        data: this.payload({
+          paths,
+        }),
+        callback: () => {
+          this.preview = undefined
+
+          this.clearSelection()
+        },
+      })
     },
 
-    async unzipFile({ path }) {
-      try {
-        const response = await this.post({
-          path: '/files/unzip',
-          data: this.payload({
-            path: path,
-          }),
-        })
+    async unzipFile({ path }: { path: string }) {
+      await attempt({
+        operation: OPERATIONS.UNZIP_FILE,
+        endpoint: ENDPOINTS.UNZIP_FILE,
+        data: this.payload({
+          path: path,
+        }),
+        callback: () => {
+          this.preview = undefined
 
-        this.resetErrors()
-
-        Nova.success(response.data.message)
-
-        this.preview = null
-
-        this.clearSelection()
-      } catch (error) {
-        this.setErrors({
-          errors: {
-            unzipFile: errors(error.response?.data?.errors),
-          },
-        })
-      }
+          this.clearSelection()
+        },
+      })
     },
 
     /**
      * GET request wrapper
-     *
-     * @param {string|null|undefined} path
-     * @param {Object|null|undefined} params
-     * @param {Object|null|undefined} options
-     * @returns {Promise<*>}
      */
-    async get({ path, params, options = {} }) {
+    async get({ path, params, options = {} }: { path?: string; params?: object; options?: object }) {
       return await client().get(this.url(`/nova-vendor/nova-file-manager${path ?? '/'}`), {
         params,
         ...options,
@@ -727,36 +688,63 @@ const useStore = defineStore('nova-file-manager', {
 
     /**
      * POST request wrapper
-     *
-     * @param {string|null} path
-     * @param {Object|null} params
-     * @returns {Promise<*>}
      */
-    async post({ path, data }) {
-      return await client().post(this.url(`/nova-vendor/nova-file-manager${path ?? '/'}`), data)
+    async post<T>({ path, data }: { path?: string; data?: Record<string, any> }): Promise<AxiosResponse<T>> {
+      return await client().post<T>(this.url(`/nova-vendor/nova-file-manager${path ?? '/'}`), data)
     },
 
-    payload(params) {
-      return {
+    payload(params: object) {
+      let data: {
+        [key: string]: any
+        attribute?: string
+        resource?: string
+        fieldMode: boolean
+        resourceId?: string | number
+        disk?: string
+        flexible?: string
+        wrapper?: string
+      } = {
         ...params,
         attribute: this.attribute,
         resource: this.resource,
-        ...(this.resourceId && {
-          resourceId: this.resourceId,
-        }),
-        ...(!this.singleDisk && {
-          disk: this.disk,
-        }),
         fieldMode: this.isField,
-        ...(this.isField &&
-          this.flexibleGroup?.length && {
-          flexible: this.flexibleGroup.join('.'),
-        }),
-        wrapper: this.wrapper,
+        resourceId: undefined,
+        disk: undefined,
+        flexible: undefined,
       }
+
+      if (this.wrapper?.length) {
+        data = {
+          ...data,
+          wrapper: this.wrapper,
+        }
+      }
+
+      if (this.resourceId) {
+        data = {
+          ...data,
+          resourceId: this.resourceId,
+        }
+      }
+
+      if (!this.singleDisk) {
+        data = {
+          ...data,
+          disk: this.disk,
+        }
+      }
+
+      if (this.isField && this.flexibleGroup?.length) {
+        data = {
+          ...data,
+          flexible: this.flexibleGroup.join('.'),
+        }
+      }
+
+      return data
     },
 
-    url(url) {
+    url(url: string) {
       const suffix = this.isField ? `/${this.resource}` : ''
 
       return `${url}${suffix}`.replace('//', '/')
@@ -776,7 +764,7 @@ const useStore = defineStore('nova-file-manager', {
       callback,
       usePintura,
       pinturaOptions,
-    }) {
+    }: BrowserConfig) {
       this.isField = true
       this.multiple = multiple
       this.limit = limit
@@ -789,51 +777,46 @@ const useStore = defineStore('nova-file-manager', {
       this.callback = callback
       this.usePintura = usePintura
       this.pinturaOptions = pinturaOptions
-      this.errors = null
-
-      this.setSelection({ files: [...initialFiles] })
-
+      this.error = undefined
       this.permissions = permissions
+      this.disk = undefined
 
-      this.disk = null
-
-      this.openModal({ name: 'browser' })
+      this.openModal({ name: BROWSER_MODAL_NAME })
+      this.setSelection({ files: [...initialFiles] })
     },
 
     closeBrowser() {
       this.isField = false
-      this.multiple = null
-      this.limit = null
-      this.resource = null
-      this.resourceId = null
-      this.attribute = null
+      this.multiple = undefined
+      this.limit = undefined
+      this.wrapper = undefined
+      this.resource = undefined
+      this.resourceId = undefined
+      this.attribute = undefined
       this.singleDisk = false
-      this.flexibleGroup = null
-      this.callback = null
+      this.flexibleGroup = []
+      this.callback = undefined
       this.usePintura = false
       this.pinturaOptions = {}
-      this.errors = null
+      this.error = undefined
+      this.permissions = undefined
+      this.disk = undefined
 
       this.setSelection({ files: [] })
-
-      this.permissions = null
-
-      this.disk = null
-
-      this.closeModal({ name: 'browser' })
+      this.closeModal({ name: BROWSER_MODAL_NAME })
     },
 
     confirm() {
-      this.callback(this.selection)
+      this.callback && this.callback(this.selection)
 
       this.closeBrowser()
     },
 
-    prepareTool({ singleDisk, permissions, tour, usePintura, pinturaOptions }) {
+    prepareTool({ singleDisk, permissions, tour, usePintura, pinturaOptions }: Config) {
       this.init()
       this.clearSelection()
 
-      this.limit = null
+      this.limit = undefined
       this.isField = false
       this.multiple = true
       this.singleDisk = singleDisk
@@ -841,13 +824,13 @@ const useStore = defineStore('nova-file-manager', {
       this.tour = tour
       this.usePintura = usePintura
       this.pinturaOptions = pinturaOptions
-      this.errors = null
+      this.error = undefined
     },
   },
   getters: {
     isOpen() {
-      return name => {
-        if (name === 'preview') {
+      return (name: string) => {
+        if (name === PREVIEW_MODAL_NAME) {
           return !!this.preview
         }
 
@@ -855,16 +838,16 @@ const useStore = defineStore('nova-file-manager', {
       }
     },
     isSelected() {
-      return file => !!this.selection?.find(item => item.id === file.id)
+      return (file: Entity) => !!this.selection?.find(item => item.id === file.id)
     },
-    isBrowserOpen() {
-      return this.isOpen('browser')
+    isBrowserOpen(state) {
+      return state.modals.includes(BROWSER_MODAL_NAME)
     },
   },
 })
 
 if (import.meta.hot) {
-  import.meta.hot.accept(acceptHMRUpdate(useStore, import.meta.hot))
+  import.meta.hot.accept(acceptHMRUpdate(useBrowserStore, import.meta.hot))
 }
 
-export { useStore }
+export default useBrowserStore

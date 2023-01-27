@@ -1,109 +1,20 @@
-<template>
-  <DefaultField :errors="errors" :field="field" :show-help-text="showHelpText">
-    <template #field>
-      <div class="nova-file-manager">
-        <div :class="{ dark }">
-          <div v-if="value?.length > 0" class="flex flex-row gap-2 flex-wrap w-full">
-            <draggable
-              v-model="value"
-              class="grid grid-cols-2 md:grid-cols-4 gap-2 mb-2 w-full"
-              ghost-class="opacity-0"
-              item-key="id"
-              @end="drag = false"
-              @start="drag = true"
-              tag="ul"
-              v-bind="dragOptions"
-            >
-              <template #item="{ element }">
-                <FieldCard
-                  :field="field"
-                  :file="element"
-                  class="cursor-grab"
-                  :on-deselect="deselectFile"
-                />
-              </template>
-            </draggable>
-          </div>
-
-          <div class="flex flex-row gap-2">
-            <button
-              class="relative flex flex-row shrink-0 items-center px-4 py-2 rounded-md border border-gray-300 dark:hover:border-blue-500 dark:border-gray-600 bg-white dark:bg-gray-700 text-sm font-medium text-gray-700 dark:text-gray-200 focus:z-10 focus:outline-none"
-              type="button"
-              @click="openBrowserModal"
-            >
-              <CloudIcon
-                aria-hidden="true"
-                class="-ml-1 mr-2 h-5 w-5 text-gray-400 dark:text-gray-200"
-              />
-              {{ __('NovaFileManager.openBrowser') }}
-            </button>
-          </div>
-        </div>
-      </div>
-    </template>
-  </DefaultField>
-
-  <TransitionRoot
-    v-if="displayModal"
-    :show="isBrowserOpen"
-    as="template"
-    class="nova-file-manager w-full"
-  >
-    <DialogModal as="div" class="relative" @close="closeBrowserModal">
-      <TransitionChild
-        as="template"
-        class="z-[60]"
-        enter="ease-out duration-300"
-        enter-from="opacity-0"
-        enter-to="opacity-100"
-        leave="ease-in duration-200"
-        leave-from="opacity-100"
-        leave-to="opacity-0"
-      >
-        <div class="fixed inset-0 bg-gray-800/20 backdrop-blur-sm transition-opacity" />
-      </TransitionChild>
-
-      <div :class="['fixed z-[60] inset-0 overflow-y-auto w-full', { dark }]">
-        <div class="flex items-start justify-center min-h-full">
-          <TransitionChild
-            as="template"
-            enter="ease-out duration-300"
-            enter-from="opacity-0 translate-y-4 sm:translate-y-0 sm:scale-95"
-            enter-to="opacity-100 translate-y-0 sm:scale-100"
-            leave="ease-in duration-200"
-            leave-from="opacity-100 translate-y-0 sm:scale-100"
-            leave-to="opacity-0 translate-y-4 sm:translate-y-0 sm:scale-95"
-          >
-            <DialogPanel
-              class="relative bg-transparent md:rounded-lg overflow-hidden shadow-xl transition-all w-full border border-gray-300 dark:border-gray-800 md:m-8 m-0"
-            >
-              <Browser />
-            </DialogPanel>
-          </TransitionChild>
-        </div>
-      </div>
-    </DialogModal>
-  </TransitionRoot>
-</template>
-
-<script>
-import { FormField, HandlesValidationErrors } from 'laravel-nova'
-import { mapActions, mapState } from 'pinia'
+<script lang="ts">
+import { Dialog as DialogModal, DialogPanel, TransitionChild, TransitionRoot } from '@headlessui/vue'
 import { CloudIcon } from '@heroicons/vue/24/outline'
-import {
-  Dialog as DialogModal,
-  DialogPanel,
-  TransitionChild,
-  TransitionRoot,
-} from '@headlessui/vue'
-import Browser from '@/components/Browser'
+import { Entity, NovaField } from '__types__'
+import { mapActions, mapState } from 'pinia'
+import { defineComponent, PropType } from 'vue'
 import draggable from 'vuedraggable'
-import FieldCard from '@/components/Cards/FieldCard'
-import Entity from '@/types/Entity'
-import { useStore } from '@/store'
+import Browser from '@/components/Browser.vue'
+import FieldCard from '@/components/Cards/FieldCard.vue'
+import useBrowserStore from '@/stores/browser'
 
-export default {
-  mixins: [FormField, HandlesValidationErrors],
+export default defineComponent({
+  mixins: [
+    window.LaravelNova.FormField,
+    window.LaravelNova.DependentFormField,
+    window.LaravelNova.HandlesValidationErrors,
+  ],
 
   components: {
     FieldCard,
@@ -116,47 +27,63 @@ export default {
     draggable,
   },
 
-  props: ['resourceName', 'resourceId', 'field'],
+  props: {
+    resourceName: {
+      type: String,
+      required: true,
+    },
+    resourceId: {
+      type: [String, Number] as PropType<string | number>,
+      required: true,
+    },
+    field: {
+      type: Object as PropType<NovaField>,
+      required: true,
+    },
+  },
 
   data: () => ({
     drag: false,
     displayModal: false,
-    value: [],
+    value: [] as Entity[],
     flexibleGroup: [],
   }),
 
   mounted() {
     this.init()
 
-    this.value = (this.field.value || []).map(file => this.mapEntity(file))
+    this.value = !(this.currentField.value === undefined || this.currentField.value === null)
+      ? this.currentField.value
+      : this.value
+
     this.flexibleGroup = this.resolveFlexible(this)
   },
 
   computed: {
-    ...mapState(useStore, ['dark', 'disk', 'isBrowserOpen']),
+    ...mapState(useBrowserStore, ['dark', 'disk', 'isBrowserOpen']),
 
     dragOptions() {
       return {
         animation: 200,
-        disabled: !this.field?.multiple,
+        disabled: !this.currentField?.multiple,
         ghostClass: 'opacity-0',
       }
     },
   },
 
   methods: {
-    ...mapActions(useStore, ['init', 'closeBrowser', 'openBrowser']),
+    ...mapActions(useBrowserStore, ['init', 'closeBrowser', 'openBrowser']),
 
-    fill(formData) {
+    fill(formData: FormData) {
       if (this.value?.length) {
         formData.append(
-          this.field.attribute,
+          this.currentField.attribute,
           JSON.stringify(
-            this.value?.map(file => ({
+            this.value?.map((file: Entity) => ({
               path: file.path,
               disk: file.disk,
-            }))
-          )
+            })),
+          ),
         )
       }
     },
@@ -166,20 +93,20 @@ export default {
 
       this.openBrowser({
         initialFiles: this.value,
-        multiple: this.field.multiple ?? false,
-        limit: this.field.limit ?? null,
-        wrapper: this.field.wrapper ?? null,
+        multiple: this.currentField.multiple ?? false,
+        limit: this.currentField.limit ?? null,
+        wrapper: this.currentField.wrapper ?? null,
         resource: this.resourceName ?? null,
-        resourceId: this.resourceId ?? null,
-        attribute: this.flexibleGroup.length ? this.field.sortableUriKey : this.field.attribute,
-        singleDisk: this.field.singleDisk ?? false,
-        permissions: this.field.permissions ?? {},
+        resourceId: this.resourceId,
+        attribute: this.flexibleGroup.length ? this.currentField.sortableUriKey : this.currentField.attribute,
+        singleDisk: this.currentField.singleDisk ?? false,
+        permissions: this.currentField.permissions,
         flexibleGroup: this.flexibleGroup,
         callback: selection => {
-          this.value = selection.map(f => this.mapEntity(f))
+          this.value = selection
         },
-        usePintura: this.field.usePintura ?? false,
-        pinturaOptions: this.field.pinturaOptions ?? {},
+        usePintura: this.currentField.usePintura ?? false,
+        pinturaOptions: this.currentField.pinturaOptions ?? {},
       })
     },
 
@@ -188,25 +115,11 @@ export default {
       this.closeBrowser()
     },
 
-    deselectFile(file) {
-      this.value = this.value.filter(f => f.id !== file.id)
+    deselectFile(file: Entity) {
+      this.value = this.value.filter((f: Entity) => f.id !== file.id)
     },
 
-    mapEntity: file =>
-      new Entity(
-        file.id,
-        file.name,
-        file.path,
-        file.size,
-        file.extension,
-        file.mime,
-        file.url,
-        file.lastModifiedAt,
-        file.type,
-        file.exists,
-        file.disk
-      ),
-
+    // @ts-ignore
     resolveFlexible(component) {
       let elements = []
 
@@ -229,5 +142,79 @@ export default {
       }
     },
   },
-}
+})
 </script>
+
+<template>
+  <DefaultField :errors="errors" :field="currentField" :show-help-text="showHelpText">
+    <template #field>
+      <div class="nova-file-manager">
+        <div :class="{ dark }">
+          <div v-if="value?.length > 0" class="flex flex-row gap-2 flex-wrap w-full">
+            <draggable
+              v-model="value"
+              class="grid grid-cols-2 md:grid-cols-4 gap-2 mb-2 w-full"
+              ghost-class="opacity-0"
+              item-key="id"
+              @end="drag = false"
+              @start="drag = true"
+              tag="ul"
+              v-bind="dragOptions"
+            >
+              <template #item="{ element }">
+                <FieldCard :field="field" :file="element" class="cursor-grab" :on-deselect="deselectFile" />
+              </template>
+            </draggable>
+          </div>
+
+          <div class="flex flex-row gap-2">
+            <button
+              class="relative flex flex-row shrink-0 items-center px-4 py-2 rounded-md border border-gray-300 dark:hover:border-blue-500 dark:border-gray-600 bg-white dark:bg-gray-700 text-sm font-medium text-gray-700 dark:text-gray-200 focus:z-10 focus:outline-none"
+              type="button"
+              @click="openBrowserModal"
+            >
+              <CloudIcon aria-hidden="true" class="-ml-1 mr-2 h-5 w-5 text-gray-400 dark:text-gray-200" />
+              {{ __('NovaFileManager.openBrowser') }}
+            </button>
+          </div>
+        </div>
+      </div>
+      <TransitionRoot v-if="displayModal" :show="isBrowserOpen" as="template" class="nova-file-manager w-full">
+        <DialogModal as="div" class="relative" @close="closeBrowserModal">
+          <TransitionChild
+            as="template"
+            class="z-[60]"
+            enter="ease-out duration-300"
+            enter-from="opacity-0"
+            enter-to="opacity-100"
+            leave="ease-in duration-200"
+            leave-from="opacity-100"
+            leave-to="opacity-0"
+          >
+            <div class="fixed inset-0 bg-gray-800/20 backdrop-blur-sm transition-opacity" />
+          </TransitionChild>
+
+          <div :class="['fixed z-[60] inset-0 overflow-y-auto w-full', { dark }]">
+            <div class="flex items-start justify-center min-h-full">
+              <TransitionChild
+                as="template"
+                enter="ease-out duration-300"
+                enter-from="opacity-0 translate-y-4 sm:translate-y-0 sm:scale-95"
+                enter-to="opacity-100 translate-y-0 sm:scale-100"
+                leave="ease-in duration-200"
+                leave-from="opacity-100 translate-y-0 sm:scale-100"
+                leave-to="opacity-0 translate-y-4 sm:translate-y-0 sm:scale-95"
+              >
+                <DialogPanel
+                  class="relative bg-transparent md:rounded-lg overflow-hidden shadow-xl transition-all w-full border border-gray-300 dark:border-gray-800 md:m-8 m-0"
+                >
+                  <Browser />
+                </DialogPanel>
+              </TransitionChild>
+            </div>
+          </div>
+        </DialogModal>
+      </TransitionRoot>
+    </template>
+  </DefaultField>
+</template>

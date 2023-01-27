@@ -26,7 +26,7 @@ Each disk must be defined in your `filesystems.php` config.
 
 ## `show_hidden_files`
 
-Toggles whether to show files and directories that start with a "dot"
+Toggles whether to show files and folders that start with a "dot"
 
 | Type   | Default |
 |--------|---------|

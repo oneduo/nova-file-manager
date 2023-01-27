@@ -1,6 +1,34 @@
+<script setup lang="ts">
+import { Dialog, TransitionChild, TransitionRoot } from '@headlessui/vue'
+import { computed, onBeforeUnmount } from 'vue'
+import useBrowserStore from '@/stores/browser'
+
+interface Props {
+  name: string
+  initialFocusRef?: HTMLElement | null
+}
+
+const props = defineProps<Props>()
+
+onBeforeUnmount(() => {
+  if (isOpen.value) {
+    closeModal()
+  }
+})
+
+const store = useBrowserStore()
+
+const dark = computed(() => store.dark)
+const isOpen = computed(() => store.isOpen(props.name))
+
+const closeModal = () => {
+  store.closeModal({ name: props.name })
+}
+</script>
+
 <template>
   <TransitionRoot :show="isOpen" as="template" class="nova-file-manager">
-    <Dialog as="div" class="relative z-[60]" style="z-index: 999" @close="closeModal">
+    <Dialog as="div" class="relative z-[60]" style="z-index: 999" @close="closeModal" :initial-focus="initialFocusRef">
       <TransitionChild
         as="template"
         enter="ease-out duration-300"
@@ -30,31 +58,3 @@
     </Dialog>
   </TransitionRoot>
 </template>
-
-<script setup>
-import { Dialog, TransitionChild, TransitionRoot } from '@headlessui/vue'
-import { computed, onBeforeUnmount } from 'vue'
-import { useStore } from '@/store'
-
-const props = defineProps({
-  name: {
-    type: String,
-    required: true,
-  },
-})
-
-onBeforeUnmount(() => {
-  if (isOpen.value) {
-    closeModal()
-  }
-})
-
-const store = useStore()
-
-const dark = computed(() => store.dark)
-const isOpen = computed(() => store.isOpen(props.name))
-
-const closeModal = () => {
-  store.closeModal({ name: props.name })
-}
-</script>
