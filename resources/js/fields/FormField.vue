@@ -10,7 +10,11 @@ import FieldCard from '@/components/Cards/FieldCard.vue'
 import useBrowserStore from '@/stores/browser'
 
 export default defineComponent({
-  mixins: [window.LaravelNova.DependentFormField, window.LaravelNova.HandlesValidationErrors],
+  mixins: [
+    window.LaravelNova.FormField,
+    window.LaravelNova.DependentFormField,
+    window.LaravelNova.HandlesValidationErrors,
+  ],
 
   components: {
     FieldCard,
@@ -36,10 +40,6 @@ export default defineComponent({
       type: Object as PropType<NovaField>,
       required: true,
     },
-    currentField: {
-      type: Object as PropType<NovaField>,
-      required: true,
-    },
   },
 
   data: () => ({
@@ -52,7 +52,10 @@ export default defineComponent({
   mounted() {
     this.init()
 
-    this.value = this.currentField.value || []
+    this.value = !(this.currentField.value === undefined || this.currentField.value === null)
+      ? this.currentField.value
+      : this.value
+
     this.flexibleGroup = this.resolveFlexible(this)
   },
 
