@@ -8,12 +8,14 @@ const store = useBrowserStore()
 
 interface Props {
   file: Entity
-  detail: boolean
+  detail?: boolean
   field: NovaField
   onDeselect?: (file: Entity) => void
 }
 
-const props = defineProps<Props>()
+const props = withDefaults(defineProps<Props>(), {
+  detail: false,
+})
 
 // STATE
 const singleDisk = computed(() => store.singleDisk)

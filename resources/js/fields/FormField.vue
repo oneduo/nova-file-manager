@@ -10,7 +10,7 @@ import FieldCard from '@/components/Cards/FieldCard.vue'
 import useBrowserStore from '@/stores/browser'
 
 export default defineComponent({
-  mixins: [window.LaravelNova.FormField, window.LaravelNova.HandlesValidationErrors],
+  mixins: [window.LaravelNova.DependentFormField, window.LaravelNova.HandlesValidationErrors],
 
   components: {
     FieldCard,
@@ -36,6 +36,10 @@ export default defineComponent({
       type: Object as PropType<NovaField>,
       required: true,
     },
+    currentField: {
+      type: Object as PropType<NovaField>,
+      required: true,
+    },
   },
 
   data: () => ({
@@ -48,7 +52,7 @@ export default defineComponent({
   mounted() {
     this.init()
 
-    this.value = this.field.value || []
+    this.value = this.currentField.value || []
     this.flexibleGroup = this.resolveFlexible(this)
   },
 
@@ -58,7 +62,7 @@ export default defineComponent({
     dragOptions() {
       return {
         animation: 200,
-        disabled: !this.field?.multiple,
+        disabled: !this.currentField?.multiple,
         ghostClass: 'opacity-0',
       }
     },
@@ -70,7 +74,7 @@ export default defineComponent({
     fill(formData: FormData) {
       if (this.value?.length) {
         formData.append(
-          this.field.attribute,
+          this.currentField.attribute,
           JSON.stringify(
             this.value?.map((file: Entity) => ({
               path: file.path,
@@ -86,20 +90,20 @@ export default defineComponent({
 
       this.openBrowser({
         initialFiles: this.value,
-        multiple: this.field.multiple ?? false,
-        limit: this.field.limit ?? null,
-        wrapper: this.field.wrapper ?? null,
+        multiple: this.currentField.multiple ?? false,
+        limit: this.currentField.limit ?? null,
+        wrapper: this.currentField.wrapper ?? null,
         resource: this.resourceName ?? null,
         resourceId: this.resourceId,
-        attribute: this.flexibleGroup.length ? this.field.sortableUriKey : this.field.attribute,
-        singleDisk: this.field.singleDisk ?? false,
-        permissions: this.field.permissions,
+        attribute: this.flexibleGroup.length ? this.currentField.sortableUriKey : this.currentField.attribute,
+        singleDisk: this.currentField.singleDisk ?? false,
+        permissions: this.currentField.permissions,
         flexibleGroup: this.flexibleGroup,
         callback: selection => {
           this.value = selection
         },
-        usePintura: this.field.usePintura ?? false,
-        pinturaOptions: this.field.pinturaOptions ?? {},
+        usePintura: this.currentField.usePintura ?? false,
+        pinturaOptions: this.currentField.pinturaOptions ?? {},
       })
     },
 
@@ -139,7 +143,7 @@ export default defineComponent({
 </script>
 
 <template>
-  <DefaultField :errors="errors" :field="field" :show-help-text="showHelpText">
+  <DefaultField :errors="errors" :field="currentField" :show-help-text="showHelpText">
     <template #field>
       <div class="nova-file-manager">
         <div :class="{ dark }">
@@ -172,43 +176,42 @@ export default defineComponent({
           </div>
         </div>
       </div>
-    </template>
-  </DefaultField>
-
-  <TransitionRoot v-if="displayModal" :show="isBrowserOpen" as="template" class="nova-file-manager w-full">
-    <DialogModal as="div" class="relative" @close="closeBrowserModal">
-      <TransitionChild
-        as="template"
-        class="z-[60]"
-        enter="ease-out duration-300"
-        enter-from="opacity-0"
-        enter-to="opacity-100"
-        leave="ease-in duration-200"
-        leave-from="opacity-100"
-        leave-to="opacity-0"
-      >
-        <div class="fixed inset-0 bg-gray-800/20 backdrop-blur-sm transition-opacity" />
-      </TransitionChild>
-
-      <div :class="['fixed z-[60] inset-0 overflow-y-auto w-full', { dark }]">
-        <div class="flex items-start justify-center min-h-full">
+      <TransitionRoot v-if="displayModal" :show="isBrowserOpen" as="template" class="nova-file-manager w-full">
+        <DialogModal as="div" class="relative" @close="closeBrowserModal">
           <TransitionChild
             as="template"
+            class="z-[60]"
             enter="ease-out duration-300"
-            enter-from="opacity-0 translate-y-4 sm:translate-y-0 sm:scale-95"
-            enter-to="opacity-100 translate-y-0 sm:scale-100"
+            enter-from="opacity-0"
+            enter-to="opacity-100"
             leave="ease-in duration-200"
-            leave-from="opacity-100 translate-y-0 sm:scale-100"
-            leave-to="opacity-0 translate-y-4 sm:translate-y-0 sm:scale-95"
+            leave-from="opacity-100"
+            leave-to="opacity-0"
           >
-            <DialogPanel
-              class="relative bg-transparent md:rounded-lg overflow-hidden shadow-xl transition-all w-full border border-gray-300 dark:border-gray-800 md:m-8 m-0"
-            >
-              <Browser />
-            </DialogPanel>
+            <div class="fixed inset-0 bg-gray-800/20 backdrop-blur-sm transition-opacity" />
           </TransitionChild>
-        </div>
-      </div>
-    </DialogModal>
-  </TransitionRoot>
+
+          <div :class="['fixed z-[60] inset-0 overflow-y-auto w-full', { dark }]">
+            <div class="flex items-start justify-center min-h-full">
+              <TransitionChild
+                as="template"
+                enter="ease-out duration-300"
+                enter-from="opacity-0 translate-y-4 sm:translate-y-0 sm:scale-95"
+                enter-to="opacity-100 translate-y-0 sm:scale-100"
+                leave="ease-in duration-200"
+                leave-from="opacity-100 translate-y-0 sm:scale-100"
+                leave-to="opacity-0 translate-y-4 sm:translate-y-0 sm:scale-95"
+              >
+                <DialogPanel
+                  class="relative bg-transparent md:rounded-lg overflow-hidden shadow-xl transition-all w-full border border-gray-300 dark:border-gray-800 md:m-8 m-0"
+                >
+                  <Browser />
+                </DialogPanel>
+              </TransitionChild>
+            </div>
+          </div>
+        </DialogModal>
+      </TransitionRoot>
+    </template>
+  </DefaultField>
 </template>
