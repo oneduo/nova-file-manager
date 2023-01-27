@@ -2,6 +2,18 @@
 
 All notable changes to `nova-file-manager` will be documented in this file
 
+## v0.8.0 - 2023-01-27
+
+### What's Changed
+
+- [0.8.x] Moving to Typescript by @Rezrazi in https://github.com/oneduo/nova-file-manager/pull/103
+- Added ability to select image from preview modal
+- Added bulk deleted
+- Added support for dependsOn
+- Fixed an issue when the preview modal was not shown for a search asset which is not present in the current page
+
+**Full Changelog**: https://github.com/oneduo/nova-file-manager/compare/v0.7.10...v0.8.0
+
 ## v0.7.10 - 2023-01-25
 
 ### What's Changed
@@ -165,6 +177,7 @@ rm -rf vendor/
 
 
 
+
 ```
 ```bash
 composer install oneduo/nova-file-manager
@@ -179,9 +192,11 @@ composer install oneduo/nova-file-manager
 
 
 
+
 ```
 ```bash
 composer rm bbs-lab/nova-file-manager
+
 
 
 
