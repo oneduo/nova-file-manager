@@ -2,7 +2,7 @@
 import Select from '@/components/Elements/Select.vue'
 
 interface Props {
-  disk: string
+  disk?: string
   disks: string[]
   setDisk: (disk: string) => void
   isLoading: boolean

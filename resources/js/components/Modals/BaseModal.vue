@@ -5,6 +5,7 @@ import useBrowserStore from '@/stores/browser'
 
 interface Props {
   name: string
+  initialFocusRef?: HTMLElement | null
 }
 
 const props = defineProps<Props>()
@@ -27,7 +28,7 @@ const closeModal = () => {
 
 <template>
   <TransitionRoot :show="isOpen" as="template" class="nova-file-manager">
-    <Dialog as="div" class="relative z-[60]" style="z-index: 999" @close="closeModal">
+    <Dialog as="div" class="relative z-[60]" style="z-index: 999" @close="closeModal" :initial-focus="initialFocusRef">
       <TransitionChild
         as="template"
         enter="ease-out duration-300"

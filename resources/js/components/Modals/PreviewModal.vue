@@ -8,6 +8,7 @@ import {
   PencilSquareIcon,
   TrashIcon,
   XMarkIcon,
+  CheckIcon,
 } from '@heroicons/vue/24/outline'
 import { Entity } from '__types__'
 import { computed, ref } from 'vue'
@@ -48,7 +49,12 @@ const openModal = (name: string) => store.openModal({ name })
 const onRename = (value: string) => store.renameFile({ id: props.file.id, from: props.file.path, to: value })
 const onDelete = () => store.deleteFiles({ paths: [props.file.path] })
 const onUnzip = (path: string) => store.unzipFile({ path })
-const confirm = () => store.confirm()
+
+const selectThenConfirm = () => {
+  store.selectFile({ file: props.file })
+
+  store.confirm()
+}
 
 const closePreview = () => {
   store.preview = undefined
@@ -72,7 +78,7 @@ const copy = (file: Entity) => {
 </script>
 
 <template>
-  <BaseModal as="template" class="nova-file-manager" :name="PREVIEW_MODAL_NAME">
+  <BaseModal as="template" class="nova-file-manager" :name="PREVIEW_MODAL_NAME" :initial-focus-ref="buttonRef">
     <DialogPanel
       class="relative bg-gray-100 dark:bg-gray-900 rounded-lg overflow-hidden shadow-xl transform transition-all w-full max-w-7xl p-4 flex flex-col gap-4"
     >
@@ -143,7 +149,7 @@ const copy = (file: Entity) => {
             <XMarkIcon class="w-5 h-5" />
           </IconButton>
 
-          <IconButton v-if="isField" variant="success" @click="confirm">
+          <IconButton v-if="isField" variant="success" @click="selectThenConfirm">
             <CheckIcon class="h-5 w-5" />
           </IconButton>
         </div>

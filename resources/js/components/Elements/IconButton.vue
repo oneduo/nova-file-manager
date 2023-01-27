@@ -10,8 +10,8 @@ const variants = {
 }
 
 interface Props {
-  variant: keyof typeof variants
-  type: 'button' | 'submit' | 'reset'
+  variant?: keyof typeof variants
+  type?: 'button' | 'submit' | 'reset'
   asAnchor?: boolean
 }
 

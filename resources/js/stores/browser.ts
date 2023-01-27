@@ -840,8 +840,8 @@ const useBrowserStore = defineStore('nova-file-manager/browser', {
     isSelected() {
       return (file: Entity) => !!this.selection?.find(item => item.id === file.id)
     },
-    isBrowserOpen() {
-      return () => this.isOpen(BROWSER_MODAL_NAME)
+    isBrowserOpen(state) {
+      return state.modals.includes(BROWSER_MODAL_NAME)
     },
   },
 })

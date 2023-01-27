@@ -1,16 +1,14 @@
 <script setup lang="ts">
-import { computed, onMounted, ref } from 'vue'
+import { onMounted, ref } from 'vue'
 import Spinner from './Spinner.vue'
 
 interface Props {
   src: string
   alt: string
-  fullWidth: boolean
   isThumbnail: boolean
 }
 
 const props = withDefaults(defineProps<Props>(), {
-  fullWidth: true,
   isThumbnail: true,
 })
 
@@ -20,12 +18,6 @@ const loading = ref<boolean>(true)
 const missing = ref<boolean>(false)
 
 const card = ref<HTMLDivElement>()
-
-const cardClasses = computed(() => {
-  return {
-    'w-full': props.fullWidth,
-  }
-})
 
 onMounted(() => {
   new Promise<HTMLImageElement>((resolve, reject) => {
@@ -55,7 +47,7 @@ onMounted(() => {
 </script>
 
 <template>
-  <div class="flex justify-center items-center h-full max-h-[80vh]" ref="card" :class="cardClasses">
+  <div class="flex justify-center items-center h-full max-h-[80vh]" ref="card">
     <Spinner v-if="loading" class="w-6 h-6" />
   </div>
 </template>
