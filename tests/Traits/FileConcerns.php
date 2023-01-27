@@ -121,7 +121,7 @@ trait FileConcerns
                     uri: route('nova-file-manager.files.delete'),
                     data: [
                         'disk' => $this->disk,
-                        'path' => $path,
+                        'paths' => [$path],
                     ]
                 )
                 ->assertOk();

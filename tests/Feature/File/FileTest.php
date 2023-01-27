@@ -305,7 +305,7 @@ it('can delete a file', function () {
         uri: route('nova-file-manager.files.delete'),
         data: [
             'disk' => $this->disk,
-            'path' => $path,
+            'paths' => [$path],
         ],
     )
         ->assertOk();
@@ -331,7 +331,7 @@ it('can delete a file', function () {
     );
 });
 
-it('can delete a non existing file', function () {
+it('cant delete a non existing file', function () {
     Event::fake();
 
     $path = 'file.txt';
@@ -342,11 +342,11 @@ it('can delete a non existing file', function () {
         uri: route('nova-file-manager.files.delete'),
         data: [
             'disk' => $this->disk,
-            'path' => $path,
+            'paths' => [$path],
         ],
     )
         ->assertJsonValidationErrors([
-            'path' => [
+            'paths.0' => [
                 __('nova-file-manager::validation.path.missing', ['path' => $path]),
             ],
         ]);
@@ -389,11 +389,11 @@ it('throws an exception if the filesystem cannot delete the file', function () {
         uri: route('nova-file-manager.files.delete'),
         data: [
             'disk' => $this->disk,
-            'path' => $path,
+            'paths' => [$path],
         ],
     )
         ->assertJsonValidationErrors([
-            'path' => [
+            'paths' => [
                 __('nova-file-manager::errors.file.delete'),
             ],
         ]);
