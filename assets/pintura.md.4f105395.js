@@ -25,7 +25,7 @@ import{_ as s,c as a,o as n,a as l}from"./app.b5bda35f.js";var p="/nova-file-man
 <span class="line"><span style="color:#A6ACCD;">      </span><span style="color:#C792EA;">const</span><span style="color:#A6ACCD;"> editorOptions </span><span style="color:#89DDFF;">=</span><span style="color:#A6ACCD;"> </span><span style="color:#89DDFF;">{}</span></span>
 <span class="line"><span style="color:#A6ACCD;">    </span></span>
 <span class="line"><span style="color:#A6ACCD;">      window</span><span style="color:#89DDFF;">.</span><span style="color:#A6ACCD;">novaFileManagerEditor </span><span style="color:#89DDFF;">=</span><span style="color:#A6ACCD;"> </span><span style="color:#89DDFF;">{</span></span>
-<span class="line"><span style="color:#A6ACCD;">        </span><span style="color:#FFCB6B;">appendEditor</span><span style="color:#A6ACCD;">: appendDefaultEditor</span><span style="color:#89DDFF;">,</span></span>
+<span class="line"><span style="color:#A6ACCD;">        appendDefaultEditor</span><span style="color:#89DDFF;">,</span></span>
 <span class="line"><span style="color:#A6ACCD;">        editorOptions</span><span style="color:#89DDFF;">,</span></span>
 <span class="line"><span style="color:#A6ACCD;">      </span><span style="color:#89DDFF;">}</span></span>
 <span class="line"><span style="color:#A6ACCD;">    </span><span style="color:#89DDFF;">&lt;/</span><span style="color:#A6ACCD;">script</span><span style="color:#89DDFF;">&gt;</span></span>
