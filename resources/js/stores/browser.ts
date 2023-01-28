@@ -708,9 +708,6 @@ const useBrowserStore = defineStore('nova-file-manager/browser', {
         attribute: this.attribute,
         resource: this.resource,
         fieldMode: this.isField,
-        resourceId: undefined,
-        disk: undefined,
-        flexible: undefined,
       }
 
       if (this.wrapper?.length) {
