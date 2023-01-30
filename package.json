@@ -18,7 +18,7 @@
   "devDependencies": {
     "@babel/core": "^7.18.2",
     "@headlessui/vue": "^1.7.0",
-    "@heroicons/vue": "^2.0.8",
+    "@heroicons/vue": "^2.0.14",
     "@inertiajs/inertia": "^0.11.0",
     "@inertiajs/inertia-vue3": "^0.6.0",
     "@rollup/plugin-alias": "^4.0.2",
@@ -35,12 +35,12 @@
     "axios": "^0.25",
     "babel-loader": "^8.2.5",
     "copy-to-clipboard": "^3.3.3",
-    "eslint": "^8.21.0",
+    "eslint": "^8.33.0",
     "eslint-config-prettier": "^8.5.0",
     "eslint-plugin-import": "^2.26.0",
     "eslint-plugin-prettier-vue": "^3.1.0",
     "eslint-plugin-tailwindcss": "^3.8.0",
-    "eslint-plugin-vue": "^9.1.0",
+    "eslint-plugin-vue": "^9.9.0",
     "form-backend-validation": "^2.4.0",
     "laravel-mix": "^6.0.41",
     "laravel-nova-types": "^0.1.1",
@@ -60,7 +60,7 @@
     "vite-tsconfig-paths": "^3.5.2",
     "vue": "^3.2.45",
     "vue-cropperjs": "^5.0.0",
-    "vue-loader": "^16.8.3",
+    "vue-loader": "^17.0.1",
     "vuedraggable": "^4.1.0",
     "vuex": "^4.0.2"
   }
