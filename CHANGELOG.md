@@ -2,6 +2,24 @@
 
 All notable changes to `nova-file-manager` will be documented in this file
 
+## v0.8.1 - 2023-02-03
+
+### What's Changed
+
+- build(deps-dev): bump eslint from 8.21.0 to 8.33.0 by @dependabot in https://github.com/oneduo/nova-file-manager/pull/144
+- build(deps-dev): bump eslint-plugin-vue from 9.3.0 to 9.9.0 by @dependabot in https://github.com/oneduo/nova-file-manager/pull/143
+- build(deps-dev): bump @heroicons/vue from 2.0.8 to 2.0.14 by @dependabot in https://github.com/oneduo/nova-file-manager/pull/142
+- build(deps-dev): bump vue-loader from 16.8.3 to 17.0.1 by @dependabot in https://github.com/oneduo/nova-file-manager/pull/140
+- build(deps-dev): bump laravel/pint from 0.1.7 to 1.4.0 by @dependabot in https://github.com/oneduo/nova-file-manager/pull/138
+- Use thumbnails for index field by @mikaelpopowicz in https://github.com/oneduo/nova-file-manager/pull/137
+- build(deps-dev): bump @headlessui/vue from 1.7.0 to 1.7.8 by @dependabot in https://github.com/oneduo/nova-file-manager/pull/139
+
+### New Contributors
+
+- @dependabot made their first contribution in https://github.com/oneduo/nova-file-manager/pull/144
+
+**Full Changelog**: https://github.com/oneduo/nova-file-manager/compare/v0.8.0...v0.8.1
+
 ## v0.8.0 - 2023-01-27
 
 ### What's Changed
@@ -178,6 +196,7 @@ rm -rf vendor/
 
 
 
+
 ```
 ```bash
 composer install oneduo/nova-file-manager
@@ -193,9 +212,11 @@ composer install oneduo/nova-file-manager
 
 
 
+
 ```
 ```bash
 composer rm bbs-lab/nova-file-manager
+
 
 
 
