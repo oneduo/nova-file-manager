@@ -2,6 +2,14 @@
 
 All notable changes to `nova-file-manager` will be documented in this file
 
+## v0.8.2 - 2023-02-03
+
+### What's Changed
+
+- Add ability to configure Cropperjs by @mikaelpopowicz in https://github.com/oneduo/nova-file-manager/pull/147
+
+**Full Changelog**: https://github.com/oneduo/nova-file-manager/compare/v0.8.1...v0.8.2
+
 ## v0.8.1 - 2023-02-03
 
 ### What's Changed
@@ -197,6 +205,7 @@ rm -rf vendor/
 
 
 
+
 ```
 ```bash
 composer install oneduo/nova-file-manager
@@ -213,9 +222,11 @@ composer install oneduo/nova-file-manager
 
 
 
+
 ```
 ```bash
 composer rm bbs-lab/nova-file-manager
+
 
 
 
