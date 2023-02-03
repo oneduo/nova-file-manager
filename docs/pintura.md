@@ -10,7 +10,7 @@ This is a cool library made by [Rik Schennink](https://github.com/rikschennink) 
 editor right into the file manager, it is beautifully crafted and feature-rich, and we really like and we hope you will
 too.
 
-Please note, that this is a **paid** library not included by default in Nova File Manager, and a valid license is
+Please note, that this is a **paid** library which is not included by default in Nova File Manager, and a valid licence is
 required to use it.
 
 To learn more, and/or purchase a license, please visit

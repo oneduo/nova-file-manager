@@ -48,6 +48,20 @@ let sidebar = [
     ],
   },
   {
+    text: 'Image edition',
+    collapsible: true,
+    items: [
+      {
+        text: 'Cropper',
+        link: '/cropper',
+      },
+      {
+        text: 'Pintura image editor',
+        link: '/pintura',
+      },
+    ],
+  },
+  {
     text: 'Misc',
     collapsible: true,
     items: [
@@ -71,10 +85,6 @@ let sidebar = [
         text: 'Update checker',
         link: '/update-checker',
       },
-      {
-        text: 'Pintura image editor',
-        link: '/pintura',
-      }
     ],
   },
   {
