@@ -27,6 +27,7 @@ export type BrowserConfig = {
   callback?: (...params: any[]) => any
   usePintura: boolean
   pinturaOptions?: PinturaOptions
+  cropperOptions?: CropperOptions
 }
 
 export type Config = {
@@ -35,6 +36,7 @@ export type Config = {
   tour: boolean
   usePintura: boolean
   pinturaOptions: PinturaOptions
+  cropperOptions: CropperOptions
   outdated?: boolean
 }
 
@@ -146,3 +148,51 @@ export type QueueEntry = {
 }
 
 export type View = 'grid' | 'list'
+
+export type CropperDragMode = 'crop' | 'move' | 'none'
+export type CropperViewMode = 0 | 1 | 2 | 3
+
+export interface CropperSetDataOptions {
+  x?: number
+  y?: number
+  width?: number
+  height?: number
+  rotate?: number
+  scaleX?: number
+  scaleY?: number
+}
+
+export interface CropperOptions {
+  aspectRatio?: number
+  autoCrop?: boolean
+  autoCropArea?: number
+  background?: boolean
+  center?: boolean
+  checkCrossOrigin?: boolean
+  checkOrientation?: boolean
+  cropBoxMovable?: boolean
+  cropBoxResizable?: boolean
+  data?: CropperSetDataOptions
+  dragMode?: CropperDragMode
+  guides?: boolean
+  highlight?: boolean
+  initialAspectRatio?: number
+  minCanvasHeight?: number
+  minCanvasWidth?: number
+  minContainerHeight?: number
+  minContainerWidth?: number
+  minCropBoxHeight?: number
+  minCropBoxWidth?: number
+  modal?: boolean
+  movable?: boolean
+  responsive?: boolean
+  restore?: boolean
+  rotatable?: boolean
+  scalable?: boolean
+  toggleDragModeOnDblclick?: boolean
+  viewMode?: CropperViewMode
+  wheelZoomRatio?: number
+  zoomOnTouch?: boolean
+  zoomOnWheel?: boolean
+  zoomable?: boolean
+}

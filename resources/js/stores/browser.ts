@@ -11,6 +11,7 @@ import {
   QueueEntry,
   QueueEntryStatus,
   View,
+  CropperOptions,
 } from '__types__'
 import { AxiosResponse } from 'axios'
 import range from 'lodash/range'
@@ -74,6 +75,7 @@ interface State {
   chunkSize: number
   usePintura: boolean
   pinturaOptions?: PinturaOptions
+  cropperOptions?: CropperOptions
 }
 
 const useBrowserStore = defineStore('nova-file-manager/browser', {
@@ -145,6 +147,7 @@ const useBrowserStore = defineStore('nova-file-manager/browser', {
     // pintura
     usePintura: false,
     pinturaOptions: {},
+    cropperOptions: {},
   }),
 
   actions: {
@@ -761,6 +764,7 @@ const useBrowserStore = defineStore('nova-file-manager/browser', {
       callback,
       usePintura,
       pinturaOptions,
+      cropperOptions,
     }: BrowserConfig) {
       this.isField = true
       this.multiple = multiple
@@ -774,6 +778,7 @@ const useBrowserStore = defineStore('nova-file-manager/browser', {
       this.callback = callback
       this.usePintura = usePintura
       this.pinturaOptions = pinturaOptions
+      this.cropperOptions = cropperOptions
       this.error = undefined
       this.permissions = permissions
       this.disk = undefined
@@ -795,6 +800,7 @@ const useBrowserStore = defineStore('nova-file-manager/browser', {
       this.callback = undefined
       this.usePintura = false
       this.pinturaOptions = {}
+      this.cropperOptions = {}
       this.error = undefined
       this.permissions = undefined
       this.disk = undefined
@@ -809,7 +815,7 @@ const useBrowserStore = defineStore('nova-file-manager/browser', {
       this.closeBrowser()
     },
 
-    prepareTool({ singleDisk, permissions, tour, usePintura, pinturaOptions }: Config) {
+    prepareTool({ singleDisk, permissions, tour, usePintura, pinturaOptions, cropperOptions }: Config) {
       this.init()
       this.clearSelection()
 
@@ -821,6 +827,7 @@ const useBrowserStore = defineStore('nova-file-manager/browser', {
       this.tour = tour
       this.usePintura = usePintura
       this.pinturaOptions = pinturaOptions
+      this.cropperOptions = cropperOptions
       this.error = undefined
     },
   },
