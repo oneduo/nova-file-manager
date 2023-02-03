@@ -24,6 +24,7 @@ onBeforeMount(() => {
     tour: props.config.tour,
     usePintura: props.config.usePintura || false,
     pinturaOptions: props.config.pinturaOptions || {},
+    cropperOptions: props.config.cropperOptions || {},
   })
 
   store.loadFromQueryString()

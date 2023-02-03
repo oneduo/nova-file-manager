@@ -26,6 +26,7 @@ const buttonRef = ref<HTMLButtonElement | HTMLAnchorElement>()
 const cropper = ref<VueCropperMethods | null>(null)
 const destFile = ref<File>()
 const uploadIsOpen = computed(() => store.isOpen(UPLOAD_CROP_MODAL_NAME))
+const cropperOptions = computed(() => store.cropperOptions)
 
 const containerStyle = computed(() => ({
   height: '100%',
@@ -96,7 +97,13 @@ const submitCrop = (name: string) => {
       </div>
 
       <div class="h-full max-h-[70vh]">
-        <vue-cropper ref="cropper" :containerStyle="containerStyle" :src="file.url" :alt="file.name" :viewMode="1" />
+        <vue-cropper
+          ref="cropper"
+          :containerStyle="containerStyle"
+          :src="file.url"
+          :alt="file.name"
+          v-bind="cropperOptions"
+        />
       </div>
 
       <UploadCropModal

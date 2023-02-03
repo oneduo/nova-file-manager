@@ -52,6 +52,8 @@ trait InteractsWithFilesystem
 
     public array $pinturaOptions = [];
 
+    public array $cropperOptions = [];
+
     public function filesystem(Closure $callback): static
     {
         $this->filesystem = $callback;
@@ -327,6 +329,13 @@ trait InteractsWithFilesystem
         return $this;
     }
 
+    public function cropperOptions(array $options): static
+    {
+        $this->cropperOptions = array_merge($this->cropperOptions, $options);
+
+        return $this;
+    }
+
     public function options(): array
     {
         return with(app(NovaRequest::class), function (NovaRequest $request) {
@@ -348,6 +357,7 @@ trait InteractsWithFilesystem
                 ],
                 'usePintura' => config('nova-file-manager.use_pintura'),
                 'pinturaOptions' => $this->pinturaOptions,
+                'cropperOptions' => $this->cropperOptions,
             ];
         });
     }
@@ -377,6 +387,7 @@ trait InteractsWithFilesystem
             'showCropImage',
             'uploadRules',
             'pinturaOptions',
+            'cropperOptions',
         ];
 
         foreach ($map as $attribute) {

@@ -97,6 +97,8 @@ interface InteractsWithFilesystem extends ResolvesUrl
 
     public function pinturaOptions(array $options): static;
 
+    public function cropperOptions(array $options): static;
+
     public function options(): array;
 
     public function merge(self $other): static;
