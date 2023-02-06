@@ -62,6 +62,6 @@
     "vue-cropperjs": "^5.0.0",
     "vue-loader": "^17.0.1",
     "vuedraggable": "^4.1.0",
-    "vuex": "^4.0.2"
+    "vuex": "^4.1.0"
   }
 }
