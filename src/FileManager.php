@@ -6,19 +6,25 @@ namespace Oneduo\NovaFileManager;
 
 use Closure;
 use JsonException;
+use Laravel\Nova\Contracts\Cover;
 use Laravel\Nova\Fields\Field;
+use Laravel\Nova\Fields\HasThumbnail;
+use Laravel\Nova\Fields\PresentsImages;
 use Laravel\Nova\Fields\SupportsDependentFields;
 use Laravel\Nova\Http\Requests\NovaRequest;
 use Oneduo\NovaFileManager\Contracts\Services\FileManagerContract;
 use Oneduo\NovaFileManager\Contracts\Support\InteractsWithFilesystem as InteractsWithFilesystemContract;
 use Oneduo\NovaFileManager\Support\Asset;
 use Oneduo\NovaFileManager\Traits\Support\InteractsWithFilesystem;
+use Illuminate\Support\Facades\Storage;
 use stdClass;
 
-class FileManager extends Field implements InteractsWithFilesystemContract
+class FileManager extends Field implements InteractsWithFilesystemContract, Cover
 {
     use SupportsDependentFields;
     use InteractsWithFilesystem;
+    use HasThumbnail;
+    use PresentsImages;
 
     public $component = 'nova-file-manager-field';
 
@@ -39,6 +45,20 @@ class FileManager extends Field implements InteractsWithFilesystemContract
         parent::__construct($name, $attribute);
 
         $this->prepareStorageCallback($storageCallback);
+
+        $this->thumbnail(function ($value, $disk) {
+            return $value ? Storage::disk($disk)->url($value) : null;
+        });
+    }
+
+    public function resolveThumbnailUrl()
+    {
+        $value = data_get($this->value, '0.path');
+        $disk = data_get($this->value, '0.disk') ?? config('nova.storage_disk');
+
+        return is_callable($this->thumbnailUrlCallback)
+                    ? call_user_func($this->thumbnailUrlCallback, $value, $disk, $this->resource)
+                    : null;
     }
 
     public function multiple(bool $multiple = true): static
