@@ -172,7 +172,7 @@ let theme = {
     pattern: 'https://github.com/oneduo/nova-file-manager/edit/main/docs/:path',
   },
   algolia: {
-    apiKey: '604b4b8e3283395fce604dee6b51a415',
+    apiKey: '32f56aed4b8bbe7f4be1e4b55406d84a',
     indexName: 'nova-filemanager',
     appId: 'S4WENMVXID',
   },
