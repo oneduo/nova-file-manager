@@ -1,0 +1,1 @@
+import{_ as e,c as t,o as r,a}from"./app.8661ceea.js";const m=JSON.parse('{"title":"Requirements","description":"","frontmatter":{},"headers":[],"relativePath":"requirements.md"}'),s={name:"requirements.md"},i=a("",4),o=[i];function n(d,c,h,_,l,u){return r(),t("div",null,o)}var f=e(s,[["render",n]]);export{m as __pageData,f as default};
