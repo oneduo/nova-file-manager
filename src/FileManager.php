@@ -16,7 +16,6 @@ use Oneduo\NovaFileManager\Contracts\Services\FileManagerContract;
 use Oneduo\NovaFileManager\Contracts\Support\InteractsWithFilesystem as InteractsWithFilesystemContract;
 use Oneduo\NovaFileManager\Support\Asset;
 use Oneduo\NovaFileManager\Traits\Support\InteractsWithFilesystem;
-use Illuminate\Support\Facades\Storage;
 use stdClass;
 
 class FileManager extends Field implements InteractsWithFilesystemContract, Cover
@@ -46,27 +45,15 @@ class FileManager extends Field implements InteractsWithFilesystemContract, Cove
 
         $this->prepareStorageCallback($storageCallback);
 
-        $this->thumbnail(function ($value, $disk) {
-            return $value ? Storage::disk($disk)->url($value) : null;
-        });
-    }
+        $this->thumbnail(function (array $assets, $resource) {
+            foreach ($assets as $asset) {
+                if (data_get($asset, 'type') === 'image' && $url = data_get($asset, 'url')) {
+                    return $url;
+                }
+            }
 
-    public function resolveThumbnailUrl()
-    {
-        if (data_get($this->value, '0.type') !== 'image') {
             return null;
-        }
-        
-        if ($this->hasUrlResolver()){
-            return data_get($this->value, '0.url');
-        }
-        
-        $value = data_get($this->value, '0.path');
-        $disk = data_get($this->value, '0.disk') ?? config('nova.storage_disk');
-        
-        return is_callable($this->thumbnailUrlCallback)
-                    ? call_user_func($this->thumbnailUrlCallback, $value, $disk, $this->resource)
-                    : null;
+        });
     }
 
     public function multiple(bool $multiple = true): static
@@ -95,6 +82,14 @@ class FileManager extends Field implements InteractsWithFilesystemContract, Cove
         $this->wrapper = $name;
 
         return $this;
+    }
+
+    public function resolveThumbnailUrl()
+    {
+        return is_callable($this->thumbnailUrlCallback)
+            ? call_user_func($this->thumbnailUrlCallback, $this->value, $this->resource)
+            : null;
+
     }
 
     /**
