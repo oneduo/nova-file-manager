@@ -2,6 +2,14 @@
 
 All notable changes to `nova-file-manager` will be documented in this file
 
+## v0.8.3 - 2023-02-13
+
+### What's Changed
+
+- Implement Cover on field to allow for thumbnails by @miagg in https://github.com/oneduo/nova-file-manager/pull/159
+
+**Full Changelog**: https://github.com/oneduo/nova-file-manager/compare/v0.8.2...v0.8.3
+
 ## v0.8.2 - 2023-02-03
 
 ### What's Changed
@@ -206,6 +214,7 @@ rm -rf vendor/
 
 
 
+
 ```
 ```bash
 composer install oneduo/nova-file-manager
@@ -223,9 +232,11 @@ composer install oneduo/nova-file-manager
 
 
 
+
 ```
 ```bash
 composer rm bbs-lab/nova-file-manager
+
 
 
 
