@@ -6,7 +6,10 @@ namespace Oneduo\NovaFileManager;
 
 use Closure;
 use JsonException;
+use Laravel\Nova\Contracts\Cover;
 use Laravel\Nova\Fields\Field;
+use Laravel\Nova\Fields\HasThumbnail;
+use Laravel\Nova\Fields\PresentsImages;
 use Laravel\Nova\Fields\SupportsDependentFields;
 use Laravel\Nova\Http\Requests\NovaRequest;
 use Oneduo\NovaFileManager\Contracts\Services\FileManagerContract;
@@ -15,10 +18,12 @@ use Oneduo\NovaFileManager\Support\Asset;
 use Oneduo\NovaFileManager\Traits\Support\InteractsWithFilesystem;
 use stdClass;
 
-class FileManager extends Field implements InteractsWithFilesystemContract
+class FileManager extends Field implements InteractsWithFilesystemContract, Cover
 {
     use SupportsDependentFields;
     use InteractsWithFilesystem;
+    use HasThumbnail;
+    use PresentsImages;
 
     public $component = 'nova-file-manager-field';
 
@@ -39,6 +44,16 @@ class FileManager extends Field implements InteractsWithFilesystemContract
         parent::__construct($name, $attribute);
 
         $this->prepareStorageCallback($storageCallback);
+
+        $this->thumbnail(function (array $assets, $resource) {
+            foreach ($assets as $asset) {
+                if (data_get($asset, 'type') === 'image' && $url = data_get($asset, 'url')) {
+                    return $url;
+                }
+            }
+
+            return null;
+        });
     }
 
     public function multiple(bool $multiple = true): static
@@ -67,6 +82,14 @@ class FileManager extends Field implements InteractsWithFilesystemContract
         $this->wrapper = $name;
 
         return $this;
+    }
+
+    public function resolveThumbnailUrl()
+    {
+        return is_callable($this->thumbnailUrlCallback)
+            ? call_user_func($this->thumbnailUrlCallback, $this->value, $this->resource)
+            : null;
+
     }
 
     /**
