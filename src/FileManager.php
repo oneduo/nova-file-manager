@@ -86,7 +86,7 @@ class FileManager extends Field implements InteractsWithFilesystemContract, Cove
 
     public function resolveThumbnailUrl()
     {
-        return is_callable($this->thumbnailUrlCallback)
+        return is_callable($this->thumbnailUrlCallback) && !empty($this->value)
             ? call_user_func($this->thumbnailUrlCallback, $this->value, $this->resource)
             : null;
 
