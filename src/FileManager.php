@@ -53,9 +53,17 @@ class FileManager extends Field implements InteractsWithFilesystemContract, Cove
 
     public function resolveThumbnailUrl()
     {
+        if (data_get($this->value, '0.type') !== 'image') {
+            return null;
+        }
+        
+        if ($this->hasUrlResolver()){
+            return data_get($this->value, '0.url');
+        }
+        
         $value = data_get($this->value, '0.path');
         $disk = data_get($this->value, '0.disk') ?? config('nova.storage_disk');
-
+        
         return is_callable($this->thumbnailUrlCallback)
                     ? call_user_func($this->thumbnailUrlCallback, $value, $disk, $this->resource)
                     : null;
