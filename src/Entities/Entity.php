@@ -105,7 +105,7 @@ abstract class Entity implements Arrayable, EntityContract
      */
     public function size(): int|string
     {
-        $value = $this->manager->filesystem()->size($this->path);
+        $value = $this->path ? $this->manager->filesystem()->size($this->path) : 0;
 
         if (!config('nova-file-manager.human_readable_size')) {
             return $value;
