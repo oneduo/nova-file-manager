@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { DocumentIcon } from '@heroicons/vue/24/outline'
+import { DocumentIcon, ExclamationTriangleIcon } from '@heroicons/vue/24/outline'
 import { Entity, NovaField } from '__types__'
 import { computed, onMounted } from 'vue'
 import useBrowserStore from '@/stores/browser'
@@ -47,8 +47,15 @@ const elevations = ['z-10', 'z-20', 'z-30']
         <div v-if="fieldHasValue">
           <div class="isolate flex -space-x-2">
             <template v-for="(file, index) in thumbnails" :key="`thumbnail-${file.id}`">
+              <div
+                v-if="!file.exists"
+                class="relative inline-block flex items-center justify-center h-10 w-10 rounded-xl ring-gray-200 dark:ring-gray-700 ring-1 shadow bg-gray-50 dark:bg-gray-900 text-red-500"
+                :class="elevations[index]"
+              >
+                <ExclamationTriangleIcon class="h-6 w-6" />
+              </div>
               <img
-                v-if="file.type === 'image'"
+                v-else-if="file.type === 'image'"
                 :src="file.url"
                 class="relative inline-block h-10 w-10 rounded-xl ring-gray-200 dark:ring-gray-700 ring-1 shadow object-cover"
                 :class="elevations[index]"
