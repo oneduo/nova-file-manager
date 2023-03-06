@@ -39,7 +39,7 @@
     "eslint-config-prettier": "^8.6.0",
     "eslint-plugin-import": "^2.27.5",
     "eslint-plugin-prettier-vue": "^4.2.0",
-    "eslint-plugin-tailwindcss": "^3.9.0",
+    "eslint-plugin-tailwindcss": "^3.10.1",
     "eslint-plugin-vue": "^9.9.0",
     "form-backend-validation": "^2.4.0",
     "laravel-mix": "^6.0.41",
