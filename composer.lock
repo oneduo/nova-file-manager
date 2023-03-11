@@ -8,25 +8,26 @@
     "packages": [
         {
             "name": "brick/math",
-            "version": "0.11.0",
+            "version": "0.10.2",
             "source": {
                 "type": "git",
                 "url": "https://github.com/brick/math.git",
-                "reference": "0ad82ce168c82ba30d1c01ec86116ab52f589478"
+                "reference": "459f2781e1a08d52ee56b0b1444086e038561e3f"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/brick/math/zipball/0ad82ce168c82ba30d1c01ec86116ab52f589478",
-                "reference": "0ad82ce168c82ba30d1c01ec86116ab52f589478",
+                "url": "https://api.github.com/repos/brick/math/zipball/459f2781e1a08d52ee56b0b1444086e038561e3f",
+                "reference": "459f2781e1a08d52ee56b0b1444086e038561e3f",
                 "shasum": ""
             },
             "require": {
-                "php": "^8.0"
+                "ext-json": "*",
+                "php": "^7.4 || ^8.0"
             },
             "require-dev": {
                 "php-coveralls/php-coveralls": "^2.2",
                 "phpunit/phpunit": "^9.0",
-                "vimeo/psalm": "5.0.0"
+                "vimeo/psalm": "4.25.0"
             },
             "type": "library",
             "autoload": {
@@ -51,7 +52,7 @@
             ],
             "support": {
                 "issues": "https://github.com/brick/math/issues",
-                "source": "https://github.com/brick/math/tree/0.11.0"
+                "source": "https://github.com/brick/math/tree/0.10.2"
             },
             "funding": [
                 {
@@ -59,7 +60,7 @@
                     "type": "github"
                 }
             ],
-            "time": "2023-01-15T23:15:59+00:00"
+            "time": "2022-08-10T22:54:19+00:00"
         },
         {
             "name": "brick/money",
@@ -289,16 +290,16 @@
         },
         {
             "name": "doctrine/dbal",
-            "version": "3.6.0",
+            "version": "3.6.1",
             "source": {
                 "type": "git",
                 "url": "https://github.com/doctrine/dbal.git",
-                "reference": "85b98cb23c8af471a67abfe14485da696bcabc2e"
+                "reference": "57815c7bbcda3cd18871d253c1dd8cbe56f8526e"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/doctrine/dbal/zipball/85b98cb23c8af471a67abfe14485da696bcabc2e",
-                "reference": "85b98cb23c8af471a67abfe14485da696bcabc2e",
+                "url": "https://api.github.com/repos/doctrine/dbal/zipball/57815c7bbcda3cd18871d253c1dd8cbe56f8526e",
+                "reference": "57815c7bbcda3cd18871d253c1dd8cbe56f8526e",
                 "shasum": ""
             },
             "require": {
@@ -314,11 +315,11 @@
                 "doctrine/coding-standard": "11.1.0",
                 "fig/log-test": "^1",
                 "jetbrains/phpstorm-stubs": "2022.3",
-                "phpstan/phpstan": "1.9.14",
-                "phpstan/phpstan-strict-rules": "^1.4",
-                "phpunit/phpunit": "9.6.3",
+                "phpstan/phpstan": "1.10.3",
+                "phpstan/phpstan-strict-rules": "^1.5",
+                "phpunit/phpunit": "9.6.4",
                 "psalm/plugin-phpunit": "0.18.4",
-                "squizlabs/php_codesniffer": "3.7.1",
+                "squizlabs/php_codesniffer": "3.7.2",
                 "symfony/cache": "^5.4|^6.0",
                 "symfony/console": "^4.4|^5.4|^6.0",
                 "vimeo/psalm": "4.30.0"
@@ -381,7 +382,7 @@
             ],
             "support": {
                 "issues": "https://github.com/doctrine/dbal/issues",
-                "source": "https://github.com/doctrine/dbal/tree/3.6.0"
+                "source": "https://github.com/doctrine/dbal/tree/3.6.1"
             },
             "funding": [
                 {
@@ -397,7 +398,7 @@
                     "type": "tidelift"
                 }
             ],
-            "time": "2023-02-07T22:52:03+00:00"
+            "time": "2023-03-02T19:26:24+00:00"
         },
         {
             "name": "doctrine/deprecations",
@@ -1385,17 +1386,17 @@
         },
         {
             "name": "laravel/nova",
-            "version": "4.22.1",
+            "version": "4.22.2",
             "source": {
                 "type": "git",
                 "url": "git@github.com:laravel/nova.git",
-                "reference": "3daa3889d1bc6687f71282d8079ba174bc2283fe"
+                "reference": "845062cbaba71af76a9e29580fba07525350d9b2"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://nova.laravel.com/dist/laravel/nova/laravel-nova-3daa3889d1bc6687f71282d8079ba174bc2283fe-zip-6b73aa.zip",
-                "reference": "3daa3889d1bc6687f71282d8079ba174bc2283fe",
-                "shasum": "6ae486d53c6aa00d16ef36395e1688b0e2e93b67"
+                "url": "https://nova.laravel.com/dist/laravel/nova/laravel-nova-845062cbaba71af76a9e29580fba07525350d9b2-zip-ffdb23.zip",
+                "reference": "845062cbaba71af76a9e29580fba07525350d9b2",
+                "shasum": "4816ab2483d1049577f0ca82ed34ac27d3be1ee9"
             },
             "require": {
                 "brick/money": "^0.5.0|^0.6.0|^0.7.0|^0.8.0",
@@ -1415,11 +1416,11 @@
             },
             "require-dev": {
                 "laravel/nova-dusk-suite": "8.4.x-dev|9.4.x-dev|10.4.x-dev",
-                "laravel/pint": "^1.4",
-                "laravel/scout": "^9.8",
+                "laravel/pint": "^1.6",
+                "laravel/scout": "^9.8|^10.0",
                 "mockery/mockery": "^1.4.4",
-                "nunomaduro/larastan": "^1.0.1|^2.4",
-                "orchestra/testbench-dusk": "^6.24|^7.0|^8.0",
+                "nunomaduro/larastan": "^1.0.1|^2.5.1",
+                "orchestra/testbench-dusk": "^6.24|^7.21|^8.0",
                 "phpunit/phpunit": "^9.5.27",
                 "predis/predis": "^1.1.9|^2.0"
             },
@@ -1488,9 +1489,9 @@
                 "laravel"
             ],
             "support": {
-                "source": "https://github.com/laravel/nova/tree/v4.22.1"
+                "source": "https://github.com/laravel/nova/tree/v4.22.2"
             },
-            "time": "2023-02-23T23:50:42+00:00"
+            "time": "2023-03-07T18:10:41+00:00"
         },
         {
             "name": "laravel/serializable-closure",
@@ -2441,16 +2442,16 @@
         },
         {
             "name": "openspout/openspout",
-            "version": "v4.12.1",
+            "version": "v4.12.2",
             "source": {
                 "type": "git",
                 "url": "https://github.com/openspout/openspout.git",
-                "reference": "7359af2ffdd4523f53f182f97347389362b9d352"
+                "reference": "90ceeefef3750dd2afab95689ed2107dd576905e"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/openspout/openspout/zipball/7359af2ffdd4523f53f182f97347389362b9d352",
-                "reference": "7359af2ffdd4523f53f182f97347389362b9d352",
+                "url": "https://api.github.com/repos/openspout/openspout/zipball/90ceeefef3750dd2afab95689ed2107dd576905e",
+                "reference": "90ceeefef3750dd2afab95689ed2107dd576905e",
                 "shasum": ""
             },
             "require": {
@@ -2518,7 +2519,7 @@
             ],
             "support": {
                 "issues": "https://github.com/openspout/openspout/issues",
-                "source": "https://github.com/openspout/openspout/tree/v4.12.1"
+                "source": "https://github.com/openspout/openspout/tree/v4.12.2"
             },
             "funding": [
                 {
@@ -2530,7 +2531,7 @@
                     "type": "github"
                 }
             ],
-            "time": "2023-01-19T13:22:14+00:00"
+            "time": "2023-03-03T07:45:00+00:00"
         },
         {
             "name": "phpoption/phpoption",
@@ -3017,20 +3018,20 @@
         },
         {
             "name": "ramsey/uuid",
-            "version": "4.x-dev",
+            "version": "4.7.3",
             "source": {
                 "type": "git",
                 "url": "https://github.com/ramsey/uuid.git",
-                "reference": "bf2bee216a4379eaf62162307d62bb7850405fec"
+                "reference": "433b2014e3979047db08a17a205f410ba3869cf2"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/ramsey/uuid/zipball/bf2bee216a4379eaf62162307d62bb7850405fec",
-                "reference": "bf2bee216a4379eaf62162307d62bb7850405fec",
+                "url": "https://api.github.com/repos/ramsey/uuid/zipball/433b2014e3979047db08a17a205f410ba3869cf2",
+                "reference": "433b2014e3979047db08a17a205f410ba3869cf2",
                 "shasum": ""
             },
             "require": {
-                "brick/math": "^0.8.8 || ^0.9 || ^0.10 || ^0.11",
+                "brick/math": "^0.8.8 || ^0.9 || ^0.10",
                 "ext-json": "*",
                 "php": "^8.0",
                 "ramsey/collection": "^1.2 || ^2.0"
@@ -3067,7 +3068,6 @@
                 "paragonie/random-lib": "Provides RandomLib for use with the RandomLibAdapter",
                 "ramsey/uuid-doctrine": "Allows the use of Ramsey\\Uuid\\Uuid as Doctrine field type."
             },
-            "default-branch": true,
             "type": "library",
             "extra": {
                 "captainhook": {
@@ -3094,7 +3094,7 @@
             ],
             "support": {
                 "issues": "https://github.com/ramsey/uuid/issues",
-                "source": "https://github.com/ramsey/uuid/tree/4.x"
+                "source": "https://github.com/ramsey/uuid/tree/4.7.3"
             },
             "funding": [
                 {
@@ -3106,7 +3106,7 @@
                     "type": "tidelift"
                 }
             ],
-            "time": "2023-02-07T16:14:23+00:00"
+            "time": "2023-01-12T18:13:24+00:00"
         },
         {
             "name": "rap2hpoutre/fast-excel",
@@ -6363,16 +6363,16 @@
         },
         {
             "name": "guzzlehttp/psr7",
-            "version": "2.4.3",
+            "version": "2.4.4",
             "source": {
                 "type": "git",
                 "url": "https://github.com/guzzle/psr7.git",
-                "reference": "67c26b443f348a51926030c83481b85718457d3d"
+                "reference": "3cf1b6d4f0c820a2cf8bcaec39fc698f3443b5cf"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/guzzle/psr7/zipball/67c26b443f348a51926030c83481b85718457d3d",
-                "reference": "67c26b443f348a51926030c83481b85718457d3d",
+                "url": "https://api.github.com/repos/guzzle/psr7/zipball/3cf1b6d4f0c820a2cf8bcaec39fc698f3443b5cf",
+                "reference": "3cf1b6d4f0c820a2cf8bcaec39fc698f3443b5cf",
                 "shasum": ""
             },
             "require": {
@@ -6462,7 +6462,7 @@
             ],
             "support": {
                 "issues": "https://github.com/guzzle/psr7/issues",
-                "source": "https://github.com/guzzle/psr7/tree/2.4.3"
+                "source": "https://github.com/guzzle/psr7/tree/2.4.4"
             },
             "funding": [
                 {
@@ -6478,7 +6478,7 @@
                     "type": "tidelift"
                 }
             ],
-            "time": "2022-10-26T14:07:24+00:00"
+            "time": "2023-03-09T13:19:02+00:00"
         },
         {
             "name": "hamcrest/hamcrest-php",
