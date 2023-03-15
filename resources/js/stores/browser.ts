@@ -683,7 +683,7 @@ const useBrowserStore = defineStore('nova-file-manager/browser', {
      * GET request wrapper
      */
     async get({ path, params, options = {} }: { path?: string; params?: object; options?: object }) {
-      return await client().get(this.url(`/nova-vendor/nova-file-manager${path ?? '/'}`), {
+      return await client().get(this.url(`/nova-vendor/nova-file-manager${path ?? ''}`), {
         params,
         ...options,
       })
@@ -693,7 +693,7 @@ const useBrowserStore = defineStore('nova-file-manager/browser', {
      * POST request wrapper
      */
     async post<T>({ path, data }: { path?: string; data?: Record<string, any> }): Promise<AxiosResponse<T>> {
-      return await client().post<T>(this.url(`/nova-vendor/nova-file-manager${path ?? '/'}`), data)
+      return await client().post<T>(this.url(`/nova-vendor/nova-file-manager${path ?? ''}`), data)
     },
 
     payload(params: object) {
