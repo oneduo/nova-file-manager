@@ -2,6 +2,14 @@
 
 All notable changes to `nova-file-manager` will be documented in this file
 
+## v0.9.0 - 2023-03-15
+
+### What's Changed
+
+- feat: laravel 10 support by @mikaelpopowicz in https://github.com/oneduo/nova-file-manager/pull/207
+
+**Full Changelog**: https://github.com/oneduo/nova-file-manager/compare/v0.8.4...v0.9.0
+
 ## v0.8.4 - 2023-03-15
 
 ### What's Changed
@@ -224,6 +232,7 @@ rm -rf vendor/
 
 
 
+
 ```
 ```bash
 composer install oneduo/nova-file-manager
@@ -243,9 +252,11 @@ composer install oneduo/nova-file-manager
 
 
 
+
 ```
 ```bash
 composer rm bbs-lab/nova-file-manager
+
 
 
 
