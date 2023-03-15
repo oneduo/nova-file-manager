@@ -2,6 +2,14 @@
 
 All notable changes to `nova-file-manager` will be documented in this file
 
+## v0.8.4 - 2023-03-15
+
+### What's Changed
+
+- fix: prevent mixed content type error by @mikaelpopowicz in https://github.com/oneduo/nova-file-manager/pull/206
+
+**Full Changelog**: https://github.com/oneduo/nova-file-manager/compare/v0.8.3...v0.8.4
+
 ## v0.8.3 - 2023-02-13
 
 ### What's Changed
@@ -215,6 +223,7 @@ rm -rf vendor/
 
 
 
+
 ```
 ```bash
 composer install oneduo/nova-file-manager
@@ -233,9 +242,11 @@ composer install oneduo/nova-file-manager
 
 
 
+
 ```
 ```bash
 composer rm bbs-lab/nova-file-manager
+
 
 
 
