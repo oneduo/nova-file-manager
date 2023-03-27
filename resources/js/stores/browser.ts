@@ -2,6 +2,7 @@ import {
   Breadcrumb,
   BrowserConfig,
   Config,
+  CropperOptions,
   Entity,
   ErrorsBag,
   Folder,
@@ -11,7 +12,6 @@ import {
   QueueEntry,
   QueueEntryStatus,
   View,
-  CropperOptions,
 } from '__types__'
 import { AxiosResponse } from 'axios'
 import range from 'lodash/range'
@@ -76,6 +76,7 @@ interface State {
   usePintura: boolean
   pinturaOptions?: PinturaOptions
   cropperOptions?: CropperOptions
+  component?: string
 }
 
 const useBrowserStore = defineStore('nova-file-manager/browser', {
@@ -713,6 +714,25 @@ const useBrowserStore = defineStore('nova-file-manager/browser', {
         fieldMode: this.isField,
       }
 
+      if (this.component?.length && ['Nova.Create', 'Nova.Update'].includes(this.component)) {
+        let editMode
+
+        switch (this.component) {
+        case 'Nova.Create':
+          editMode = 'create'
+          break
+        case 'Nova.Update':
+          editMode = 'update'
+          break
+        }
+
+        data = {
+          ...data,
+          editing: true,
+          editMode,
+        }
+      }
+
       if (this.wrapper?.length) {
         data = {
           ...data,
@@ -765,6 +785,7 @@ const useBrowserStore = defineStore('nova-file-manager/browser', {
       usePintura,
       pinturaOptions,
       cropperOptions,
+      component,
     }: BrowserConfig) {
       this.isField = true
       this.multiple = multiple
@@ -782,6 +803,7 @@ const useBrowserStore = defineStore('nova-file-manager/browser', {
       this.error = undefined
       this.permissions = permissions
       this.disk = undefined
+      this.component = component
 
       this.openModal({ name: BROWSER_MODAL_NAME })
       this.setSelection({ files: [...initialFiles] })

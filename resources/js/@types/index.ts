@@ -28,6 +28,7 @@ export type BrowserConfig = {
   usePintura: boolean
   pinturaOptions?: PinturaOptions
   cropperOptions?: CropperOptions
+  component?: string
 }
 
 export type Config = {
