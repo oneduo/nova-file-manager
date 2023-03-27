@@ -108,6 +108,7 @@ export default defineComponent({
         usePintura: this.currentField.usePintura ?? false,
         pinturaOptions: this.currentField.pinturaOptions ?? {},
         cropperOptions: this.currentField.cropperOptions ?? {},
+        component: this.$inertia?.page?.component,
       })
     },
 
