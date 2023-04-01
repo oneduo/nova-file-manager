@@ -7210,16 +7210,16 @@
         },
         {
             "name": "orchestra/testbench-dusk",
-            "version": "v7.23.0",
+            "version": "v7.24.0",
             "source": {
                 "type": "git",
                 "url": "https://github.com/orchestral/testbench-dusk.git",
-                "reference": "6980703b4ae4350ec0e1de5ff2cd24b729faba5a"
+                "reference": "4c205b605d6b4c062cd7b662ece388257f0f54c7"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/orchestral/testbench-dusk/zipball/6980703b4ae4350ec0e1de5ff2cd24b729faba5a",
-                "reference": "6980703b4ae4350ec0e1de5ff2cd24b729faba5a",
+                "url": "https://api.github.com/repos/orchestral/testbench-dusk/zipball/4c205b605d6b4c062cd7b662ece388257f0f54c7",
+                "reference": "4c205b605d6b4c062cd7b662ece388257f0f54c7",
                 "shasum": ""
             },
             "require": {
@@ -7227,7 +7227,7 @@
                 "laravel/dusk": "^7.7",
                 "laravel/serializable-closure": "^1.0",
                 "orchestra/dusk-updater": "^1.5 || ^2.0",
-                "orchestra/testbench": "^7.22.1",
+                "orchestra/testbench": "^7.23",
                 "php": "^8.0",
                 "php-webdriver/webdriver": "^1.9"
             },
@@ -7274,9 +7274,9 @@
             "description": "Laravel Dusk Testing Helper for Packages Development",
             "support": {
                 "issues": "https://github.com/orchestral/testbench-dusk/issues",
-                "source": "https://github.com/orchestral/testbench-dusk/tree/v7.23.0"
+                "source": "https://github.com/orchestral/testbench-dusk/tree/v7.24.0"
             },
-            "time": "2023-03-03T03:58:30+00:00"
+            "time": "2023-03-27T15:15:43+00:00"
         },
         {
             "name": "pestphp/pest",
