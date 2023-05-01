@@ -47,7 +47,7 @@
     "lodash": "^4.17.19",
     "lodash-es": "^4.17.21",
     "pinia": "^2.0.33",
-    "postcss": "^8.4.14",
+    "postcss": "^8.4.23",
     "postcss-import": "^15.1.0",
     "prettier": "^2.8.8",
     "resumablejs": "^1.1.0",
