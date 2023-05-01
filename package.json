@@ -28,7 +28,7 @@
     "@types/lodash": "^4.14.191",
     "@types/lodash-es": "^4.17.6",
     "@types/vue-cropperjs": "^4.1.2",
-    "@types/wicg-file-system-access": "^2020.9.5",
+    "@types/wicg-file-system-access": "^2020.9.6",
     "@vitejs/plugin-vue": "^4.1.0",
     "@vue/eslint-config-typescript": "^11.0.2",
     "autoprefixer": "^10.4.13",
