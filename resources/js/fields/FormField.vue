@@ -193,7 +193,7 @@ export default defineComponent({
             leave-from="opacity-100"
             leave-to="opacity-0"
           >
-            <div class="fixed inset-0 bg-gray-800/20 backdrop-blur-sm transition-opacity" />
+            <div class="fixed inset-0 bg-gray-800/20  transition-opacity" />
           </TransitionChild>
 
           <div :class="['fixed z-[60] inset-0 overflow-y-auto w-full', { dark }]">

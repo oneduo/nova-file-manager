@@ -74,7 +74,7 @@ watch(files, () => submit())
         leave-to="opacity-0"
       >
         <div
-          :class="['fixed inset-0  backdrop-blur-sm transition-opacity', active ? 'bg-blue-900/20' : 'bg-gray-800/20']"
+          :class="['fixed inset-0   transition-opacity', active ? 'bg-blue-900/20' : 'bg-gray-800/20']"
         />
       </TransitionChild>
 

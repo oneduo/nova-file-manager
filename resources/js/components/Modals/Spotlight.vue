@@ -82,7 +82,7 @@ const onSearch = debounce(({ target: { value } }) => {
         leave-from="opacity-100"
         leave-to="opacity-0"
       >
-        <div class="fixed inset-0 bg-gray-800/20 backdrop-blur-sm transition-opacity" />
+        <div class="fixed inset-0 bg-gray-800/20  transition-opacity" />
       </TransitionChild>
 
       <div :class="{ dark }" class="fixed inset-0 z-10 overflow-y-auto p-4 sm:p-6 md:p-20">
