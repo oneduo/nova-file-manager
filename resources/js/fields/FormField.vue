@@ -196,7 +196,7 @@ export default defineComponent({
             <div class="fixed inset-0 bg-gray-800/20  transition-opacity" />
           </TransitionChild>
 
-          <div :class="['fixed z-[60] inset-0 overflow-y-auto w-full', { dark }]">
+          <div :class="['fixed z-[100] inset-0 overflow-y-auto w-full', { dark }]">
             <div class="flex items-start justify-center min-h-full">
               <TransitionChild
                 as="template"
