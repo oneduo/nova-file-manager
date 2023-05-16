@@ -212,7 +212,7 @@ class FileManagerService implements FileManagerContract, ResolvesUrlContract
             ->explode(DIRECTORY_SEPARATOR)
             ->filter(fn (string $item) => !blank($item))
             ->each(function (string $item) use ($paths) {
-                return $paths->push($paths->last().DIRECTORY_SEPARATOR.$item);
+                return $paths->push($paths->last() . DIRECTORY_SEPARATOR . $item);
             });
 
         // we map the folders to match the breadcrumbs format
@@ -389,7 +389,7 @@ class FileManagerService implements FileManagerContract, ResolvesUrlContract
      */
     public function entityClassForType(string $type): string
     {
-        return config('nova-file-manager.entities.'.$type) ?? config('nova-file-manager.entities.default');
+        return config('nova-file-manager.entities.' . $type) ?? config('nova-file-manager.entities.default');
     }
 
     /**

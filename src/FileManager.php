@@ -89,7 +89,6 @@ class FileManager extends Field implements InteractsWithFilesystemContract, Cove
         return is_callable($this->thumbnailUrlCallback) && !empty($this->value)
             ? call_user_func($this->thumbnailUrlCallback, $this->value, $this->resource)
             : null;
-
     }
 
     /**
@@ -126,6 +125,8 @@ class FileManager extends Field implements InteractsWithFilesystemContract, Cove
 
     protected function prepareStorageCallback(Closure $storageCallback = null): void
     {
+
+
         $this->storageCallback = $storageCallback ?? function (
             NovaRequest $request,
             $model,
@@ -143,7 +144,7 @@ class FileManager extends Field implements InteractsWithFilesystemContract, Cove
             $files = collect($payload);
 
             if ($this->multiple) {
-                $value = collect($files)->map(fn(array $file) => new Asset(...$file));
+                $value = collect($files)->map(fn (array $file) => new Asset(...$file));
             } else {
                 $value = $files->isNotEmpty() ? new Asset(...$files->first()) : null;
             }
@@ -154,9 +155,16 @@ class FileManager extends Field implements InteractsWithFilesystemContract, Cove
 
     protected function resolveAttribute($resource, $attribute = null): ?array
     {
-        if (!$value = parent::resolveAttribute($resource, $attribute)) {
+        $value = $resource->getAttachment();
+
+
+        if (!$value) {
             return null;
         }
+
+        // if (!$value = parent::resolveAttribute($resource, $attribute)) {
+        //     return null;
+        // }
 
         if ($value instanceof Asset) {
             $value = collect([$value]);
@@ -168,7 +176,7 @@ class FileManager extends Field implements InteractsWithFilesystemContract, Cove
 
         if (is_array($value)) {
             if ($this->multiple) {
-                $value = collect($value)->map(fn(array|object $asset) => new Asset(...(array)$asset));
+                $value = collect($value)->map(fn (array|object $asset) => new Asset(...(array)$asset));
             } else {
                 $value = collect([new Asset(...$value)]);
             }
@@ -178,7 +186,10 @@ class FileManager extends Field implements InteractsWithFilesystemContract, Cove
 
         return $value
             ->map(function (Asset $asset) {
+
                 $disk = $this->resolveFilesystem(app(NovaRequest::class)) ?? $asset->disk;
+
+                //  dd($this->resolveFilesystem(app(NovaRequest::class)));
 
                 $manager = app(FileManagerContract::class, ['disk' => $disk]);
 

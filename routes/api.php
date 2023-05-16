@@ -7,6 +7,7 @@ use Oneduo\NovaFileManager\Http\Controllers\DiskController;
 use Oneduo\NovaFileManager\Http\Controllers\FileController;
 use Oneduo\NovaFileManager\Http\Controllers\FolderController;
 use Oneduo\NovaFileManager\Http\Controllers\IndexController;
+//use Spatie\LaravelImageOptimizer\Middlewares\OptimizeImages;
 
 /*
 |--------------------------------------------------------------------------

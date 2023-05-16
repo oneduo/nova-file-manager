@@ -14,6 +14,7 @@ use Oneduo\NovaFileManager\Contracts\Services\FileManagerContract;
 use Oneduo\NovaFileManager\Filesystem\Upload\Uploader;
 use Oneduo\NovaFileManager\Http\Middleware\Authorize;
 use Oneduo\NovaFileManager\Services\FileManagerService;
+use Spatie\LaravelImageOptimizer\Middlewares\OptimizeImages;
 
 class ToolServiceProvider extends ServiceProvider
 {
@@ -43,7 +44,9 @@ class ToolServiceProvider extends ServiceProvider
             return;
         }
 
-        Nova::router(['nova', Authenticate::class, Authorize::class], 'nova-file-manager')
+        Nova::router([
+            'nova', Authenticate::class, Authorize::class
+        ], 'nova-file-manager')
             ->group(__DIR__ . '/../routes/inertia.php');
 
         Route::middleware(['nova:api', Authorize::class])

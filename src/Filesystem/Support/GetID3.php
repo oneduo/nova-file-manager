@@ -50,8 +50,10 @@ class GetID3 extends BaseGetID3
             //if (is_readable($filename) && is_file($filename) && ($this->fp = fopen($filename, 'rb'))) { // see https://www.getid3.org/phpBB3/viewtopic.php?t=1720
             if (($fp != null) && ((get_resource_type($fp) == 'file') || (get_resource_type($fp) == 'stream'))) {
                 $this->fp = $fp;
-            } elseif ((is_readable($filename) || file_exists($filename)) && is_file($filename) && ($this->fp = fopen($filename,
-                    'rb'))) {
+            } elseif ((is_readable($filename) || file_exists($filename)) && is_file($filename) && ($this->fp = fopen(
+                $filename,
+                'rb'
+            ))) {
                 // great
             } else {
                 $errormessagelist = [];
@@ -68,7 +70,7 @@ class GetID3 extends BaseGetID3
                     $errormessagelist[] = 'fopen failed';
                 }
 
-                throw new getid3_exception('Could not open "'.$filename.'" ('.implode('; ', $errormessagelist).')');
+                throw new getid3_exception('Could not open "' . $filename . '" (' . implode('; ', $errormessagelist) . ')');
             }
 
             $this->info['filesize'] = (!is_null($filesize) ? $filesize : filesize($filename));
@@ -78,7 +80,7 @@ class GetID3 extends BaseGetID3
             $realpath = is_bool(realpath(dirname($filename))) ? dirname($filename) : realpath(dirname($filename));
             $this->info['filepath'] = str_replace('\\', '/', $realpath);
             $this->info['filename'] = getid3_lib::mb_basename($filename);
-            $this->info['filenamepath'] = $this->info['filepath'].'/'.$this->info['filename'];
+            $this->info['filenamepath'] = $this->info['filepath'] . '/' . $this->info['filename'];
 
             // set more parameters
             $this->info['avdataoffset'] = 0;
@@ -100,24 +102,29 @@ class GetID3 extends BaseGetID3
                 $fseek = fseek($this->fp, 0, SEEK_END);
                 if (($fseek < 0) || (($this->info['filesize'] != 0) && (ftell($this->fp) == 0)) ||
                     ($this->info['filesize'] < 0) ||
-                    (ftell($this->fp) < 0)) {
+                    (ftell($this->fp) < 0)
+                ) {
                     $real_filesize = getid3_lib::getFileSizeSyscall($this->info['filenamepath']);
 
                     if ($real_filesize === false) {
                         unset($this->info['filesize']);
                         fclose($this->fp);
 
-                        throw new getid3_exception('Unable to determine actual filesize. File is most likely larger than '.round(PHP_INT_MAX / 1073741824).'GB and is not supported by PHP.');
+                        throw new getid3_exception('Unable to determine actual filesize. File is most likely larger than ' . round(PHP_INT_MAX / 1073741824) . 'GB and is not supported by PHP.');
                     } elseif (getid3_lib::intValueSupported($real_filesize)) {
                         unset($this->info['filesize']);
                         fclose($this->fp);
 
-                        throw new getid3_exception('PHP seems to think the file is larger than '.round(PHP_INT_MAX / 1073741824).'GB, but filesystem reports it as '.number_format($real_filesize / 1073741824,
-                                3).'GB, please report to info@getid3.org');
+                        throw new getid3_exception('PHP seems to think the file is larger than ' . round(PHP_INT_MAX / 1073741824) . 'GB, but filesystem reports it as ' . number_format(
+                            $real_filesize / 1073741824,
+                            3
+                        ) . 'GB, please report to info@getid3.org');
                     }
                     $this->info['filesize'] = $real_filesize;
-                    $this->warning('File is larger than '.round(PHP_INT_MAX / 1073741824).'GB (filesystem reports it as '.number_format($real_filesize / 1073741824,
-                            3).'GB) and is not properly supported by PHP.');
+                    $this->warning('File is larger than ' . round(PHP_INT_MAX / 1073741824) . 'GB (filesystem reports it as ' . number_format(
+                        $real_filesize / 1073741824,
+                        3
+                    ) . 'GB) and is not properly supported by PHP.');
                 }
             }
 
