@@ -19,13 +19,13 @@ class UploadFileRequest extends BaseRequest
 {
     public function authorize(): bool
     {
-        if (!$this->canUploadFile()) {
+        if (! $this->canUploadFile()) {
             return false;
         }
 
         $path = ltrim(dirname($this->input('resumableFilename')), '/.');
 
-        if (!empty($path) && !$this->canCreateFolder()) {
+        if (! empty($path) && ! $this->canCreateFolder()) {
             return false;
         }
 
@@ -34,7 +34,7 @@ class UploadFileRequest extends BaseRequest
 
     public function authorizationActionAttribute(string $class = null): string
     {
-        if (!$this->canUploadFile()) {
+        if (! $this->canUploadFile()) {
             return parent::authorizationActionAttribute();
         }
 
@@ -55,7 +55,7 @@ class UploadFileRequest extends BaseRequest
 
     public function validateUpload(?UploadedFile $file = null, bool $saving = false): bool
     {
-        if (!$this->element()->hasUploadValidator()) {
+        if (! $this->element()->hasUploadValidator()) {
             return true;
         }
 

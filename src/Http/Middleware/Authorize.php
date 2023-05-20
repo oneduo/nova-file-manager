@@ -17,9 +17,7 @@ class Authorize
     /**
      * Handle the incoming request.
      *
-     * @param  \Illuminate\Http\Request  $request
      * @param  \Closure(\Illuminate\Http\Request):mixed  $next
-     * @return \Illuminate\Http\Response|\Illuminate\Http\JsonResponse
      */
     public function handle(Request $request, Closure $next): Response|JsonResponse
     {
@@ -30,9 +28,6 @@ class Authorize
 
     /**
      * Determine whether this tool belongs to the package.
-     *
-     * @param  \Laravel\Nova\Tool  $tool
-     * @return bool
      */
     public function matchesTool(Tool $tool): bool
     {

@@ -76,7 +76,7 @@ it('can throw a custom validation message using canRenameFolder', function () {
     Nova::$tools = [
         NovaFileManager::make()
             ->canRenameFolder(function (RenameFolderRequest $request) use ($message) {
-                if (!str_contains($request->to, 'foo')) {
+                if (! str_contains($request->to, 'foo')) {
                     throw ValidationException::withMessages([
                         'folder' => [$message],
                     ]);

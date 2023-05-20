@@ -39,7 +39,7 @@ class ToolController extends Controller
     public function updateChecker(): Closure
     {
         return function () {
-            if (!config('nova-file-manager.update_checker.enabled')) {
+            if (! config('nova-file-manager.update_checker.enabled')) {
                 return false;
             }
 

@@ -76,7 +76,7 @@ it('can throw a custom validation message using canDeleteFile', function () {
     Nova::$tools = [
         NovaFileManager::make()
             ->canDeleteFile(function (DeleteFileRequest $request) use ($message) {
-                if (!str_contains($request->path, 'foo')) {
+                if (! str_contains($request->path, 'foo')) {
                     throw ValidationException::withMessages([
                         'file' => [$message],
                     ]);

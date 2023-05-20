@@ -14,9 +14,7 @@ class FileMissingInFilesystem implements Rule
     }
 
     /**
-     * @param $attribute
      * @param  \Illuminate\Http\UploadedFile  $value
-     * @return bool
      */
     public function passes($attribute, $value): bool
     {

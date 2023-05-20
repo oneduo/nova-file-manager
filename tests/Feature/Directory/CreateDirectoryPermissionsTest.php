@@ -76,7 +76,7 @@ it('can throw a custom validation message using canCreateFolder', function () {
     Nova::$tools = [
         NovaFileManager::make()
             ->canCreateFolder(function (CreateFolderRequest $request) use ($message) {
-                if (!str_contains($request->path, 'foo')) {
+                if (! str_contains($request->path, 'foo')) {
                     throw ValidationException::withMessages([
                         'folder' => [$message],
                     ]);

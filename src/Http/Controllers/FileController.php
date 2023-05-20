@@ -23,10 +23,6 @@ class FileController extends Controller
 {
     /**
      * Upload a file from the tool
-     *
-     * @param \Oneduo\NovaFileManager\Http\Requests\UploadFileRequest $request
-     * @param \Oneduo\NovaFileManager\Contracts\Filesystem\Upload\Uploader $uploader
-     * @return \Illuminate\Http\JsonResponse
      */
     public function upload(UploadFileRequest $request, Uploader $uploader): JsonResponse
     {
@@ -37,9 +33,6 @@ class FileController extends Controller
 
     /**
      * Rename a file
-     *
-     * @param \Oneduo\NovaFileManager\Http\Requests\RenameFileRequest $request
-     * @return \Illuminate\Http\JsonResponse
      */
     public function rename(RenameFileRequest $request): JsonResponse
     {
@@ -49,7 +42,7 @@ class FileController extends Controller
 
         $result = $manager->rename($request->from, $request->to);
 
-        if (!$result) {
+        if (! $result) {
             throw ValidationException::withMessages([
                 'from' => [__('nova-file-manager::errors.file.rename')],
             ]);
@@ -64,9 +57,6 @@ class FileController extends Controller
 
     /**
      * Delete a file
-     *
-     * @param \Oneduo\NovaFileManager\Http\Requests\DeleteFileRequest $request
-     * @return \Illuminate\Http\JsonResponse
      */
     public function delete(DeleteFileRequest $request): JsonResponse
     {
@@ -77,7 +67,7 @@ class FileController extends Controller
 
             $result = $manager->delete($path);
 
-            if (!$result) {
+            if (! $result) {
                 throw ValidationException::withMessages([
                     'paths' => [__('nova-file-manager::errors.file.delete')],
                 ]);
@@ -93,9 +83,6 @@ class FileController extends Controller
 
     /**
      * Unzip an archive
-     *
-     * @param \Oneduo\NovaFileManager\Http\Requests\UnzipFileRequest $request
-     * @return \Illuminate\Http\JsonResponse
      */
     public function unzip(UnzipFileRequest $request): JsonResponse
     {
@@ -105,7 +92,7 @@ class FileController extends Controller
 
         $result = $manager->unzip($request->path);
 
-        if (!$result) {
+        if (! $result) {
             throw ValidationException::withMessages([
                 'path' => [__('nova-file-manager::errors.file.unzip')],
             ]);

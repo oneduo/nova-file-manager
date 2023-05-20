@@ -12,10 +12,7 @@ class Asset implements CastsAttributes
 {
     /**
      * @param  \Illuminate\Database\Eloquent\Model  $model
-     * @param  string  $key
      * @param  string|null  $value
-     * @param  array  $attributes
-     * @return \Oneduo\NovaFileManager\Support\Asset|null
      *
      * @throws \JsonException
      */
@@ -30,10 +27,7 @@ class Asset implements CastsAttributes
 
     /**
      * @param  \Illuminate\Database\Eloquent\Model  $model
-     * @param  string  $key
      * @param  array|AssetObject|null  $value
-     * @param  array  $attributes
-     * @return string|null
      *
      * @throws \JsonException
      */

@@ -76,7 +76,7 @@ it('can throw a custom validation message using canDeleteFolder', function () {
     Nova::$tools = [
         NovaFileManager::make()
             ->canDeleteFolder(function (DeleteFolderRequest $request) use ($message) {
-                if (!str_contains($request->path, 'foo')) {
+                if (! str_contains($request->path, 'foo')) {
                     throw ValidationException::withMessages([
                         'folder' => [$message],
                     ]);

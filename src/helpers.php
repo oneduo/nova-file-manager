@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 use Illuminate\Support\Str;
 
-if (!function_exists('str')) {
+if (! function_exists('str')) {
     /**
      * Get a new stringable object from the given string.
      *
@@ -14,7 +14,8 @@ if (!function_exists('str')) {
     function str($string = null)
     {
         if (func_num_args() === 0) {
-            return new class {
+            return new class
+            {
                 public function __call($method, $parameters)
                 {
                     return Str::$method(...$parameters);

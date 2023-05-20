@@ -22,7 +22,7 @@ class Uploader implements UploaderContract
      */
     public function handle(UploadFileRequest $request, string $index = 'file'): array
     {
-        if (!$request->validateUpload()) {
+        if (! $request->validateUpload()) {
             throw ValidationException::withMessages([
                 'file' => [__('nova-file-manager::errors.file.upload_validation')],
             ]);
@@ -50,7 +50,7 @@ class Uploader implements UploaderContract
 
     public function saveFile(UploadFileRequest $request, UploadedFile $file): array
     {
-        if (!$request->validateUpload($file, true)) {
+        if (! $request->validateUpload($file, true)) {
             throw ValidationException::withMessages([
                 'file' => [__('nova-file-manager::errors.file.upload_validation')],
             ]);

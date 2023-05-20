@@ -21,9 +21,6 @@ class FolderController extends Controller
 {
     /**
      * Create a new folder
-     *
-     * @param  \Oneduo\NovaFileManager\Http\Requests\CreateFolderRequest  $request
-     * @return \Illuminate\Http\JsonResponse
      */
     public function create(CreateFolderRequest $request): JsonResponse
     {
@@ -33,7 +30,7 @@ class FolderController extends Controller
 
         $result = $request->manager()->mkdir($path);
 
-        if (!$result) {
+        if (! $result) {
             throw ValidationException::withMessages([
                 'folder' => [__('nova-file-manager::errors.folder.create')],
             ]);
@@ -48,9 +45,6 @@ class FolderController extends Controller
 
     /**
      * Rename a folder
-     *
-     * @param  \Oneduo\NovaFileManager\Http\Requests\RenameFolderRequest  $request
-     * @return \Illuminate\Http\JsonResponse
      */
     public function rename(RenameFolderRequest $request): JsonResponse
     {
@@ -61,7 +55,7 @@ class FolderController extends Controller
 
         $result = $request->manager()->rename($from, $to);
 
-        if (!$result) {
+        if (! $result) {
             throw ValidationException::withMessages([
                 'folder' => [__('nova-file-manager::errors.folder.rename')],
             ]);
@@ -76,9 +70,6 @@ class FolderController extends Controller
 
     /**
      * Delete a folder
-     *
-     * @param  \Oneduo\NovaFileManager\Http\Requests\DeleteFolderRequest  $request
-     * @return \Illuminate\Http\JsonResponse
      */
     public function delete(DeleteFolderRequest $request): JsonResponse
     {
@@ -88,7 +79,7 @@ class FolderController extends Controller
 
         $result = $request->manager()->rmdir($path);
 
-        if (!$result) {
+        if (! $result) {
             throw ValidationException::withMessages([
                 'folder' => [__('nova-file-manager::errors.folder.delete')],
             ]);

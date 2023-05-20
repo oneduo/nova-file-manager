@@ -31,7 +31,7 @@ class Asset implements Arrayable, JsonSerializable
 
     public function filesystem(): Filesystem
     {
-        if (!$this->filesystem) {
+        if (! $this->filesystem) {
             $this->filesystem = Storage::disk($this->disk);
         }
 

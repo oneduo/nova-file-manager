@@ -86,7 +86,7 @@ class FileManager extends Field implements InteractsWithFilesystemContract, Cove
 
     public function resolveThumbnailUrl()
     {
-        return is_callable($this->thumbnailUrlCallback) && !empty($this->value)
+        return is_callable($this->thumbnailUrlCallback) && ! empty($this->value)
             ? call_user_func($this->thumbnailUrlCallback, $this->value, $this->resource)
             : null;
     }
@@ -114,7 +114,7 @@ class FileManager extends Field implements InteractsWithFilesystemContract, Cove
             return $result;
         }
 
-        if (!is_array($result)) {
+        if (! is_array($result)) {
             return $model->{$attribute} = $result;
         }
 
@@ -125,7 +125,6 @@ class FileManager extends Field implements InteractsWithFilesystemContract, Cove
 
     protected function prepareStorageCallback(Closure $storageCallback = null): void
     {
-
 
         $this->storageCallback = $storageCallback ?? function (
             NovaRequest $request,
@@ -157,8 +156,7 @@ class FileManager extends Field implements InteractsWithFilesystemContract, Cove
     {
         $value = $resource->getAttachment();
 
-
-        if (!$value) {
+        if (! $value) {
             return null;
         }
 
@@ -171,12 +169,12 @@ class FileManager extends Field implements InteractsWithFilesystemContract, Cove
         }
 
         if ($value instanceof stdClass) {
-            $value = (array)$value;
+            $value = (array) $value;
         }
 
         if (is_array($value)) {
             if ($this->multiple) {
-                $value = collect($value)->map(fn (array|object $asset) => new Asset(...(array)$asset));
+                $value = collect($value)->map(fn (array|object $asset) => new Asset(...(array) $asset));
             } else {
                 $value = collect([new Asset(...$value)]);
             }
@@ -209,7 +207,7 @@ class FileManager extends Field implements InteractsWithFilesystemContract, Cove
 
     public static function forWrapper(string $name): ?static
     {
-        if (!$callback = (static::$wrappers[$name] ?? null)) {
+        if (! $callback = (static::$wrappers[$name] ?? null)) {
             return null;
         }
 
@@ -222,7 +220,7 @@ class FileManager extends Field implements InteractsWithFilesystemContract, Cove
             return $this;
         }
 
-        if (!$wrapper = static::forWrapper($this->wrapper)) {
+        if (! $wrapper = static::forWrapper($this->wrapper)) {
             return $this;
         }
 

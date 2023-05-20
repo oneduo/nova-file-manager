@@ -11,3 +11,4 @@ auth.json
 /docs/.vitepress/dist
 .npmrc
 coverage.xml
+composer.lock

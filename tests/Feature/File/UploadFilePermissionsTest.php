@@ -78,7 +78,7 @@ it('can throw a custom validation message using canUploadFile', function () {
     Nova::$tools = [
         NovaFileManager::make()
             ->canUploadFile(function (UploadFileRequest $request) use ($message) {
-                if (!str_contains($request->path, 'foo')) {
+                if (! str_contains($request->path, 'foo')) {
                     throw ValidationException::withMessages([
                         'file' => [$message],
                     ]);
@@ -123,7 +123,7 @@ it('can throw a custom validation message using validateUploadUsing', function (
     Nova::$tools = [
         NovaFileManager::make()
             ->validateUploadUsing(function (UploadFileRequest $request, UploadedFile $file, array $meta, bool $saving) use ($message) {
-                if (!str_contains($request->path, 'foo')) {
+                if (! str_contains($request->path, 'foo')) {
                     throw ValidationException::withMessages([
                         'file' => [$message],
                     ]);
