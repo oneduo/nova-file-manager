@@ -289,16 +289,16 @@
         },
         {
             "name": "doctrine/dbal",
-            "version": "3.6.1",
+            "version": "3.6.2",
             "source": {
                 "type": "git",
                 "url": "https://github.com/doctrine/dbal.git",
-                "reference": "57815c7bbcda3cd18871d253c1dd8cbe56f8526e"
+                "reference": "b4bd1cfbd2b916951696d82e57d054394d84864c"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/doctrine/dbal/zipball/57815c7bbcda3cd18871d253c1dd8cbe56f8526e",
-                "reference": "57815c7bbcda3cd18871d253c1dd8cbe56f8526e",
+                "url": "https://api.github.com/repos/doctrine/dbal/zipball/b4bd1cfbd2b916951696d82e57d054394d84864c",
+                "reference": "b4bd1cfbd2b916951696d82e57d054394d84864c",
                 "shasum": ""
             },
             "require": {
@@ -314,9 +314,9 @@
                 "doctrine/coding-standard": "11.1.0",
                 "fig/log-test": "^1",
                 "jetbrains/phpstorm-stubs": "2022.3",
-                "phpstan/phpstan": "1.10.3",
+                "phpstan/phpstan": "1.10.9",
                 "phpstan/phpstan-strict-rules": "^1.5",
-                "phpunit/phpunit": "9.6.4",
+                "phpunit/phpunit": "9.6.6",
                 "psalm/plugin-phpunit": "0.18.4",
                 "squizlabs/php_codesniffer": "3.7.2",
                 "symfony/cache": "^5.4|^6.0",
@@ -381,7 +381,7 @@
             ],
             "support": {
                 "issues": "https://github.com/doctrine/dbal/issues",
-                "source": "https://github.com/doctrine/dbal/tree/3.6.1"
+                "source": "https://github.com/doctrine/dbal/tree/3.6.2"
             },
             "funding": [
                 {
@@ -397,7 +397,7 @@
                     "type": "tidelift"
                 }
             ],
-            "time": "2023-03-02T19:26:24+00:00"
+            "time": "2023-04-14T07:25:38+00:00"
         },
         {
             "name": "doctrine/deprecations",
@@ -1387,17 +1387,17 @@
         },
         {
             "name": "laravel/nova",
-            "version": "4.22.2",
+            "version": "4.24.4",
             "source": {
                 "type": "git",
                 "url": "git@github.com:laravel/nova.git",
-                "reference": "845062cbaba71af76a9e29580fba07525350d9b2"
+                "reference": "124f76041caf86aacf0fe344a9f5782562c1cda7"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://nova.laravel.com/dist/laravel/nova/laravel-nova-845062cbaba71af76a9e29580fba07525350d9b2-zip-ffdb23.zip",
-                "reference": "845062cbaba71af76a9e29580fba07525350d9b2",
-                "shasum": "4816ab2483d1049577f0ca82ed34ac27d3be1ee9"
+                "url": "https://nova.laravel.com/dist/laravel/nova/laravel-nova-124f76041caf86aacf0fe344a9f5782562c1cda7-zip-780fa8.zip",
+                "reference": "124f76041caf86aacf0fe344a9f5782562c1cda7",
+                "shasum": "966349c729140dcbaf3035534b974e08795d118f"
             },
             "require": {
                 "brick/money": "^0.5.0|^0.6.0|^0.7.0|^0.8.0",
@@ -1422,7 +1422,7 @@
                 "mockery/mockery": "^1.4.4",
                 "nunomaduro/larastan": "^1.0.1|^2.5.1",
                 "orchestra/testbench-dusk": "^6.24|^7.21|^8.0",
-                "phpunit/phpunit": "^9.5.27",
+                "phpunit/phpunit": "^9.6|^10.1",
                 "predis/predis": "^1.1.9|^2.0"
             },
             "suggest": {
@@ -1490,9 +1490,9 @@
                 "laravel"
             ],
             "support": {
-                "source": "https://github.com/laravel/nova/tree/v4.22.2"
+                "source": "https://github.com/laravel/nova/tree/v4.24.4"
             },
-            "time": "2023-03-07T18:10:41+00:00"
+            "time": "2023-05-19T13:20:09+00:00"
         },
         {
             "name": "laravel/serializable-closure",
@@ -1556,16 +1556,16 @@
         },
         {
             "name": "laravel/ui",
-            "version": "v4.2.1",
+            "version": "v4.2.2",
             "source": {
                 "type": "git",
                 "url": "https://github.com/laravel/ui.git",
-                "reference": "05ff7ac1eb55e2dfd10edcfb18c953684d693907"
+                "reference": "a58ec468db4a340b33f3426c778784717a2c144b"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/laravel/ui/zipball/05ff7ac1eb55e2dfd10edcfb18c953684d693907",
-                "reference": "05ff7ac1eb55e2dfd10edcfb18c953684d693907",
+                "url": "https://api.github.com/repos/laravel/ui/zipball/a58ec468db4a340b33f3426c778784717a2c144b",
+                "reference": "a58ec468db4a340b33f3426c778784717a2c144b",
                 "shasum": ""
             },
             "require": {
@@ -1612,9 +1612,9 @@
                 "ui"
             ],
             "support": {
-                "source": "https://github.com/laravel/ui/tree/v4.2.1"
+                "source": "https://github.com/laravel/ui/tree/v4.2.2"
             },
-            "time": "2023-02-17T09:17:24+00:00"
+            "time": "2023-05-09T19:47:28+00:00"
         },
         {
             "name": "league/commonmark",
@@ -2362,25 +2362,24 @@
         },
         {
             "name": "nova-kit/nova-packages-tool",
-            "version": "v1.7.1",
+            "version": "v1.9.3",
             "source": {
                 "type": "git",
                 "url": "https://github.com/nova-kit/nova-packages-tool.git",
-                "reference": "1e6317f9f370ae8e778f147092b8e288171e94e2"
+                "reference": "fe3e4ebabc935a933979cc9f475f8fc2990cde96"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/nova-kit/nova-packages-tool/zipball/1e6317f9f370ae8e778f147092b8e288171e94e2",
-                "reference": "1e6317f9f370ae8e778f147092b8e288171e94e2",
+                "url": "https://api.github.com/repos/nova-kit/nova-packages-tool/zipball/fe3e4ebabc935a933979cc9f475f8fc2990cde96",
+                "reference": "fe3e4ebabc935a933979cc9f475f8fc2990cde96",
                 "shasum": ""
             },
             "require": {
-                "laravel/nova": ">=4.22.0 <4.23.0",
+                "laravel/nova": ">=4.24.3 <4.25.0",
                 "php": "^7.3 || ^8.0"
             },
             "require-dev": {
-                "orchestra/testbench": "^6.24 || ^7.0 || ^8.0",
-                "phpunit/phpunit": "^9.6"
+                "orchestra/testbench": "^6.24 || ^7.0 || ^8.0"
             },
             "type": "library",
             "extra": {
@@ -2407,9 +2406,9 @@
             ],
             "description": "Tool for Laravel Nova Packages Development",
             "support": {
-                "source": "https://github.com/nova-kit/nova-packages-tool/tree/v1.7.1"
+                "source": "https://github.com/nova-kit/nova-packages-tool/tree/v1.9.3"
             },
-            "time": "2023-02-23T23:53:41+00:00"
+            "time": "2023-05-24T05:00:50+00:00"
         },
         {
             "name": "nunomaduro/termwind",
@@ -2499,16 +2498,16 @@
         },
         {
             "name": "openspout/openspout",
-            "version": "v4.12.2",
+            "version": "v4.14.0",
             "source": {
                 "type": "git",
                 "url": "https://github.com/openspout/openspout.git",
-                "reference": "90ceeefef3750dd2afab95689ed2107dd576905e"
+                "reference": "528442c4051c8dfc53c164651156fa616c370931"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/openspout/openspout/zipball/90ceeefef3750dd2afab95689ed2107dd576905e",
-                "reference": "90ceeefef3750dd2afab95689ed2107dd576905e",
+                "url": "https://api.github.com/repos/openspout/openspout/zipball/528442c4051c8dfc53c164651156fa616c370931",
+                "reference": "528442c4051c8dfc53c164651156fa616c370931",
                 "shasum": ""
             },
             "require": {
@@ -2518,17 +2517,17 @@
                 "ext-libxml": "*",
                 "ext-xmlreader": "*",
                 "ext-zip": "*",
-                "php": "~8.0.0 || ~8.1.0 || ~8.2.0"
+                "php": "~8.1.0 || ~8.2.0"
             },
             "require-dev": {
                 "ext-zlib": "*",
-                "friendsofphp/php-cs-fixer": "^3.8.0",
-                "infection/infection": "^0.26.10",
-                "phpbench/phpbench": "^1.2.5",
-                "phpstan/phpstan": "^1.6.8",
-                "phpstan/phpstan-phpunit": "^1.1.1",
-                "phpstan/phpstan-strict-rules": "^1.2.3",
-                "phpunit/phpunit": "^9.5.20"
+                "friendsofphp/php-cs-fixer": "^3.17.0",
+                "infection/infection": "^0.27",
+                "phpbench/phpbench": "^1.2.10",
+                "phpstan/phpstan": "^1.10.15",
+                "phpstan/phpstan-phpunit": "^1.3.12",
+                "phpstan/phpstan-strict-rules": "^1.5.1",
+                "phpunit/phpunit": "^10.1.3"
             },
             "suggest": {
                 "ext-iconv": "To handle non UTF-8 CSV files (if \"php-intl\" is not already installed or is too limited)",
@@ -2576,7 +2575,7 @@
             ],
             "support": {
                 "issues": "https://github.com/openspout/openspout/issues",
-                "source": "https://github.com/openspout/openspout/tree/v4.12.2"
+                "source": "https://github.com/openspout/openspout/tree/v4.14.0"
             },
             "funding": [
                 {
@@ -2588,7 +2587,7 @@
                     "type": "github"
                 }
             ],
-            "time": "2023-03-03T07:45:00+00:00"
+            "time": "2023-05-24T09:26:05+00:00"
         },
         {
             "name": "phpoption/phpoption",
@@ -3167,16 +3166,16 @@
         },
         {
             "name": "rap2hpoutre/fast-excel",
-            "version": "v5.1.1",
+            "version": "v5.2.0",
             "source": {
                 "type": "git",
                 "url": "https://github.com/rap2hpoutre/fast-excel.git",
-                "reference": "05bc956fa6121b239c98960ea9b551116f20b058"
+                "reference": "c6d2b8b707b85f7c43028d3b4cc969388d8b6c17"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/rap2hpoutre/fast-excel/zipball/05bc956fa6121b239c98960ea9b551116f20b058",
-                "reference": "05bc956fa6121b239c98960ea9b551116f20b058",
+                "url": "https://api.github.com/repos/rap2hpoutre/fast-excel/zipball/c6d2b8b707b85f7c43028d3b4cc969388d8b6c17",
+                "reference": "c6d2b8b707b85f7c43028d3b4cc969388d8b6c17",
                 "shasum": ""
             },
             "require": {
@@ -3225,7 +3224,7 @@
             ],
             "support": {
                 "issues": "https://github.com/rap2hpoutre/fast-excel/issues",
-                "source": "https://github.com/rap2hpoutre/fast-excel/tree/v5.1.1"
+                "source": "https://github.com/rap2hpoutre/fast-excel/tree/v5.2.0"
             },
             "funding": [
                 {
@@ -3233,7 +3232,7 @@
                     "type": "github"
                 }
             ],
-            "time": "2023-02-09T15:13:18+00:00"
+            "time": "2023-03-13T14:25:33+00:00"
         },
         {
             "name": "spatie/invade",
