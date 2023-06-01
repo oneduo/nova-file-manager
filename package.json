@@ -26,7 +26,7 @@
     "@tailwindcss/forms": "^0.5.3",
     "@trivago/prettier-plugin-sort-imports": "^4.1.1",
     "@types/lodash": "^4.14.191",
-    "@types/lodash-es": "^4.17.6",
+    "@types/lodash-es": "^4.17.7",
     "@types/vue-cropperjs": "^4.1.2",
     "@types/wicg-file-system-access": "^2020.9.6",
     "@vitejs/plugin-vue": "^4.1.0",
