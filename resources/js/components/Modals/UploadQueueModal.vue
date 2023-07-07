@@ -26,7 +26,7 @@ const queue = computed(() => store.queue)
         <div class="w-full flex flex-row justify-between items-center">
           <h1 class="text-xs uppercase text-gray-400 font-bold">Queue</h1>
         </div>
-        <ul class="grid grid-cols-2 md:grid-cols-4 gap-6">
+        <ul class="grid grid-cols-2 md:grid-cols-4 content-start gap-6">
           <template v-for="item in queue" :key="item.id">
             <File
               :file="nativeFileToEntity(item.file)"
