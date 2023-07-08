@@ -7311,16 +7311,16 @@
         },
         {
             "name": "orchestra/testbench-dusk",
-            "version": "v8.6.3",
+            "version": "v8.6.4",
             "source": {
                 "type": "git",
                 "url": "https://github.com/orchestral/testbench-dusk.git",
-                "reference": "81912348d1ac2f20407059226fd73fa974d9d0b2"
+                "reference": "310b2f81b9ac86e437a691158c5539e4d399c99a"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/orchestral/testbench-dusk/zipball/81912348d1ac2f20407059226fd73fa974d9d0b2",
-                "reference": "81912348d1ac2f20407059226fd73fa974d9d0b2",
+                "url": "https://api.github.com/repos/orchestral/testbench-dusk/zipball/310b2f81b9ac86e437a691158c5539e4d399c99a",
+                "reference": "310b2f81b9ac86e437a691158c5539e4d399c99a",
                 "shasum": ""
             },
             "require": {
@@ -7329,13 +7329,12 @@
                 "laravel/dusk": "^7.7.1",
                 "laravel/serializable-closure": "^1.0",
                 "orchestra/dusk-updater": "^2.0",
-                "orchestra/testbench": ">=8.5.0 <8.6.0",
+                "orchestra/testbench": ">=8.5.7 <8.6.0",
                 "php": "^8.1",
                 "php-webdriver/webdriver": "^1.9"
             },
             "require-dev": {
                 "laravel/pint": "^1.6",
-                "orchestra/canvas": "^8.1",
                 "phpstan/phpstan": "^1.10.7",
                 "phpunit/phpunit": "^10.1"
             },
@@ -7372,9 +7371,9 @@
             "description": "Laravel Dusk Testing Helper for Packages Development",
             "support": {
                 "issues": "https://github.com/orchestral/testbench-dusk/issues",
-                "source": "https://github.com/orchestral/testbench-dusk/tree/v8.6.3"
+                "source": "https://github.com/orchestral/testbench-dusk/tree/v8.6.4"
             },
-            "time": "2023-05-26T00:18:02+00:00"
+            "time": "2023-06-13T07:03:35+00:00"
         },
         {
             "name": "pestphp/pest",
