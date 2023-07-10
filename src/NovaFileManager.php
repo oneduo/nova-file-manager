@@ -16,7 +16,7 @@ class NovaFileManager extends Tool implements InteractsWithFilesystem
     public function menu(Request $request): mixed
     {
         return MenuSection::make('File Manager')
-            ->path('/nova-file-manager')
+            ->path(config('nova-file-manager.path', '/nova-file-manager'))
             ->icon('server');
     }
 }

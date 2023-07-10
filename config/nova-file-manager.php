@@ -163,4 +163,16 @@ return [
     |
     */
     'use_pintura' => env('NOVA_FILE_MANAGER_USE_PINTURA', false),
+
+    /*
+    |--------------------------------------------------------------------------
+    | File Manager Path
+    |--------------------------------------------------------------------------
+    |
+    | This is the URI path where File Manager will be accessible from.
+    | Feel free to change this path to anything you like.
+    |
+    */
+
+    'path' => '/nova-file-manager',
 ];
