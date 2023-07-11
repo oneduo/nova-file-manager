@@ -43,8 +43,10 @@ class ToolServiceProvider extends ServiceProvider
             return;
         }
 
-        Nova::router(['nova', Authenticate::class, Authorize::class], 'nova-file-manager')
-            ->group(__DIR__ . '/../routes/inertia.php');
+        Nova::router(
+            ['nova', Authenticate::class, Authorize::class],
+            config('nova-file-manager.path', '/nova-file-manager')
+        )->group(__DIR__ . '/../routes/inertia.php');
 
         Route::middleware(['nova:api', Authorize::class])
             ->prefix('nova-vendor/nova-file-manager')
