@@ -27,6 +27,7 @@ class AssetCollection implements CastsAttributes
         }
 
         return collect(json_decode($value, true, 512, JSON_THROW_ON_ERROR))
+            ->filter()
             ->map(fn (array $file) => new Asset(...$file));
     }
 
