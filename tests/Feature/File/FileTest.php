@@ -125,6 +125,180 @@ it('can prevent folder creation on upload', function () {
         ]);
 });
 
+it('cannot upload a file with an existing file name when the upload_replace_existing is false', function () {
+    Event::fake();
+
+    Nova::$tools = [
+        NovaFileManager::make(),
+    ];
+
+    config()->set('nova-file-manager.upload_replace_existing', false);
+
+    Storage::disk($this->disk)->put($first = 'first.txt', Str::random());
+
+    postJson(
+        uri: route('nova-file-manager.files.upload'),
+        data: [
+            'disk' => $this->disk,
+            'path' => '/',
+            'file' => UploadedFile::fake()->create($first),
+            'resumableFilename' => $first,
+        ],
+    )
+        ->assertUnprocessable()
+        ->assertJsonValidationErrors([
+            'file' => [
+                __('nova-file-manager::validation.path.exists', ['path' => "/{$first}"]),
+            ],
+        ]);
+
+    Event::assertNotDispatched(
+        event: FileUploaded::class,
+        callback: function (FileUploaded $event) use ($first) {
+            return $event->filesystem === Storage::disk($this->disk)
+                && $event->disk === $this->disk
+                && $event->path === "/{$first}";
+        },
+    );
+});
+
+it('cannot upload a file with an existing file name when the upload_replace_existing is programmatically false', function () {
+    Event::fake();
+
+    Nova::$tools = [
+        NovaFileManager::make()
+            ->uploadReplaceExisting(fn() => false),
+    ];
+
+    config()->set('nova-file-manager.upload_replace_existing', true);
+
+    Storage::disk($this->disk)->put($first = 'first.txt', Str::random());
+
+    postJson(
+        uri: route('nova-file-manager.files.upload'),
+        data: [
+            'disk' => $this->disk,
+            'path' => '/',
+            'file' => UploadedFile::fake()->create($first),
+            'resumableFilename' => $first,
+        ],
+    )
+        ->assertUnprocessable()
+        ->assertJsonValidationErrors([
+            'file' => [
+                __('nova-file-manager::validation.path.exists', ['path' => "/{$first}"]),
+            ],
+        ]);
+
+    Event::assertNotDispatched(
+        event: FileUploaded::class,
+        callback: function (FileUploaded $event) use ($first) {
+            return $event->filesystem === Storage::disk($this->disk)
+                && $event->disk === $this->disk
+                && $event->path === "/{$first}";
+        },
+    );
+});
+
+it('can upload a file with an existing file name when the upload_replace_existing is true', function () {
+    Event::fake();
+
+    Nova::$tools = [
+        NovaFileManager::make(),
+    ];
+
+    config()->set('nova-file-manager.upload_replace_existing', true);
+
+    Storage::disk($this->disk)->put($first = 'first.txt', "first");
+
+    postJson(
+        uri: route('nova-file-manager.files.upload'),
+        data: [
+            'disk' => $this->disk,
+            'path' => '/',
+            'file' => UploadedFile::fake()->createWithContent($first, "second"),
+            'resumableFilename' => $first,
+        ],
+    )
+        ->assertOk()
+        ->assertJson([
+            'message' => __('nova-file-manager::messages.file.upload'),
+        ]);
+
+    Storage::disk($this->disk)->assertExists($first);
+
+    Event::assertDispatched(
+        event: FileUploading::class,
+        callback: function (FileUploading $event) use ($first) {
+            return $event->filesystem === Storage::disk($this->disk)
+                && $event->disk === $this->disk
+                && $event->path === $first;
+        },
+    );
+
+    Event::assertDispatched(
+        event: FileUploaded::class,
+        callback: function (FileUploaded $event) use ($first) {
+            return $event->filesystem === Storage::disk($this->disk)
+                && $event->disk === $this->disk
+                && $event->path === $first;
+        },
+    );
+
+    expect(Storage::disk($this->disk)->get($first))
+        ->toBe('second');
+});
+
+it('can upload a file with an existing file name when the upload_replace_existing is programmatically true', function () {
+    Event::fake();
+
+    Nova::$tools = [
+        NovaFileManager::make()
+            ->uploadReplaceExisting(fn() => true),
+    ];
+
+    config()->set('nova-file-manager.upload_replace_existing', false);
+
+    Storage::disk($this->disk)->put($first = 'first.txt', "first");
+
+    postJson(
+        uri: route('nova-file-manager.files.upload'),
+        data: [
+            'disk' => $this->disk,
+            'path' => '/',
+            'file' => UploadedFile::fake()->createWithContent($first, "second"),
+            'resumableFilename' => $first,
+        ],
+    )
+        ->assertOk()
+        ->assertJson([
+            'message' => __('nova-file-manager::messages.file.upload'),
+        ]);
+
+    Storage::disk($this->disk)->assertExists($first);
+
+    Event::assertDispatched(
+        event: FileUploading::class,
+        callback: function (FileUploading $event) use ($first) {
+            return $event->filesystem === Storage::disk($this->disk)
+                && $event->disk === $this->disk
+                && $event->path === $first;
+        },
+    );
+
+    Event::assertDispatched(
+        event: FileUploaded::class,
+        callback: function (FileUploaded $event) use ($first) {
+            return $event->filesystem === Storage::disk($this->disk)
+                && $event->disk === $this->disk
+                && $event->path === $first;
+        },
+    );
+
+    expect(Storage::disk($this->disk)->get($first))
+        ->toBe('second');
+});
+
 it('can rename a file', function () {
     Event::fake();
 

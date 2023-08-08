@@ -44,7 +44,7 @@ return [
     |
     | default: false
     */
-    'show_hidden_files' => env('NOVA_FILE_MANAGER_SHOW_HIDDEN_FILES', false),
+    'show_hidden_files' => (bool) env('NOVA_FILE_MANAGER_SHOW_HIDDEN_FILES', false),
 
     /*
     |--------------------------------------------------------------------------
@@ -56,7 +56,7 @@ return [
     |
     | default: true
     */
-    'human_readable_size' => env('NOVA_FILE_MANAGER_HUMAN_READABLE_SIZE', true),
+    'human_readable_size' => (bool) env('NOVA_FILE_MANAGER_HUMAN_READABLE_SIZE', true),
 
     /*
     |--------------------------------------------------------------------------
@@ -68,7 +68,7 @@ return [
     |
     | default: true
     */
-    'human_readable_datetime' => env('NOVA_FILE_MANAGER_HUMAN_READABLE_DATETIME', true),
+    'human_readable_datetime' => (bool) env('NOVA_FILE_MANAGER_HUMAN_READABLE_DATETIME', true),
 
     /*
     |--------------------------------------------------------------------------
@@ -83,9 +83,9 @@ return [
     */
 
     'file_analysis' => [
-        'enabled' => env('NOVA_FILE_MANAGER_FILE_ANALYSIS_ENABLED', true),
+        'enabled' => (bool) env('NOVA_FILE_MANAGER_FILE_ANALYSIS_ENABLED', true),
         'cache' => [
-            'enabled' => env('NOVA_FILE_MANAGER_FILE_ANALYSIS_CACHE_ENABLED', true),
+            'enabled' => (bool) env('NOVA_FILE_MANAGER_FILE_ANALYSIS_CACHE_ENABLED', true),
             'ttl_in_seconds' => env('NOVA_FILE_MANAGER_FILE_ANALYSIS_CACHE_TTL_IN_SECONDS', 60 * 60 * 24),
         ],
     ],
@@ -119,7 +119,7 @@ return [
     | Uses: Storage::temporaryUrl()
     */
     'url_signing' => [
-        'enabled' => env('NOVA_FILE_MANAGER_URL_SIGNING_ENABLED', false),
+        'enabled' => (bool) env('NOVA_FILE_MANAGER_URL_SIGNING_ENABLED', false),
         'unit' => 'minutes',
         'value' => 10,
     ],
@@ -135,8 +135,8 @@ return [
     |
     */
     'update_checker' => [
-        'enabled' => env('NOVA_FILE_MANAGER_UPDATE_CHECKER_ENABLED', true),
-        'ttl_in_days' => env('NOVA_FILE_MANAGER_UPDATE_CHECKER_TTL_IN_DAYS', 1),
+        'enabled' => (bool) env('NOVA_FILE_MANAGER_UPDATE_CHECKER_ENABLED', true),
+        'ttl_in_days' => (int) env('NOVA_FILE_MANAGER_UPDATE_CHECKER_TTL_IN_DAYS', 1),
     ],
 
     /*
@@ -151,7 +151,7 @@ return [
     |
     */
     'tour' => [
-        'enabled' => env('NOVA_FILE_MANAGER_TOUR_ENABLED', true),
+        'enabled' => (bool) env('NOVA_FILE_MANAGER_TOUR_ENABLED', true),
     ],
 
     /*
@@ -162,7 +162,7 @@ return [
     | Enable Pintura editor by PQINA.
     |
     */
-    'use_pintura' => env('NOVA_FILE_MANAGER_USE_PINTURA', false),
+    'use_pintura' => (bool) env('NOVA_FILE_MANAGER_USE_PINTURA', false),
 
     /*
     |--------------------------------------------------------------------------
@@ -175,4 +175,17 @@ return [
     */
 
     'path' => '/nova-file-manager',
+
+    /*
+    |--------------------------------------------------------------------------
+    | Upload replace existing
+    |--------------------------------------------------------------------------
+    |
+    | Toggle whether an upload with an existing file name should replace
+    | the existing file or not.
+    |
+    */
+
+    'upload_replace_existing' => (bool) env('NOVA_FILE_MANAGER_UPLOAD_REPLACE_EXISTING', false),
+
 ];

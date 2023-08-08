@@ -245,3 +245,31 @@ class Project extends Resource
 }
 ```
 
+## Upload with an existing file name
+
+By default, when you upload a file at a path which already contains a file with the same name a validation error will be thrown. You may want the file to be replaced by the upload. You can change the configuration to always replace existing file in the [Configuration file](/configuration#upload-replace-existing). You can also do it programmatically by using the `uploadReplaceExisting` method on your tool, field or wrapper.
+
+```php
+// app/Nova/Project.php
+
+use Oneduo\NovaFileManager\FileManager;
+use Illuminate\Contracts\Filesystem\Filesystem;
+use Illuminate\Support\Facades\Storage;
+use Laravel\Nova\Http\Requests\NovaRequest;
+
+class Project extends Resource
+{
+    // ...
+
+    public function fields(NovaRequest $request): array
+    {
+        return [
+            // ... any other fields
+            FileManager::make(__('Attachments'), 'attachments')
+                ->uploadReplaceExisting(function (NovaRequest $request): bool {
+                    return true;
+                }),
+        ];
+    }
+}
+```

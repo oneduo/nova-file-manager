@@ -67,6 +67,10 @@ interface InteractsWithFilesystem extends ResolvesUrl
 
     public function resolveCanUploadFile(NovaRequest $request): bool;
 
+    public function uploadReplaceExisting(Closure $callback): static;
+
+    public function resolveUploadReplaceExisting(NovaRequest $request): bool;
+
     public function canRenameFile(Closure $callback): static;
 
     public function resolveCanRenameFile(NovaRequest $request): bool;

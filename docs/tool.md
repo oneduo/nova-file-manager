@@ -36,6 +36,10 @@ If you are using a custom menu, you may want to add a new entry to it.
 MenuSection::make('File Manager')->path('/nova-file-manager')
 ```
 
+::: tip NOTE
+You can change the tool path in the [Configuration file](/configuration#path).
+:::
+
 ## Navigating in the tool
 
 <img src="./images/tool.png" alt="tool"/>
