@@ -43,11 +43,19 @@ class UploadFileRequest extends BaseRequest
 
     public function rules(): array
     {
+        $uploadReplaceExisting = $this->element()->resolveUploadReplaceExisting($this);
+
+        $rules = ['required', 'file'];
+
+        if (!$uploadReplaceExisting) {
+            $rules[] = new FileMissingInFilesystem($this);
+        }
+
         return [
             'disk' => ['sometimes', 'string', new DiskExistsRule()],
             'path' => ['required', 'string'],
             'file' => array_merge(
-                ['required', 'file', new FileMissingInFilesystem($this)],
+                $rules,
                 $this->element()->getUploadRules(),
             ),
         ];

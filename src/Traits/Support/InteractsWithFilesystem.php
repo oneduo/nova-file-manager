@@ -24,6 +24,8 @@ trait InteractsWithFilesystem
 
     public ?Closure $canUploadFile = null;
 
+    public ?Closure $uploadReplaceExisting = null;
+
     public ?Closure $canRenameFile = null;
 
     public ?Closure $canDeleteFile = null;
@@ -239,6 +241,20 @@ trait InteractsWithFilesystem
         return is_callable($this->canUploadFile)
             ? call_user_func($this->canUploadFile, $request)
             : $this->shouldShowUploadFile($request);
+    }
+
+    public function uploadReplaceExisting(Closure $callback): static
+    {
+        $this->uploadReplaceExisting = $callback;
+
+        return $this;
+    }
+
+    public function resolveUploadReplaceExisting(NovaRequest $request): bool
+    {
+        return is_callable($this->uploadReplaceExisting)
+            ? call_user_func($this->uploadReplaceExisting, $request)
+            : config('nova-file-manager.upload_replace_existing', false);
     }
 
     public function canRenameFile(Closure $callback): static

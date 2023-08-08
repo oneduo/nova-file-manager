@@ -135,3 +135,21 @@ Toggles whether to show use Pintura image editor
 ::: tip NOTE
 You can find details about the Pintura integration in the [Pintura image editor section](/pintura).
 :::
+
+## `path`
+
+This is the URI path where File Manager will be accessible from
+
+| Type     | Default              |
+|----------|----------------------|
+| `string` | `/nova-file-manager` |
+
+
+## `upload_replace_existing`
+
+Toggle whether an upload with an existing file name should replace the existing file or not
+
+| Type   | Default |
+|--------|---------|
+| `bool` | `false` |
+
