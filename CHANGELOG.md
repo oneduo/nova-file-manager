@@ -2,6 +2,31 @@
 
 All notable changes to `nova-file-manager` will be documented in this file
 
+## v0.10.0 - 2023-08-08
+
+### What's Changed
+
+- Proposed support for changing pathways to meet business needs. by @ngochangtf in https://github.com/oneduo/nova-file-manager/pull/267
+- Update AssetCollection.php by @Joemires in https://github.com/oneduo/nova-file-manager/pull/282
+- build(deps-dev): bump pestphp/pest from 1.23.0 to 1.23.1 by @dependabot in https://github.com/oneduo/nova-file-manager/pull/281
+- build(deps): bump spatie/invade from 1.1.1 to 2.0.0 by @dependabot in https://github.com/oneduo/nova-file-manager/pull/280
+- build(deps-dev): bump laravel/pint from 1.10.3 to 1.10.5 by @dependabot in https://github.com/oneduo/nova-file-manager/pull/279
+- build(deps-dev): bump @trivago/prettier-plugin-sort-imports from 4.1.1 to 4.2.0 by @dependabot in https://github.com/oneduo/nova-file-manager/pull/278
+- build(deps-dev): bump ts-loader from 9.4.2 to 9.4.4 by @dependabot in https://github.com/oneduo/nova-file-manager/pull/273
+- build(deps-dev): bump @headlessui/vue from 1.7.12 to 1.7.15 by @dependabot in https://github.com/oneduo/nova-file-manager/pull/277
+- build(deps-dev): bump orchestra/testbench from 8.5.9 to 8.5.11 by @dependabot in https://github.com/oneduo/nova-file-manager/pull/275
+- build(deps): bump nova-kit/nova-packages-tool from 1.9.3 to 1.11.2 by @dependabot in https://github.com/oneduo/nova-file-manager/pull/272
+- build(deps-dev): bump tailwindcss from 3.3.2 to 3.3.3 by @dependabot in https://github.com/oneduo/nova-file-manager/pull/274
+- build(deps-dev): bump @types/lodash from 4.14.195 to 4.14.196 by @dependabot in https://github.com/oneduo/nova-file-manager/pull/276
+- Fix the error "FileManagerContract::expect() does not exist on this mock object." by @ngochangtf in https://github.com/oneduo/nova-file-manager/pull/268
+- Allow upload to replace file by @mikaelpopowicz in https://github.com/oneduo/nova-file-manager/pull/283
+
+### New Contributors
+
+- @Joemires made their first contribution in https://github.com/oneduo/nova-file-manager/pull/282
+
+**Full Changelog**: https://github.com/oneduo/nova-file-manager/compare/v0.9.3...v0.10.0
+
 ## v0.9.3 - 2023-07-08
 
 ### What's Changed
@@ -301,6 +326,7 @@ rm -rf vendor/
 
 
 
+
 ```
 ```bash
 composer install oneduo/nova-file-manager
@@ -324,9 +350,11 @@ composer install oneduo/nova-file-manager
 
 
 
+
 ```
 ```bash
 composer rm bbs-lab/nova-file-manager
+
 
 
 
