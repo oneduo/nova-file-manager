@@ -2,6 +2,18 @@
 
 All notable changes to `nova-file-manager` will be documented in this file
 
+## v0.10.1 - 2023-08-10
+
+### What's Changed
+
+- Allow spatie/invade:^1.0 by @webard in https://github.com/oneduo/nova-file-manager/pull/284
+
+### New Contributors
+
+- @webard made their first contribution in https://github.com/oneduo/nova-file-manager/pull/284
+
+**Full Changelog**: https://github.com/oneduo/nova-file-manager/compare/v0.10.0...v0.10.1
+
 ## v0.10.0 - 2023-08-08
 
 ### What's Changed
@@ -327,6 +339,7 @@ rm -rf vendor/
 
 
 
+
 ```
 ```bash
 composer install oneduo/nova-file-manager
@@ -351,9 +364,11 @@ composer install oneduo/nova-file-manager
 
 
 
+
 ```
 ```bash
 composer rm bbs-lab/nova-file-manager
+
 
 
 
