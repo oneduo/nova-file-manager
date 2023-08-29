@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace Oneduo\NovaFileManager\Tests\Fixture;
+namespace Workbench\App\Nova;
 
 use Illuminate\Foundation\Auth\User;
 use Laravel\Nova\Http\Requests\NovaRequest;

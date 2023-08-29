@@ -42,6 +42,7 @@
     "guzzlehttp/guzzle": "^7.0.1",
     "laravel/pint": "^1.4.0",
     "mockery/mockery": "^1.5",
+    "nova-kit/nova-devtool": "^1.0",
     "orchestra/testbench": "^6.0 || ^7.6 || ^8.0",
     "orchestra/testbench-dusk": "^6.0 || ^7.6 || ^8.0",
     "pestphp/pest": "^1.21 || ^2.0",
@@ -59,7 +60,10 @@
   },
   "autoload-dev": {
     "psr-4": {
-      "Oneduo\\NovaFileManager\\Tests\\": "tests/"
+      "Oneduo\\NovaFileManager\\Tests\\": "tests/",
+      "Workbench\\App\\": "workbench/app/",
+      "Workbench\\Database\\Factories\\": "workbench/database/factories/",
+      "Workbench\\Database\\Seeders\\": "workbench/database/seeders/"
     }
   },
   "extra": {
@@ -70,11 +74,24 @@
     }
   },
   "scripts": {
+    "post-autoload-dump": [
+      "@clear",
+      "@prepare",
+      "@dusk:install-chromedriver"
+    ],
+    "clear": "@php vendor/bin/testbench package:purge-skeleton --ansi",
+    "prepare": "@php vendor/bin/testbench package:discover --ansi",
+    "dusk:install-chromedriver": "@php vendor/bin/dusk-updater detect --auto-update --ansi",
+    "build": "@php vendor/bin/testbench workbench:build --ansi",
+    "serve": [
+      "@build",
+      "@php vendor/bin/testbench serve"
+    ],
     "pint": [
-      "./vendor/bin/pint"
+      "@php vendor/bin/pint"
     ],
     "test": [
-      "./vendor/bin/testbench-dusk nova:publish",
+      "@php vendor/bin/testbench-dusk nova:publish",
       "XDEBUG_MODE=coverage ./vendor/bin/pest --coverage --coverage-clover ./coverage.xml"
     ]
   },

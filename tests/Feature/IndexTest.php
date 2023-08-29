@@ -10,8 +10,8 @@ use Illuminate\Support\Str;
 use Laravel\Nova\Http\Requests\NovaRequest;
 use Laravel\Nova\Nova;
 use Oneduo\NovaFileManager\NovaFileManager;
-use Oneduo\NovaFileManager\Tests\Fixture\TestResource;
-use Oneduo\NovaFileManager\Tests\Fixture\TestResourceWithOnDemandFilesystem;
+use Workbench\App\Nova\TestResource;
+use Workbench\App\Nova\TestResourceWithOnDemandFilesystem;
 use function Pest\Laravel\actingAs;
 use function Pest\Laravel\getJson;
 
