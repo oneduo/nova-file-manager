@@ -75,7 +75,6 @@
   },
   "scripts": {
     "post-autoload-dump": [
-      "@clear",
       "@prepare",
       "@dusk:install-chromedriver"
     ],
