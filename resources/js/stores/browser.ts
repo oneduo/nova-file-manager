@@ -311,6 +311,7 @@ const useBrowserStore = defineStore('nova-file-manager/browser', {
 
       this.modals = this.modals.filter(_name => _name !== name)
 
+      this.resetError()
       this.fixPortal()
     },
 

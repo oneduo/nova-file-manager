@@ -59,7 +59,7 @@ const iconBackgroundClass = computed(() => (props.variant ? variants[props.varia
         </div>
       </div>
       <div class="mt-5 sm:mt-4 sm:flex sm:flex-row-reverse sm:gap-x-2 space-y-3 sm:space-y-0">
-        <slot name="confimButton" />
+        <slot name="confirmButton" />
         <slot name="cancelButton" :close="close" />
       </div>
     </DialogPanel>
