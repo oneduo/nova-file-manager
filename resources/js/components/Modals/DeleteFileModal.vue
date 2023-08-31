@@ -28,7 +28,7 @@ const icon = computed(() => ExclamationCircleIcon)
     variant="danger"
     attribute="deleteFile"
   >
-    <template v-slot:confimButton>
+    <template v-slot:confirmButton>
       <Button class="w-full sm:w-auto" type="button" variant="danger" @click="onConfirm">
         {{ __('Delete') }}
       </Button>
