@@ -2,6 +2,16 @@
 
 All notable changes to `nova-file-manager` will be documented in this file
 
+## v0.11.0 - 2023-08-31
+
+### What's Changed
+
+- Fix: The interface becomes unresponsive when closing the dialog box w… by @ngochangtf in https://github.com/oneduo/nova-file-manager/pull/287
+- Workbench Integration by @crynobone in https://github.com/oneduo/nova-file-manager/pull/286
+- Fix: Chunk sending failed and retrying continuously. by @ngochangtf in https://github.com/oneduo/nova-file-manager/pull/289
+
+**Full Changelog**: https://github.com/oneduo/nova-file-manager/compare/v0.10.1...v0.11.0
+
 ## v1.0.0 - 2023-08-31
 
 ### What's Changed
@@ -351,6 +361,7 @@ rm -rf vendor/
 
 
 
+
 ```
 ```bash
 composer install oneduo/nova-file-manager
@@ -377,9 +388,11 @@ composer install oneduo/nova-file-manager
 
 
 
+
 ```
 ```bash
 composer rm bbs-lab/nova-file-manager
+
 
 
 
