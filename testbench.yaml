@@ -1,8 +1,25 @@
 providers:
-  - Oneduo\NovaFileManager\ToolServiceProvider
-  - Inertia\ServiceProvider
-  - Laravel\Nova\NovaServiceProvider
-  - Laravel\Nova\NovaApplicationServiceProvider
   - Laravel\Nova\NovaCoreServiceProvider
-  - NovaKit\NovaPackagesTool\LaravelServiceProvider
-  - Spatie\LaravelRay\RayServiceProvider
+  - Oneduo\NovaFileManager\ToolServiceProvider
+  - Workbench\App\Providers\NovaServiceProvider
+
+migrations: true
+
+seeders:
+  - Workbench\Database\Seeders\DatabaseSeeder
+
+workbench:
+  start: /nova
+  build:
+    - asset-publish
+    - create-sqlite-db
+    - db:wipe
+    - migrate:refresh
+  assets:
+    - nova-assets
+  sync: []
+
+purge:
+  directories:
+    - lang/*
+    - public/vendor/*
