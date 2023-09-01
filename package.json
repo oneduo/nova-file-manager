@@ -18,7 +18,7 @@
   "devDependencies": {
     "@babel/core": "^7.22.5",
     "@headlessui/vue": "^1.7.15",
-    "@heroicons/vue": "^2.0.14",
+    "@heroicons/vue": "^2.0.18",
     "@inertiajs/inertia": "^0.11.1",
     "@inertiajs/inertia-vue3": "^0.6.0",
     "@rollup/plugin-alias": "^5.0.0",
