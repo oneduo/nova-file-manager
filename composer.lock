@@ -1188,16 +1188,16 @@
         },
         {
             "name": "laravel/framework",
-            "version": "v10.20.0",
+            "version": "v10.21.0",
             "source": {
                 "type": "git",
                 "url": "https://github.com/laravel/framework.git",
-                "reference": "a655dca3fbe83897e22adff652b1878ba352d041"
+                "reference": "96b15c7ac382a9adb4a56d40c640e782d669a112"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/laravel/framework/zipball/a655dca3fbe83897e22adff652b1878ba352d041",
-                "reference": "a655dca3fbe83897e22adff652b1878ba352d041",
+                "url": "https://api.github.com/repos/laravel/framework/zipball/96b15c7ac382a9adb4a56d40c640e782d669a112",
+                "reference": "96b15c7ac382a9adb4a56d40c640e782d669a112",
                 "shasum": ""
             },
             "require": {
@@ -1384,7 +1384,7 @@
                 "issues": "https://github.com/laravel/framework/issues",
                 "source": "https://github.com/laravel/framework"
             },
-            "time": "2023-08-22T13:37:09+00:00"
+            "time": "2023-08-29T13:55:56+00:00"
         },
         {
             "name": "laravel/nova",
@@ -1672,16 +1672,16 @@
         },
         {
             "name": "league/commonmark",
-            "version": "2.4.0",
+            "version": "2.4.1",
             "source": {
                 "type": "git",
                 "url": "https://github.com/thephpleague/commonmark.git",
-                "reference": "d44a24690f16b8c1808bf13b1bd54ae4c63ea048"
+                "reference": "3669d6d5f7a47a93c08ddff335e6d945481a1dd5"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/thephpleague/commonmark/zipball/d44a24690f16b8c1808bf13b1bd54ae4c63ea048",
-                "reference": "d44a24690f16b8c1808bf13b1bd54ae4c63ea048",
+                "url": "https://api.github.com/repos/thephpleague/commonmark/zipball/3669d6d5f7a47a93c08ddff335e6d945481a1dd5",
+                "reference": "3669d6d5f7a47a93c08ddff335e6d945481a1dd5",
                 "shasum": ""
             },
             "require": {
@@ -1774,7 +1774,7 @@
                     "type": "tidelift"
                 }
             ],
-            "time": "2023-03-24T15:16:10+00:00"
+            "time": "2023-08-30T16:55:00+00:00"
         },
         {
             "name": "league/config",
@@ -6168,16 +6168,16 @@
         },
         {
             "name": "composer/semver",
-            "version": "3.3.2",
+            "version": "3.4.0",
             "source": {
                 "type": "git",
                 "url": "https://github.com/composer/semver.git",
-                "reference": "3953f23262f2bff1919fc82183ad9acb13ff62c9"
+                "reference": "35e8d0af4486141bc745f23a29cc2091eb624a32"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/composer/semver/zipball/3953f23262f2bff1919fc82183ad9acb13ff62c9",
-                "reference": "3953f23262f2bff1919fc82183ad9acb13ff62c9",
+                "url": "https://api.github.com/repos/composer/semver/zipball/35e8d0af4486141bc745f23a29cc2091eb624a32",
+                "reference": "35e8d0af4486141bc745f23a29cc2091eb624a32",
                 "shasum": ""
             },
             "require": {
@@ -6227,9 +6227,9 @@
                 "versioning"
             ],
             "support": {
-                "irc": "irc://irc.freenode.org/composer",
+                "irc": "ircs://irc.libera.chat:6697/composer",
                 "issues": "https://github.com/composer/semver/issues",
-                "source": "https://github.com/composer/semver/tree/3.3.2"
+                "source": "https://github.com/composer/semver/tree/3.4.0"
             },
             "funding": [
                 {
@@ -6245,7 +6245,7 @@
                     "type": "tidelift"
                 }
             ],
-            "time": "2022-04-01T19:23:25+00:00"
+            "time": "2023-08-31T09:50:34+00:00"
         },
         {
             "name": "fakerphp/faker",
@@ -7069,7 +7069,7 @@
         },
         {
             "name": "laravel/tinker",
-            "version": "2.x-dev",
+            "version": "v2.8.2",
             "source": {
                 "type": "git",
                 "url": "https://github.com/laravel/tinker.git",
@@ -7097,7 +7097,6 @@
             "suggest": {
                 "illuminate/database": "The Illuminate Database package (^6.0|^7.0|^8.0|^9.0|^10.0)."
             },
-            "default-branch": true,
             "type": "library",
             "extra": {
                 "branch-alias": {
@@ -7133,7 +7132,7 @@
             ],
             "support": {
                 "issues": "https://github.com/laravel/tinker/issues",
-                "source": "https://github.com/laravel/tinker/tree/2.x"
+                "source": "https://github.com/laravel/tinker/tree/v2.8.2"
             },
             "time": "2023-08-15T14:27:00+00:00"
         },
@@ -7339,22 +7338,23 @@
         },
         {
             "name": "nova-kit/nova-devtool",
-            "version": "v1.0.0",
+            "version": "v1.2.0",
             "source": {
                 "type": "git",
                 "url": "https://github.com/nova-kit/nova-devtool.git",
-                "reference": "7c88feb72a79b3e7a564f0586948a1917a415ad9"
+                "reference": "82ab71cffb9f5d000c69fca75fe6e3f4cada83b3"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/nova-kit/nova-devtool/zipball/7c88feb72a79b3e7a564f0586948a1917a415ad9",
-                "reference": "7c88feb72a79b3e7a564f0586948a1917a415ad9",
+                "url": "https://api.github.com/repos/nova-kit/nova-devtool/zipball/82ab71cffb9f5d000c69fca75fe6e3f4cada83b3",
+                "reference": "82ab71cffb9f5d000c69fca75fe6e3f4cada83b3",
                 "shasum": ""
             },
             "require": {
                 "composer-runtime-api": "^2.2",
+                "fakerphp/faker": "^1.21",
                 "laravel/nova": "^4.0",
-                "orchestra/workbench": "^0.2.4",
+                "orchestra/workbench": "^0.2.5",
                 "php": "^7.3 || ^8.0"
             },
             "require-dev": {
@@ -7395,9 +7395,9 @@
             ],
             "support": {
                 "issues": "https://github.com/nova-kit/nova-devtool/issues",
-                "source": "https://github.com/nova-kit/nova-devtool/tree/v1.0.0"
+                "source": "https://github.com/nova-kit/nova-devtool/tree/v1.2.0"
             },
-            "time": "2023-08-29T10:51:41+00:00"
+            "time": "2023-08-30T03:14:04+00:00"
         },
         {
             "name": "nunomaduro/collision",
@@ -7494,16 +7494,16 @@
         },
         {
             "name": "orchestra/canvas",
-            "version": "v8.5.2",
+            "version": "8.x-dev",
             "source": {
                 "type": "git",
                 "url": "https://github.com/orchestral/canvas.git",
-                "reference": "41df2347a6655f86d00aca25feffe56ad07bb3ca"
+                "reference": "d7769cc3b66f3fee74a49c37871db3218daf5f5e"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/orchestral/canvas/zipball/41df2347a6655f86d00aca25feffe56ad07bb3ca",
-                "reference": "41df2347a6655f86d00aca25feffe56ad07bb3ca",
+                "url": "https://api.github.com/repos/orchestral/canvas/zipball/d7769cc3b66f3fee74a49c37871db3218daf5f5e",
+                "reference": "d7769cc3b66f3fee74a49c37871db3218daf5f5e",
                 "shasum": ""
             },
             "require": {
@@ -7511,7 +7511,7 @@
                 "composer/semver": "^3.0",
                 "illuminate/database": "^10.17",
                 "illuminate/support": "^10.17",
-                "orchestra/canvas-core": "^8.4.1",
+                "orchestra/canvas-core": "^8.5",
                 "php": "^8.1",
                 "symfony/yaml": "^6.2"
             },
@@ -7524,6 +7524,7 @@
                 "phpunit/phpunit": "^10.1",
                 "spatie/laravel-ray": "^1.32.4"
             },
+            "default-branch": true,
             "bin": [
                 "canvas"
             ],
@@ -7560,22 +7561,22 @@
             "description": "Code Generators for Laravel Applications and Packages",
             "support": {
                 "issues": "https://github.com/orchestral/canvas/issues",
-                "source": "https://github.com/orchestral/canvas/tree/v8.5.2"
+                "source": "https://github.com/orchestral/canvas/tree/8.x"
             },
-            "time": "2023-08-24T07:52:57+00:00"
+            "time": "2023-08-30T02:05:13+00:00"
         },
         {
             "name": "orchestra/canvas-core",
-            "version": "v8.4.2",
+            "version": "8.x-dev",
             "source": {
                 "type": "git",
                 "url": "https://github.com/orchestral/canvas-core.git",
-                "reference": "48ceac3ab2dfd17d540e301c26643f69c409dfd3"
+                "reference": "aa76a0ccd76274599185171d8d53a06acc9b6f8b"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/orchestral/canvas-core/zipball/48ceac3ab2dfd17d540e301c26643f69c409dfd3",
-                "reference": "48ceac3ab2dfd17d540e301c26643f69c409dfd3",
+                "url": "https://api.github.com/repos/orchestral/canvas-core/zipball/aa76a0ccd76274599185171d8d53a06acc9b6f8b",
+                "reference": "aa76a0ccd76274599185171d8d53a06acc9b6f8b",
                 "shasum": ""
             },
             "require": {
@@ -7586,6 +7587,7 @@
                 "php": "^8.1"
             },
             "conflict": {
+                "orchestra/canvas": "<8.6.0",
                 "orchestra/testbench-core": "<8.2.0"
             },
             "require-dev": {
@@ -7594,6 +7596,7 @@
                 "phpstan/phpstan": "^1.10.6",
                 "phpunit/phpunit": "^10.1"
             },
+            "default-branch": true,
             "type": "library",
             "extra": {
                 "branch-alias": {
@@ -7627,9 +7630,9 @@
             "description": "Code Generators Builder for Laravel Applications and Packages",
             "support": {
                 "issues": "https://github.com/orchestral/canvas/issues",
-                "source": "https://github.com/orchestral/canvas-core/tree/v8.4.2"
+                "source": "https://github.com/orchestral/canvas-core/tree/8.x"
             },
-            "time": "2023-08-22T03:37:26+00:00"
+            "time": "2023-09-01T01:36:27+00:00"
         },
         {
             "name": "orchestra/dusk-updater",
@@ -7920,16 +7923,16 @@
         },
         {
             "name": "orchestra/workbench",
-            "version": "v0.2.4",
+            "version": "dev-master",
             "source": {
                 "type": "git",
                 "url": "https://github.com/orchestral/workbench.git",
-                "reference": "a25f74487136402459db29f0a0ff7f9255374120"
+                "reference": "1c21d53ca5fd26a17a3ad9e114c6d8dbc91bfd5f"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/orchestral/workbench/zipball/a25f74487136402459db29f0a0ff7f9255374120",
-                "reference": "a25f74487136402459db29f0a0ff7f9255374120",
+                "url": "https://api.github.com/repos/orchestral/workbench/zipball/1c21d53ca5fd26a17a3ad9e114c6d8dbc91bfd5f",
+                "reference": "1c21d53ca5fd26a17a3ad9e114c6d8dbc91bfd5f",
                 "shasum": ""
             },
             "require": {
@@ -7937,7 +7940,7 @@
                 "illuminate/console": "^9.52.15 || ^10.17.0",
                 "illuminate/support": "^9.52.15 || ^10.17.0",
                 "laravel/tinker": "^2.8.2",
-                "orchestra/canvas": "^7.6.1 || ^8.5.1",
+                "orchestra/canvas": "^7.7 || ^8.6",
                 "orchestra/testbench-core": "^7.30.0 || ^8.10.0",
                 "php": "^8.0"
             },
@@ -7949,10 +7952,11 @@
                 "phpstan/phpstan": "^1.10.7",
                 "phpunit/phpunit": "^9.6"
             },
+            "default-branch": true,
             "type": "library",
             "extra": {
                 "branch-alias": {
-                    "dev-master": "0.3.x-dev"
+                    "dev-master": "0.2.x-dev"
                 }
             },
             "autoload": {
@@ -7973,9 +7977,9 @@
             "description": "Workbench Companion for Laravel Packages Development",
             "support": {
                 "issues": "https://github.com/orchestral/workbench/issues",
-                "source": "https://github.com/orchestral/workbench/tree/v0.2.4"
+                "source": "https://github.com/orchestral/workbench/tree/master"
             },
-            "time": "2023-08-29T05:32:51+00:00"
+            "time": "2023-08-29T23:48:12+00:00"
         },
         {
             "name": "pestphp/pest",
