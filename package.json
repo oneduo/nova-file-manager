@@ -32,7 +32,7 @@
     "@vitejs/plugin-vue": "^4.3.4",
     "@vue/eslint-config-typescript": "^11.0.3",
     "autoprefixer": "^10.4.15",
-    "axios": "^1.5",
+    "axios": "^1.6",
     "babel-loader": "^9.1.2",
     "copy-to-clipboard": "^3.3.3",
     "eslint": "^8.36.0",
