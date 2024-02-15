@@ -15,6 +15,7 @@ use Oneduo\NovaFileManager\Events\FileRenaming;
 use Oneduo\NovaFileManager\Events\FileUnzipped;
 use Oneduo\NovaFileManager\Events\FileUnzipping;
 use Oneduo\NovaFileManager\Http\Requests\DeleteFileRequest;
+use Oneduo\NovaFileManager\Http\Requests\DownloadFileRequest;
 use Oneduo\NovaFileManager\Http\Requests\RenameFileRequest;
 use Oneduo\NovaFileManager\Http\Requests\UnzipFileRequest;
 use Oneduo\NovaFileManager\Http\Requests\UploadFileRequest;
@@ -116,5 +117,20 @@ class FileController extends Controller
         return response()->json([
             'message' => __('nova-file-manager::messages.file.unzip'),
         ]);
+    }
+
+    /**
+     * Download a file
+     *
+     * @param \Oneduo\NovaFileManager\Http\Requests\DownloadFileRequest $request
+     * @return \Illuminate\Http\JsonResponse
+     */
+    public function download(DownloadFileRequest $request)
+    {
+        $manager = $request->manager();
+
+        $file = $request->path;
+
+        return $manager->filesystem->download($file);
     }
 }

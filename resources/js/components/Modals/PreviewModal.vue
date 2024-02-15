@@ -128,8 +128,8 @@ const copy = (file: Entity) => {
 
           <IconButton
             :as-anchor="true"
-            :download="file?.name"
-            :href="file?.url"
+            :download="`/nova-vendor/nova-file-manager/files/download?path=${file?.path}`"
+            :href="`/nova-vendor/nova-file-manager/files/download?path=${file?.path}`"
             variant="secondary"
             :title="__('NovaFileManager.actions.download')"
           >

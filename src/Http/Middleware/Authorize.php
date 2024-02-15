@@ -8,6 +8,7 @@ use Closure;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
 use Illuminate\Http\Response;
+use Symfony\Component\HttpFoundation\StreamedResponse;
 use Laravel\Nova\Nova;
 use Laravel\Nova\Tool;
 use Oneduo\NovaFileManager\NovaFileManager;
@@ -21,7 +22,7 @@ class Authorize
      * @param  \Closure(\Illuminate\Http\Request):mixed  $next
      * @return \Illuminate\Http\Response|\Illuminate\Http\JsonResponse
      */
-    public function handle(Request $request, Closure $next): Response|JsonResponse
+    public function handle(Request $request, Closure $next): Response|JsonResponse|StreamedResponse
     {
         $tool = collect(Nova::registeredTools())->first([$this, 'matchesTool']);
 
