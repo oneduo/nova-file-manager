@@ -31,6 +31,7 @@ Route::as('nova-file-manager.')->middleware('nova')->group(static function () {
         Route::post('rename/{resource?}', [FileController::class, 'rename'])->name('rename');
         Route::post('delete/{resource?}', [FileController::class, 'delete'])->name('delete');
         Route::post('unzip/{resource?}', [FileController::class, 'unzip'])->name('unzip');
+        Route::get('download', [FileController::class, 'download'])->name('download');
     });
 
     Route::prefix('folders')->as('folders.')->group(function () {
