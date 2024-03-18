@@ -2,6 +2,73 @@
 
 All notable changes to `nova-file-manager` will be documented in this file
 
+## v0.12.1 - 2024-03-18
+
+### What's Changed
+
+* build(deps-dev): bump autoprefixer from 10.4.14 to 10.4.15 by @dependabot in https://github.com/oneduo/nova-file-manager/pull/290
+* build(deps-dev): bump vite-tsconfig-paths from 4.0.7 to 4.2.0 by @dependabot in https://github.com/oneduo/nova-file-manager/pull/291
+* build(deps-dev): bump axios from 1.3.4 to 1.5.0 by @dependabot in https://github.com/oneduo/nova-file-manager/pull/292
+* build(deps-dev): bump @heroicons/vue from 2.0.14 to 2.0.18 by @dependabot in https://github.com/oneduo/nova-file-manager/pull/293
+* build(deps-dev): bump @tailwindcss/forms from 0.5.3 to 0.5.6 by @dependabot in https://github.com/oneduo/nova-file-manager/pull/294
+* build(deps-dev): bump nova-kit/nova-devtool from 1.0.0 to 1.2.0 by @dependabot in https://github.com/oneduo/nova-file-manager/pull/295
+* build(deps-dev): bump laravel/pint from 1.11.0 to 1.12.0 by @dependabot in https://github.com/oneduo/nova-file-manager/pull/296
+* build(deps-dev): bump @vitejs/plugin-vue from 4.1.0 to 4.3.4 by @dependabot in https://github.com/oneduo/nova-file-manager/pull/309
+* build(deps-dev): bump vite from 4.1.4 to 4.4.9 by @dependabot in https://github.com/oneduo/nova-file-manager/pull/308
+* build(deps-dev): bump shepherd.js from 11.1.1 to 11.2.0 by @dependabot in https://github.com/oneduo/nova-file-manager/pull/307
+* build(deps-dev): bump eslint-config-prettier from 8.7.0 to 9.0.0 by @dependabot in https://github.com/oneduo/nova-file-manager/pull/306
+* build(deps): bump actions/checkout from 3 to 4 by @dependabot in https://github.com/oneduo/nova-file-manager/pull/304
+* build(deps-dev): bump spatie/laravel-ray from 1.32.6 to 1.33.0 by @dependabot in https://github.com/oneduo/nova-file-manager/pull/302
+* build(deps-dev): bump laravel/pint from 1.12.0 to 1.13.2 by @dependabot in https://github.com/oneduo/nova-file-manager/pull/299
+* build(deps-dev): bump nova-kit/nova-devtool from 1.2.0 to 1.3.0 by @dependabot in https://github.com/oneduo/nova-file-manager/pull/301
+* build(deps-dev): bump vite from 4.4.9 to 4.4.11 by @dependabot in https://github.com/oneduo/nova-file-manager/pull/310
+* build(deps-dev): bump axios from 1.5.0 to 1.5.1 by @dependabot in https://github.com/oneduo/nova-file-manager/pull/305
+* build(deps-dev): bump pestphp/pest from 2.16.1 to 2.20.0 by @dependabot in https://github.com/oneduo/nova-file-manager/pull/303
+* build(deps-dev): bump pestphp/pest from 2.20.0 to 2.21.0 by @dependabot in https://github.com/oneduo/nova-file-manager/pull/311
+* build(deps-dev): bump orchestra/testbench from 8.10.0 to 8.10.2 by @dependabot in https://github.com/oneduo/nova-file-manager/pull/300
+* build(deps-dev): bump postcss from 8.4.16 to 8.4.31 in /docs by @dependabot in https://github.com/oneduo/nova-file-manager/pull/312
+* build(deps-dev): bump vite from 4.4.11 to 4.5.0 by @dependabot in https://github.com/oneduo/nova-file-manager/pull/326
+* build(deps): bump laravel/nova from 4.27.13 to 4.27.14 by @dependabot in https://github.com/oneduo/nova-file-manager/pull/315
+* build(deps): bump stefanzweifel/git-auto-commit-action from 4 to 5 by @dependabot in https://github.com/oneduo/nova-file-manager/pull/321
+* build(deps): bump actions/setup-node from 3 to 4 by @dependabot in https://github.com/oneduo/nova-file-manager/pull/320
+* build(deps-dev): bump axios from 1.5.1 to 1.6.0 by @dependabot in https://github.com/oneduo/nova-file-manager/pull/322
+* build(deps-dev): bump eslint-plugin-tailwindcss from 3.11.0 to 3.13.0 by @dependabot in https://github.com/oneduo/nova-file-manager/pull/323
+* build(deps-dev): bump @rollup/plugin-alias from 5.0.0 to 5.0.1 by @dependabot in https://github.com/oneduo/nova-file-manager/pull/324
+* build(deps-dev): bump eslint-plugin-import from 2.27.5 to 2.29.0 by @dependabot in https://github.com/oneduo/nova-file-manager/pull/325
+* build(deps-dev): bump pestphp/pest from 2.21.0 to 2.24.1 by @dependabot in https://github.com/oneduo/nova-file-manager/pull/317
+* build(deps): bump james-heinrich/getid3 from 1.9.22 to 1.9.23 by @dependabot in https://github.com/oneduo/nova-file-manager/pull/318
+* build(deps): bump nova-kit/nova-packages-tool from 1.13.3 to 1.14.2 by @dependabot in https://github.com/oneduo/nova-file-manager/pull/328
+* build(deps-dev): bump laravel/pint from 1.13.2 to 1.13.6 by @dependabot in https://github.com/oneduo/nova-file-manager/pull/329
+* build(deps-dev): bump autoprefixer from 10.4.15 to 10.4.16 by @dependabot in https://github.com/oneduo/nova-file-manager/pull/332
+* build(deps-dev): bump @types/lodash from 4.14.196 to 4.14.202 by @dependabot in https://github.com/oneduo/nova-file-manager/pull/333
+* build(deps-dev): bump @tailwindcss/forms from 0.5.6 to 0.5.7 by @dependabot in https://github.com/oneduo/nova-file-manager/pull/334
+* build(deps-dev): bump pestphp/pest from 2.24.1 to 2.30.0 by @dependabot in https://github.com/oneduo/nova-file-manager/pull/338
+* build(deps-dev): bump laravel/pint from 1.13.6 to 1.13.7 by @dependabot in https://github.com/oneduo/nova-file-manager/pull/339
+* build(deps-dev): bump mockery/mockery from 1.6.6 to 1.6.7 by @dependabot in https://github.com/oneduo/nova-file-manager/pull/340
+* build(deps): bump nova-kit/nova-packages-tool from 1.14.2 to 1.14.5 by @dependabot in https://github.com/oneduo/nova-file-manager/pull/341
+* build(deps): bump github/codeql-action from 2 to 3 by @dependabot in https://github.com/oneduo/nova-file-manager/pull/343
+* build(deps-dev): bump vue-loader from 17.0.1 to 17.4.2 by @dependabot in https://github.com/oneduo/nova-file-manager/pull/344
+* build(deps-dev): bump vite-tsconfig-paths from 4.2.0 to 4.2.3 by @dependabot in https://github.com/oneduo/nova-file-manager/pull/345
+* build(deps): bump laravel/nova from 4.32.11 to 4.32.15 by @dependabot in https://github.com/oneduo/nova-file-manager/pull/366
+* build(deps-dev): bump pestphp/pest from 2.30.0 to 2.34.1 by @dependabot in https://github.com/oneduo/nova-file-manager/pull/364
+* build(deps): bump nova-kit/nova-packages-tool from 1.14.5 to 1.15.0 by @dependabot in https://github.com/oneduo/nova-file-manager/pull/368
+* build(deps-dev): bump spatie/laravel-ray from 1.33.0 to 1.35.1 by @dependabot in https://github.com/oneduo/nova-file-manager/pull/365
+* build(deps-dev): bump laravel/pint from 1.13.7 to 1.14.0 by @dependabot in https://github.com/oneduo/nova-file-manager/pull/363
+* build(deps-dev): bump @headlessui/vue from 1.7.15 to 1.7.19 by @dependabot in https://github.com/oneduo/nova-file-manager/pull/361
+* build(deps-dev): bump eslint from 8.36.0 to 8.57.0 by @dependabot in https://github.com/oneduo/nova-file-manager/pull/360
+* build(deps-dev): bump tailwindcss from 3.3.3 to 3.4.1 by @dependabot in https://github.com/oneduo/nova-file-manager/pull/353
+* build(deps-dev): bump babel-loader from 9.1.2 to 9.1.3 by @dependabot in https://github.com/oneduo/nova-file-manager/pull/351
+* build(deps): bump actions/cache from 3 to 4 by @dependabot in https://github.com/oneduo/nova-file-manager/pull/348
+* Fix: Hide TrashIcon when file deletion is disabled by @jan-tricks in https://github.com/oneduo/nova-file-manager/pull/347
+* build(deps): bump codecov/codecov-action from 3 to 4 by @dependabot in https://github.com/oneduo/nova-file-manager/pull/349
+* build(deps-dev): bump axios from 1.6.0 to 1.6.7 by @dependabot in https://github.com/oneduo/nova-file-manager/pull/350
+
+### New Contributors
+
+* @jan-tricks made their first contribution in https://github.com/oneduo/nova-file-manager/pull/347
+
+**Full Changelog**: https://github.com/oneduo/nova-file-manager/compare/v0.12.0...v0.12.1
+
 ## v0.12.0 - 2023-08-31
 
 **Full Changelog**: https://github.com/oneduo/nova-file-manager/compare/v0.11.0...v0.12.0
@@ -367,6 +434,7 @@ rm -rf vendor/
 
 
 
+
 ```
 ```bash
 composer install oneduo/nova-file-manager
@@ -395,9 +463,11 @@ composer install oneduo/nova-file-manager
 
 
 
+
 ```
 ```bash
 composer rm bbs-lab/nova-file-manager
+
 
 
 
