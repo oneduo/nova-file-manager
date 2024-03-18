@@ -89,7 +89,7 @@ const openUploadModal = () => {
           </button>
         </div>
 
-        <IconButton @click="openModal(MODALS.DELETE_FILES)" variant="danger" v-if="selection?.length">
+        <IconButton @click="openModal(MODALS.DELETE_FILES)" variant="danger" v-if="showDeleteFile && selection?.length">
           <TrashIcon class="w-5 h-5" />
         </IconButton>
 
