@@ -2628,29 +2628,29 @@
         },
         {
             "name": "pion/laravel-chunk-upload",
-            "version": "v1.5.2",
+            "version": "v1.5.4",
             "source": {
                 "type": "git",
                 "url": "https://github.com/pionl/laravel-chunk-upload.git",
-                "reference": "dcf5cf42059910242c31fc34d0ea147d07478473"
+                "reference": "cfbc4292ddcace51308a4f2f446d310aa04e6133"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/pionl/laravel-chunk-upload/zipball/dcf5cf42059910242c31fc34d0ea147d07478473",
-                "reference": "dcf5cf42059910242c31fc34d0ea147d07478473",
+                "url": "https://api.github.com/repos/pionl/laravel-chunk-upload/zipball/cfbc4292ddcace51308a4f2f446d310aa04e6133",
+                "reference": "cfbc4292ddcace51308a4f2f446d310aa04e6133",
                 "shasum": ""
             },
             "require": {
-                "illuminate/console": "5.2 - 5.8 | ^6.0 | ^7.0 | ^8.0 | ^9.0 | ^10.0",
-                "illuminate/filesystem": "5.2 - 5.8 | ^6.0 | ^7.0 | ^8.0 | ^9.0 | ^10.0",
-                "illuminate/http": "5.2 - 5.8 | ^6.0 | ^7.0 | ^8.0 | ^9.0 | ^10.0",
-                "illuminate/support": "5.2 - 5.8 | ^6.0 | ^7.0 | ^8.0 | ^9.0 | ^10.0"
+                "illuminate/console": "5.2 - 5.8 | ^6.0 | ^7.0 | ^8.0 | ^9.0 | ^10.0 | ^11.0",
+                "illuminate/filesystem": "5.2 - 5.8 | ^6.0 | ^7.0 | ^8.0 | ^9.0 | ^10.0 | ^11.0",
+                "illuminate/http": "5.2 - 5.8 | ^6.0 | ^7.0 | ^8.0 | ^9.0 | ^10.0 | ^11.0",
+                "illuminate/support": "5.2 - 5.8 | ^6.0 | ^7.0 | ^8.0 | ^9.0 | ^10.0 | ^11.0"
             },
             "require-dev": {
-                "friendsofphp/php-cs-fixer": "^2.16.0",
-                "mockery/mockery": "^1.1.0 | ^1.3.0",
-                "overtrue/phplint": "^1.1 | ^2.0",
-                "phpunit/phpunit": "5.7 | 6.0 | 7.0 | 7.5 | 8.4 | ^8.5 | ^9.3 | ^10.0"
+                "friendsofphp/php-cs-fixer": "^2.16.0 | ^3.52.0",
+                "mockery/mockery": "^1.1.0 | ^1.3.0 | ^1.6.0",
+                "overtrue/phplint": "^1.1 | ^2.0 | ^9.1",
+                "phpunit/phpunit": "5.7 | 6.0 | 7.0 | 7.5 | 8.4 | ^8.5 | ^9.3 | ^10.0 | ^11.0"
             },
             "type": "library",
             "extra": {
@@ -2678,7 +2678,7 @@
             "description": "Service for chunked upload with several js providers",
             "support": {
                 "issues": "https://github.com/pionl/laravel-chunk-upload/issues",
-                "source": "https://github.com/pionl/laravel-chunk-upload/tree/v1.5.2"
+                "source": "https://github.com/pionl/laravel-chunk-upload/tree/v1.5.4"
             },
             "funding": [
                 {
@@ -2690,7 +2690,7 @@
                     "type": "github"
                 }
             ],
-            "time": "2023-03-15T21:02:42+00:00"
+            "time": "2024-03-25T15:50:07+00:00"
         },
         {
             "name": "psr/cache",
