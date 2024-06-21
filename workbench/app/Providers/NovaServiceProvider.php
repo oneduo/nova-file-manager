@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace Workbench\App\Providers;
 
 use Illuminate\Support\Facades\Gate;
@@ -96,7 +98,7 @@ class NovaServiceProvider extends NovaApplicationServiceProvider
         FileManager::registerWrapper('repeater', function (FileManager $field) {
             return $field
                 // some options
-                ->filesystem(fn() => 'public');
+                ->filesystem(fn () => 'public');
         });
     }
 }

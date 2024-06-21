@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace Workbench\App\Nova\Flexible\Layouts;
 
 use Laravel\Nova\Fields\Text;
@@ -19,5 +21,4 @@ class ImageAndCaptionLayout extends Layout
             Text::make('Caption', 'caption')->nullable(),
         ];
     }
-
 }

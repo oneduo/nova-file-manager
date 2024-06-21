@@ -32,7 +32,7 @@ class UploadFileRequest extends BaseRequest
         return true;
     }
 
-    public function authorizationActionAttribute(string $class = null): string
+    public function authorizationActionAttribute(?string $class = null): string
     {
         if (!$this->canUploadFile()) {
             return parent::authorizationActionAttribute();

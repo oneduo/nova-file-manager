@@ -170,7 +170,7 @@ class BaseRequest extends NovaRequest
         return strtolower(str(static::class)->classBasename()->ucsplit()->get(1, ''));
     }
 
-    public function authorizationActionAttribute(string $class = null): string
+    public function authorizationActionAttribute(?string $class = null): string
     {
         return (string) str($class ?? static::class)->classBasename()->replace('Request', '')->snake(' ');
     }

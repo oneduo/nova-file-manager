@@ -13,9 +13,7 @@ class AssetCollection implements CastsAttributes
 {
     /**
      * @param  \Illuminate\Database\Eloquent\Model  $model
-     * @param  string  $key
      * @param  string  $value
-     * @param  array  $attributes
      * @return \Illuminate\Support\Collection<\Oneduo\NovaFileManager\Support\Asset>
      *
      * @throws \JsonException
@@ -33,10 +31,7 @@ class AssetCollection implements CastsAttributes
 
     /**
      * @param  \Illuminate\Database\Eloquent\Model  $model
-     * @param  string  $key
      * @param  \Illuminate\Support\Collection<\Oneduo\NovaFileManager\Support\Asset>  $value
-     * @param  array  $attributes
-     * @return string
      */
     public function set($model, string $key, $value, array $attributes): string
     {

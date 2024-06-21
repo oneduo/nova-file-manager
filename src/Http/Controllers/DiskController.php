@@ -11,8 +11,6 @@ class DiskController extends Controller
 {
     /**
      * Get the available disks
-     *
-     * @return \Illuminate\Http\JsonResponse
      */
     public function available(): JsonResponse
     {
