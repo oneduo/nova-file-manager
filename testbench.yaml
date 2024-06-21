@@ -3,18 +3,21 @@ providers:
   - Oneduo\NovaFileManager\ToolServiceProvider
   - Workbench\App\Providers\NovaServiceProvider
 
-migrations: true
+migrations:
+  - workbench/database/migrations
 
 seeders:
   - Workbench\Database\Seeders\DatabaseSeeder
 
 workbench:
   start: /nova
+  user: nova@laravel.com
   build:
     - asset-publish
     - create-sqlite-db
     - db:wipe
     - migrate:refresh
+    - storage:link
   assets:
     - nova-assets
   sync: []
@@ -23,3 +26,7 @@ purge:
   directories:
     - lang/*
     - public/vendor/*
+env:
+  - AUTH_MODEL=Workbench\App\Models\User
+  - FILESYSTEM_DRIVER=public
+  - APP_URL=http://localhost:8000
