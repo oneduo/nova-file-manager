@@ -5,6 +5,8 @@ namespace Workbench\App\Providers;
 use Illuminate\Support\Facades\Gate;
 use Laravel\Nova\Nova;
 use Laravel\Nova\NovaApplicationServiceProvider;
+use Oneduo\NovaFileManager\FileManager;
+use Oneduo\NovaFileManager\NovaFileManager;
 
 class NovaServiceProvider extends NovaApplicationServiceProvider
 {
@@ -64,7 +66,9 @@ class NovaServiceProvider extends NovaApplicationServiceProvider
      */
     public function tools()
     {
-        return [];
+        return [
+            NovaFileManager::make(),
+        ];
     }
 
     /**
@@ -78,6 +82,7 @@ class NovaServiceProvider extends NovaApplicationServiceProvider
             \Workbench\App\Nova\User::class,
             \Workbench\App\Nova\TestResource::class,
             \Workbench\App\Nova\TestResourceWithOnDemandFilesystem::class,
+            \Workbench\App\Nova\Page::class,
         ]);
     }
 
@@ -88,6 +93,10 @@ class NovaServiceProvider extends NovaApplicationServiceProvider
      */
     public function register()
     {
-        //
+        FileManager::registerWrapper('repeater', function (FileManager $field) {
+            return $field
+                // some options
+                ->filesystem(fn() => 'public');
+        });
     }
 }

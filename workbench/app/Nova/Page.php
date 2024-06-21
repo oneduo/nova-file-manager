@@ -2,30 +2,32 @@
 
 namespace Workbench\App\Nova;
 
-use Illuminate\Validation\Rules;
 use Laravel\Nova\Fields\ID;
-use Laravel\Nova\Fields\Password;
-use Laravel\Nova\Fields\Repeater;
+use Laravel\Nova\Fields\Markdown;
+use Laravel\Nova\Fields\Slug;
 use Laravel\Nova\Fields\Text;
 use Laravel\Nova\Http\Requests\NovaRequest;
+use Laravel\Nova\Panel;
 use Laravel\Nova\Resource;
-use Workbench\App\Nova\Repeater\UserInfoItem;
+use Oneduo\NovaFileManager\FileManager;
+use Whitecube\NovaFlexibleContent\Flexible;
+use Workbench\App\Nova\Flexible\Layouts\ImageAndCaptionLayout;
 
-class User extends Resource
+class Page extends Resource
 {
     /**
      * The model the resource corresponds to.
      *
      * @var string
      */
-    public static $model = \Workbench\App\Models\User::class;
+    public static $model = \Workbench\App\Models\Page::class;
 
     /**
      * The single value that should be used to represent the resource when being displayed.
      *
      * @var string
      */
-    public static $title = 'name';
+    public static $title = 'title';
 
     /**
      * The columns that should be searched.
@@ -33,7 +35,7 @@ class User extends Resource
      * @var array
      */
     public static $search = [
-        'id', 'name', 'email',
+        'id', 'title',
     ];
 
     /**
@@ -46,25 +48,24 @@ class User extends Resource
         return [
             ID::make()->sortable(),
 
-            Text::make('Name')
+            Text::make('Title')
                 ->sortable()
                 ->rules('required', 'max:255'),
 
-            Text::make('Email')
-                ->sortable()
-                ->rules('required', 'email', 'max:254')
-                ->creationRules('unique:users,email')
-                ->updateRules('unique:users,email,{{resourceId}}'),
+            Slug::make('Slug')
+                ->from('Title')
+                ->rules('required', 'max:255'),
 
-            Password::make('Password')
-                ->onlyOnForms()
-                ->creationRules('required', Rules\Password::defaults())
-                ->updateRules('nullable', Rules\Password::defaults()),
+            FileManager::make('Image')
+                ->rules('required'),
 
-            Repeater::make('Profile')
-                ->repeatables([
-                    UserInfoItem::make(),
-                ]),
+            Panel::make('Content', [
+                Flexible::make('Content')
+                    ->addLayout(ImageAndCaptionLayout::class)
+                    ->fullWidth(),
+
+            ]),
+
         ];
     }
 
