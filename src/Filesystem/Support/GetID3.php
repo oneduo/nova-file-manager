@@ -16,7 +16,6 @@ class GetID3 extends BaseGetID3
      * @param  string  $filename
      * @param  int  $filesize
      * @param  resource  $fp
-     * @return bool
      *
      * @throws getid3_exception
      */
@@ -51,7 +50,7 @@ class GetID3 extends BaseGetID3
             if (($fp != null) && ((get_resource_type($fp) == 'file') || (get_resource_type($fp) == 'stream'))) {
                 $this->fp = $fp;
             } elseif ((is_readable($filename) || file_exists($filename)) && is_file($filename) && ($this->fp = fopen($filename,
-                    'rb'))) {
+                'rb'))) {
                 // great
             } else {
                 $errormessagelist = [];
@@ -113,11 +112,11 @@ class GetID3 extends BaseGetID3
                         fclose($this->fp);
 
                         throw new getid3_exception('PHP seems to think the file is larger than '.round(PHP_INT_MAX / 1073741824).'GB, but filesystem reports it as '.number_format($real_filesize / 1073741824,
-                                3).'GB, please report to info@getid3.org');
+                            3).'GB, please report to info@getid3.org');
                     }
                     $this->info['filesize'] = $real_filesize;
                     $this->warning('File is larger than '.round(PHP_INT_MAX / 1073741824).'GB (filesystem reports it as '.number_format($real_filesize / 1073741824,
-                            3).'GB) and is not properly supported by PHP.');
+                        3).'GB) and is not properly supported by PHP.');
                 }
             }
 

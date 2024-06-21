@@ -8,6 +8,7 @@ use Inertia\Testing\AssertableInertia as Assert;
 use Laravel\Nova\Http\Middleware\BootTools;
 use Laravel\Nova\Http\Middleware\DispatchServingNovaEvent;
 use Laravel\Nova\Http\Middleware\HandleInertiaRequests;
+
 use function Pest\Laravel\actingAs;
 
 it('can show the file manager tool', function () {

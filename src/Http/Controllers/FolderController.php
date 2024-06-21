@@ -21,9 +21,6 @@ class FolderController extends Controller
 {
     /**
      * Create a new folder
-     *
-     * @param  \Oneduo\NovaFileManager\Http\Requests\CreateFolderRequest  $request
-     * @return \Illuminate\Http\JsonResponse
      */
     public function create(CreateFolderRequest $request): JsonResponse
     {
@@ -48,9 +45,6 @@ class FolderController extends Controller
 
     /**
      * Rename a folder
-     *
-     * @param  \Oneduo\NovaFileManager\Http\Requests\RenameFolderRequest  $request
-     * @return \Illuminate\Http\JsonResponse
      */
     public function rename(RenameFolderRequest $request): JsonResponse
     {
@@ -76,9 +70,6 @@ class FolderController extends Controller
 
     /**
      * Delete a folder
-     *
-     * @param  \Oneduo\NovaFileManager\Http\Requests\DeleteFolderRequest  $request
-     * @return \Illuminate\Http\JsonResponse
      */
     public function delete(DeleteFolderRequest $request): JsonResponse
     {

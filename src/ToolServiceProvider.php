@@ -19,8 +19,6 @@ class ToolServiceProvider extends ServiceProvider
 {
     /**
      * Bootstrap the tool services
-     *
-     * @return void
      */
     public function boot(): void
     {
@@ -46,11 +44,11 @@ class ToolServiceProvider extends ServiceProvider
         Nova::router(
             ['nova', Authenticate::class, Authorize::class],
             config('nova-file-manager.path', '/nova-file-manager')
-        )->group(__DIR__ . '/../routes/inertia.php');
+        )->group(__DIR__.'/../routes/inertia.php');
 
         Route::middleware(['nova:api', Authorize::class])
             ->prefix('nova-vendor/nova-file-manager')
-            ->group(__DIR__ . '/../routes/api.php');
+            ->group(__DIR__.'/../routes/api.php');
     }
 
     public function register(): void
@@ -63,8 +61,8 @@ class ToolServiceProvider extends ServiceProvider
 
             $disk = $args['disk'] ?? $request->input('disk');
             $path = $args['path'] ?? $request->input('path', DIRECTORY_SEPARATOR);
-            $page = (int)($args['page'] ?? $request->input('page', 1));
-            $perPage = (int)($args['perPage'] ?? $request->input('perPage', 15));
+            $page = (int) ($args['page'] ?? $request->input('page', 1));
+            $perPage = (int) ($args['perPage'] ?? $request->input('perPage', 15));
             $search = $args['search'] ?? $request->input('search');
 
             return FileManagerService::make($disk, $path, $page, $perPage, $search);
@@ -73,11 +71,11 @@ class ToolServiceProvider extends ServiceProvider
 
     public function config(): void
     {
-        $this->mergeConfigFrom(__DIR__ . '/../config/nova-file-manager.php', 'nova-file-manager');
+        $this->mergeConfigFrom(__DIR__.'/../config/nova-file-manager.php', 'nova-file-manager');
 
         $this->publishes(
             [
-                __DIR__ . '/../config' => config_path(),
+                __DIR__.'/../config' => config_path(),
             ],
             'nova-file-manager-config'
         );
@@ -85,14 +83,14 @@ class ToolServiceProvider extends ServiceProvider
 
     protected function translations(): void
     {
-        $this->loadTranslationsFrom(__DIR__ . '/../lang', 'nova-file-manager');
-        $this->loadJsonTranslationsFrom(__DIR__ . '/../lang');
+        $this->loadTranslationsFrom(__DIR__.'/../lang', 'nova-file-manager');
+        $this->loadJsonTranslationsFrom(__DIR__.'/../lang');
     }
 
     public function assets(): void
     {
-        Nova::style('nova-file-manager', __DIR__ . '/../dist/css/tool.css');
-        Nova::script('nova-file-manager', __DIR__ . '/../dist/js/tool.js');
+        Nova::style('nova-file-manager', __DIR__.'/../dist/css/tool.css');
+        Nova::script('nova-file-manager', __DIR__.'/../dist/js/tool.js');
     }
 
     public function loadTranslationsToNova(): void

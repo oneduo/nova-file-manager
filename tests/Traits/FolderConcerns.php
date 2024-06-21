@@ -6,6 +6,7 @@ namespace Oneduo\NovaFileManager\Tests\Traits;
 
 use Illuminate\Foundation\Auth\User;
 use Illuminate\Support\Facades\Storage;
+
 use function Pest\Laravel\actingAs;
 
 trait FolderConcerns

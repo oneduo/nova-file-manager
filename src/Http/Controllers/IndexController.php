@@ -12,7 +12,6 @@ class IndexController extends Controller
     /**
      * Get the data for the tool
      *
-     * @param  \Oneduo\NovaFileManager\Http\Requests\IndexRequest  $request
      * @return \Illuminate\Http\JsonResponse
      */
     public function __invoke(IndexRequest $request)

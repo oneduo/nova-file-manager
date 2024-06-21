@@ -18,12 +18,12 @@ use Oneduo\NovaFileManager\Support\Asset;
 use Oneduo\NovaFileManager\Traits\Support\InteractsWithFilesystem;
 use stdClass;
 
-class FileManager extends Field implements InteractsWithFilesystemContract, Cover
+class FileManager extends Field implements Cover, InteractsWithFilesystemContract
 {
-    use SupportsDependentFields;
-    use InteractsWithFilesystem;
     use HasThumbnail;
+    use InteractsWithFilesystem;
     use PresentsImages;
+    use SupportsDependentFields;
 
     public $component = 'nova-file-manager-field';
 
@@ -39,7 +39,7 @@ class FileManager extends Field implements InteractsWithFilesystemContract, Cove
 
     public ?string $wrapper = null;
 
-    public function __construct($name, $attribute = null, Closure $storageCallback = null)
+    public function __construct($name, $attribute = null, ?Closure $storageCallback = null)
     {
         parent::__construct($name, $attribute);
 
@@ -124,7 +124,7 @@ class FileManager extends Field implements InteractsWithFilesystemContract, Cove
         }
     }
 
-    protected function prepareStorageCallback(Closure $storageCallback = null): void
+    protected function prepareStorageCallback(?Closure $storageCallback = null): void
     {
         $this->storageCallback = $storageCallback ?? function (
             NovaRequest $request,
@@ -143,7 +143,7 @@ class FileManager extends Field implements InteractsWithFilesystemContract, Cove
             $files = collect($payload);
 
             if ($this->multiple) {
-                $value = collect($files)->map(fn(array $file) => new Asset(...$file));
+                $value = collect($files)->map(fn (array $file) => new Asset(...$file));
             } else {
                 $value = $files->isNotEmpty() ? new Asset(...$files->first()) : null;
             }
@@ -163,12 +163,12 @@ class FileManager extends Field implements InteractsWithFilesystemContract, Cove
         }
 
         if ($value instanceof stdClass) {
-            $value = (array)$value;
+            $value = (array) $value;
         }
 
         if (is_array($value)) {
             if ($this->multiple) {
-                $value = collect($value)->map(fn(array|object $asset) => new Asset(...(array)$asset));
+                $value = collect($value)->map(fn (array|object $asset) => new Asset(...(array) $asset));
             } else {
                 $value = collect([new Asset(...$value)]);
             }

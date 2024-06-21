@@ -17,6 +17,7 @@ use Oneduo\NovaFileManager\Events\FileUnzipping;
 use Oneduo\NovaFileManager\Events\FileUploaded;
 use Oneduo\NovaFileManager\Events\FileUploading;
 use Oneduo\NovaFileManager\NovaFileManager;
+
 use function Pest\Laravel\postJson;
 
 beforeEach(function () {
@@ -167,7 +168,7 @@ it('cannot upload a file with an existing file name when the upload_replace_exis
 
     Nova::$tools = [
         NovaFileManager::make()
-            ->uploadReplaceExisting(fn() => false),
+            ->uploadReplaceExisting(fn () => false),
     ];
 
     config()->set('nova-file-manager.upload_replace_existing', true);
@@ -209,14 +210,14 @@ it('can upload a file with an existing file name when the upload_replace_existin
 
     config()->set('nova-file-manager.upload_replace_existing', true);
 
-    Storage::disk($this->disk)->put($first = 'first.txt', "first");
+    Storage::disk($this->disk)->put($first = 'first.txt', 'first');
 
     postJson(
         uri: route('nova-file-manager.files.upload'),
         data: [
             'disk' => $this->disk,
             'path' => '/',
-            'file' => UploadedFile::fake()->createWithContent($first, "second"),
+            'file' => UploadedFile::fake()->createWithContent($first, 'second'),
             'resumableFilename' => $first,
         ],
     )
@@ -254,19 +255,19 @@ it('can upload a file with an existing file name when the upload_replace_existin
 
     Nova::$tools = [
         NovaFileManager::make()
-            ->uploadReplaceExisting(fn() => true),
+            ->uploadReplaceExisting(fn () => true),
     ];
 
     config()->set('nova-file-manager.upload_replace_existing', false);
 
-    Storage::disk($this->disk)->put($first = 'first.txt', "first");
+    Storage::disk($this->disk)->put($first = 'first.txt', 'first');
 
     postJson(
         uri: route('nova-file-manager.files.upload'),
         data: [
             'disk' => $this->disk,
             'path' => '/',
-            'file' => UploadedFile::fake()->createWithContent($first, "second"),
+            'file' => UploadedFile::fake()->createWithContent($first, 'second'),
             'resumableFilename' => $first,
         ],
     )

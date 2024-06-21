@@ -25,11 +25,6 @@ abstract class Entity implements Arrayable, EntityContract
 
     /**
      * Static helper
-     *
-     * @param  \Oneduo\NovaFileManager\Contracts\Services\FileManagerContract  $manager
-     * @param  string  $path
-     * @param  string  $disk
-     * @return static
      */
     public static function make(FileManagerContract $manager, string $path, string $disk): static
     {
@@ -38,8 +33,6 @@ abstract class Entity implements Arrayable, EntityContract
 
     /**
      * Return the entity's data as array
-     *
-     * @return array
      */
     public function toArray(): array
     {
@@ -80,8 +73,6 @@ abstract class Entity implements Arrayable, EntityContract
 
     /**
      * Generate a unique identifier for the entity
-     *
-     * @return string
      */
     public function id(): string
     {
@@ -90,8 +81,6 @@ abstract class Entity implements Arrayable, EntityContract
 
     /**
      * Get the name of the entity
-     *
-     * @return string
      */
     public function name(): string
     {
@@ -100,8 +89,6 @@ abstract class Entity implements Arrayable, EntityContract
 
     /**
      * Compute the size of the entity
-     *
-     * @return int|string
      */
     public function size(): int|string
     {
@@ -122,8 +109,6 @@ abstract class Entity implements Arrayable, EntityContract
 
     /**
      * Get the file extension of the entity
-     *
-     * @return string
      */
     public function extension(): string
     {
@@ -132,8 +117,6 @@ abstract class Entity implements Arrayable, EntityContract
 
     /**
      * Get the mime type of the entity
-     *
-     * @return string
      */
     public function mime(): string
     {
@@ -154,8 +137,6 @@ abstract class Entity implements Arrayable, EntityContract
 
     /**
      * Build an url for the entity based on the disk
-     *
-     * @return string
      */
     public function url(): string
     {
@@ -186,8 +167,6 @@ abstract class Entity implements Arrayable, EntityContract
 
     /**
      * Get the expiration time from the user defined config
-     *
-     * @return \Illuminate\Support\Carbon
      */
     public function signedExpirationTime(): Carbon
     {
@@ -199,8 +178,6 @@ abstract class Entity implements Arrayable, EntityContract
 
     /**
      * Get the last modified time of the entity as string
-     *
-     * @return string
      */
     public function lastModifiedAt(): string
     {
@@ -213,8 +190,6 @@ abstract class Entity implements Arrayable, EntityContract
 
     /**
      * Get the last modified time of the entity as a Carbon instance
-     *
-     * @return \Illuminate\Support\Carbon
      */
     public function lastModifiedAtTimestamp(): Carbon
     {
@@ -223,8 +198,6 @@ abstract class Entity implements Arrayable, EntityContract
 
     /**
      * Define the type of the entity
-     *
-     * @return string
      */
     public function type(): string
     {

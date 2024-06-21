@@ -1,9 +1,10 @@
 <?php
 
+declare(strict_types=1);
+
 namespace Workbench\App\Nova;
 
 use Laravel\Nova\Fields\ID;
-use Laravel\Nova\Fields\Markdown;
 use Laravel\Nova\Fields\Slug;
 use Laravel\Nova\Fields\Text;
 use Laravel\Nova\Http\Requests\NovaRequest;
