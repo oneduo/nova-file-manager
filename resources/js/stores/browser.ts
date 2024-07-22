@@ -845,7 +845,7 @@ const useBrowserStore = defineStore('nova-file-manager/browser', {
       this.closeBrowser()
     },
 
-    prepareTool({ singleDisk, permissions, tour, usePintura, pinturaOptions, cropperOptions }: Config) {
+    prepareTool({ singleDisk, permissions, tour, usePintura, pinturaOptions, cropperOptions, paginationOptions }: Config) {
       this.init()
       this.clearSelection()
 
@@ -859,6 +859,7 @@ const useBrowserStore = defineStore('nova-file-manager/browser', {
       this.pinturaOptions = pinturaOptions
       this.cropperOptions = cropperOptions
       this.error = undefined
+      this.perPageOptions = paginationOptions ? range(paginationOptions.paginationStart, paginationOptions.paginationEnd, paginationOptions.paginationStep):this.perPageOptions
     },
   },
   getters: {
