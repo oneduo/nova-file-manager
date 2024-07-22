@@ -34,6 +34,12 @@ return [
         // ... more disks
     ],
 
+    'paginate_options' => [
+        'paginationStart' => env('NOVA_FILE_MANAGER_PAGINATE_START',10),
+        'paginationEnd' => env('NOVA_FILE_MANAGER_PAGINATE_END',50),
+        'paginationStep' => env('NOVA_FILE_MANAGER_PAGINATE_STEP',10),
+    ],
+
     /*
     |--------------------------------------------------------------------------
     | Show hidden files

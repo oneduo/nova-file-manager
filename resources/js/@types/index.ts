@@ -39,6 +39,7 @@ export type Config = {
   pinturaOptions: PinturaOptions
   cropperOptions: CropperOptions
   outdated?: boolean
+  paginationOptions?: PaginationOptions
 }
 
 export type Entity = {
@@ -196,4 +197,9 @@ export interface CropperOptions {
   zoomOnTouch?: boolean
   zoomOnWheel?: boolean
   zoomable?: boolean
+}
+export interface PaginationOptions {
+    paginationStart?:number
+    paginationEnd?:number
+    paginationStep?:number
 }
