@@ -374,6 +374,7 @@ trait InteractsWithFilesystem
                 'usePintura' => config('nova-file-manager.use_pintura'),
                 'pinturaOptions' => $this->pinturaOptions,
                 'cropperOptions' => $this->cropperOptions,
+                'paginationOptions' => config('nova-file-manager.paginate_options'),
             ];
         });
     }
