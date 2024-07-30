@@ -6,6 +6,7 @@ namespace Oneduo\NovaFileManager\Http\Controllers;
 
 use Illuminate\Http\JsonResponse;
 use Illuminate\Routing\Controller;
+use Illuminate\Support\Facades\Storage;
 use Illuminate\Validation\ValidationException;
 use Oneduo\NovaFileManager\Events\FolderCreated;
 use Oneduo\NovaFileManager\Events\FolderCreating;
@@ -26,9 +27,21 @@ class FolderController extends Controller
     {
         $path = trim($request->path);
 
-        event(new FolderCreating($request->manager()->filesystem(), $request->manager()->getDisk(), $path));
+        $disk = config('filesystems.default');
+        if (is_null($disk) || !strlen($disk)) {
+            $disk = 'file_manager';
+        }
+        $filesystem = Storage::disk($disk);
 
-        $result = $request->manager()->mkdir($path);
+        event(new FolderCreating($filesystem, $disk, $path));
+
+        try {
+            $result = $filesystem->makeDirectory($path);
+        } catch (\Exception $e) {
+            throw ValidationException::withMessages([
+                'folder' => [__('nova-file-manager::errors.folder.create') . ' ' . $e->getMessage()],
+            ]);
+        }
 
         if (!$result) {
             throw ValidationException::withMessages([
@@ -36,7 +49,7 @@ class FolderController extends Controller
             ]);
         }
 
-        event(new FolderCreated($request->manager()->filesystem(), $request->manager()->getDisk(), $path));
+        event(new FolderCreated($filesystem, $disk, $path));
 
         return response()->json([
             'message' => __('nova-file-manager::messages.folder.create'),
