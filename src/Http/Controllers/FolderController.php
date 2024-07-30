@@ -28,6 +28,15 @@ class FolderController extends Controller
         $path = trim($request->path);
 
         $disk = config('filesystems.default');
+        try {
+            if ($request->user()->isDealer()) {
+                if (strlen($request->user()->location->storage()->getConfig()['root'])) {
+                    $path = '/' . ltrim(strstr($request->user()->location->storage()->getConfig()['root'], '/'), '/') . $path;
+                }
+            }
+        } catch (\Throwable $th) {
+            //throw $th;
+        }
         if (is_null($disk) || !strlen($disk)) {
             $disk = 'file_manager';
         }
