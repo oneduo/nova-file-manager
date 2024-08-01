@@ -46,7 +46,7 @@
     "laravel-nova-types": "^0.1.1",
     "lodash": "^4.17.19",
     "lodash-es": "^4.17.21",
-    "pinia": "^2.0.33",
+    "pinia": "^2.2.0",
     "postcss": "^8.4.24",
     "postcss-import": "^15.1.0",
     "prettier": "^3.2.5",
