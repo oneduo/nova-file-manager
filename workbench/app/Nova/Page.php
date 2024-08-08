@@ -58,7 +58,10 @@ class Page extends Resource
                 ->rules('required', 'max:255'),
 
             FileManager::make('Image')
-                ->rules('required'),
+                ->rules('required')
+                ->pagination(function (NovaRequest $request) {
+                    return [10, 42, 84];
+                }),
 
             Panel::make('Content', [
                 Flexible::make('Content')

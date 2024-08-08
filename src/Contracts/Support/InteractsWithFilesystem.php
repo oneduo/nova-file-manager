@@ -107,6 +107,10 @@ interface InteractsWithFilesystem extends ResolvesUrl
 
     public function cropperOptions(array $options): static;
 
+    public function pagination(Closure $callback): static;
+
+    public function resolvePagination(NovaRequest $request): array;
+
     public function options(): array;
 
     public function merge(self $other): static;

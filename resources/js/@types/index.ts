@@ -28,6 +28,7 @@ export type BrowserConfig = {
   usePintura: boolean
   pinturaOptions?: PinturaOptions
   cropperOptions?: CropperOptions
+  paginationOptions?: number[]
   component?: string
 }
 
@@ -39,7 +40,7 @@ export type Config = {
   pinturaOptions: PinturaOptions
   cropperOptions: CropperOptions
   outdated?: boolean
-  paginationOptions?: PaginationOptions
+  paginationOptions?: number[]
 }
 
 export type Entity = {
@@ -198,9 +199,4 @@ export interface CropperOptions {
   zoomOnTouch?: boolean
   zoomOnWheel?: boolean
   zoomable?: boolean
-}
-export interface PaginationOptions {
-    paginationStart?:number
-    paginationEnd?:number
-    paginationStep?:number
 }

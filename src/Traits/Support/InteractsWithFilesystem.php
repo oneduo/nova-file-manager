@@ -60,6 +60,8 @@ trait InteractsWithFilesystem
 
     public array $cropperOptions = [];
 
+    public ?Closure $pagination = null;
+
     public function filesystem(Closure $callback): static
     {
         $this->filesystem = $callback;
@@ -384,6 +386,26 @@ trait InteractsWithFilesystem
         return $this;
     }
 
+    public function pagination(Closure $callback): static
+    {
+        $this->pagination = $callback;
+
+        return $this;
+    }
+
+    public function resolvePagination(NovaRequest $request): array
+    {
+        if (is_callable($this->pagination)) {
+            return call_user_func($this->pagination, $request);
+        }
+
+        return range(
+            config('nova-file-manager.paginate_options.pagination_start'),
+            config('nova-file-manager.paginate_options.pagination_end'),
+            config('nova-file-manager.paginate_options.pagination_step')
+        );
+    }
+
     public function options(): array
     {
         return with(app(NovaRequest::class), function (NovaRequest $request) {
@@ -407,7 +429,7 @@ trait InteractsWithFilesystem
                 'usePintura' => config('nova-file-manager.use_pintura'),
                 'pinturaOptions' => $this->pinturaOptions,
                 'cropperOptions' => $this->cropperOptions,
-                'paginationOptions' => config('nova-file-manager.paginate_options'),
+                'paginationOptions' => $this->resolvePagination($request),
             ];
         });
     }

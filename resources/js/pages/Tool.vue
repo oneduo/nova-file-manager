@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { Config, PaginationOptions } from '__types__'
+import { Config } from '__types__'
 import { computed, onBeforeMount } from 'vue'
 import Browser from '@/components/Browser.vue'
 import UpdateChecker from '@/components/Elements/UpdateChecker.vue'
@@ -25,7 +25,7 @@ onBeforeMount(() => {
     usePintura: props.config.usePintura || false,
     pinturaOptions: props.config.pinturaOptions || {},
     cropperOptions: props.config.cropperOptions || {},
-    paginationOptions: props.config.paginationOptions || {},
+    paginationOptions: props.config.paginationOptions || undefined,
   })
 
   store.loadFromQueryString()
