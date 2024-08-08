@@ -18,6 +18,8 @@ Available methods :
 - `showUploadFile`
 - `showRenameFile`
 - `showDeleteFile`
+- `showDownloadFile`
+- `showUnzipFile`
 - `showCropImage`
 
 The usage is pretty straightforward, you can pass a callback that takes the current `NovaRequest` as a parameter, that
@@ -69,6 +71,8 @@ Available methods :
 - `canUploadFile`
 - `canRenameFile`
 - `canDeleteFile`
+- `canDownloadFile`
+- `canUnzipFile`
 
 Unlike the `show` prefixed methods, these aformentionned methods do not hide the buttons from the tool, they only
 restrict the underlying API actions.
