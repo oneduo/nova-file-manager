@@ -1,0 +1,25 @@
+services:
+  minio:
+    image: bitnami/minio:latest
+    ports:
+      - 9000:9000
+      - 9001:9001
+    environment:
+      MINIO_ROOT_USER: minio
+      MINIO_ROOT_PASSWORD: password
+      MINIO_SERVER_ACCESS_KEY: rUmYd8kROsPEGKFgKq60
+      MINIO_SERVER_SECRET_KEY: JH9wnA6exx2VRukKgs2WSUzaN0r8bf6akAPWiqaE
+      MINIO_DEFAULT_BUCKETS: nova-file-manager
+    volumes:
+      - minio_data:/data
+    healthcheck:
+      test:
+        - CMD
+        - curl
+        - '-f'
+        - 'http://localhost:9000/minio/health/live'
+      retries: 3
+      timeout: 5s
+
+volumes:
+  minio_data:

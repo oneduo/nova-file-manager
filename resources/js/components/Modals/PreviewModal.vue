@@ -35,7 +35,7 @@ const props = withDefaults(defineProps<Props>(), {
 
 const store = useBrowserStore()
 const { copy: clipboardCopy } = useClipboard()
-const { showRenameFile, showDeleteFile, showCropImage, showUnzipFile } = usePermissions()
+const { showCropImage, showDeleteFile, showDownloadFile, showRenameFile, showUnzipFile } = usePermissions()
 const { usePinturaEditor } = usePintura()
 
 // STATE
@@ -43,6 +43,7 @@ const buttonRef = ref<HTMLButtonElement | HTMLAnchorElement>()
 const isCropModalOpened = computed(() => store.isOpen(`crop-image-${props.file?.id}`))
 const isEditModalOpened = computed(() => store.isOpen(`edit-image-${props.file?.id}`))
 const isField = computed(() => store.isField)
+const downloadUrl = computed(() => store.downloadUrl(props.file))
 
 // ACTIONS
 const openModal = (name: string) => store.openModal({ name })
@@ -127,9 +128,10 @@ const copy = (file: Entity) => {
           </IconButton>
 
           <IconButton
+            v-if="showDownloadFile"
             :as-anchor="true"
             :download="file?.name"
-            :href="file?.url"
+            :href="downloadUrl"
             variant="secondary"
             :title="__('NovaFileManager.actions.download')"
           >

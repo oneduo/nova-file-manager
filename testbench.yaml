@@ -11,7 +11,7 @@ seeders:
 
 workbench:
   start: /nova
-  user: nova@laravel.com
+  user: admin@laravel.com
   build:
     - asset-publish
     - create-sqlite-db
@@ -20,13 +20,25 @@ workbench:
     - storage:link
   assets:
     - nova-assets
-  sync: []
+  sync:
+    - from: ./workbench/config
+      to: config
 
 purge:
   directories:
     - lang/*
     - public/vendor/*
+    - database/migrations/*
+    - config/*
+
 env:
   - AUTH_MODEL=Workbench\App\Models\User
   - FILESYSTEM_DRIVER=public
   - APP_URL=http://localhost:8000
+  - AWS_ACCESS_KEY_ID=minio
+  - AWS_SECRET_ACCESS_KEY=password
+  - AWS_DEFAULT_REGION=us-east-1
+  - AWS_BUCKET=nova-file-manager
+  - AWS_ENDPOINT=http://localhost:9000
+  - AWS_USE_PATH_STYLE_ENDPOINT=true
+  - NOVA_FILE_MANAGER_URL_SIGNING_ENABLED=true

@@ -13,6 +13,7 @@ interface Props {
   variant?: keyof typeof variants
   type?: 'button' | 'submit' | 'reset'
   asAnchor?: boolean
+  download?: string
 }
 
 const props = withDefaults(defineProps<Props>(), {
@@ -29,6 +30,7 @@ const variantClass = computed(() => variants[props.variant])
     :is="!asAnchor ? 'button' : 'a'"
     :class="`inline-flex items-center rounded-full border-0 p-2 shadow-sm focus:outline-none focus:ring-1 hover:opacity-75 disabled:opacity-25 ${variantClass}`"
     :type="!asAnchor ? type ?? 'button' : undefined"
+    :download="download ?? null"
   >
     <slot />
   </component>

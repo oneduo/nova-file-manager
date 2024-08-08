@@ -123,6 +123,7 @@ export type Pagination = {
 export type Permissions = {
   create?: boolean
   delete?: boolean
+  download?: boolean
   edit?: boolean
   rename?: boolean
   unzip?: boolean
