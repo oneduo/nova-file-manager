@@ -8,6 +8,7 @@ import draggable from 'vuedraggable'
 import Browser from '@/components/Browser.vue'
 import FieldCard from '@/components/Cards/FieldCard.vue'
 import useBrowserStore from '@/stores/browser'
+import omit from 'lodash/omit'
 
 export default defineComponent({
   mixins: [
@@ -69,6 +70,14 @@ export default defineComponent({
         ghostClass: 'opacity-0',
       }
     },
+
+    extraAttributes() {
+      const attrs = omit(this.field.extraAttributes, ['readonly'])
+
+      return {
+        ...attrs,
+      }
+    },
   },
 
   methods: {
@@ -108,6 +117,7 @@ export default defineComponent({
         usePintura: this.currentField.usePintura ?? false,
         pinturaOptions: this.currentField.pinturaOptions ?? {},
         cropperOptions: this.currentField.cropperOptions ?? {},
+        paginationOptions: this.currentField.paginationOptions ?? undefined,
         component: this.$inertia?.page?.component,
       })
     },
@@ -150,7 +160,7 @@ export default defineComponent({
 <template>
   <DefaultField :errors="errors" :field="currentField" :show-help-text="showHelpText">
     <template #field>
-      <div class="nova-file-manager">
+      <div class="nova-file-manager" v-bind="extraAttributes">
         <div :class="{ dark }">
           <div v-if="value?.length > 0" class="flex flex-row gap-2 flex-wrap w-full">
             <draggable

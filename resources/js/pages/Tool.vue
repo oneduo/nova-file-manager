@@ -25,6 +25,7 @@ onBeforeMount(() => {
     usePintura: props.config.usePintura || false,
     pinturaOptions: props.config.pinturaOptions || {},
     cropperOptions: props.config.cropperOptions || {},
+    paginationOptions: props.config.paginationOptions || undefined,
   })
 
   store.loadFromQueryString()
