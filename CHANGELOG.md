@@ -2,6 +2,31 @@
 
 All notable changes to `nova-file-manager` will be documented in this file
 
+## v0.12.2 - 2024-08-08
+
+### What's Changed
+
+* build(deps-dev): bump spatie/laravel-ray from 1.35.1 to 1.36.0 by @dependabot in https://github.com/oneduo/nova-file-manager/pull/380
+* build(deps): bump laravel/nova from 4.33.0 to 4.33.1 by @dependabot in https://github.com/oneduo/nova-file-manager/pull/379
+* build(deps): bump pion/laravel-chunk-upload from 1.5.2 to 1.5.4 by @dependabot in https://github.com/oneduo/nova-file-manager/pull/378
+* build(deps-dev): bump mockery/mockery from 1.6.7 to 1.6.11 by @dependabot in https://github.com/oneduo/nova-file-manager/pull/377
+* build(deps-dev): bump prettier from 2.8.8 to 3.2.5 by @dependabot in https://github.com/oneduo/nova-file-manager/pull/374
+* build(deps-dev): bump vue from 3.3.4 to 3.4.26 by @dependabot in https://github.com/oneduo/nova-file-manager/pull/382
+* build(deps-dev): bump pestphp/pest from 2.34.1 to 2.34.6 by @dependabot in https://github.com/oneduo/nova-file-manager/pull/376
+* build(deps-dev): bump autoprefixer from 10.4.16 to 10.4.19 by @dependabot in https://github.com/oneduo/nova-file-manager/pull/371
+* build(deps-dev): bump laravel/pint from 1.14.0 to 1.16.0 by @dependabot in https://github.com/oneduo/nova-file-manager/pull/398
+* build(deps-dev): bump spatie/laravel-ray from 1.36.0 to 1.36.2 by @dependabot in https://github.com/oneduo/nova-file-manager/pull/397
+* build(deps): bump spatie/invade from 2.0.0 to 2.1.0 by @dependabot in https://github.com/oneduo/nova-file-manager/pull/396
+* build(deps-dev): bump @headlessui/vue from 1.7.19 to 1.7.22 by @dependabot in https://github.com/oneduo/nova-file-manager/pull/395
+* build(deps-dev): bump eslint from 8.57.0 to 9.4.0 by @dependabot in https://github.com/oneduo/nova-file-manager/pull/394
+* build(deps): bump peaceiris/actions-gh-pages from 3 to 4 by @dependabot in https://github.com/oneduo/nova-file-manager/pull/384
+* build(deps-dev): bump @vitejs/plugin-vue from 4.3.4 to 4.6.2 by @dependabot in https://github.com/oneduo/nova-file-manager/pull/386
+* build(deps-dev): bump @trivago/prettier-plugin-sort-imports from 4.2.0 to 4.3.0 by @dependabot in https://github.com/oneduo/nova-file-manager/pull/375
+* Add Workbench examples on how to use the field by @mikaelpopowicz in https://github.com/oneduo/nova-file-manager/pull/402
+* Improve download by @mikaelpopowicz in https://github.com/oneduo/nova-file-manager/pull/420
+
+**Full Changelog**: https://github.com/oneduo/nova-file-manager/compare/v0.12.1...v0.12.2
+
 ## v0.12.1 - 2024-03-18
 
 ### What's Changed
@@ -435,6 +460,7 @@ rm -rf vendor/
 
 
 
+
 ```
 ```bash
 composer install oneduo/nova-file-manager
@@ -464,9 +490,11 @@ composer install oneduo/nova-file-manager
 
 
 
+
 ```
 ```bash
 composer rm bbs-lab/nova-file-manager
+
 
 
 
