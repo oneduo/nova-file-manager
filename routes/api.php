@@ -7,6 +7,7 @@ use Oneduo\NovaFileManager\Http\Controllers\DiskController;
 use Oneduo\NovaFileManager\Http\Controllers\FileController;
 use Oneduo\NovaFileManager\Http\Controllers\FolderController;
 use Oneduo\NovaFileManager\Http\Controllers\IndexController;
+use Oneduo\NovaFileManager\Http\Middleware\EnsureAcceptsJsonMiddleware;
 
 /*
 |--------------------------------------------------------------------------
@@ -27,6 +28,7 @@ Route::as('nova-file-manager.')->middleware('nova')->group(static function () {
     Route::get('/{resource?}', IndexController::class)->name('data');
 
     Route::prefix('files')->as('files.')->group(function () {
+        Route::get('download/{resource?}', [FileController::class, 'download'])->middleware(EnsureAcceptsJsonMiddleware::class)->name('download');
         Route::post('upload/{resource?}', [FileController::class, 'upload'])->name('upload');
         Route::post('rename/{resource?}', [FileController::class, 'rename'])->name('rename');
         Route::post('delete/{resource?}', [FileController::class, 'delete'])->name('delete');

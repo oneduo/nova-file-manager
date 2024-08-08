@@ -20,7 +20,7 @@ class DatabaseSeeder extends Seeder
 
         UserFactory::new()->create([
             'name' => 'Laravel Nova',
-            'email' => 'nova@laravel.com',
+            'email' => 'admin@laravel.com',
             'password' => $password,
         ]);
 

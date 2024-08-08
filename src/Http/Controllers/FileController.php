@@ -15,9 +15,11 @@ use Oneduo\NovaFileManager\Events\FileRenaming;
 use Oneduo\NovaFileManager\Events\FileUnzipped;
 use Oneduo\NovaFileManager\Events\FileUnzipping;
 use Oneduo\NovaFileManager\Http\Requests\DeleteFileRequest;
+use Oneduo\NovaFileManager\Http\Requests\DownloadFileRequest;
 use Oneduo\NovaFileManager\Http\Requests\RenameFileRequest;
 use Oneduo\NovaFileManager\Http\Requests\UnzipFileRequest;
 use Oneduo\NovaFileManager\Http\Requests\UploadFileRequest;
+use Symfony\Component\HttpFoundation\StreamedResponse;
 
 class FileController extends Controller
 {
@@ -103,5 +105,10 @@ class FileController extends Controller
         return response()->json([
             'message' => __('nova-file-manager::messages.file.unzip'),
         ]);
+    }
+
+    public function download(DownloadFileRequest $request): StreamedResponse
+    {
+        return $request->manager()->filesystem()->download($request->path);
     }
 }

@@ -83,6 +83,10 @@ interface InteractsWithFilesystem extends ResolvesUrl
 
     public function resolveCanUnzipFile(NovaRequest $request): bool;
 
+    public function canDownloadFile(Closure $callback): static;
+
+    public function resolveCanDownloadFile(NovaRequest $request): bool;
+
     public function hasUploadValidator(): bool;
 
     public function getUploadValidator(): ?Closure;

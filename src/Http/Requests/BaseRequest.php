@@ -157,6 +157,11 @@ class BaseRequest extends NovaRequest
         return $this->element()?->resolveCanUnzipFile($this) ?? true;
     }
 
+    public function canDownloadFile(): bool
+    {
+        return $this->element()?->resolveCanDownloadFile($this) ?? true;
+    }
+
     protected function failedAuthorization(): void
     {
         throw ValidationException::withMessages([
