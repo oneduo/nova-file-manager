@@ -2,6 +2,15 @@
 
 All notable changes to `nova-file-manager` will be documented in this file
 
+## v0.12.3 - 2024-08-08
+
+### What's Changed
+
+* build(deps-dev): bump laravel/pint from 1.16.0 to 1.17.2 by @dependabot in https://github.com/oneduo/nova-file-manager/pull/421
+* Some enhancement for pagination and html attributes by @devzzk @Fayne @mikaelpopowicz in https://github.com/oneduo/nova-file-manager/pull/422
+
+**Full Changelog**: https://github.com/oneduo/nova-file-manager/compare/v0.12.2...v0.12.3
+
 ## v0.12.2 - 2024-08-08
 
 ### What's Changed
@@ -461,6 +470,7 @@ rm -rf vendor/
 
 
 
+
 ```
 ```bash
 composer install oneduo/nova-file-manager
@@ -491,9 +501,11 @@ composer install oneduo/nova-file-manager
 
 
 
+
 ```
 ```bash
 composer rm bbs-lab/nova-file-manager
+
 
 
 
