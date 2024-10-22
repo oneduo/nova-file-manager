@@ -1,8 +1,9 @@
 {
   "js/tool.ts": {
     "file": "js/tool.js",
-    "isEntry": true,
-    "src": "js/tool.ts"
+    "name": "tool",
+    "src": "js/tool.ts",
+    "isEntry": true
   },
   "style.css": {
     "file": "css/tool.css",
