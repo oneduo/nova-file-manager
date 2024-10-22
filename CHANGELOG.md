@@ -2,6 +2,22 @@
 
 All notable changes to `nova-file-manager` will be documented in this file
 
+## v0.12.4 - 2024-10-22
+
+### What's Changed
+
+* build(deps-dev): bump @types/lodash from 4.14.202 to 4.17.9 by @dependabot in https://github.com/oneduo/nova-file-manager/pull/438
+* build(deps-dev): bump league/flysystem-aws-s3-v3 from 3.28.0 to 3.29.0 by @dependabot in https://github.com/oneduo/nova-file-manager/pull/437
+* build(deps-dev): bump vite from 4.5.0 to 5.4.8 by @dependabot in https://github.com/oneduo/nova-file-manager/pull/435
+* build(deps-dev): bump eslint-plugin-prettier-vue from 4.2.0 to 5.0.0 by @dependabot in https://github.com/oneduo/nova-file-manager/pull/429
+* build(deps-dev): bump spatie/laravel-ray from 1.36.2 to 1.37.1 by @dependabot in https://github.com/oneduo/nova-file-manager/pull/425
+* build(deps-dev): bump ts-loader from 9.4.4 to 9.5.1 by @dependabot in https://github.com/oneduo/nova-file-manager/pull/431
+* build(deps-dev): bump pestphp/pest from 2.34.6 to 2.35.1 by @dependabot in https://github.com/oneduo/nova-file-manager/pull/426
+* build(deps-dev): bump laravel/pint from 1.17.2 to 1.18.1 by @dependabot in https://github.com/oneduo/nova-file-manager/pull/433
+* build(deps): bump nova-kit/nova-packages-tool from 1.15.0 to 1.17.3 by @dependabot in https://github.com/oneduo/nova-file-manager/pull/440
+
+**Full Changelog**: https://github.com/oneduo/nova-file-manager/compare/v0.12.3...v0.12.4
+
 ## v0.12.3 - 2024-08-08
 
 ### What's Changed
@@ -471,6 +487,7 @@ rm -rf vendor/
 
 
 
+
 ```
 ```bash
 composer install oneduo/nova-file-manager
@@ -502,9 +519,11 @@ composer install oneduo/nova-file-manager
 
 
 
+
 ```
 ```bash
 composer rm bbs-lab/nova-file-manager
+
 
 
 
