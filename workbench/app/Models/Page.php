@@ -11,7 +11,7 @@ use Whitecube\NovaFlexibleContent\Value\FlexibleCast;
 
 class Page extends Model
 {
-    use HasFlexible;
+//    use HasFlexible;
 
     protected $fillable = [
         'title',
