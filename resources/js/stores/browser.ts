@@ -401,7 +401,7 @@ const useBrowserStore = defineStore('nova-file-manager/browser', {
 
       const searchParams = new URLSearchParams(window.location.search)
 
-      const page = window.Nova.app.config.globalProperties.$inertia.page
+      const pageState = { url: `${window.location.pathname}${window.location.search}` }
 
       for (const [key, value] of Object.entries(parameters)) {
         const content = value?.toString()
@@ -417,12 +417,12 @@ const useBrowserStore = defineStore('nova-file-manager/browser', {
         }
       }
 
-      if (page.url !== `${window.location.pathname}?${searchParams}`) {
-        page.url = `${window.location.pathname}?${searchParams}`
+      if (pageState.url !== `${window.location.pathname}?${searchParams}`) {
+        pageState.url = `${window.location.pathname}?${searchParams}`
 
         const separator = searchParams.toString().length > 0 ? '?' : ''
 
-        window.history.pushState(page, '', `${window.location.pathname}${separator}${searchParams}`)
+        window.history.pushState(pageState, '', `${window.location.pathname}${separator}${searchParams}`)
       }
     },
 
@@ -726,12 +726,12 @@ const useBrowserStore = defineStore('nova-file-manager/browser', {
         let editMode
 
         switch (this.component) {
-        case 'Nova.Create':
-          editMode = 'create'
-          break
-        case 'Nova.Update':
-          editMode = 'update'
-          break
+          case 'Nova.Create':
+            editMode = 'create'
+            break
+          case 'Nova.Update':
+            editMode = 'update'
+            break
         }
 
         data = {
