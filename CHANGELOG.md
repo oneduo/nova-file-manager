@@ -2,6 +2,19 @@
 
 All notable changes to `nova-file-manager` will be documented in this file
 
+## v0.13.1 - 2025-01-08
+
+### What's Changed
+
+* Fix #455 / Fix crash on Nova 5 / Inertia 2 by @Tarpsvo in https://github.com/oneduo/nova-file-manager/pull/459
+* Load Nova routes in workbench NovaServiceProvider by @mikaelpopowicz in https://github.com/oneduo/nova-file-manager/pull/461
+
+### New Contributors
+
+* @Tarpsvo made their first contribution in https://github.com/oneduo/nova-file-manager/pull/459
+
+**Full Changelog**: https://github.com/oneduo/nova-file-manager/compare/v0.13.0...v0.13.1
+
 ## v0.13.0 - 2024-12-19
 
 ### What's Changed
@@ -497,6 +510,7 @@ rm -rf vendor/
 
 
 
+
 ```
 ```bash
 composer install oneduo/nova-file-manager
@@ -530,9 +544,11 @@ composer install oneduo/nova-file-manager
 
 
 
+
 ```
 ```bash
 composer rm bbs-lab/nova-file-manager
+
 
 
 
