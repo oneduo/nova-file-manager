@@ -98,6 +98,8 @@ class NovaServiceProvider extends NovaApplicationServiceProvider
      */
     public function register()
     {
+        parent::register();
+
         FileManager::registerWrapper('repeater', function (FileManager $field) {
             return $field
                 // some options
