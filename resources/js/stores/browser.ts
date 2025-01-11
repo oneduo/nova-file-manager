@@ -136,6 +136,7 @@ const useBrowserStore = defineStore('nova-file-manager/browser', {
       file: {
         upload: true,
         rename: true,
+        download: true,
         edit: true,
         delete: true,
         unzip: true,
