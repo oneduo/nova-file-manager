@@ -11,7 +11,7 @@ interface Props {
   index: number
 }
 
-defineProps<Props>()
+const props = defineProps<Props>()
 
 const selected = ref(undefined as Entity | undefined)
 const store = useBrowserStore()
@@ -29,7 +29,17 @@ const copy = (file: Entity) => {
   }, 1000)
 }
 
-onMounted(() => store.syncDarkMode())
+onMounted(() => {
+  store.syncDarkMode()
+  store.prepareTool({
+    singleDisk: props.field.singleDisk,
+    permissions: props.field.permissions,
+    tour: props.field.tour,
+    usePintura: props.field.usePintura || false,
+    pinturaOptions: props.field.pinturaOptions || {},
+    cropperOptions: props.field.cropperOptions || {},
+  })
+})
 </script>
 
 <template>
