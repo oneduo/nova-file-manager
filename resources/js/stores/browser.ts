@@ -686,6 +686,7 @@ const useBrowserStore = defineStore('nova-file-manager/browser', {
     },
 
     downloadUrl(file: Entity): String {
+      if (this.singleDisk) return file.url
       return this.url(`/nova-vendor/nova-file-manager/${ENDPOINTS.DOWNLOAD_FILE}?disk=${file.disk}&path=${file.path}`)
     },
 
