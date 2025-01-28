@@ -44,6 +44,7 @@ const isCropModalOpened = computed(() => store.isOpen(`crop-image-${props.file?.
 const isEditModalOpened = computed(() => store.isOpen(`edit-image-${props.file?.id}`))
 const isField = computed(() => store.isField)
 const downloadUrl = computed(() => store.downloadUrl(props.file))
+const modalSize = computed(() => `max-w-${store.modalSize}`)
 
 // ACTIONS
 const openModal = (name: string) => store.openModal({ name })
@@ -81,7 +82,8 @@ const copy = (file: Entity) => {
 <template>
   <BaseModal as="template" class="nova-file-manager" :name="PREVIEW_MODAL_NAME" :initial-focus-ref="buttonRef">
     <DialogPanel
-      class="relative bg-gray-100 dark:bg-gray-900 rounded-lg overflow-hidden shadow-xl transform transition-all w-full max-w-7xl p-4 flex flex-col gap-4"
+      class="relative bg-gray-100 dark:bg-gray-900 rounded-lg overflow-hidden shadow-xl transform transition-all w-full p-4 flex flex-col gap-4"
+      :class="modalSize"
     >
       <div class="w-full flex flex-col flex-col-reverse gap-y-2 md:flex-row justify-between items-start">
         <h2 class="text-lg font-medium text-gray-900 dark:text-gray-400 break-all w-full">

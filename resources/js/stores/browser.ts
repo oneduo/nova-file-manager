@@ -71,6 +71,7 @@ interface State {
   singleDisk: boolean
   flexibleGroup: string[]
   fieldInit?: () => void
+  modalSize: '7xl'
   permissions?: PermissionsCollection
   chunkSize: number
   usePintura: boolean
@@ -125,6 +126,7 @@ const useBrowserStore = defineStore('nova-file-manager/browser', {
     singleDisk: false,
     flexibleGroup: [],
     fieldInit: undefined,
+    modalSize: undefined,
 
     // permissions
     permissions: {
@@ -797,7 +799,9 @@ const useBrowserStore = defineStore('nova-file-manager/browser', {
       cropperOptions,
       paginationOptions,
       component,
+      modalSize,
     }: BrowserConfig) {
+      this.modalSize = modalSize
       this.isField = true
       this.multiple = multiple
       this.limit = limit
