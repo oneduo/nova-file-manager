@@ -20,7 +20,7 @@ const queue = computed(() => store.queue)
 <template>
   <BaseModal as="template" class="nova-file-manager" :name="name">
     <DialogPanel
-      class="relative bg-white dark:bg-gray-900 rounded-lg text-left overflow-hidden shadow-xl transform transition-all sm:my-8 max-w-4xl mx-auto"
+      class="relative bg-white dark:bg-gray-900 rounded-lg text-start overflow-hidden shadow-xl transform transition-all sm:my-8 max-w-4xl mx-auto"
     >
       <div class="flex flex-col justify-center gap-6 rounded-md px-6 pt-5 pb-6">
         <div class="w-full flex flex-row justify-between items-center">

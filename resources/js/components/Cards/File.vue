@@ -38,7 +38,7 @@ const name = computed(() => (missing.value ? props.file.path : props.file.name))
   <button class="relative cursor-pointer group focus-visible:outline-none flex flex-col items-start" :title="name">
     <div
       :class="[
-        'relative block aspect-square w-full h-full overflow-hidden rounded-lg hover:shadow-md hover:opacity-75 border border-gray-200/50 dark:border-gray-700/50 text-left',
+        'relative block aspect-square w-full h-full overflow-hidden rounded-lg hover:shadow-md hover:opacity-75 border border-gray-200/50 dark:border-gray-700/50 text-start',
         'group-focus-visible:outline group-focus-visible:outline-2 group-focus-visible:outline-black dark:group-focus-visible:outline-white',
         selected ? 'outline outline-2 outline-blue-500 group-focus-visible:outline-blue-500' : '',
       ]"
@@ -87,7 +87,7 @@ const name = computed(() => (missing.value ? props.file.path : props.file.name))
         </template>
       </div>
 
-      <div class="absolute right-1 top-1" v-if="onDeselect">
+      <div class="absolute end-1 top-1" v-if="onDeselect">
         <button v-if="onDeselect" @click="onDeselect(file)" class="text-red-500 hover:text-red-600 rounded-full">
           <XCircleIcon class="h-6 w-6" />
         </button>
@@ -97,7 +97,7 @@ const name = computed(() => (missing.value ? props.file.path : props.file.name))
     <p
       v-if="!missing || isUploading"
       :class="[
-        'pointer-events-none mt-2 block truncate font-medium text-gray-900 dark:text-gray-50 text-left w-full',
+        'pointer-events-none mt-2 block truncate font-medium text-gray-900 dark:text-gray-50 text-start w-full',
         isUploading || onDeselect ? 'text-xs' : 'text-sm',
       ]"
       :title="!isUploading ? name : file.name"
@@ -105,18 +105,18 @@ const name = computed(() => (missing.value ? props.file.path : props.file.name))
       {{ !isUploading ? name : file.name }}
     </p>
 
-    <p v-if="missing && !isUploading" class="text-sm text-red-500 font-semibold text-left break-all">
+    <p v-if="missing && !isUploading" class="text-sm text-red-500 font-semibold text-start break-all">
       {{ __('NovaFileManager.fileMissing', { path: file.path }) }}
     </p>
 
     <div
-      class="gap-x-0.5 inline-flex flex-wrap items-center text-xs pointer-events-none block font-medium text-gray-500 text-left break-all"
+      class="gap-x-0.5 inline-flex flex-wrap items-center text-xs pointer-events-none block font-medium text-gray-500 text-start break-all"
     >
       <span v-if="file.size">{{ file.size }}</span>
-      <span v-if="fieldMode && !singleDisk && file.disk?.length > 0" class="ml-0.5">&centerdot; {{ file.disk }}</span>
+      <span v-if="fieldMode && !singleDisk && file.disk?.length > 0" class="ms-0.5">&centerdot; {{ file.disk }}</span>
     </div>
 
-    <span class="absolute top-1 right-1" v-if="selected">
+    <span class="absolute top-1 end-1" v-if="selected">
       <CheckCircleIcon class="h-5 w-5 text-blue-500" aria-hidden="true" />
     </span>
   </button>

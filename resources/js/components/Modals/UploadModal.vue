@@ -90,7 +90,7 @@ watch(files, () => submit())
             leave-to="opacity-0 translate-y-4 sm:translate-y-0 sm:scale-95"
           >
             <DialogPanel
-              class="relative bg-white dark:bg-gray-900 rounded-lg text-left overflow-hidden shadow-xl transform transition-all sm:my-8 max-w-4xl mx-auto"
+              class="relative bg-white dark:bg-gray-900 rounded-lg text-start overflow-hidden shadow-xl transform transition-all sm:my-8 max-w-4xl mx-auto"
             >
               <div class="flex flex-col justify-center gap-6 rounded-md px-6 pt-5 pb-6">
                 <div v-if="!queue.length" class="space-y-1 text-center p-12">
@@ -110,7 +110,7 @@ watch(files, () => submit())
                         @change="onChange"
                       />
                     </label>
-                    <p class="pl-1 text-gray-500">
+                    <p class="ps-1 text-gray-500">
                       {{ __('NovaFileManager.drag') }}
                     </p>
                   </div>

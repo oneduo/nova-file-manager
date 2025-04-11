@@ -14,7 +14,7 @@
 }
 
 .shepherd-footer {
-    @apply absolute right-0 top-full mt-6 flex w-full flex-row items-center justify-between rounded-md;
+    @apply absolute end-0 top-full mt-6 flex w-full flex-row items-center justify-between rounded-md;
 }
 
 .shepherd-content {
@@ -40,7 +40,7 @@
 
 .shepherd-modal-overlay-container {
     height: 0;
-    left: 0;
+    inset-inline-start: 0;
     opacity: 0;
     overflow: hidden;
     pointer-events: none;

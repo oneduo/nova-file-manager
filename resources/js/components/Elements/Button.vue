@@ -37,7 +37,7 @@ const style = computed(() => variants[props.variant])
     :href="href"
     :type="type"
   >
-    <Spinner v-if="loading" class="mr-2 w-3 h-3" />
+    <Spinner v-if="loading" class="me-2 w-3 h-3" />
     <slot />
   </component>
 </template>

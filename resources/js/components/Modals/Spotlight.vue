@@ -101,15 +101,15 @@ const onSearch = debounce(({ target: { value } }) => {
             <Combobox @update:modelValue="onSelect" :default-value="null">
               <div class="relative">
                 <MagnifyingGlassIcon
-                  class="pointer-events-none absolute top-3.5 left-4 h-5 w-5 text-gray-400"
+                  class="pointer-events-none absolute top-3.5 start-4 h-5 w-5 text-gray-400"
                   aria-hidden="true"
                   v-if="!isSearching || help"
                 />
 
-                <Spinner class="pointer-events-none absolute top-3.5 left-4 h-5 w-5" aria-hidden="true" v-else />
+                <Spinner class="pointer-events-none absolute top-3.5 start-4 h-5 w-5" aria-hidden="true" v-else />
 
                 <ComboboxInput
-                  class="h-12 w-full border-0 bg-transparent pl-11 pr-4 text-gray-800 dark:text-gray-200 placeholder-gray-400 focus:outline-none sm:text-sm"
+                  class="h-12 w-full border-0 bg-transparent ps-11 pe-4 text-gray-800 dark:text-gray-200 placeholder-gray-400 focus:outline-none sm:text-sm"
                   :placeholder="__('NovaFileManager.spotlight.placeholder')"
                   @change.prevent.stop="onSearch"
                 />
@@ -141,7 +141,7 @@ const onSearch = debounce(({ target: { value } }) => {
                           :class="['h-6 w-6 flex-none', active ? 'text-white' : 'text-gray-400 dark:text-gray-400']"
                           aria-hidden="true"
                         />
-                        <span class="ml-3 flex-auto truncate">{{ folder.name }}</span>
+                        <span class="ms-3 flex-auto truncate">{{ folder.name }}</span>
                       </li>
                     </ComboboxOption>
                   </ul>
@@ -168,7 +168,7 @@ const onSearch = debounce(({ target: { value } }) => {
                           :class="['h-6 w-6 flex-none', active ? 'text-white' : 'text-gray-400 dark:text-gray-400']"
                           aria-hidden="true"
                         />
-                        <span class="ml-3 flex-auto truncate">{{ file.name }}</span>
+                        <span class="ms-3 flex-auto truncate">{{ file.name }}</span>
                       </li>
                     </ComboboxOption>
                   </ul>
