@@ -1,6 +1,7 @@
 <script setup lang="ts">
-import { ChevronRightIcon, HomeIcon } from '@heroicons/vue/24/outline'
+import { ChevronRightIcon, ChevronLeftIcon, HomeIcon } from '@heroicons/vue/24/outline'
 import { Breadcrumb } from '__types__'
+import { computed } from 'vue'
 
 interface Props {
   items: Breadcrumb[]
@@ -10,6 +11,8 @@ interface Props {
 withDefaults(defineProps<Props>(), {
   items: () => [],
 })
+
+const isLtr = computed(() => document.dir === 'ltr')
 </script>
 
 <template>
@@ -29,9 +32,10 @@ withDefaults(defineProps<Props>(), {
       </li>
       <li v-for="page in items" :key="page.path">
         <div class="flex items-center">
-          <ChevronRightIcon class="flex-shrink-0 h-4 w-4 text-gray-400 dark:text-gray-600" />
+          <ChevronRightIcon v-if="isLtr" class="flex-shrink-0 h-4 w-4 text-gray-400 dark:text-gray-600" />
+          <ChevronLeftIcon v-else class="flex-shrink-0 h-4 w-4 text-gray-400 dark:text-gray-600" />
           <button
-            :class="`ml-2 text-xs font-regular hover:text-blue-500 ${
+            :class="`ms-2 text-xs font-regular hover:text-blue-500 ${
               page.current ? 'text-gray-800 dark:text-gray-200' : 'text-gray-400 dark:text-gray-600'
             }`"
             @click.prevent="setPath(page.path)"

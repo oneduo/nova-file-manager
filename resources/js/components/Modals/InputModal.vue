@@ -14,12 +14,12 @@ defineProps<Props>()
 <template>
   <BaseModal as="template" class="nova-file-manager" :name="name" v-slot="{ close }">
     <DialogPanel
-      class="relative bg-gray-200 dark:bg-gray-900 rounded-lg text-left overflow-hidden shadow-xl transform transition-all sm:my-8 sm:max-w-lg w-full"
+      class="relative bg-gray-200 dark:bg-gray-900 rounded-lg text-start overflow-hidden shadow-xl transform transition-all sm:my-8 sm:max-w-lg w-full"
     >
       <form name="input-modal" @submit.prevent="onSubmit">
         <div class="px-4 pt-5 pb-4 sm:p-6 sm:pb-4">
           <div class="sm:flex sm:items-start">
-            <div class="text-left w-full space-y-6">
+            <div class="text-start w-full space-y-6">
               <DialogTitle as="h3" class="text-lg leading-6 font-medium text-gray-700 dark:text-gray-200">
                 {{ title }}
               </DialogTitle>

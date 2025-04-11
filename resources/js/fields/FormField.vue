@@ -185,7 +185,7 @@ export default defineComponent({
               type="button"
               @click="openBrowserModal"
             >
-              <CloudIcon aria-hidden="true" class="-ml-1 mr-2 h-5 w-5 text-gray-400 dark:text-gray-200" />
+              <CloudIcon aria-hidden="true" class="-ms-1 me-2 h-5 w-5 text-gray-400 dark:text-gray-200" />
               {{ __('NovaFileManager.openBrowser') }}
             </button>
           </div>

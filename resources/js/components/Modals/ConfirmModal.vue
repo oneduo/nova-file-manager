@@ -34,7 +34,7 @@ const iconBackgroundClass = computed(() => (props.variant ? variants[props.varia
 <template>
   <BaseModal as="template" class="nova-file-manager" :name="name" v-slot="{ close }">
     <DialogPanel
-      class="relative bg-gray-100 dark:bg-gray-900 rounded-lg px-4 pt-5 pb-4 text-left overflow-hidden shadow-xl transform transition-all sm:my-8 sm:max-w-lg sm:w-full sm:p-6"
+      class="relative bg-gray-100 dark:bg-gray-900 rounded-lg px-4 pt-5 pb-4 text-start overflow-hidden shadow-xl transform transition-all sm:my-8 sm:max-w-lg sm:w-full sm:p-6"
     >
       <div class="sm:flex sm:items-start">
         <div
@@ -42,7 +42,7 @@ const iconBackgroundClass = computed(() => (props.variant ? variants[props.varia
         >
           <component :is="icon" :class="`${iconColorClass} h-6 w-6`" aria-hidden="true" />
         </div>
-        <div class="mt-3 text-center sm:mt-0 sm:ml-4 sm:text-left">
+        <div class="mt-3 text-center sm:mt-0 sm:ms-4 sm:text-start">
           <DialogTitle as="h3" class="text-lg leading-6 font-medium text-gray-900 dark:text-gray-100">
             {{ title }}
           </DialogTitle>

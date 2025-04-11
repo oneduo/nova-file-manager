@@ -10,6 +10,8 @@ const pagination = computed(() => store.pagination)
 const { current_page: currentPage, last_page: lastPage, from, to, total, links } = pagination.value!
 
 const setPage = (page: number) => store.setPage({ page })
+
+const isLtr = computed(() => document.dir === 'ltr')
 </script>
 
 <template>
@@ -56,7 +58,8 @@ const setPage = (page: number) => store.setPage({ page })
             @click.prevent="() => setPage(Math.max(1, currentPage - 1))"
           >
             <span class="sr-only">{{ __('Previous') }}</span>
-            <ChevronLeftIcon aria-hidden="true" class="h-4 w-4" />
+            <ChevronLeftIcon v-if="isLtr" aria-hidden="true" class="h-4 w-4" />
+            <ChevronRightIcon v-else aria-hidden="true" class="h-4 w-4" />
           </button>
           <button
             v-for="(link, index) in links?.slice(1, -1)"
@@ -77,7 +80,8 @@ const setPage = (page: number) => store.setPage({ page })
             @click.prevent="() => setPage(Math.min(lastPage, currentPage + 1))"
           >
             <span class="sr-only">{{ __('Next') }}</span>
-            <ChevronRightIcon aria-hidden="true" class="h-4 w-4" />
+            <ChevronRightIcon v-if="isLtr" aria-hidden="true" class="h-4 w-4" />
+            <ChevronLeftIcon v-else aria-hidden="true" class="h-4 w-4" />
           </button>
         </nav>
       </div>

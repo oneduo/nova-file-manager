@@ -1,7 +1,8 @@
 <script setup lang="ts">
 import { Disclosure, DisclosureButton, DisclosurePanel } from '@headlessui/vue'
-import { ChevronDownIcon, ChevronRightIcon } from '@heroicons/vue/24/outline'
+import { ChevronDownIcon, ChevronRightIcon, ChevronLeftIcon } from '@heroicons/vue/24/outline'
 import { Entity, Folder, View } from '__types__'
+import { computed } from 'vue'
 import Empty from '@/components/Empty.vue'
 import FileGrid from '@/components/FileGrid.vue'
 import FolderGrid from '@/components/FolderGrid.vue'
@@ -20,6 +21,8 @@ withDefaults(defineProps<Props>(), {
   filled: false,
   view: 'grid',
 })
+
+const isLtr = computed(() => document.dir === 'ltr')
 </script>
 
 <template>
@@ -30,7 +33,8 @@ withDefaults(defineProps<Props>(), {
           <div class="flex flex-row w-full items-center gap-x-1">
             <span class="text-gray-500 text-xs">{{ __('Folders') }}</span>
             <ChevronDownIcon v-if="open" class="h-3 w-3 text-gray-600" />
-            <ChevronRightIcon v-else class="h-3 w-3 text-gray-600" />
+            <ChevronRightIcon v-if="!open && isLtr" class="h-3 w-3 text-gray-600" />
+            <ChevronLeftIcon v-if="!open && !isLtr" class="h-3 w-3 text-gray-600" />
           </div>
         </DisclosureButton>
 
@@ -47,7 +51,8 @@ withDefaults(defineProps<Props>(), {
           <div class="flex flex-row w-full items-center gap-x-1">
             <span class="text-gray-500 text-xs">Files</span>
             <ChevronDownIcon v-if="open" class="h-3 w-3 text-gray-600" />
-            <ChevronRightIcon v-else class="h-3 w-3 text-gray-600" />
+            <ChevronRightIcon v-if="!open && isLtr" class="h-3 w-3 text-gray-600" />
+            <ChevronLeftIcon v-if="!open && !isLtr" class="h-3 w-3 text-gray-600" />
           </div>
         </DisclosureButton>
 
