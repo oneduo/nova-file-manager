@@ -1,17 +1,17 @@
 <script setup lang="ts">
-import range from 'lodash/range'
-import Select from '@/components/Elements/Select.vue'
+import Select from '@/components/Elements/Select.vue';
+import range from 'lodash/range';
 
 interface Props {
-  perPage: number
-  perPageOptions: number[]
-  setPerPage: (perPage: number) => void
+  perPage: number;
+  perPageOptions: number[];
+  setPerPage: (perPage: number) => void;
 }
 
 withDefaults(defineProps<Props>(), {
   perPage: 15,
   perPageOptions: () => range(10, 50, 10),
-})
+});
 </script>
 
 <template>

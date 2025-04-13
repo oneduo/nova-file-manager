@@ -9,29 +9,17 @@
     "resolveJsonModule": true,
     "isolatedModules": true,
     "esModuleInterop": true,
-    "lib": [
-      "ESNext",
-      "DOM"
-    ],
+    "lib": ["ESNext", "DOM"],
     "skipLibCheck": true,
     "noEmit": true,
     "outDir": "dist",
     "paths": {
-      "@/*": [
-        "*"
-      ],
-      "__types__": [
-        "@types"
-      ]
+      "@/*": ["*"],
+      "__types__": ["@types"]
     },
     "baseUrl": "resources/js"
   },
-  "include": [
-    "resources/**/*.ts",
-    "resources/**/*.d.ts",
-    "resources/**/*.tsx",
-    "resources/**/*.vue"
-  ],
+  "include": ["resources/**/*.ts", "resources/**/*.d.ts", "resources/**/*.tsx", "resources/**/*.vue"],
   "references": [
     {
       "path": "./tsconfig.node.json"

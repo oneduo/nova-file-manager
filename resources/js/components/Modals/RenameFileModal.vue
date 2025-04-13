@@ -1,28 +1,28 @@
 <script setup lang="ts">
-import { onMounted, ref } from 'vue'
-import Button from '@/components/Elements/Button.vue'
-import InputModal from '@/components/Modals/InputModal.vue'
-import { OPERATIONS } from '@/constants'
-import { useErrors } from '@/hooks'
+import Button from '@/components/Elements/Button.vue';
+import InputModal from '@/components/Modals/InputModal.vue';
+import { OPERATIONS } from '@/constants';
+import { useErrors } from '@/hooks';
+import { onMounted, ref } from 'vue';
 
 interface Props {
-  name: string
-  onSubmit: (value: string) => void
-  from: string
+  name: string;
+  onSubmit: (value: string) => void;
+  from: string;
 }
 
-const props = defineProps<Props>()
+const props = defineProps<Props>();
 
-const { invalid, errors } = useErrors(OPERATIONS.RENAME_FILE)
+const { invalid, errors } = useErrors(OPERATIONS.RENAME_FILE);
 
 // STATE
-const value = ref(null as string | null | undefined)
+const value = ref(null as string | null | undefined);
 
 // HOOKS
-onMounted(() => (value.value = props.from))
+onMounted(() => (value.value = props.from));
 
 // ACTIONS
-const submit = () => value.value && props.onSubmit(value.value)
+const submit = () => value.value && props.onSubmit(value.value);
 </script>
 
 <template>

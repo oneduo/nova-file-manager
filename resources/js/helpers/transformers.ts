@@ -1,4 +1,4 @@
-import { Entity } from '__types__'
+import { Entity } from '__types__';
 
 export default function nativeFileToEntity(file: File) {
   return {
@@ -13,5 +13,5 @@ export default function nativeFileToEntity(file: File) {
     type: file.type.split('/')[0],
     exists: true,
     disk: '',
-  } as Entity
+  } as Entity;
 }

@@ -1,21 +1,21 @@
 <script setup lang="ts">
-import { Config } from '__types__'
-import { computed, onBeforeMount } from 'vue'
-import Browser from '@/components/Browser.vue'
-import UpdateChecker from '@/components/Elements/UpdateChecker.vue'
-import { useTranslation } from '@/hooks'
-import useBrowserStore from '@/stores/browser'
+import Browser from '@/components/Browser.vue';
+import UpdateChecker from '@/components/Elements/UpdateChecker.vue';
+import { useTranslation } from '@/hooks';
+import useBrowserStore from '@/stores/browser';
+import { Config } from '__types__';
+import { computed, onBeforeMount } from 'vue';
 
-const store = useBrowserStore()
-const { __ } = useTranslation()
+const store = useBrowserStore();
+const { __ } = useTranslation();
 
 type Props = {
-  config: Config
-}
+  config: Config;
+};
 
-const props = defineProps<Props>()
+const props = defineProps<Props>();
 
-const dark = computed(() => store.dark)
+const dark = computed(() => store.dark);
 
 onBeforeMount(() => {
   store.prepareTool({
@@ -26,10 +26,10 @@ onBeforeMount(() => {
     pinturaOptions: props.config.pinturaOptions || {},
     cropperOptions: props.config.cropperOptions || {},
     paginationOptions: props.config.paginationOptions || undefined,
-  })
+  });
 
-  store.loadFromQueryString()
-})
+  store.loadFromQueryString();
+});
 </script>
 
 <template>

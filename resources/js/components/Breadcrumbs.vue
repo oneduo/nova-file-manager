@@ -1,15 +1,15 @@
 <script setup lang="ts">
-import { ChevronRightIcon, HomeIcon } from '@heroicons/vue/24/outline'
-import { Breadcrumb } from '__types__'
+import { ChevronRightIcon, HomeIcon } from '@heroicons/vue/24/outline';
+import { Breadcrumb } from '__types__';
 
 interface Props {
-  items: Breadcrumb[]
-  setPath: (path: string) => void
+  items: Breadcrumb[];
+  setPath: (path: string) => void;
 }
 
 withDefaults(defineProps<Props>(), {
   items: () => [],
-})
+});
 </script>
 
 <template>

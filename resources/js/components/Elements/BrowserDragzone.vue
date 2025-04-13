@@ -1,11 +1,11 @@
 <script setup lang="ts">
-import { CloudArrowUpIcon } from '@heroicons/vue/24/outline'
+import { CloudArrowUpIcon } from '@heroicons/vue/24/outline';
 
 interface Props {
-  dragLeave: () => void
+  dragLeave: () => void;
 }
 
-defineProps<Props>()
+defineProps<Props>();
 </script>
 
 <template>

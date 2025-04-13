@@ -9,9 +9,9 @@
  *
  */
 :root {
-    --vp-c-brand: #2177ff;
-    --vp-c-brand-light: #0ea5e9;
-    --vp-c-brand-dark: #0284c7;
+  --vp-c-brand: #2177ff;
+  --vp-c-brand-light: #0ea5e9;
+  --vp-c-brand-dark: #0284c7;
 }
 
 /**
@@ -19,20 +19,19 @@
  *
  */
 .VPContent .vp-doc blockquote {
-    @apply my-6 border-l-4 rounded-r px-6 py-5 bg-orange-100 border-yellow-500
+  @apply my-6 border-l-4 rounded-r px-6 py-5 bg-orange-100 border-yellow-500;
 }
 
 .VPContent .vp-doc blockquote p {
-    @apply text-orange-900
+  @apply text-orange-900;
 }
 
-
 .footer {
-    margin-top: 1rem;
-    display: inline-flex;
-    align-items: center;
-    justify-content: center;
-    width: 100%;
-    font-size: 10px;
-    color: #ccc;
+  margin-top: 1rem;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 100%;
+  font-size: 10px;
+  color: #ccc;
 }

@@ -1,33 +1,33 @@
 <script setup lang="ts">
-import { onMounted, ref } from 'vue'
-import Button from '@/components/Elements/Button.vue'
-import InputModal from '@/components/Modals/InputModal.vue'
-import { OPERATIONS } from '@/constants'
-import { useErrors } from '@/hooks'
+import Button from '@/components/Elements/Button.vue';
+import InputModal from '@/components/Modals/InputModal.vue';
+import { OPERATIONS } from '@/constants';
+import { useErrors } from '@/hooks';
+import { onMounted, ref } from 'vue';
 
 interface Props {
-  name: string
-  onSubmit: (value: string) => void
-  loading?: boolean
+  name: string;
+  onSubmit: (value: string) => void;
+  loading?: boolean;
 }
 
-const props = defineProps<Props>()
+const props = defineProps<Props>();
 
-const value = ref<string>()
+const value = ref<string>();
 
-onMounted(() => (value.value = undefined))
+onMounted(() => (value.value = undefined));
 
-const { invalid, errors } = useErrors(OPERATIONS.CREATE_FOLDER)
+const { invalid, errors } = useErrors(OPERATIONS.CREATE_FOLDER);
 
 const submit = () => {
   if (!value.value) {
-    return
+    return;
   }
 
-  props.onSubmit(value.value)
+  props.onSubmit(value.value);
 
-  value.value = undefined
-}
+  value.value = undefined;
+};
 </script>
 
 <template>

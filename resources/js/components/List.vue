@@ -1,31 +1,31 @@
 <script setup lang="ts">
-import { Menu, MenuButton, MenuItem, MenuItems } from '@headlessui/vue'
-import { DocumentIcon, FolderIcon } from '@heroicons/vue/24/outline'
-import { EllipsisHorizontalIcon } from '@heroicons/vue/24/solid'
-import { Entity } from '__types__'
-import { computed } from 'vue'
-import DeleteFolderModal from '@/components/Modals/DeleteFolderModal.vue'
-import PreviewModal from '@/components/Modals/PreviewModal.vue'
-import RenameFolderModal from '@/components/Modals/RenameFolderModal.vue'
-import { usePermissions } from '@/hooks'
-import useBrowserStore from '@/stores/browser'
+import DeleteFolderModal from '@/components/Modals/DeleteFolderModal.vue';
+import PreviewModal from '@/components/Modals/PreviewModal.vue';
+import RenameFolderModal from '@/components/Modals/RenameFolderModal.vue';
+import { usePermissions } from '@/hooks';
+import useBrowserStore from '@/stores/browser';
+import { Menu, MenuButton, MenuItem, MenuItems } from '@headlessui/vue';
+import { DocumentIcon, FolderIcon } from '@heroicons/vue/24/outline';
+import { EllipsisHorizontalIcon } from '@heroicons/vue/24/solid';
+import { Entity } from '__types__';
+import { computed } from 'vue';
 
-const store = useBrowserStore()
-const { showRenameFolder, showDeleteFolder } = usePermissions()
+const store = useBrowserStore();
+const { showRenameFolder, showDeleteFolder } = usePermissions();
 
 // STATE
-const files = computed(() => store.files)
-const folders = computed(() => store.folders)
-const isSelected = computed(() => store.isSelected)
-const preview = computed(() => store.preview)
+const files = computed(() => store.files);
+const folders = computed(() => store.folders);
+const isSelected = computed(() => store.isSelected);
+const preview = computed(() => store.preview);
 
 // ACTIONS
-const onFolderRename = (id: string, from: string, to: string) => store.renameFile({ id, from, to })
-const onFolderDelete = (id: string, path: string) => store.deleteFolder({ id, path })
-const openPreview = (file: Entity) => (store.preview = file)
-const toggleSelection = (file: Entity) => store.toggleSelection({ file })
-const setPath = (path: string) => store.setPath({ path })
-const openModal = (name: string) => store.openModal({ name })
+const onFolderRename = (id: string, from: string, to: string) => store.renameFile({ id, from, to });
+const onFolderDelete = (id: string, path: string) => store.deleteFolder({ id, path });
+const openPreview = (file: Entity) => (store.preview = file);
+const toggleSelection = (file: Entity) => store.toggleSelection({ file });
+const setPath = (path: string) => store.setPath({ path });
+const openModal = (name: string) => store.openModal({ name });
 </script>
 
 <template>

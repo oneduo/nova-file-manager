@@ -182,7 +182,7 @@ export default {
   head: head,
   title: 'Nova File Manager',
   description:
-    'A file manager tool and field for Laravel Nova. Beautifully designed, and customizable, this tool will provide a plug\'n\'play solution for your file management needs.',
+    "A file manager tool and field for Laravel Nova. Beautifully designed, and customizable, this tool will provide a plug'n'play solution for your file management needs.",
   lastUpdated: false,
   themeConfig: theme,
   ignoreDeadLinks: true,

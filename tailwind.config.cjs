@@ -1,29 +1,26 @@
 const toRgba = (hexCode, opacity = 50) => {
-  let hex = hexCode.replace('#', '');
+  let hex = hexCode.replace('#', '')
 
   if (hex.length === 3) {
-    hex = `${hex[0]}${hex[0]}${hex[1]}${hex[1]}${hex[2]}${hex[2]}`;
+    hex = `${hex[0]}${hex[0]}${hex[1]}${hex[1]}${hex[2]}${hex[2]}`
   }
 
-  const r = parseInt(hex.substring(0, 2), 16);
-  const g = parseInt(hex.substring(2, 4), 16);
-  const b = parseInt(hex.substring(4, 6), 16);
+  const r = parseInt(hex.substring(0, 2), 16)
+  const g = parseInt(hex.substring(2, 4), 16)
+  const b = parseInt(hex.substring(4, 6), 16)
 
-  return `rgba(${r},${g},${b},${opacity / 100})`;
-};
+  return `rgba(${r},${g},${b},${opacity / 100})`
+}
 
-const flattenColorPalette = (obj, sep='-') => Object.assign(
-  {},
-  ...function _flatten(o, p='') {
-    return [].concat(...Object.keys(o)
-      .map(k =>
-        typeof o[k] === 'object' ?
-          _flatten(o[k],k+sep) :
-          ({[p+k]: o[k]})
+const flattenColorPalette = (obj, sep = '-') =>
+  Object.assign(
+    {},
+    ...(function _flatten(o, p = '') {
+      return [].concat(
+        ...Object.keys(o).map(k => (typeof o[k] === 'object' ? _flatten(o[k], k + sep) : { [p + k]: o[k] })),
       )
-    );
-  }(obj)
-);
+    })(obj),
+  )
 
 module.exports = {
   mode: 'jit',
@@ -40,8 +37,7 @@ module.exports = {
         },
       }
 
-      const addColor = (name, color) =>
-        (utilities[`.bg-stripes-${name}`] = { '--stripes-color': color })
+      const addColor = (name, color) => (utilities[`.bg-stripes-${name}`] = { '--stripes-color': color })
 
       const colors = flattenColorPalette(theme('backgroundColor'))
 

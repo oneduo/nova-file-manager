@@ -1,17 +1,17 @@
 <script setup lang="ts">
-import { MagnifyingGlassIcon } from '@heroicons/vue/24/outline'
-import debounce from 'lodash/debounce'
-import { computed } from 'vue'
-import useBrowserStore from '@/stores/browser'
+import useBrowserStore from '@/stores/browser';
+import { MagnifyingGlassIcon } from '@heroicons/vue/24/outline';
+import debounce from 'lodash/debounce';
+import { computed } from 'vue';
 
-const store = useBrowserStore()
+const store = useBrowserStore();
 
 // STATE
-const search = computed(() => store.search)
+const search = computed(() => store.search);
 
 const setSearch = debounce(({ target: { value } }) => {
-  store.setSearch({ search: value })
-}, window.Nova.config('debounce'))
+  store.setSearch({ search: value });
+}, window.Nova.config('debounce'));
 </script>
 
 <template>

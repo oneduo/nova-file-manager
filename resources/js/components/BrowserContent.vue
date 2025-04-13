@@ -1,17 +1,17 @@
 <script setup lang="ts">
-import { Disclosure, DisclosureButton, DisclosurePanel } from '@headlessui/vue'
-import { ChevronDownIcon, ChevronRightIcon } from '@heroicons/vue/24/outline'
-import { Entity, Folder, View } from '__types__'
-import Empty from '@/components/Empty.vue'
-import FileGrid from '@/components/FileGrid.vue'
-import FolderGrid from '@/components/FolderGrid.vue'
-import List from '@/components/List.vue'
+import Empty from '@/components/Empty.vue';
+import FileGrid from '@/components/FileGrid.vue';
+import FolderGrid from '@/components/FolderGrid.vue';
+import List from '@/components/List.vue';
+import { Disclosure, DisclosureButton, DisclosurePanel } from '@headlessui/vue';
+import { ChevronDownIcon, ChevronRightIcon } from '@heroicons/vue/24/outline';
+import { Entity, Folder, View } from '__types__';
 
 interface Props {
-  view: View
-  files: Entity[]
-  folders: Folder[]
-  filled?: boolean
+  view: View;
+  files: Entity[];
+  folders: Folder[];
+  filled?: boolean;
 }
 
 withDefaults(defineProps<Props>(), {
@@ -19,7 +19,7 @@ withDefaults(defineProps<Props>(), {
   files: () => [],
   filled: false,
   view: 'grid',
-})
+});
 </script>
 
 <template>

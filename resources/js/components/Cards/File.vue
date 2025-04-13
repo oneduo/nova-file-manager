@@ -1,37 +1,37 @@
 <script setup lang="ts">
-import { DocumentIcon } from '@heroicons/vue/24/outline'
+import ImageLoader from '@/components/Elements/ImageLoader.vue';
+import Spinner from '@/components/Elements/Spinner.vue';
+import { DocumentIcon } from '@heroicons/vue/24/outline';
 import {
   CheckCircleIcon,
   ExclamationCircleIcon,
   ExclamationTriangleIcon,
   PlayIcon,
   XCircleIcon,
-} from '@heroicons/vue/24/solid'
-import { Entity } from '__types__'
-import { computed } from 'vue'
-import ImageLoader from '@/components/Elements/ImageLoader.vue'
-import Spinner from '@/components/Elements/Spinner.vue'
+} from '@heroicons/vue/24/solid';
+import { Entity } from '__types__';
+import { computed } from 'vue';
 
 interface Props {
-  file: Entity
-  isUploading?: boolean
-  isUploaded?: boolean
-  uploadRatio?: number
-  selected: boolean
-  onDeselect?: (file: Entity) => void
-  singleDisk?: boolean
-  fieldMode?: boolean
+  file: Entity;
+  isUploading?: boolean;
+  isUploaded?: boolean;
+  uploadRatio?: number;
+  selected: boolean;
+  onDeselect?: (file: Entity) => void;
+  singleDisk?: boolean;
+  fieldMode?: boolean;
 }
 
 const props = withDefaults(defineProps<Props>(), {
   selected: false,
-})
+});
 
-const isImage = computed(() => props.file.type === 'image')
-const isVideo = computed(() => props.file.type === 'video')
-const isFile = computed(() => props.file.type !== 'image' && props.file.type !== 'video')
-const missing = computed(() => !props.file.exists)
-const name = computed(() => (missing.value ? props.file.path : props.file.name))
+const isImage = computed(() => props.file.type === 'image');
+const isVideo = computed(() => props.file.type === 'video');
+const isFile = computed(() => props.file.type !== 'image' && props.file.type !== 'video');
+const missing = computed(() => !props.file.exists);
+const name = computed(() => (missing.value ? props.file.path : props.file.name));
 </script>
 
 <template>

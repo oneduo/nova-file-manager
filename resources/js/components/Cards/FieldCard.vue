@@ -1,35 +1,35 @@
 <script setup lang="ts">
-import { Entity, NovaField } from '__types__'
-import { computed } from 'vue'
-import File from '@/components/Cards/File.vue'
-import useBrowserStore from '@/stores/browser'
+import File from '@/components/Cards/File.vue';
+import useBrowserStore from '@/stores/browser';
+import { Entity, NovaField } from '__types__';
+import { computed } from 'vue';
 
-const store = useBrowserStore()
+const store = useBrowserStore();
 
 interface Props {
-  file: Entity
-  detail?: boolean
-  field: NovaField
-  onDeselect?: (file: Entity) => void
+  file: Entity;
+  detail?: boolean;
+  field: NovaField;
+  onDeselect?: (file: Entity) => void;
 }
 
 const props = withDefaults(defineProps<Props>(), {
   detail: false,
-})
+});
 
 // STATE
-const singleDisk = computed(() => store.singleDisk)
+const singleDisk = computed(() => store.singleDisk);
 
 // ACTIONS
-const openPreview = (file: Entity) => (store.preview = file)
+const openPreview = (file: Entity) => (store.preview = file);
 
 const preview = (file: Entity) => {
   if (!props.detail) {
-    return
+    return;
   }
 
-  file.exists && openPreview(file)
-}
+  file.exists && openPreview(file);
+};
 </script>
 
 <template>

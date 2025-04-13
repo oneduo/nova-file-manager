@@ -1,15 +1,15 @@
 <script setup lang="ts">
-import { ChevronLeftIcon, ChevronRightIcon } from '@heroicons/vue/24/solid'
-import { computed } from 'vue'
-import useBrowserStore from '@/stores/browser'
+import useBrowserStore from '@/stores/browser';
+import { ChevronLeftIcon, ChevronRightIcon } from '@heroicons/vue/24/solid';
+import { computed } from 'vue';
 
-const store = useBrowserStore()
+const store = useBrowserStore();
 
-const pagination = computed(() => store.pagination)
+const pagination = computed(() => store.pagination);
 
-const { current_page: currentPage, last_page: lastPage, from, to, total, links } = pagination.value!
+const { current_page: currentPage, last_page: lastPage, from, to, total, links } = pagination.value!;
 
-const setPage = (page: number) => store.setPage({ page })
+const setPage = (page: number) => store.setPage({ page });
 </script>
 
 <template>

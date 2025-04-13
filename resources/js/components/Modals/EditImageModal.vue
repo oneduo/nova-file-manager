@@ -1,87 +1,87 @@
 <script setup lang="ts">
-import { DialogPanel } from '@headlessui/vue'
-import { CheckIcon, XMarkIcon } from '@heroicons/vue/24/outline'
-import { ExclamationCircleIcon } from '@heroicons/vue/24/solid'
-import { Entity } from '__types__'
-import 'cropperjs/dist/cropper.css'
-import { computed, ref, watchEffect } from 'vue'
-import IconButton from '@/components/Elements/IconButton.vue'
-import BaseModal from '@/components/Modals/BaseModal.vue'
-import UploadCropModal from '@/components/Modals/UploadCropModal.vue'
-import { UPLOAD_CROP_MODAL_NAME } from '@/constants'
-import { usePintura } from '@/hooks'
-import useBrowserStore from '@/stores/browser'
+import { DialogPanel } from '@headlessui/vue';
+import { CheckIcon, XMarkIcon } from '@heroicons/vue/24/outline';
+import { ExclamationCircleIcon } from '@heroicons/vue/24/solid';
+import { Entity } from '__types__';
+import 'cropperjs/dist/cropper.css';
+import IconButton from '@/components/Elements/IconButton.vue';
+import BaseModal from '@/components/Modals/BaseModal.vue';
+import UploadCropModal from '@/components/Modals/UploadCropModal.vue';
+import { UPLOAD_CROP_MODAL_NAME } from '@/constants';
+import { usePintura } from '@/hooks';
+import useBrowserStore from '@/stores/browser';
+import { computed, ref, watchEffect } from 'vue';
 
 interface Props {
-  file: Entity
-  name: string
-  onConfirm: (file: File) => void
+  file: Entity;
+  name: string;
+  onConfirm: (file: File) => void;
 }
 
-const props = defineProps<Props>()
+const props = defineProps<Props>();
 
-const store = useBrowserStore()
+const store = useBrowserStore();
 
 //STATE
-const buttonRef = ref<HTMLButtonElement | HTMLAnchorElement>()
-const loadingError = ref<boolean>()
-const destFile = ref<File>()
-const uploadIsOpen = computed(() => store.isOpen(UPLOAD_CROP_MODAL_NAME))
-const editorRef = ref<any>()
-const editor = ref<any>()
-const { pinturaOptions } = usePintura()
+const buttonRef = ref<HTMLButtonElement | HTMLAnchorElement>();
+const loadingError = ref<boolean>();
+const destFile = ref<File>();
+const uploadIsOpen = computed(() => store.isOpen(UPLOAD_CROP_MODAL_NAME));
+const editorRef = ref<any>();
+const editor = ref<any>();
+const { pinturaOptions } = usePintura();
 
 watchEffect(() => {
   if (editorRef.value && !editor.value) {
     try {
-      const { appendDefaultEditor, editorOptions } = window.novaFileManagerEditor
+      const { appendDefaultEditor, editorOptions } = window.novaFileManagerEditor;
 
       editor.value = appendDefaultEditor(editorRef.value, {
         ...editorOptions,
         ...pinturaOptions.value,
         src: props.file.url,
         enableButtonExport: false,
-      })
+      });
 
       if (editor.value) {
         // @ts-ignore Pintura is not typescript friendly
-        editor.value.on('loaderror', ({ error }) => window.Nova.error(error.message))
+        editor.value.on('loaderror', ({ error }) => window.Nova.error(error.message));
       }
     } catch (e) {
-      loadingError.value = true
+      loadingError.value = true;
 
-      console.error(e)
+      console.error(e);
     }
   }
-})
+});
 
 // ACTIONS
-const openModal = (name: string) => store.openModal({ name })
-const closeModal = (name: string) => store.closeModal({ name })
+const openModal = (name: string) => store.openModal({ name });
+const closeModal = (name: string) => store.closeModal({ name });
 
 const openUploadCropModal = () => {
   // @ts-ignore Pintura is not typescript friendly
   editor.value?.processImage().then(({ dest }) => {
-    destFile.value = dest
+    destFile.value = dest;
 
-    openModal(UPLOAD_CROP_MODAL_NAME)
-  })
-}
+    openModal(UPLOAD_CROP_MODAL_NAME);
+  });
+};
 
 const submitCrop = (name: string) => {
   if (!destFile.value) {
-    return
+    return;
   }
 
   const file = new File([destFile.value], name, {
     type: props.file.mime,
-  })
+  });
 
-  closeModal(UPLOAD_CROP_MODAL_NAME)
-  closeModal(props.name)
+  closeModal(UPLOAD_CROP_MODAL_NAME);
+  closeModal(props.name);
 
-  props.onConfirm(file)
-}
+  props.onConfirm(file);
+};
 </script>
 
 <template>

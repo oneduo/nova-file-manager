@@ -1,17 +1,17 @@
 <script setup lang="ts">
-import { ExclamationCircleIcon } from '@heroicons/vue/24/outline'
-import { computed } from 'vue'
-import Button from '@/components/Elements/Button.vue'
-import ConfirmModal from '@/components/Modals/ConfirmModal.vue'
+import Button from '@/components/Elements/Button.vue';
+import ConfirmModal from '@/components/Modals/ConfirmModal.vue';
+import { ExclamationCircleIcon } from '@heroicons/vue/24/outline';
+import { computed } from 'vue';
 
 interface Props {
-  name: string
-  onConfirm: () => void
+  name: string;
+  onConfirm: () => void;
 }
 
-defineProps<Props>()
+defineProps<Props>();
 
-const icon = computed(() => ExclamationCircleIcon)
+const icon = computed(() => ExclamationCircleIcon);
 </script>
 
 <template>

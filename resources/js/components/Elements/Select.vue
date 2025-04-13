@@ -1,18 +1,18 @@
 <script setup lang="ts">
-import { Menu, MenuButton, MenuItem, MenuItems } from '@headlessui/vue'
-import { CheckIcon, ChevronDownIcon } from '@heroicons/vue/24/solid'
-import Spinner from '@/components/Elements/Spinner.vue'
+import Spinner from '@/components/Elements/Spinner.vue';
+import { Menu, MenuButton, MenuItem, MenuItems } from '@headlessui/vue';
+import { CheckIcon, ChevronDownIcon } from '@heroicons/vue/24/solid';
 
 interface Props {
-  current?: string | number
-  options: (string | number)[]
-  onClick: (option: string | number) => void
-  isLoading?: boolean
+  current?: string | number;
+  options: (string | number)[];
+  onClick: (option: string | number) => void;
+  isLoading?: boolean;
 }
 
 withDefaults(defineProps<Props>(), {
   isLoading: false,
-})
+});
 </script>
 
 <template>

@@ -1,6 +1,6 @@
 <script setup lang="ts">
-import { computed } from 'vue'
-import Spinner from '@/components/Elements/Spinner.vue'
+import Spinner from '@/components/Elements/Spinner.vue';
+import { computed } from 'vue';
 
 const variants = {
   primary: 'bg-blue-500 dark:bg-blue-600/50 focus:outline-blue-500',
@@ -9,22 +9,22 @@ const variants = {
   warning: 'bg-orange-400 dark:bg-orange-600/50 focus:outline-orange-400',
   danger: 'bg-red-500 dark:bg-red-600/50 focus:outline-red-500',
   transparent: 'bg-transparent',
-}
+};
 
 interface Props {
-  variant: keyof typeof variants
-  type: 'button' | 'submit' | 'reset'
-  href?: string
-  loading?: boolean
+  variant: keyof typeof variants;
+  type: 'button' | 'submit' | 'reset';
+  href?: string;
+  loading?: boolean;
 }
 
 const props = withDefaults(defineProps<Props>(), {
   variant: 'secondary',
   type: 'button',
   loading: false,
-})
+});
 
-const style = computed(() => variants[props.variant])
+const style = computed(() => variants[props.variant]);
 </script>
 
 <template>

@@ -1,16 +1,16 @@
 <script setup lang="ts">
-import { QueueListIcon, Squares2X2Icon } from '@heroicons/vue/24/outline'
-import { View } from '__types__'
-import { Component, ref } from 'vue'
+import { QueueListIcon, Squares2X2Icon } from '@heroicons/vue/24/outline';
+import { View } from '__types__';
+import { Component, ref } from 'vue';
 
 interface Props {
-  current: View
-  setView: (view: View) => void
+  current: View;
+  setView: (view: View) => void;
 }
 
 withDefaults(defineProps<Props>(), {
   current: 'grid',
-})
+});
 
 const views = ref<{ name: View; icon: Component }[]>([
   {
@@ -21,10 +21,10 @@ const views = ref<{ name: View; icon: Component }[]>([
     name: 'grid',
     icon: Squares2X2Icon,
   },
-])
+]);
 
-const selectedClass = 'bg-white dark:bg-gray-700 text-blue-500 shadow-sm'
-const unselectedClass = 'text-gray-400 dark:hover:text-white hover:text-black'
+const selectedClass = 'bg-white dark:bg-gray-700 text-blue-500 shadow-sm';
+const unselectedClass = 'text-gray-400 dark:hover:text-white hover:text-black';
 </script>
 
 <template>

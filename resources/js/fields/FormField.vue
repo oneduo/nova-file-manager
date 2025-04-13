@@ -1,14 +1,14 @@
 <script lang="ts">
-import { Dialog as DialogModal, DialogPanel, TransitionChild, TransitionRoot } from '@headlessui/vue'
-import { CloudIcon } from '@heroicons/vue/24/outline'
-import { Entity, NovaField } from '__types__'
-import { mapActions, mapState } from 'pinia'
-import { defineComponent, PropType } from 'vue'
-import draggable from 'vuedraggable'
-import Browser from '@/components/Browser.vue'
-import FieldCard from '@/components/Cards/FieldCard.vue'
-import useBrowserStore from '@/stores/browser'
-import omit from 'lodash/omit'
+import Browser from '@/components/Browser.vue';
+import FieldCard from '@/components/Cards/FieldCard.vue';
+import useBrowserStore from '@/stores/browser';
+import { Dialog as DialogModal, DialogPanel, TransitionChild, TransitionRoot } from '@headlessui/vue';
+import { CloudIcon } from '@heroicons/vue/24/outline';
+import { Entity, NovaField } from '__types__';
+import omit from 'lodash/omit';
+import { mapActions, mapState } from 'pinia';
+import { PropType, defineComponent } from 'vue';
+import draggable from 'vuedraggable';
 
 export default defineComponent({
   mixins: [
@@ -51,13 +51,13 @@ export default defineComponent({
   }),
 
   mounted() {
-    this.init()
+    this.init();
 
     this.value = !(this.currentField.value === undefined || this.currentField.value === null)
       ? this.currentField.value
-      : this.value
+      : this.value;
 
-    this.flexibleGroup = this.resolveFlexible(this)
+    this.flexibleGroup = this.resolveFlexible(this);
   },
 
   computed: {
@@ -68,15 +68,15 @@ export default defineComponent({
         animation: 200,
         disabled: !this.currentField?.multiple,
         ghostClass: 'opacity-0',
-      }
+      };
     },
 
     extraAttributes() {
-      const attrs = omit(this.field.extraAttributes, ['readonly'])
+      const attrs = omit(this.field.extraAttributes, ['readonly']);
 
       return {
         ...attrs,
-      }
+      };
     },
   },
 
@@ -93,12 +93,12 @@ export default defineComponent({
               disk: file.disk,
             })),
           ),
-        )
+        );
       }
     },
 
     openBrowserModal() {
-      this.displayModal = true
+      this.displayModal = true;
 
       this.openBrowser({
         initialFiles: this.value,
@@ -111,50 +111,50 @@ export default defineComponent({
         singleDisk: this.currentField.singleDisk ?? false,
         permissions: this.currentField.permissions,
         flexibleGroup: this.flexibleGroup,
-        callback: selection => {
-          this.value = selection
+        callback: (selection) => {
+          this.value = selection;
         },
         usePintura: this.currentField.usePintura ?? false,
         pinturaOptions: this.currentField.pinturaOptions ?? {},
         cropperOptions: this.currentField.cropperOptions ?? {},
         paginationOptions: this.currentField.paginationOptions ?? undefined,
         component: this.$inertia?.page?.component,
-      })
+      });
     },
 
     closeBrowserModal() {
-      this.displayModal = false
-      this.closeBrowser()
+      this.displayModal = false;
+      this.closeBrowser();
     },
 
     deselectFile(file: Entity) {
-      this.value = this.value.filter((f: Entity) => f.id !== file.id)
+      this.value = this.value.filter((f: Entity) => f.id !== file.id);
     },
 
     // @ts-ignore
     resolveFlexible(component) {
-      let elements = []
+      let elements = [];
 
-      let group = component.$parent
-      let parent = component.$parent?.$parent?.$parent?.$parent
+      let group = component.$parent;
+      let parent = component.$parent?.$parent?.$parent?.$parent;
 
       if (parent?.field?.component === 'nova-flexible-content') {
-        elements.unshift(...this.resolveFlexible(parent))
-        elements.push(`${group?.group?.name}:${parent.field.sortableUriKey}`)
+        elements.unshift(...this.resolveFlexible(parent));
+        elements.push(`${group?.group?.name}:${parent.field.sortableUriKey}`);
       }
 
-      return elements
+      return elements;
     },
   },
 
   watch: {
     isBrowserOpen(newValue, oldValue) {
       if (!newValue && oldValue) {
-        this.displayModal = false
+        this.displayModal = false;
       }
     },
   },
-})
+});
 </script>
 
 <template>

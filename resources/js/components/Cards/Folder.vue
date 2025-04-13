@@ -1,36 +1,36 @@
 <script setup lang="ts">
-import { Menu, MenuButton, MenuItem, MenuItems } from '@headlessui/vue'
-import { FolderIcon } from '@heroicons/vue/24/outline'
-import { EllipsisVerticalIcon } from '@heroicons/vue/24/solid'
-import type { Folder } from '__types__'
-import DeleteFolderModal from '@/components/Modals/DeleteFolderModal.vue'
-import RenameFolderModal from '@/components/Modals/RenameFolderModal.vue'
-import { usePermissions } from '@/hooks'
-import useBrowserStore from '@/stores/browser'
+import DeleteFolderModal from '@/components/Modals/DeleteFolderModal.vue';
+import RenameFolderModal from '@/components/Modals/RenameFolderModal.vue';
+import { usePermissions } from '@/hooks';
+import useBrowserStore from '@/stores/browser';
+import { Menu, MenuButton, MenuItem, MenuItems } from '@headlessui/vue';
+import { FolderIcon } from '@heroicons/vue/24/outline';
+import { EllipsisVerticalIcon } from '@heroicons/vue/24/solid';
+import type { Folder } from '__types__';
 
 interface Props {
-  folder: Folder
+  folder: Folder;
 }
 
-const props = defineProps<Props>()
+const props = defineProps<Props>();
 
-const store = useBrowserStore()
-const { showRenameFolder, showDeleteFolder } = usePermissions()
+const store = useBrowserStore();
+const { showRenameFolder, showDeleteFolder } = usePermissions();
 
 // ACTIONS
-const openModal = (name: string) => store.openModal({ name })
+const openModal = (name: string) => store.openModal({ name });
 
-const setPath = (path: string) => store.setPath({ path })
+const setPath = (path: string) => store.setPath({ path });
 
-const onDelete = () => store.deleteFolder({ id: props.folder.id, path: props.folder.path })
+const onDelete = () => store.deleteFolder({ id: props.folder.id, path: props.folder.path });
 
 const onRename = (value: string) => {
   return store.renameFolder({
     id: props.folder.id,
     from: props.folder.path,
     to: value,
-  })
-}
+  });
+};
 </script>
 
 <template>

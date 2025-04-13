@@ -1,4 +1,7 @@
 <script setup lang="ts">
+import { SPOTLIGHT_MODIFIERS, SPOTLIGHT_SHORTCUT } from '@/constants';
+import useBrowserStore from '@/stores/browser';
+import useSearchStore from '@/stores/search';
 import {
   Combobox,
   ComboboxInput,
@@ -8,40 +11,37 @@ import {
   DialogPanel,
   TransitionChild,
   TransitionRoot,
-} from '@headlessui/vue'
-import { MagnifyingGlassIcon } from '@heroicons/vue/20/solid'
-import { DocumentIcon, ExclamationTriangleIcon, FolderIcon, LifebuoyIcon } from '@heroicons/vue/24/outline'
-import { Entity, Folder } from '__types__'
-import debounce from 'lodash/debounce'
-import { computed, onMounted } from 'vue'
-import { SPOTLIGHT_MODIFIERS, SPOTLIGHT_SHORTCUT } from '@/constants'
-import useBrowserStore from '@/stores/browser'
-import useSearchStore from '@/stores/search'
-import Spinner from '../Elements/Spinner.vue'
+} from '@headlessui/vue';
+import { MagnifyingGlassIcon } from '@heroicons/vue/20/solid';
+import { DocumentIcon, ExclamationTriangleIcon, FolderIcon, LifebuoyIcon } from '@heroicons/vue/24/outline';
+import { Entity, Folder } from '__types__';
+import debounce from 'lodash/debounce';
+import { computed, onMounted } from 'vue';
+import Spinner from '../Elements/Spinner.vue';
 
-const searchStore = useSearchStore()
-const store = useBrowserStore()
+const searchStore = useSearchStore();
+const store = useBrowserStore();
 
 // HOOKS
 onMounted(() => {
   window.addEventListener('keydown', function (e) {
     if (e.metaKey && e.code === SPOTLIGHT_SHORTCUT) {
-      searchStore.open()
+      searchStore.open();
     }
-  })
-})
+  });
+});
 
 // STATE
-const dark = computed(() => store.dark)
-const folders = computed(() => searchStore.folders)
-const files = computed(() => searchStore.files)
-const query = computed(() => searchStore.query)
-const isSearching = computed(() => searchStore.isLoading)
-const isOpen = computed(() => searchStore.isOpen)
-const hasResults = computed(() => searchStore.hasResults)
-const isFolderOnly = computed(() => searchStore.isFolderOnly)
-const isFileOnly = computed(() => searchStore.isFileOnly)
-const help = computed(() => searchStore.help)
+const dark = computed(() => store.dark);
+const folders = computed(() => searchStore.folders);
+const files = computed(() => searchStore.files);
+const query = computed(() => searchStore.query);
+const isSearching = computed(() => searchStore.isLoading);
+const isOpen = computed(() => searchStore.isOpen);
+const hasResults = computed(() => searchStore.hasResults);
+const isFolderOnly = computed(() => searchStore.isFolderOnly);
+const isFileOnly = computed(() => searchStore.isFileOnly);
+const help = computed(() => searchStore.help);
 
 const tips = computed(() => [
   {
@@ -59,15 +59,15 @@ const tips = computed(() => [
     label: 'for help',
     active: help.value,
   },
-])
+]);
 
 // ACTIONS
-const close = () => searchStore.close()
-const onSelect = (item: Entity | Folder) => searchStore.select({ item })
+const close = () => searchStore.close();
+const onSelect = (item: Entity | Folder) => searchStore.select({ item });
 
 const onSearch = debounce(({ target: { value } }) => {
-  searchStore.setSearch({ search: value })
-}, window.Nova.config('debounce'))
+  searchStore.setSearch({ search: value });
+}, window.Nova.config('debounce'));
 </script>
 
 <template>

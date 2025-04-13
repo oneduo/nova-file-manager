@@ -1,10 +1,10 @@
 <script setup lang="ts">
 interface Props {
-  title?: string
-  subtitle?: string
+  title?: string;
+  subtitle?: string;
 }
 
-defineProps<Props>()
+defineProps<Props>();
 </script>
 <template>
   <div class="text-center py-8">

@@ -1,27 +1,27 @@
 <script setup lang="ts">
-import { Entity } from '__types__'
-import { computed } from 'vue'
-import File from '@/components/Cards/File.vue'
-import PreviewModal from '@/components/Modals/PreviewModal.vue'
-import useBrowserStore from '@/stores/browser'
+import File from '@/components/Cards/File.vue';
+import PreviewModal from '@/components/Modals/PreviewModal.vue';
+import useBrowserStore from '@/stores/browser';
+import { Entity } from '__types__';
+import { computed } from 'vue';
 
 interface Props {
-  files: Entity[]
+  files: Entity[];
 }
 
 withDefaults(defineProps<Props>(), {
   files: () => [],
-})
+});
 
-const store = useBrowserStore()
+const store = useBrowserStore();
 
 // STATE
-const isSelected = computed(() => store.isSelected)
-const preview = computed(() => store.preview)
+const isSelected = computed(() => store.isSelected);
+const preview = computed(() => store.preview);
 
 // ACTIONS
-const openPreview = (file: Entity) => (store.preview = file)
-const toggleSelection = (file: Entity) => store.toggleSelection({ file })
+const openPreview = (file: Entity) => (store.preview = file);
+const toggleSelection = (file: Entity) => store.toggleSelection({ file });
 </script>
 
 <template>

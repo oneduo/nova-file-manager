@@ -1,29 +1,29 @@
 <script setup lang="ts">
-import { Dialog, TransitionChild, TransitionRoot } from '@headlessui/vue'
-import { computed, onBeforeUnmount } from 'vue'
-import useBrowserStore from '@/stores/browser'
+import useBrowserStore from '@/stores/browser';
+import { Dialog, TransitionChild, TransitionRoot } from '@headlessui/vue';
+import { computed, onBeforeUnmount } from 'vue';
 
 interface Props {
-  name: string
-  initialFocusRef?: HTMLElement | null
+  name: string;
+  initialFocusRef?: HTMLElement | null;
 }
 
-const props = defineProps<Props>()
+const props = defineProps<Props>();
 
 onBeforeUnmount(() => {
   if (isOpen.value) {
-    closeModal()
+    closeModal();
   }
-})
+});
 
-const store = useBrowserStore()
+const store = useBrowserStore();
 
-const dark = computed(() => store.dark)
-const isOpen = computed(() => store.isOpen(props.name))
+const dark = computed(() => store.dark);
+const isOpen = computed(() => store.isOpen(props.name));
 
 const closeModal = () => {
-  store.closeModal({ name: props.name })
-}
+  store.closeModal({ name: props.name });
+};
 </script>
 
 <template>

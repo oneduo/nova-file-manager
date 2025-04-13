@@ -1,33 +1,33 @@
 <script setup lang="ts">
-import { Entity } from '__types__'
-import { computed, onMounted, ref } from 'vue'
-import Button from '@/components/Elements/Button.vue'
-import InputModal from '@/components/Modals/InputModal.vue'
-import useBrowserStore from '@/stores/browser'
+import Button from '@/components/Elements/Button.vue';
+import InputModal from '@/components/Modals/InputModal.vue';
+import useBrowserStore from '@/stores/browser';
+import { Entity } from '__types__';
+import { computed, onMounted, ref } from 'vue';
 
 interface Props {
-  file: Entity
-  name: string
-  onSubmit: (value: string) => void
-  destFile: File
-  destName?: string
+  file: Entity;
+  name: string;
+  onSubmit: (value: string) => void;
+  destFile: File;
+  destName?: string;
 }
 
-const props = defineProps<Props>()
+const props = defineProps<Props>();
 
-const store = useBrowserStore()
+const store = useBrowserStore();
 
-const value = ref<string | null>(null)
+const value = ref<string | null>(null);
 
 onMounted(() => {
-  value.value = props.destName ?? ''
-})
+  value.value = props.destName ?? '';
+});
 
-const image = computed(() => URL.createObjectURL(props.destFile))
+const image = computed(() => URL.createObjectURL(props.destFile));
 
 // ACTIONS
-const closeModal = (name: string) => store.closeModal({ name })
-const submit = () => value.value && props.onSubmit(value.value)
+const closeModal = (name: string) => store.closeModal({ name });
+const submit = () => value.value && props.onSubmit(value.value);
 </script>
 
 <template>
