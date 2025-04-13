@@ -1,6 +1,6 @@
-import { defineStore } from 'pinia'
-import Shepherd from 'shepherd.js'
-import useBrowserStore from '@/stores/browser'
+import useBrowserStore from '@/stores/browser';
+import { defineStore } from 'pinia';
+import Shepherd from 'shepherd.js';
 
 const useTourStore = defineStore('nova-file-manager/tour', {
   state: () => ({
@@ -9,31 +9,31 @@ const useTourStore = defineStore('nova-file-manager/tour', {
 
   actions: {
     init() {
-      const store = useBrowserStore()
+      const store = useBrowserStore();
 
       if (!store.tour) {
-        return
+        return;
       }
 
       if (this.alreadyDismissed()) {
-        return
+        return;
       }
 
       this.tour = new Shepherd.Tour({
         useModalOverlay: true,
         stepsContainer: document.getElementById('tour-container') ?? undefined,
-      })
+      });
 
-      const self = this
+      const self = this;
 
-      this.steps().forEach(step => {
+      this.steps().forEach((step) => {
         if (!document.querySelector(`[data-tour='${step.key}']`)) {
-          return
+          return;
         }
 
         const tourStep = self.tour?.addStep({
           id: step.key,
-          text: `<div class="gap-2 flex flex-row items-center"><span class="mr-2 flex-shrink-0 rounded-lg bg-indigo-900/60 p-2">💡</span>${step.label}</div>`,
+          text: `<div class="gap-2 flex flex-row items-center"><span class="mr-2 shrink-0 rounded-lg bg-indigo-900/60 p-2">💡</span>${step.label}</div>`,
           attachTo: {
             element: `[data-tour="${step.key}"]`,
             on: (step.position ?? 'bottom-start') as Shepherd.Step.PopperPlacement,
@@ -52,60 +52,60 @@ const useTourStore = defineStore('nova-file-manager/tour', {
               action: self.tour.next,
             },
           ],
-        })
+        });
 
         if (step.preloadConfetti) {
-          tourStep?.on('before-show', () => this.loadConfetti())
+          tourStep?.on('before-show', () => this.loadConfetti());
         }
-      })
+      });
 
       this.tour.on('complete', async () => {
-        const canvas = await self.showConfetti()
-        canvas.remove()
-      })
+        const canvas = await self.showConfetti();
+        canvas.remove();
+      });
 
-      this.tour.start()
+      this.tour.start();
     },
 
     alreadyDismissed() {
-      return !!window.localStorage.getItem('nova-file-manager/tour-dismissed')
+      return !!window.localStorage.getItem('nova-file-manager/tour-dismissed');
     },
 
     dismiss() {
-      window.localStorage.setItem('nova-file-manager/tour-dismissed', 'true')
+      window.localStorage.setItem('nova-file-manager/tour-dismissed', 'true');
     },
 
     loadConfetti() {
-      const confettijs = document.createElement('script')
+      const confettijs = document.createElement('script');
 
-      confettijs.setAttribute('src', 'https://cdn.jsdelivr.net/npm/canvas-confetti@1.5.1/dist/confetti.browser.min.js')
+      confettijs.setAttribute('src', 'https://cdn.jsdelivr.net/npm/canvas-confetti@1.5.1/dist/confetti.browser.min.js');
 
-      document.head.appendChild(confettijs)
+      document.head.appendChild(confettijs);
     },
 
     async showConfetti() {
-      return new Promise<HTMLCanvasElement & { confetti: any }>(resolve => {
-        const canvas = document.createElement('canvas') as HTMLCanvasElement & { confetti: any }
-        canvas.id = 'confetti-canvas'
-        canvas.className = 'absolute bottom-0 left-0 w-full h-full pointer-events-none'
-        document.body.appendChild(canvas)
+      return new Promise<HTMLCanvasElement & { confetti: any }>((resolve) => {
+        const canvas = document.createElement('canvas') as HTMLCanvasElement & { confetti: any };
+        canvas.id = 'confetti-canvas';
+        canvas.className = 'absolute bottom-0 left-0 w-full h-full pointer-events-none';
+        document.body.appendChild(canvas);
 
-        canvas.confetti = canvas.confetti || window.confetti.create(canvas, { resize: true })
+        canvas.confetti = canvas.confetti || window.confetti.create(canvas, { resize: true });
 
         canvas.confetti({
           particleCount: 250,
           spread: 150,
           origin: { y: 1 },
-        })
+        });
 
         setTimeout(() => {
-          resolve(canvas)
-        }, 5000)
-      })
+          resolve(canvas);
+        }, 5000);
+      });
     },
 
     steps() {
-      const self = this
+      const self = this;
 
       return [
         {
@@ -117,9 +117,9 @@ const useTourStore = defineStore('nova-file-manager/tour', {
               text: 'Skip tour',
               secondary: true,
               action: () => {
-                self.dismiss()
+                self.dismiss();
 
-                self.tour?.complete()
+                self.tour?.complete();
               },
             },
             {
@@ -174,21 +174,21 @@ const useTourStore = defineStore('nova-file-manager/tour', {
               label: 'Finish',
               text: '🎉 Done',
               action: () => {
-                self.tour?.complete()
-                self.dismiss()
+                self.tour?.complete();
+                self.dismiss();
               },
             },
           ],
         },
       ] as ({
-        key: string
-        label: string
-        position: Shepherd.Step.PopperPlacement
-        extraClasses?: string
-        preloadConfetti?: boolean
-      } & Shepherd.Step.StepOptions)[]
+        key: string;
+        label: string;
+        position: Shepherd.Step.PopperPlacement;
+        extraClasses?: string;
+        preloadConfetti?: boolean;
+      } & Shepherd.Step.StepOptions)[];
     },
   },
-})
+});
 
-export default useTourStore
+export default useTourStore;

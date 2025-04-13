@@ -1,4 +1,7 @@
 <script setup lang="ts">
+import { SPOTLIGHT_MODIFIERS, SPOTLIGHT_SHORTCUT } from '@/constants';
+import useBrowserStore from '@/stores/browser';
+import useSearchStore from '@/stores/search';
 import {
   Combobox,
   ComboboxInput,
@@ -8,40 +11,37 @@ import {
   DialogPanel,
   TransitionChild,
   TransitionRoot,
-} from '@headlessui/vue'
-import { MagnifyingGlassIcon } from '@heroicons/vue/20/solid'
-import { DocumentIcon, ExclamationTriangleIcon, FolderIcon, LifebuoyIcon } from '@heroicons/vue/24/outline'
-import { Entity, Folder } from '__types__'
-import debounce from 'lodash/debounce'
-import { computed, onMounted } from 'vue'
-import { SPOTLIGHT_MODIFIERS, SPOTLIGHT_SHORTCUT } from '@/constants'
-import useBrowserStore from '@/stores/browser'
-import useSearchStore from '@/stores/search'
-import Spinner from '../Elements/Spinner.vue'
+} from '@headlessui/vue';
+import { MagnifyingGlassIcon } from '@heroicons/vue/20/solid';
+import { DocumentIcon, ExclamationTriangleIcon, FolderIcon, LifebuoyIcon } from '@heroicons/vue/24/outline';
+import { Entity, Folder } from '__types__';
+import debounce from 'lodash/debounce';
+import { computed, onMounted } from 'vue';
+import Spinner from '../Elements/Spinner.vue';
 
-const searchStore = useSearchStore()
-const store = useBrowserStore()
+const searchStore = useSearchStore();
+const store = useBrowserStore();
 
 // HOOKS
 onMounted(() => {
   window.addEventListener('keydown', function (e) {
     if (e.metaKey && e.code === SPOTLIGHT_SHORTCUT) {
-      searchStore.open()
+      searchStore.open();
     }
-  })
-})
+  });
+});
 
 // STATE
-const dark = computed(() => store.dark)
-const folders = computed(() => searchStore.folders)
-const files = computed(() => searchStore.files)
-const query = computed(() => searchStore.query)
-const isSearching = computed(() => searchStore.isLoading)
-const isOpen = computed(() => searchStore.isOpen)
-const hasResults = computed(() => searchStore.hasResults)
-const isFolderOnly = computed(() => searchStore.isFolderOnly)
-const isFileOnly = computed(() => searchStore.isFileOnly)
-const help = computed(() => searchStore.help)
+const dark = computed(() => store.dark);
+const folders = computed(() => searchStore.folders);
+const files = computed(() => searchStore.files);
+const query = computed(() => searchStore.query);
+const isSearching = computed(() => searchStore.isLoading);
+const isOpen = computed(() => searchStore.isOpen);
+const hasResults = computed(() => searchStore.hasResults);
+const isFolderOnly = computed(() => searchStore.isFolderOnly);
+const isFileOnly = computed(() => searchStore.isFileOnly);
+const help = computed(() => searchStore.help);
 
 const tips = computed(() => [
   {
@@ -59,20 +59,20 @@ const tips = computed(() => [
     label: 'for help',
     active: help.value,
   },
-])
+]);
 
 // ACTIONS
-const close = () => searchStore.close()
-const onSelect = (item: Entity | Folder) => searchStore.select({ item })
+const close = () => searchStore.close();
+const onSelect = (item: Entity | Folder) => searchStore.select({ item });
 
 const onSearch = debounce(({ target: { value } }) => {
-  searchStore.setSearch({ search: value })
-}, window.Nova.config('debounce'))
+  searchStore.setSearch({ search: value });
+}, window.Nova.config('debounce'));
 </script>
 
 <template>
   <TransitionRoot :show="isOpen" as="template" class="nova-file-manager" @after-leave="close" appear>
-    <Dialog as="div" class="relative z-[60]" @close="close">
+    <Dialog as="div" class="relative z-60" @close="close">
       <TransitionChild
         as="template"
         enter="ease-out duration-100"
@@ -82,7 +82,7 @@ const onSearch = debounce(({ target: { value } }) => {
         leave-from="opacity-100"
         leave-to="opacity-0"
       >
-        <div class="fixed inset-0 bg-gray-800/20 backdrop-blur-sm transition-opacity" />
+        <div class="fixed inset-0 bg-gray-800/20 backdrop-blur-xs transition-opacity" />
       </TransitionChild>
 
       <div :class="{ dark }" class="fixed inset-0 z-10 overflow-y-auto p-4 sm:p-6 md:p-20">
@@ -109,7 +109,7 @@ const onSearch = debounce(({ target: { value } }) => {
                 <Spinner class="pointer-events-none absolute top-3.5 left-4 h-5 w-5" aria-hidden="true" v-else />
 
                 <ComboboxInput
-                  class="h-12 w-full border-0 bg-transparent pl-11 pr-4 text-gray-800 dark:text-gray-200 placeholder-gray-400 focus:outline-none sm:text-sm"
+                  class="h-12 w-full border-0 bg-transparent pl-11 pr-4 text-gray-800 dark:text-gray-200 placeholder-gray-400 focus:outline-hidden sm:text-sm"
                   :placeholder="__('NovaFileManager.spotlight.placeholder')"
                   @change.prevent.stop="onSearch"
                 />
@@ -202,7 +202,7 @@ const onSearch = debounce(({ target: { value } }) => {
                 <template v-for="tip in tips" :key="tip.key">
                   <kbd
                     :class="[
-                      'mx-1 flex h-5 w-5 items-center justify-center rounded border bg-white dark:bg-gray-800 font-semibold sm:mx-2',
+                      'mx-1 flex h-5 w-5 items-center justify-center rounded-xs border bg-white dark:bg-gray-800 font-semibold sm:mx-2',
                       tip?.active
                         ? 'border-blue-500 text-blue-500'
                         : 'border-gray-400 dark:border-gray-600 text-gray-500 dark:text-gray-500',

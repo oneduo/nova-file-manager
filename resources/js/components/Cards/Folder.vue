@@ -1,36 +1,36 @@
 <script setup lang="ts">
-import { Menu, MenuButton, MenuItem, MenuItems } from '@headlessui/vue'
-import { FolderIcon } from '@heroicons/vue/24/outline'
-import { EllipsisVerticalIcon } from '@heroicons/vue/24/solid'
-import type { Folder } from '__types__'
-import DeleteFolderModal from '@/components/Modals/DeleteFolderModal.vue'
-import RenameFolderModal from '@/components/Modals/RenameFolderModal.vue'
-import { usePermissions } from '@/hooks'
-import useBrowserStore from '@/stores/browser'
+import DeleteFolderModal from '@/components/Modals/DeleteFolderModal.vue';
+import RenameFolderModal from '@/components/Modals/RenameFolderModal.vue';
+import { usePermissions } from '@/hooks';
+import useBrowserStore from '@/stores/browser';
+import { Menu, MenuButton, MenuItem, MenuItems } from '@headlessui/vue';
+import { FolderIcon } from '@heroicons/vue/24/outline';
+import { EllipsisVerticalIcon } from '@heroicons/vue/24/solid';
+import type { Folder } from '__types__';
 
 interface Props {
-  folder: Folder
+  folder: Folder;
 }
 
-const props = defineProps<Props>()
+const props = defineProps<Props>();
 
-const store = useBrowserStore()
-const { showRenameFolder, showDeleteFolder } = usePermissions()
+const store = useBrowserStore();
+const { showRenameFolder, showDeleteFolder } = usePermissions();
 
 // ACTIONS
-const openModal = (name: string) => store.openModal({ name })
+const openModal = (name: string) => store.openModal({ name });
 
-const setPath = (path: string) => store.setPath({ path })
+const setPath = (path: string) => store.setPath({ path });
 
-const onDelete = () => store.deleteFolder({ id: props.folder.id, path: props.folder.path })
+const onDelete = () => store.deleteFolder({ id: props.folder.id, path: props.folder.path });
 
 const onRename = (value: string) => {
   return store.renameFolder({
     id: props.folder.id,
     from: props.folder.path,
     to: value,
-  })
-}
+  });
+};
 </script>
 
 <template>
@@ -39,7 +39,7 @@ const onRename = (value: string) => {
   >
     <button class="flex w-full flex-row items-center" @click="setPath(folder.path)">
       <span
-        class="flex-shrink-0 flex items-center justify-center py-4 pl-3 text-gray-900 dark:text-gray-100 text-sm font-medium group-hover:opacity-75"
+        class="shrink-0 flex items-center justify-center py-4 pl-3 text-gray-900 dark:text-gray-100 text-sm font-medium group-hover:opacity-75"
       >
         <FolderIcon class="h-4 w-4" />
       </span>
@@ -66,7 +66,7 @@ const onRename = (value: string) => {
             <div class="py-1">
               <MenuItem v-if="showRenameFolder">
                 <button
-                  class="hover:bg-gray-50 dark:hover:bg-gray-800 block w-full text-left cursor-pointer py-2 px-3 focus:outline-none focus:ring rounded truncate whitespace-nowrap text-gray-500 active:text-gray-600 dark:text-gray-500 dark:hover:text-gray-400 dark:active:text-gray-600"
+                  class="hover:bg-gray-50 dark:hover:bg-gray-800 block w-full text-left cursor-pointer py-2 px-3 focus:outline-hidden focus:ring-3 rounded-xs truncate whitespace-nowrap text-gray-500 active:text-gray-600 dark:text-gray-500 dark:hover:text-gray-400 dark:active:text-gray-600"
                   @click="openModal(`rename-folder-${folder.id}`)"
                 >
                   {{ __('NovaFileManager.actions.rename') }}
@@ -75,7 +75,7 @@ const onRename = (value: string) => {
 
               <MenuItem v-if="showDeleteFolder">
                 <button
-                  class="hover:bg-red-50 dark:hover:bg-red-600/20 block w-full text-left cursor-pointer py-2 px-3 focus:outline-none focus:ring rounded truncate whitespace-nowrap text-red-500 dark:text-red-500 dark:hover:text-red-700"
+                  class="hover:bg-red-50 dark:hover:bg-red-600/20 block w-full text-left cursor-pointer py-2 px-3 focus:outline-hidden focus:ring-3 rounded-xs truncate whitespace-nowrap text-red-500 dark:text-red-500 dark:hover:text-red-700"
                   @click="openModal(`delete-folder-${folder.id}`)"
                 >
                   {{ __('NovaFileManager.actions.delete') }}

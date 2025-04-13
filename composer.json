@@ -1,16 +1,7 @@
 {
   "name": "oneduo/nova-file-manager",
   "description": "A handy file manager tool for Laravel Nova",
-  "keywords": [
-    "laravel",
-    "nova",
-    "file",
-    "manager",
-    "tool",
-    "multiple",
-    "filesystem",
-    "disks"
-  ],
+  "keywords": ["laravel", "nova", "file", "manager", "tool", "multiple", "filesystem", "disks"],
   "repositories": [
     {
       "type": "composer",
@@ -55,9 +46,7 @@
     "psr-4": {
       "Oneduo\\NovaFileManager\\": "src/"
     },
-    "files": [
-      "src/helpers.php"
-    ]
+    "files": ["src/helpers.php"]
   },
   "autoload-dev": {
     "psr-4": {
@@ -69,27 +58,17 @@
   },
   "extra": {
     "laravel": {
-      "providers": [
-        "Oneduo\\NovaFileManager\\ToolServiceProvider"
-      ]
+      "providers": ["Oneduo\\NovaFileManager\\ToolServiceProvider"]
     }
   },
   "scripts": {
-    "post-autoload-dump": [
-      "@prepare",
-      "@dusk:install-chromedriver"
-    ],
+    "post-autoload-dump": ["@prepare", "@dusk:install-chromedriver"],
     "clear": "@php vendor/bin/testbench package:purge-skeleton --ansi",
     "prepare": "@php vendor/bin/testbench package:discover --ansi",
     "dusk:install-chromedriver": "@php vendor/bin/dusk-updater detect --auto-update --ansi",
     "build": "@php vendor/bin/testbench workbench:build --ansi",
-    "serve": [
-      "@build",
-      "@php vendor/bin/testbench serve"
-    ],
-    "pint": [
-      "@php vendor/bin/pint"
-    ],
+    "serve": ["@build", "@php vendor/bin/testbench serve"],
+    "pint": ["@php vendor/bin/pint"],
     "test": [
       "@php vendor/bin/testbench-dusk nova:publish",
       "XDEBUG_MODE=coverage ./vendor/bin/pest --coverage --coverage-clover ./coverage.xml"

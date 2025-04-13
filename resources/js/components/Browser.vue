@@ -1,105 +1,105 @@
 <script setup lang="ts">
-import { computed, onBeforeUnmount, onMounted, ref, watch } from 'vue'
-import BrowserContent from '@/components/BrowserContent.vue'
-import BrowserDragzone from '@/components/Elements/BrowserDragzone.vue'
-import Spinner from '@/components/Elements/Spinner.vue'
-import Tour from '@/components/Elements/Tour.vue'
-import Spotlight from '@/components/Modals/Spotlight.vue'
-import UploadQueueModal from '@/components/Modals/UploadQueueModal.vue'
-import Pagination from '@/components/Pagination.vue'
-import Toolbar from '@/components/Toolbar.vue'
-import { QUEUE_MODAL_NAME, WATCHABLE_ACTIONS } from '@/constants'
-import dataTransfer from '@/helpers/data-transfer'
-import { usePermissions } from '@/hooks'
-import useBrowserStore from '@/stores/browser'
+import BrowserContent from '@/components/BrowserContent.vue';
+import BrowserDragzone from '@/components/Elements/BrowserDragzone.vue';
+import Spinner from '@/components/Elements/Spinner.vue';
+import Tour from '@/components/Elements/Tour.vue';
+import Spotlight from '@/components/Modals/Spotlight.vue';
+import UploadQueueModal from '@/components/Modals/UploadQueueModal.vue';
+import Pagination from '@/components/Pagination.vue';
+import Toolbar from '@/components/Toolbar.vue';
+import { QUEUE_MODAL_NAME, WATCHABLE_ACTIONS } from '@/constants';
+import dataTransfer from '@/helpers/data-transfer';
+import { usePermissions } from '@/hooks';
+import useBrowserStore from '@/stores/browser';
+import { computed, onBeforeUnmount, onMounted, ref, watch } from 'vue';
 
-const store = useBrowserStore()
+const store = useBrowserStore();
 
 // STATE
-const files = computed(() => store.files)
-const folders = computed(() => store.folders)
-const filled = computed(() => !!files.value?.length || !!folders.value?.length)
-const pagination = computed(() => store.pagination)
-const view = computed(() => store.view)
-const isFetchingData = computed(() => store.isFetchingData)
-const queue = computed(() => store.queue)
-const dragActive = ref(false)
-const dragFiles = ref([] as File[])
-const showTour = ref(false)
+const files = computed(() => store.files);
+const folders = computed(() => store.folders);
+const filled = computed(() => !!files.value?.length || !!folders.value?.length);
+const pagination = computed(() => store.pagination);
+const view = computed(() => store.view);
+const isFetchingData = computed(() => store.isFetchingData);
+const queue = computed(() => store.queue);
+const dragActive = ref(false);
+const dragFiles = ref([] as File[]);
+const showTour = ref(false);
 
 // ACTIONS
-const { showUploadFile } = usePermissions()
+const { showUploadFile } = usePermissions();
 
 // HOOKS
 onMounted(() => {
-  store.init()
+  store.init();
 
   if (!store.singleDisk && !store.disks) {
-    store.getDisks()
+    store.getDisks();
   }
 
-  store.data()
+  store.data();
 
   setTimeout(() => {
-    showTour.value = store.tour
-  }, 1000)
-})
+    showTour.value = store.tour;
+  }, 1000);
+});
 
 const dragEnter = () => {
   if (!showUploadFile.value) {
-    return
+    return;
   }
 
-  dragActive.value = true
-}
+  dragActive.value = true;
+};
 
 const dragLeave = () => {
   if (!showUploadFile.value) {
-    return
+    return;
   }
 
-  dragActive.value = false
-}
+  dragActive.value = false;
+};
 
 const dragDrop = async (event: DragEvent) => {
   if (!showUploadFile.value) {
-    return
+    return;
   }
 
-  dragFiles.value = (await dataTransfer(event.dataTransfer?.items)) as File[]
-}
+  dragFiles.value = (await dataTransfer(event.dataTransfer?.items)) as File[];
+};
 
 const submit = async () => {
   if (!showUploadFile.value) {
-    return
+    return;
   }
 
   if (!dragFiles.value?.length) {
-    return
+    return;
   }
 
-  store.upload({ files: dragFiles.value })
+  store.upload({ files: dragFiles.value });
 
-  store.openModal({ name: QUEUE_MODAL_NAME })
+  store.openModal({ name: QUEUE_MODAL_NAME });
 
-  dragActive.value = false
-}
+  dragActive.value = false;
+};
 
-watch(dragFiles, () => submit())
+watch(dragFiles, () => submit());
 
 const unsubscribe = store.$onAction(({ name, store, after }) => {
   after(() => {
     if (WATCHABLE_ACTIONS.includes(name)) {
       if (!store.error) {
-        store.data()
+        store.data();
       }
     }
-  })
-})
+  });
+});
 
 onBeforeUnmount(() => {
-  unsubscribe()
-})
+  unsubscribe();
+});
 </script>
 
 <template>

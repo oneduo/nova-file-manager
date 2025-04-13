@@ -1,81 +1,81 @@
 <script setup lang="ts">
-import { DialogPanel } from '@headlessui/vue'
+import CropIcon from '@/components/Elements/CropIcon.vue';
+import IconButton from '@/components/Elements/IconButton.vue';
+import ImageLoader from '@/components/Elements/ImageLoader.vue';
+import BaseModal from '@/components/Modals/BaseModal.vue';
+import CropImageModal from '@/components/Modals/CropImageModal.vue';
+import DeleteFileModal from '@/components/Modals/DeleteFileModal.vue';
+import EditImageModal from '@/components/Modals/EditImageModal.vue';
+import RenameFileModal from '@/components/Modals/RenameFileModal.vue';
+import { MODALS, PREVIEW_MODAL_NAME, QUEUE_MODAL_NAME } from '@/constants';
+import { useClipboard, usePermissions, usePintura } from '@/hooks';
+import useBrowserStore from '@/stores/browser';
+import { DialogPanel } from '@headlessui/vue';
 import {
   ArchiveBoxIcon,
+  CheckIcon,
   ClipboardDocumentIcon,
   CloudArrowDownIcon,
   DocumentIcon,
   PencilSquareIcon,
   TrashIcon,
   XMarkIcon,
-  CheckIcon,
-} from '@heroicons/vue/24/outline'
-import { Entity } from '__types__'
-import { computed, ref } from 'vue'
-import CropIcon from '@/components/Elements/CropIcon.vue'
-import IconButton from '@/components/Elements/IconButton.vue'
-import ImageLoader from '@/components/Elements/ImageLoader.vue'
-import BaseModal from '@/components/Modals/BaseModal.vue'
-import CropImageModal from '@/components/Modals/CropImageModal.vue'
-import DeleteFileModal from '@/components/Modals/DeleteFileModal.vue'
-import EditImageModal from '@/components/Modals/EditImageModal.vue'
-import RenameFileModal from '@/components/Modals/RenameFileModal.vue'
-import { MODALS, PREVIEW_MODAL_NAME, QUEUE_MODAL_NAME } from '@/constants'
-import { useClipboard, usePermissions, usePintura } from '@/hooks'
-import useBrowserStore from '@/stores/browser'
+} from '@heroicons/vue/24/outline';
+import { Entity } from '__types__';
+import { computed, ref } from 'vue';
 
 interface Props {
-  file: Entity
-  readOnly: boolean
+  file: Entity;
+  readOnly: boolean;
 }
 
 const props = withDefaults(defineProps<Props>(), {
   readOnly: false,
-})
+});
 
-const store = useBrowserStore()
-const { copy: clipboardCopy } = useClipboard()
-const { showCropImage, showDeleteFile, showDownloadFile, showRenameFile, showUnzipFile } = usePermissions()
-const { usePinturaEditor } = usePintura()
+const store = useBrowserStore();
+const { copy: clipboardCopy } = useClipboard();
+const { showCropImage, showDeleteFile, showDownloadFile, showRenameFile, showUnzipFile } = usePermissions();
+const { usePinturaEditor } = usePintura();
 
 // STATE
-const buttonRef = ref<HTMLButtonElement | HTMLAnchorElement>()
-const isCropModalOpened = computed(() => store.isOpen(`crop-image-${props.file?.id}`))
-const isEditModalOpened = computed(() => store.isOpen(`edit-image-${props.file?.id}`))
-const isField = computed(() => store.isField)
-const downloadUrl = computed(() => store.downloadUrl(props.file))
+const buttonRef = ref<HTMLButtonElement | HTMLAnchorElement>();
+const isCropModalOpened = computed(() => store.isOpen(`crop-image-${props.file?.id}`));
+const isEditModalOpened = computed(() => store.isOpen(`edit-image-${props.file?.id}`));
+const isField = computed(() => store.isField);
+const downloadUrl = computed(() => store.downloadUrl(props.file));
 
 // ACTIONS
-const openModal = (name: string) => store.openModal({ name })
-const onRename = (value: string) => store.renameFile({ id: props.file.id, from: props.file.path, to: value })
-const onDelete = () => store.deleteFiles({ paths: [props.file.path] })
-const onUnzip = (path: string) => store.unzipFile({ path })
+const openModal = (name: string) => store.openModal({ name });
+const onRename = (value: string) => store.renameFile({ id: props.file.id, from: props.file.path, to: value });
+const onDelete = () => store.deleteFiles({ paths: [props.file.path] });
+const onUnzip = (path: string) => store.unzipFile({ path });
 
 const selectThenConfirm = () => {
-  store.selectFile({ file: props.file })
+  store.selectFile({ file: props.file });
 
-  store.confirm()
-}
+  store.confirm();
+};
 
 const closePreview = () => {
-  store.preview = undefined
+  store.preview = undefined;
 
-  store.fixPortal()
-}
+  store.fixPortal();
+};
 
 const onEditImage = (file: File) => {
-  closePreview()
+  closePreview();
 
-  openModal(QUEUE_MODAL_NAME)
+  openModal(QUEUE_MODAL_NAME);
 
-  store.upload({ files: [file] })
-}
+  store.upload({ files: [file] });
+};
 
 const copy = (file: Entity) => {
-  clipboardCopy(file.url)
+  clipboardCopy(file.url);
 
-  window.Nova.success('OK!')
-}
+  window.Nova.success('OK!');
+};
 </script>
 
 <template>
@@ -88,7 +88,7 @@ const copy = (file: Entity) => {
           {{ file?.name }}
         </h2>
 
-        <div class="flex flex-row gap-2 justify-end flex-shrink-0">
+        <div class="flex flex-row gap-2 justify-end shrink-0">
           <IconButton
             v-if="!readOnly && showDeleteFile"
             variant="danger"

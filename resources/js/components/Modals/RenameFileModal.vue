@@ -1,28 +1,28 @@
 <script setup lang="ts">
-import { onMounted, ref } from 'vue'
-import Button from '@/components/Elements/Button.vue'
-import InputModal from '@/components/Modals/InputModal.vue'
-import { OPERATIONS } from '@/constants'
-import { useErrors } from '@/hooks'
+import Button from '@/components/Elements/Button.vue';
+import InputModal from '@/components/Modals/InputModal.vue';
+import { OPERATIONS } from '@/constants';
+import { useErrors } from '@/hooks';
+import { onMounted, ref } from 'vue';
 
 interface Props {
-  name: string
-  onSubmit: (value: string) => void
-  from: string
+  name: string;
+  onSubmit: (value: string) => void;
+  from: string;
 }
 
-const props = defineProps<Props>()
+const props = defineProps<Props>();
 
-const { invalid, errors } = useErrors(OPERATIONS.RENAME_FILE)
+const { invalid, errors } = useErrors(OPERATIONS.RENAME_FILE);
 
 // STATE
-const value = ref(null as string | null | undefined)
+const value = ref(null as string | null | undefined);
 
 // HOOKS
-onMounted(() => (value.value = props.from))
+onMounted(() => (value.value = props.from));
 
 // ACTIONS
-const submit = () => value.value && props.onSubmit(value.value)
+const submit = () => value.value && props.onSubmit(value.value);
 </script>
 
 <template>
@@ -31,7 +31,7 @@ const submit = () => value.value && props.onSubmit(value.value)
       <div>
         <div
           :class="[
-            'w-full border rounded-md space-y-2 px-3 py-2 bg-gray-100 dark:bg-gray-900 shadow-sm focus-within:ring-1 focus-within:ring-blue-600 focus-within:border-blue-600',
+            'w-full border rounded-md space-y-2 px-3 py-2 bg-gray-100 dark:bg-gray-900 shadow-2xs focus-within:ring-1 focus-within:ring-blue-600 focus-within:border-blue-600',
             !invalid ? 'border-gray-400 dark:border-gray-700' : 'border-red-400 dark:border-red-700',
           ]"
         >
@@ -42,7 +42,7 @@ const submit = () => value.value && props.onSubmit(value.value)
             id="name"
             v-model="value"
             :placeholder="__('Name')"
-            class="block w-full border-0 p-0 bg-gray-100 dark:bg-gray-900 placeholder-gray-400 sm:text-sm text-black dark:text-white focus:outline-none focus:ring-0"
+            class="block w-full border-0 p-0 bg-gray-100 dark:bg-gray-900 placeholder-gray-400 sm:text-sm text-black dark:text-white focus:outline-hidden focus:ring-0"
             name="name"
             type="text"
           />

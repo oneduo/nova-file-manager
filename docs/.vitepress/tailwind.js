@@ -1,6 +1,4 @@
 module.exports = {
-    darkMode: "class",
-    content: [
-        "./theme/*.css",
-    ],
-};
+  darkMode: 'class',
+  content: ['./theme/*.css'],
+}

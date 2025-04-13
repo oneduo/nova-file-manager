@@ -1,27 +1,27 @@
-import { Entity, Folder } from '__types__'
-import axios, { Canceler } from 'axios'
-import { defineStore } from 'pinia'
-import { SPOTLIGHT_ENTRY_TYPE_FOLDER } from '@/constants'
-import useBrowserStore from '@/stores/browser'
+import { SPOTLIGHT_ENTRY_TYPE_FOLDER } from '@/constants';
+import useBrowserStore from '@/stores/browser';
+import { Entity, Folder } from '__types__';
+import axios, { Canceler } from 'axios';
+import { defineStore } from 'pinia';
 
 const modifiers = {
   folders: '#',
   files: '>',
   help: '?',
-}
+};
 
 interface State {
-  isOpen: boolean
-  isLoading: boolean
-  query: string
-  search: string
-  folders: Folder[] | undefined
-  files: Entity[] | undefined
-  isFolderOnly: boolean
-  isFileOnly: boolean
-  help: boolean
-  hasResults?: boolean
-  canceler: { cancel: Canceler } | undefined
+  isOpen: boolean;
+  isLoading: boolean;
+  query: string;
+  search: string;
+  folders: Folder[] | undefined;
+  files: Entity[] | undefined;
+  isFolderOnly: boolean;
+  isFileOnly: boolean;
+  help: boolean;
+  hasResults?: boolean;
+  canceler: { cancel: Canceler } | undefined;
 }
 
 const useSearchStore = defineStore('nova-file-manager/search', {
@@ -41,73 +41,73 @@ const useSearchStore = defineStore('nova-file-manager/search', {
 
   actions: {
     open() {
-      this.isOpen = true
-      this.files = []
-      this.folders = []
+      this.isOpen = true;
+      this.files = [];
+      this.folders = [];
     },
 
     close() {
-      this.isOpen = false
+      this.isOpen = false;
     },
 
     async setSearch({ search }: { search: string | null | undefined }) {
       if (!search?.length) {
-        this.reset()
+        this.reset();
 
-        return
+        return;
       }
 
       // dedup search if string didn't change
       if (this.search === search) {
-        return
+        return;
       }
 
-      this.isLoading = true
+      this.isLoading = true;
 
       if (search?.startsWith(modifiers.folders)) {
-        this.isFolderOnly = true
+        this.isFolderOnly = true;
       }
 
       if (search?.startsWith(modifiers.files)) {
-        this.isFileOnly = true
+        this.isFileOnly = true;
       }
 
       if (search?.startsWith(modifiers.help)) {
-        this.help = true
+        this.help = true;
 
-        return
+        return;
       }
 
-      this.search = search
+      this.search = search;
 
-      this.query = this.search?.replace(/[#>?]/, '')
+      this.query = this.search?.replace(/[#>?]/, '');
 
-      await this.data()
+      await this.data();
     },
 
     async data() {
       if (this.help) {
-        return
+        return;
       }
 
       if (!this.query?.length) {
-        this.isLoading = false
+        this.isLoading = false;
 
-        this.folders = []
-        this.files = []
+        this.folders = [];
+        this.files = [];
 
-        return
+        return;
       }
 
       if (this.canceler) {
-        this.canceler.cancel('[nova-file-manager] new search request triggered')
+        this.canceler.cancel('[nova-file-manager] new search request triggered');
       }
 
-      const source = axios.CancelToken.source()
+      const source = axios.CancelToken.source();
 
-      this.canceler = { cancel: source.cancel }
+      this.canceler = { cancel: source.cancel };
 
-      const store = useBrowserStore()
+      const store = useBrowserStore();
 
       const response = await store
         .get({
@@ -120,60 +120,60 @@ const useSearchStore = defineStore('nova-file-manager/search', {
             cancelToken: source.token,
           },
         })
-        .then(response => response)
-        .catch(error => error)
+        .then((response) => response)
+        .catch((error) => error);
 
       if (axios.isCancel(response)) {
-        return
+        return;
       }
 
       if (!response || response.status !== 200) {
-        this.isLoading = false
+        this.isLoading = false;
 
-        window.Nova.error('An error occurred while searching')
+        window.Nova.error('An error occurred while searching');
 
-        return
+        return;
       }
 
-      const { data } = response
+      const { data } = response;
 
       if (!this.isFileOnly) {
-        this.folders = data?.folders
+        this.folders = data?.folders;
       }
 
       if (!this.isFolderOnly) {
-        this.files = data?.files
+        this.files = data?.files;
       }
 
-      this.hasResults = !!this.folders?.length || !!this.files?.length
+      this.hasResults = !!this.folders?.length || !!this.files?.length;
 
-      this.isLoading = false
+      this.isLoading = false;
     },
 
     async select({ item }: { item: Entity | Folder }) {
-      this.close()
+      this.close();
 
-      const store = useBrowserStore()
+      const store = useBrowserStore();
 
       if (item.type !== SPOTLIGHT_ENTRY_TYPE_FOLDER) {
-        store.setPreview({ preview: item as Entity })
+        store.setPreview({ preview: item as Entity });
 
-        return
+        return;
       }
 
-      await store.setPath({ path: item.path })
+      await store.setPath({ path: item.path });
     },
 
     reset() {
-      this.isLoading = false
-      this.isFolderOnly = false
-      this.isFileOnly = false
-      this.help = false
+      this.isLoading = false;
+      this.isFolderOnly = false;
+      this.isFileOnly = false;
+      this.help = false;
 
-      this.query = ''
-      this.search = ''
+      this.query = '';
+      this.search = '';
     },
   },
-})
+});
 
-export default useSearchStore
+export default useSearchStore;

@@ -1,4 +1,17 @@
 import {
+  BROWSER_MODAL_NAME,
+  ENDPOINTS,
+  MODALS,
+  OPERATIONS,
+  PREVIEW_MODAL_NAME,
+  QUEUE_MODAL_NAME,
+  UPLOAD_MODAL_NAME,
+} from '@/constants';
+import attempt from '@/helpers/attempt';
+import { client } from '@/helpers/client';
+import { csrf } from '@/helpers/csrf';
+import sanitize from '@/helpers/sanitize';
+import {
   Breadcrumb,
   BrowserConfig,
   Config,
@@ -12,71 +25,58 @@ import {
   QueueEntry,
   QueueEntryStatus,
   View,
-} from '__types__'
-import { AxiosResponse } from 'axios'
-import range from 'lodash/range'
-import { acceptHMRUpdate, defineStore } from 'pinia'
-import Resumable from 'resumablejs'
-import {
-  BROWSER_MODAL_NAME,
-  ENDPOINTS,
-  MODALS,
-  OPERATIONS,
-  PREVIEW_MODAL_NAME,
-  QUEUE_MODAL_NAME,
-  UPLOAD_MODAL_NAME,
-} from '@/constants'
-import attempt from '@/helpers/attempt'
-import { client } from '@/helpers/client'
-import { csrf } from '@/helpers/csrf'
-import sanitize from '@/helpers/sanitize'
+} from '__types__';
+import { AxiosResponse } from 'axios';
+import range from 'lodash/range';
+import { acceptHMRUpdate, defineStore } from 'pinia';
+import Resumable from 'resumablejs';
 
 interface State {
-  path?: string
-  disk?: string
-  disks?: string[]
-  page?: number
-  search?: string
-  perPage?: number
-  perPageOptions: number[]
-  view: View
-  modals: string[]
-  callback?: (selection: Entity[] | undefined) => any
+  path?: string;
+  disk?: string;
+  disks?: string[];
+  page?: number;
+  search?: string;
+  perPage?: number;
+  perPageOptions: number[];
+  view: View;
+  modals: string[];
+  callback?: (selection: Entity[] | undefined) => any;
 
-  files?: Entity[]
-  folders?: Folder[]
-  breadcrumbs?: Breadcrumb[]
-  pagination?: Pagination
-  error?: { attribute: string; bag?: ErrorsBag }
-  selection?: Entity[]
-  preview?: Entity
-  limit?: number
-  wrapper?: string
-  queue: QueueEntry[]
-  multiple?: boolean
+  files?: Entity[];
+  folders?: Folder[];
+  breadcrumbs?: Breadcrumb[];
+  pagination?: Pagination;
+  error?: { attribute: string; bag?: ErrorsBag };
+  selection?: Entity[];
+  preview?: Entity;
+  limit?: number;
+  wrapper?: string;
+  queue: QueueEntry[];
+  multiple?: boolean;
 
-  ready: boolean
-  isField: boolean
-  isFetchingDisks: boolean
-  isFetchingData: boolean
-  isUploading: boolean
-  loadingOperation?: string
+  ready: boolean;
+  isField: boolean;
+  isFetchingDisks: boolean;
+  isFetchingData: boolean;
+  isUploading: boolean;
+  loadingOperation?: string;
 
-  dark?: boolean
-  tour: boolean
+  dark?: boolean;
+  tour: boolean;
 
-  resource?: string
-  resourceId?: string | number
-  attribute?: string
-  singleDisk: boolean
-  flexibleGroup: string[]
-  fieldInit?: () => void
-  permissions?: PermissionsCollection
-  chunkSize: number
-  usePintura: boolean
-  pinturaOptions?: PinturaOptions
-  cropperOptions?: CropperOptions
-  component?: string
+  resource?: string;
+  resourceId?: string | number;
+  attribute?: string;
+  singleDisk: boolean;
+  flexibleGroup: string[];
+  fieldInit?: () => void;
+  permissions?: PermissionsCollection;
+  chunkSize: number;
+  usePintura: boolean;
+  pinturaOptions?: PinturaOptions;
+  cropperOptions?: CropperOptions;
+  component?: string;
 }
 
 const useBrowserStore = defineStore('nova-file-manager/browser', {
@@ -158,16 +158,16 @@ const useBrowserStore = defineStore('nova-file-manager/browser', {
     init() {
       // if we are already initialized, do nothing
       if (this.ready) {
-        return
+        return;
       }
 
-      this.syncDarkMode()
+      this.syncDarkMode();
 
-      this.loadFromLocalStorage()
+      this.loadFromLocalStorage();
 
-      this.loadFromQueryString()
+      this.loadFromQueryString();
 
-      this.ready = true
+      this.ready = true;
     },
 
     /**
@@ -175,12 +175,12 @@ const useBrowserStore = defineStore('nova-file-manager/browser', {
      */
     syncDarkMode() {
       if (this.dark === undefined) {
-        this.dark = document.documentElement.classList.contains('dark')
+        this.dark = document.documentElement.classList.contains('dark');
       }
 
       window.Nova.$on('nova-theme-switched', ({ theme }: { theme: 'dark' | 'light' }) => {
-        this.dark = theme === 'dark'
-      })
+        this.dark = theme === 'dark';
+      });
     },
 
     /**
@@ -188,20 +188,20 @@ const useBrowserStore = defineStore('nova-file-manager/browser', {
      */
     loadFromLocalStorage() {
       if (this.isField) {
-        return
+        return;
       }
 
       // we only remember a few parameters
-      const parameters = ['perPage', 'view', 'disk']
+      const parameters = ['perPage', 'view', 'disk'];
 
       // then we can loop on these keys
-      parameters.forEach(key => {
-        const value = window?.localStorage.getItem(`nova-file-manager/${key}`)
+      parameters.forEach((key) => {
+        const value = window?.localStorage.getItem(`nova-file-manager/${key}`);
 
         if (!!value && value.length) {
-          this.$patch({ [key]: value })
+          this.$patch({ [key]: value });
         }
-      })
+      });
     },
 
     /**
@@ -209,34 +209,34 @@ const useBrowserStore = defineStore('nova-file-manager/browser', {
      */
     loadFromQueryString() {
       if (this.isField) {
-        return
+        return;
       }
 
       // grab all the query strings in the current url
-      const searchParams = Object.fromEntries(new URLSearchParams(window?.location.search).entries())
+      const searchParams = Object.fromEntries(new URLSearchParams(window?.location.search).entries());
 
       // loop on each query string
       for (const [key, value] of Object.entries(searchParams)) {
         // if we match one of these keys, we trigger the setter mutation
         if (['path', 'disk', 'page', 'perPage'].includes(key)) {
-          this.$patch({ [key]: value })
+          this.$patch({ [key]: value });
         }
       }
 
       // a trick to set the path to the root if we go back a level
       if (!window.location.href.includes('?')) {
-        this.path = '/'
+        this.path = '/';
       }
     },
 
     saveToLocalStorage({ values }: { values: Record<string, string | number | null | undefined> }) {
       if (this.isField || !values) {
-        return
+        return;
       }
 
       for (const [key, value] of Object.entries(values)) {
         if (value) {
-          window?.localStorage.setItem(`nova-file-manager/${key}`, value.toString())
+          window?.localStorage.setItem(`nova-file-manager/${key}`, value.toString());
         }
       }
     },
@@ -248,33 +248,33 @@ const useBrowserStore = defineStore('nova-file-manager/browser', {
      */
     selectFile({ file }: { file: Entity }) {
       if (!this.selection) {
-        this.selection = [file]
+        this.selection = [file];
 
-        return
+        return;
       }
 
-      this.selection.push(file)
+      this.selection.push(file);
     },
 
     /**
      * Remove a file from current selection
      */
     deselectFile({ file }: { file: Entity }) {
-      this.selection = this.selection?.filter(item => item.id !== file.id)
+      this.selection = this.selection?.filter((item) => item.id !== file.id);
     },
 
     /**
      * Set current selection
      */
     setSelection({ files }: { files?: Entity[] }) {
-      this.selection = files
+      this.selection = files;
     },
 
     /**
      * Clear current selection
      */
     clearSelection() {
-      this.setSelection({ files: undefined })
+      this.setSelection({ files: undefined });
     },
 
     /**
@@ -282,23 +282,23 @@ const useBrowserStore = defineStore('nova-file-manager/browser', {
      */
     toggleSelection({ file }: { file: Entity }) {
       if (this.isSelected(file)) {
-        this.deselectFile({ file })
+        this.deselectFile({ file });
 
-        return
+        return;
       }
 
       if (!this.multiple) {
-        this.clearSelection()
+        this.clearSelection();
       }
 
-      this.selectFile({ file })
+      this.selectFile({ file });
     },
 
     /**
      * Action to open a modal
      */
     openModal({ name }: { name: string }) {
-      this.modals.unshift(name)
+      this.modals.unshift(name);
     },
 
     /**
@@ -306,21 +306,21 @@ const useBrowserStore = defineStore('nova-file-manager/browser', {
      */
     closeModal({ name }: { name: string }) {
       if (name === PREVIEW_MODAL_NAME) {
-        this.preview = undefined
+        this.preview = undefined;
       }
 
-      this.modals = this.modals.filter(_name => _name !== name)
+      this.modals = this.modals.filter((_name) => _name !== name);
 
-      this.resetError()
-      this.fixPortal()
+      this.resetError();
+      this.fixPortal();
     },
 
     setError({ attribute, bag }: { attribute: string; bag?: ErrorsBag }) {
-      this.error = { attribute, bag }
+      this.error = { attribute, bag };
     },
 
     resetError() {
-      this.error = undefined
+      this.error = undefined;
     },
 
     /**
@@ -333,42 +333,42 @@ const useBrowserStore = defineStore('nova-file-manager/browser', {
         status: null,
         file,
         isImage: file.type.includes('image') ?? false,
-      })
+      });
     },
 
     /**
      * Clear the current upload queue
      */
     clearQueue() {
-      this.queue = []
+      this.queue = [];
     },
 
     updateQueue({ id, ratio = 100, status = null }: { id: string; ratio?: number; status?: QueueEntryStatus }) {
-      this.queue = this.queue.map(item => {
+      this.queue = this.queue.map((item) => {
         if (item.id === id) {
           return {
             ...item,
             status,
             ratio,
-          }
+          };
         }
 
-        return item
-      })
+        return item;
+      });
 
-      const done = this.queue.reduce((carry, item) => carry && item.ratio === 100, true)
+      const done = this.queue.reduce((carry, item) => carry && item.ratio === 100, true);
 
       if (done && this.queue.length) {
         setTimeout(async () => {
-          this.closeModal({ name: UPLOAD_MODAL_NAME })
-          this.closeModal({ name: QUEUE_MODAL_NAME })
+          this.closeModal({ name: UPLOAD_MODAL_NAME });
+          this.closeModal({ name: QUEUE_MODAL_NAME });
 
-          this.clearQueue()
+          this.clearQueue();
 
-          this.isUploading = false
+          this.isUploading = false;
 
-          await this.data()
-        }, 1000)
+          await this.data();
+        }, 1000);
       }
     },
 
@@ -377,15 +377,15 @@ const useBrowserStore = defineStore('nova-file-manager/browser', {
      */
     fixPortal() {
       if (this.modals.length || !!this.preview) {
-        return
+        return;
       }
 
       setTimeout(() => {
         // temporary fix
         // @see https://github.com/tailwindlabs/headlessui/issues/1319
-        document.documentElement.style.removeProperty('overflow')
-        document.documentElement.style.removeProperty('padding-right')
-      }, 200)
+        document.documentElement.style.removeProperty('overflow');
+        document.documentElement.style.removeProperty('padding-right');
+      }, 200);
     },
 
     /**
@@ -396,116 +396,116 @@ const useBrowserStore = defineStore('nova-file-manager/browser', {
      */
     setQueryString({ parameters }: { parameters: Record<string, string | number | null | undefined> }) {
       if (this.isField) {
-        return
+        return;
       }
 
-      const searchParams = new URLSearchParams(window.location.search)
+      const searchParams = new URLSearchParams(window.location.search);
 
-      const pageState = { url: `${window.location.pathname}${window.location.search}` }
+      const pageState = { url: `${window.location.pathname}${window.location.search}` };
 
       for (const [key, value] of Object.entries(parameters)) {
-        const content = value?.toString()
+        const content = value?.toString();
 
         if (!content) {
-          searchParams.delete(key)
+          searchParams.delete(key);
 
-          continue
+          continue;
         }
 
         if (content?.length > 0) {
-          searchParams.set(key, content)
+          searchParams.set(key, content);
         }
       }
 
       if (pageState.url !== `${window.location.pathname}?${searchParams}`) {
-        pageState.url = `${window.location.pathname}?${searchParams}`
+        pageState.url = `${window.location.pathname}?${searchParams}`;
 
-        const separator = searchParams.toString().length > 0 ? '?' : ''
+        const separator = searchParams.toString().length > 0 ? '?' : '';
 
-        window.history.pushState(pageState, '', `${window.location.pathname}${separator}${searchParams}`)
+        window.history.pushState(pageState, '', `${window.location.pathname}${separator}${searchParams}`);
       }
     },
 
     reset() {
-      const keys = ['page', 'search', 'path']
+      const keys = ['page', 'search', 'path'];
 
-      keys.forEach(key => {
+      keys.forEach((key) => {
         this.$patch({
           [key]: null,
-        })
-      })
+        });
+      });
     },
 
     /**
      * Set the current path
      */
     async setPath({ path }: { path?: string }) {
-      this.reset()
+      this.reset();
 
-      this.path = path
+      this.path = path;
 
-      this.setQueryString({ parameters: { page: null, search: null, path } })
+      this.setQueryString({ parameters: { page: null, search: null, path } });
     },
 
     /**
      * Set the current disk
      */
     async setDisk({ disk }: { disk?: string }) {
-      this.reset()
+      this.reset();
 
-      this.disk = disk
+      this.disk = disk;
 
-      this.setQueryString({ parameters: { disk } })
+      this.setQueryString({ parameters: { disk } });
 
-      this.saveToLocalStorage({ values: { disk, page: null, search: null, path: null } })
+      this.saveToLocalStorage({ values: { disk, page: null, search: null, path: null } });
     },
 
     /**
      * Set the current per page
      */
     async setPerPage({ perPage }: { perPage?: number }) {
-      this.perPage = perPage
+      this.perPage = perPage;
 
-      this.page = 1
+      this.page = 1;
 
-      this.setQueryString({ parameters: { perPage } })
+      this.setQueryString({ parameters: { perPage } });
 
-      this.saveToLocalStorage({ values: { perPage } })
+      this.saveToLocalStorage({ values: { perPage } });
     },
 
     /**
      * Set the current page
      */
     async setPage({ page }: { page?: number }) {
-      this.page = page
+      this.page = page;
 
-      this.setQueryString({ parameters: { page } })
+      this.setQueryString({ parameters: { page } });
     },
 
     /**
      * Set the view mode
      */
     setView({ view }: { view: View }) {
-      this.view = view
+      this.view = view;
 
-      this.saveToLocalStorage({ values: { view } })
+      this.saveToLocalStorage({ values: { view } });
     },
 
     /**
      * Set the search query
      */
     setSearch({ search }: { search?: string }) {
-      this.search = search
+      this.search = search;
 
-      this.setQueryString({ parameters: { search } })
+      this.setQueryString({ parameters: { search } });
     },
 
     setPreview({ preview }: { preview: Entity | undefined }) {
-      this.preview = preview
+      this.preview = preview;
     },
 
     async deleteSelectedFiles() {
-      await this.deleteFiles({ paths: this.selection?.map(file => file.path) ?? [] })
+      await this.deleteFiles({ paths: this.selection?.map((file) => file.path) ?? [] });
     },
 
     /**
@@ -514,7 +514,7 @@ const useBrowserStore = defineStore('nova-file-manager/browser', {
      * @returns {Promise<void>}
      */
     async data() {
-      this.isFetchingData = true
+      this.isFetchingData = true;
 
       const { data } = await this.get({
         params: this.payload({
@@ -523,30 +523,30 @@ const useBrowserStore = defineStore('nova-file-manager/browser', {
           perPage: this.perPage,
           search: this.search,
         }),
-      })
+      });
 
-      this.disk = data.disk
-      this.folders = data.folders
-      this.breadcrumbs = data.breadcrumbs
-      this.files = data.files
-      this.pagination = data.pagination
+      this.disk = data.disk;
+      this.folders = data.folders;
+      this.breadcrumbs = data.breadcrumbs;
+      this.files = data.files;
+      this.pagination = data.pagination;
 
-      this.isFetchingData = false
+      this.isFetchingData = false;
     },
 
     /**
      * Get the disks from the API
      */
     async getDisks() {
-      this.isFetchingDisks = true
+      this.isFetchingDisks = true;
 
       const { data } = await this.get({
         path: ENDPOINTS.DISKS,
-      })
+      });
 
-      this.disks = data
+      this.disks = data;
 
-      this.isFetchingDisks = false
+      this.isFetchingDisks = false;
     },
 
     async createFolder({ path }: { path: string }) {
@@ -557,7 +557,7 @@ const useBrowserStore = defineStore('nova-file-manager/browser', {
         data: this.payload({
           path: sanitize(`${this.path ?? ''}/${sanitize(path)}`, { escape: false }),
         }),
-      })
+      });
     },
 
     async renameFolder({ id, from, to }: { id: string; from: string; to: string }) {
@@ -570,7 +570,7 @@ const useBrowserStore = defineStore('nova-file-manager/browser', {
           from: sanitize(from, { escape: false }),
           to: sanitize(`${this.path ?? ''}/${sanitize(to)}`, { escape: false }),
         }),
-      })
+      });
     },
 
     async deleteFolder({ id, path }: { id: string; path: string }) {
@@ -581,11 +581,11 @@ const useBrowserStore = defineStore('nova-file-manager/browser', {
         data: this.payload({
           path: path,
         }),
-      })
+      });
     },
 
     upload({ files }: { files: File[] }) {
-      this.isUploading = true
+      this.isUploading = true;
 
       const uploader = new Resumable({
         permanentErrors: [400, 404, 409, 415, 419, 422, 500, 501],
@@ -602,38 +602,38 @@ const useBrowserStore = defineStore('nova-file-manager/browser', {
           Accept: 'application/json',
           'X-CSRF-TOKEN': csrf(),
         },
-      })
+      });
 
-      files.forEach(file => {
-        uploader.addFile(file)
+      files.forEach((file) => {
+        uploader.addFile(file);
 
-        this.queueFile({ file })
-      })
+        this.queueFile({ file });
+      });
 
-      uploader.on('fileAdded', () => uploader.upload())
+      uploader.on('fileAdded', () => uploader.upload());
 
-      uploader.on('fileSuccess', file => {
+      uploader.on('fileSuccess', (file) => {
         this.updateQueue({
           id: file.fileName,
           status: true,
-        })
-      })
+        });
+      });
 
-      uploader.on('fileProgress', file => {
+      uploader.on('fileProgress', (file) => {
         this.updateQueue({
           id: file.fileName,
           ratio: Math.floor(file.progress(false) * 100),
-        })
-      })
+        });
+      });
 
       uploader.on('fileError', (file, message) => {
         this.updateQueue({
           id: file.fileName,
           status: false,
-        })
+        });
 
-        window.Nova.error(JSON.parse(message).message)
-      })
+        window.Nova.error(JSON.parse(message).message);
+      });
     },
 
     async renameFile({ id, from, to }: { id: string; from: string; to: string }) {
@@ -646,12 +646,12 @@ const useBrowserStore = defineStore('nova-file-manager/browser', {
           from: sanitize(from, { escape: false }),
           to: sanitize(`${this.path ?? ''}/${sanitize(to)}`, { escape: false }),
         }),
-      })
+      });
     },
 
     async deleteFiles({ paths }: { paths: string[] }) {
       if (paths.length === 0) {
-        return
+        return;
       }
 
       await attempt({
@@ -662,11 +662,11 @@ const useBrowserStore = defineStore('nova-file-manager/browser', {
           paths,
         }),
         callback: () => {
-          this.preview = undefined
+          this.preview = undefined;
 
-          this.clearSelection()
+          this.clearSelection();
         },
-      })
+      });
     },
 
     async unzipFile({ path }: { path: string }) {
@@ -677,15 +677,15 @@ const useBrowserStore = defineStore('nova-file-manager/browser', {
           path: path,
         }),
         callback: () => {
-          this.preview = undefined
+          this.preview = undefined;
 
-          this.clearSelection()
+          this.clearSelection();
         },
-      })
+      });
     },
 
     downloadUrl(file: Entity): String {
-      return this.url(`/nova-vendor/nova-file-manager/${ENDPOINTS.DOWNLOAD_FILE}?disk=${file.disk}&path=${file.path}`)
+      return this.url(`/nova-vendor/nova-file-manager/${ENDPOINTS.DOWNLOAD_FILE}?disk=${file.disk}&path=${file.path}`);
     },
 
     /**
@@ -695,87 +695,87 @@ const useBrowserStore = defineStore('nova-file-manager/browser', {
       return await client().get(this.url(`/nova-vendor/nova-file-manager${path ?? ''}`), {
         params,
         ...options,
-      })
+      });
     },
 
     /**
      * POST request wrapper
      */
     async post<T>({ path, data }: { path?: string; data?: Record<string, any> }): Promise<AxiosResponse<T>> {
-      return await client().post<T>(this.url(`/nova-vendor/nova-file-manager${path ?? ''}`), data)
+      return await client().post<T>(this.url(`/nova-vendor/nova-file-manager${path ?? ''}`), data);
     },
 
     payload(params: object) {
       let data: {
-        [key: string]: any
-        attribute?: string
-        resource?: string
-        fieldMode: boolean
-        resourceId?: string | number
-        disk?: string
-        flexible?: string
-        wrapper?: string
+        [key: string]: any;
+        attribute?: string;
+        resource?: string;
+        fieldMode: boolean;
+        resourceId?: string | number;
+        disk?: string;
+        flexible?: string;
+        wrapper?: string;
       } = {
         ...params,
         attribute: this.attribute,
         resource: this.resource,
         fieldMode: this.isField,
-      }
+      };
 
       if (this.component?.length && ['Nova.Create', 'Nova.Update'].includes(this.component)) {
-        let editMode
+        let editMode;
 
         switch (this.component) {
-        case 'Nova.Create':
-          editMode = 'create'
-          break
-        case 'Nova.Update':
-          editMode = 'update'
-          break
+          case 'Nova.Create':
+            editMode = 'create';
+            break;
+          case 'Nova.Update':
+            editMode = 'update';
+            break;
         }
 
         data = {
           ...data,
           editing: true,
           editMode,
-        }
+        };
       }
 
       if (this.wrapper?.length) {
         data = {
           ...data,
           wrapper: this.wrapper,
-        }
+        };
       }
 
       if (this.resourceId) {
         data = {
           ...data,
           resourceId: this.resourceId,
-        }
+        };
       }
 
       if (!this.singleDisk) {
         data = {
           ...data,
           disk: this.disk,
-        }
+        };
       }
 
       if (this.isField && this.flexibleGroup?.length) {
         data = {
           ...data,
           flexible: this.flexibleGroup.join('.'),
-        }
+        };
       }
 
-      return data
+      return data;
     },
 
     url(url: string) {
-      const suffix = this.isField ? `/${this.resource}` : ''
+      const suffix = this.isField ? `/${this.resource}` : '';
 
-      return `${url}${suffix}`.replace('//', '/')
+      return `${url}${suffix}`.replace('//', '/');
     },
 
     openBrowser({
@@ -796,55 +796,55 @@ const useBrowserStore = defineStore('nova-file-manager/browser', {
       paginationOptions,
       component,
     }: BrowserConfig) {
-      this.isField = true
-      this.multiple = multiple
-      this.limit = limit
-      this.wrapper = wrapper
-      this.resource = resource
-      this.resourceId = resourceId
-      this.attribute = attribute
-      this.singleDisk = singleDisk
-      this.flexibleGroup = flexibleGroup
-      this.callback = callback
-      this.usePintura = usePintura
-      this.pinturaOptions = pinturaOptions
-      this.cropperOptions = cropperOptions
-      this.perPageOptions = paginationOptions ?? this.perPageOptions
-      this.error = undefined
-      this.permissions = permissions
-      this.disk = undefined
-      this.component = component
+      this.isField = true;
+      this.multiple = multiple;
+      this.limit = limit;
+      this.wrapper = wrapper;
+      this.resource = resource;
+      this.resourceId = resourceId;
+      this.attribute = attribute;
+      this.singleDisk = singleDisk;
+      this.flexibleGroup = flexibleGroup;
+      this.callback = callback;
+      this.usePintura = usePintura;
+      this.pinturaOptions = pinturaOptions;
+      this.cropperOptions = cropperOptions;
+      this.perPageOptions = paginationOptions ?? this.perPageOptions;
+      this.error = undefined;
+      this.permissions = permissions;
+      this.disk = undefined;
+      this.component = component;
 
-      this.openModal({ name: BROWSER_MODAL_NAME })
-      this.setSelection({ files: [...initialFiles] })
+      this.openModal({ name: BROWSER_MODAL_NAME });
+      this.setSelection({ files: [...initialFiles] });
     },
 
     closeBrowser() {
-      this.isField = false
-      this.multiple = undefined
-      this.limit = undefined
-      this.wrapper = undefined
-      this.resource = undefined
-      this.resourceId = undefined
-      this.attribute = undefined
-      this.singleDisk = false
-      this.flexibleGroup = []
-      this.callback = undefined
-      this.usePintura = false
-      this.pinturaOptions = {}
-      this.cropperOptions = {}
-      ;(this.perPage = 10), (this.perPageOptions = range(10, 60, 10)), (this.error = undefined)
-      this.permissions = undefined
-      this.disk = undefined
+      this.isField = false;
+      this.multiple = undefined;
+      this.limit = undefined;
+      this.wrapper = undefined;
+      this.resource = undefined;
+      this.resourceId = undefined;
+      this.attribute = undefined;
+      this.singleDisk = false;
+      this.flexibleGroup = [];
+      this.callback = undefined;
+      this.usePintura = false;
+      this.pinturaOptions = {};
+      this.cropperOptions = {};
+      (this.perPage = 10), (this.perPageOptions = range(10, 60, 10)), (this.error = undefined);
+      this.permissions = undefined;
+      this.disk = undefined;
 
-      this.setSelection({ files: [] })
-      this.closeModal({ name: BROWSER_MODAL_NAME })
+      this.setSelection({ files: [] });
+      this.closeModal({ name: BROWSER_MODAL_NAME });
     },
 
     confirm() {
-      this.callback && this.callback(this.selection)
+      this.callback && this.callback(this.selection);
 
-      this.closeBrowser()
+      this.closeBrowser();
     },
 
     prepareTool({
@@ -856,43 +856,43 @@ const useBrowserStore = defineStore('nova-file-manager/browser', {
       cropperOptions,
       paginationOptions,
     }: Config) {
-      this.init()
-      this.clearSelection()
+      this.init();
+      this.clearSelection();
 
-      this.limit = undefined
-      this.isField = false
-      this.multiple = true
-      this.singleDisk = singleDisk
-      this.permissions = permissions
-      this.tour = tour
-      this.usePintura = usePintura
-      this.pinturaOptions = pinturaOptions
-      this.cropperOptions = cropperOptions
-      this.perPageOptions = paginationOptions ?? this.perPageOptions
-      this.error = undefined
+      this.limit = undefined;
+      this.isField = false;
+      this.multiple = true;
+      this.singleDisk = singleDisk;
+      this.permissions = permissions;
+      this.tour = tour;
+      this.usePintura = usePintura;
+      this.pinturaOptions = pinturaOptions;
+      this.cropperOptions = cropperOptions;
+      this.perPageOptions = paginationOptions ?? this.perPageOptions;
+      this.error = undefined;
     },
   },
   getters: {
     isOpen() {
       return (name: string) => {
         if (name === PREVIEW_MODAL_NAME) {
-          return !!this.preview
+          return !!this.preview;
         }
 
-        return this.modals.includes(name)
-      }
+        return this.modals.includes(name);
+      };
     },
     isSelected() {
-      return (file: Entity) => !!this.selection?.find(item => item.id === file.id)
+      return (file: Entity) => !!this.selection?.find((item) => item.id === file.id);
     },
     isBrowserOpen(state) {
-      return state.modals.includes(BROWSER_MODAL_NAME)
+      return state.modals.includes(BROWSER_MODAL_NAME);
     },
   },
-})
+});
 
 if (import.meta.hot) {
-  import.meta.hot.accept(acceptHMRUpdate(useBrowserStore, import.meta.hot))
+  import.meta.hot.accept(acceptHMRUpdate(useBrowserStore, import.meta.hot));
 }
 
-export default useBrowserStore
+export default useBrowserStore;

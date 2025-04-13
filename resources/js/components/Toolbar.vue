@@ -1,56 +1,56 @@
 <script setup lang="ts">
-import { CheckIcon, CloudArrowUpIcon, FolderPlusIcon, MagnifyingGlassIcon, TrashIcon } from '@heroicons/vue/24/outline'
-import { View } from '__types__'
-import { computed } from 'vue'
-import Breadcrumbs from '@/components/Breadcrumbs.vue'
-import DiskSelector from '@/components/DiskSelector.vue'
-import IconButton from '@/components/Elements/IconButton.vue'
-import PaginationSelector from '@/components/Elements/PaginationSelector.vue'
-import ViewToggle from '@/components/Elements/ViewToggle.vue'
-import CreateFolderModal from '@/components/Modals/CreateFolderModal.vue'
-import DeleteFileModal from '@/components/Modals/DeleteFileModal.vue'
-import UploadModal from '@/components/Modals/UploadModal.vue'
-import { MODALS, OPERATIONS } from '@/constants'
-import { usePermissions } from '@/hooks'
-import useBrowserStore from '@/stores/browser'
-import useSearchStore from '@/stores/search'
+import Breadcrumbs from '@/components/Breadcrumbs.vue';
+import DiskSelector from '@/components/DiskSelector.vue';
+import IconButton from '@/components/Elements/IconButton.vue';
+import PaginationSelector from '@/components/Elements/PaginationSelector.vue';
+import ViewToggle from '@/components/Elements/ViewToggle.vue';
+import CreateFolderModal from '@/components/Modals/CreateFolderModal.vue';
+import DeleteFileModal from '@/components/Modals/DeleteFileModal.vue';
+import UploadModal from '@/components/Modals/UploadModal.vue';
+import { MODALS, OPERATIONS } from '@/constants';
+import { usePermissions } from '@/hooks';
+import useBrowserStore from '@/stores/browser';
+import useSearchStore from '@/stores/search';
+import { CheckIcon, CloudArrowUpIcon, FolderPlusIcon, MagnifyingGlassIcon, TrashIcon } from '@heroicons/vue/24/outline';
+import { View } from '__types__';
+import { computed } from 'vue';
 
-const store = useBrowserStore()
-const searchStore = useSearchStore()
+const store = useBrowserStore();
+const searchStore = useSearchStore();
 
-const { showCreateFolder, showUploadFile, showDeleteFile } = usePermissions()
+const { showCreateFolder, showUploadFile, showDeleteFile } = usePermissions();
 
 // STATE
-const isField = computed(() => store.isField)
-const disk = computed(() => store.disk)
-const disks = computed(() => store.disks)
-const singleDisk = computed(() => store.singleDisk)
-const isFetchingDisks = computed(() => store.isFetchingDisks)
-const breadcrumbs = computed(() => store.breadcrumbs)
-const view = computed(() => store.view)
-const queue = computed(() => store.queue)
-const perPage = computed(() => store.perPage)
-const perPageOptions = computed(() => store.perPageOptions)
-const selection = computed(() => store.selection)
-const limit = computed(() => store.limit)
-const loadingOperation = computed(() => store.loadingOperation)
+const isField = computed(() => store.isField);
+const disk = computed(() => store.disk);
+const disks = computed(() => store.disks);
+const singleDisk = computed(() => store.singleDisk);
+const isFetchingDisks = computed(() => store.isFetchingDisks);
+const breadcrumbs = computed(() => store.breadcrumbs);
+const view = computed(() => store.view);
+const queue = computed(() => store.queue);
+const perPage = computed(() => store.perPage);
+const perPageOptions = computed(() => store.perPageOptions);
+const selection = computed(() => store.selection);
+const limit = computed(() => store.limit);
+const loadingOperation = computed(() => store.loadingOperation);
 
 // ACTIONS
-const setDisk = (disk: string) => store.setDisk({ disk })
-const setPerPage = (perPage: number) => store.setPerPage({ perPage })
-const setPath = (path: string) => store.setPath({ path })
-const setView = (view: View) => store.setView({ view })
-const openModal = (name: string) => store.openModal({ name })
-const clearSelection = () => store.clearSelection()
-const upload = (files: File[]) => store.upload({ files })
-const confirm = () => store.confirm()
-const createFolder = (path: string) => store.createFolder({ path })
-const openSearch = () => searchStore.open()
-const deleteSelectedFiles = () => store.deleteSelectedFiles()
+const setDisk = (disk: string) => store.setDisk({ disk });
+const setPerPage = (perPage: number) => store.setPerPage({ perPage });
+const setPath = (path: string) => store.setPath({ path });
+const setView = (view: View) => store.setView({ view });
+const openModal = (name: string) => store.openModal({ name });
+const clearSelection = () => store.clearSelection();
+const upload = (files: File[]) => store.upload({ files });
+const confirm = () => store.confirm();
+const createFolder = (path: string) => store.createFolder({ path });
+const openSearch = () => searchStore.open();
+const deleteSelectedFiles = () => store.deleteSelectedFiles();
 
 const openUploadModal = () => {
-  openModal(queue.value.length ? 'queue' : 'upload')
-}
+  openModal(queue.value.length ? 'queue' : 'upload');
+};
 </script>
 <template>
   <div class="flex flex-col gap-y-4 pt-4">
@@ -74,7 +74,7 @@ const openUploadModal = () => {
 
         <ViewToggle :current="view" :set-view="setView" data-tour="nfm-view-toggle" />
       </div>
-      <div class="flex flex-row gap-x-2 justify-end w-full sm:w-auto flex-shrink-0">
+      <div class="flex flex-row gap-x-2 justify-end w-full sm:w-auto shrink-0">
         <div class="p-2 rounded-md font-semibold text-xs text-gray-400" v-if="selection?.length">
           <span :class="limit !== null && selection.length > limit ? 'text-red-500' : 'text-blue-500'">
             {{ selection.length }}

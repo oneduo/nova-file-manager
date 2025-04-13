@@ -1,34 +1,34 @@
 <script setup lang="ts">
-import { DialogPanel, DialogTitle } from '@headlessui/vue'
-import { Component, computed } from 'vue'
-import { useErrors } from '@/hooks'
-import BaseModal from './BaseModal.vue'
+import { useErrors } from '@/hooks';
+import { DialogPanel, DialogTitle } from '@headlessui/vue';
+import { Component, computed } from 'vue';
+import BaseModal from './BaseModal.vue';
 
 const variants = {
   danger: {
     iconBackground: 'bg-red-100 dark:bg-red-800/30',
     iconColor: 'text-red-600 dark:text-red-500',
   },
-}
+};
 
 interface Props {
-  name: string
-  attribute: string
-  title: string
-  content: string
-  icon: Component
-  variant: keyof typeof variants
+  name: string;
+  attribute: string;
+  title: string;
+  content: string;
+  icon: Component;
+  variant: keyof typeof variants;
 }
 
 const props = withDefaults(defineProps<Props>(), {
   variant: 'danger',
-})
+});
 
-const { invalid, errors } = useErrors(props.attribute)
+const { invalid, errors } = useErrors(props.attribute);
 
 // STATE
-const iconColorClass = computed(() => (props.variant ? variants[props.variant].iconColor : ''))
-const iconBackgroundClass = computed(() => (props.variant ? variants[props.variant].iconBackground : ''))
+const iconColorClass = computed(() => (props.variant ? variants[props.variant].iconColor : ''));
+const iconBackgroundClass = computed(() => (props.variant ? variants[props.variant].iconBackground : ''));
 </script>
 
 <template>
@@ -38,7 +38,7 @@ const iconBackgroundClass = computed(() => (props.variant ? variants[props.varia
     >
       <div class="sm:flex sm:items-start">
         <div
-          :class="`${iconBackgroundClass} mx-auto flex-shrink-0 flex items-center justify-center h-12 w-12 rounded-full sm:mx-0 sm:h-10 sm:w-10`"
+          :class="`${iconBackgroundClass} mx-auto shrink-0 flex items-center justify-center h-12 w-12 rounded-full sm:mx-0 sm:h-10 sm:w-10`"
         >
           <component :is="icon" :class="`${iconColorClass} h-6 w-6`" aria-hidden="true" />
         </div>

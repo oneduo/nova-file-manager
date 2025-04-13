@@ -1,14 +1,14 @@
 <script setup lang="ts">
-import { DialogPanel, DialogTitle } from '@headlessui/vue'
-import BaseModal from '@/components/Modals/BaseModal.vue'
+import BaseModal from '@/components/Modals/BaseModal.vue';
+import { DialogPanel, DialogTitle } from '@headlessui/vue';
 
 interface Props {
-  name: string
-  title: string
-  onSubmit: () => void
+  name: string;
+  title: string;
+  onSubmit: () => void;
 }
 
-defineProps<Props>()
+defineProps<Props>();
 </script>
 
 <template>

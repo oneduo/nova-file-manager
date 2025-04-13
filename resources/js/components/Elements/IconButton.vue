@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { computed } from 'vue'
+import { computed } from 'vue';
 
 const variants = {
   primary: 'bg-blue-500 text-white focus:outline-blue-500',
@@ -7,28 +7,28 @@ const variants = {
   danger: 'bg-red-500 text-white focus:outline-red-500',
   success: 'bg-green-500 text-white focus:outline-green-500',
   transparent: 'bg-transparent text-gray-800 dark:text-gray-100',
-}
+};
 
 interface Props {
-  variant?: keyof typeof variants
-  type?: 'button' | 'submit' | 'reset'
-  asAnchor?: boolean
-  download?: string
+  variant?: keyof typeof variants;
+  type?: 'button' | 'submit' | 'reset';
+  asAnchor?: boolean;
+  download?: string;
 }
 
 const props = withDefaults(defineProps<Props>(), {
   variant: 'secondary',
   type: 'button',
   asAnchor: false,
-})
+});
 
-const variantClass = computed(() => variants[props.variant])
+const variantClass = computed(() => variants[props.variant]);
 </script>
 
 <template>
   <component
     :is="!asAnchor ? 'button' : 'a'"
-    :class="`inline-flex items-center rounded-full border-0 p-2 shadow-sm focus:outline-none focus:ring-1 hover:opacity-75 disabled:opacity-25 ${variantClass}`"
+    :class="`inline-flex items-center rounded-full border-0 p-2 shadow-2xs focus:outline-hidden focus:ring-1 hover:opacity-75 disabled:opacity-25 ${variantClass}`"
     :type="!asAnchor ? type ?? 'button' : undefined"
     :download="download ?? null"
   >

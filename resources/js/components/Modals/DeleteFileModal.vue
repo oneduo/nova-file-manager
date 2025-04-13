@@ -1,21 +1,21 @@
 <script setup lang="ts">
-import { ExclamationCircleIcon } from '@heroicons/vue/24/outline'
-import { computed } from 'vue'
-import Button from '@/components/Elements/Button.vue'
-import ConfirmModal from '@/components/Modals/ConfirmModal.vue'
+import Button from '@/components/Elements/Button.vue';
+import ConfirmModal from '@/components/Modals/ConfirmModal.vue';
+import { ExclamationCircleIcon } from '@heroicons/vue/24/outline';
+import { computed } from 'vue';
 
 interface Props {
-  isOpen?: boolean
-  name: string
-  onConfirm: () => void
-  count?: number
+  isOpen?: boolean;
+  name: string;
+  onConfirm: () => void;
+  count?: number;
 }
 
 withDefaults(defineProps<Props>(), {
   isOpen: false,
-})
+});
 
-const icon = computed(() => ExclamationCircleIcon)
+const icon = computed(() => ExclamationCircleIcon);
 </script>
 
 <template>

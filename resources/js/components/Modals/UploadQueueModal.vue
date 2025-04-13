@@ -1,20 +1,20 @@
 <script setup lang="ts">
-import { DialogPanel } from '@headlessui/vue'
-import { computed } from 'vue'
-import File from '@/components/Cards/File.vue'
-import BaseModal from '@/components/Modals/BaseModal.vue'
-import nativeFileToEntity from '@/helpers/transformers'
-import useBrowserStore from '@/stores/browser'
+import File from '@/components/Cards/File.vue';
+import BaseModal from '@/components/Modals/BaseModal.vue';
+import nativeFileToEntity from '@/helpers/transformers';
+import useBrowserStore from '@/stores/browser';
+import { DialogPanel } from '@headlessui/vue';
+import { computed } from 'vue';
 
-const store = useBrowserStore()
+const store = useBrowserStore();
 
 interface Props {
-  name: string
+  name: string;
 }
 
-defineProps<Props>()
+defineProps<Props>();
 
-const queue = computed(() => store.queue)
+const queue = computed(() => store.queue);
 </script>
 
 <template>

@@ -1,35 +1,35 @@
 <script setup lang="ts">
-import { Entity } from '__types__'
-import { computed, onMounted, ref } from 'vue'
-import FieldCard from '@/components/Cards/FieldCard.vue'
-import PreviewModal from '@/components/Modals/PreviewModal.vue'
-import { useClipboard } from '@/hooks'
-import useBrowserStore from '@/stores/browser'
+import FieldCard from '@/components/Cards/FieldCard.vue';
+import PreviewModal from '@/components/Modals/PreviewModal.vue';
+import { useClipboard } from '@/hooks';
+import useBrowserStore from '@/stores/browser';
+import { Entity } from '__types__';
+import { computed, onMounted, ref } from 'vue';
 
 interface Props {
-  field: any
-  index: number
+  field: any;
+  index: number;
 }
 
-defineProps<Props>()
+defineProps<Props>();
 
-const selected = ref(undefined as Entity | undefined)
-const store = useBrowserStore()
-const { copy: clipboardCopy } = useClipboard()
+const selected = ref(undefined as Entity | undefined);
+const store = useBrowserStore();
+const { copy: clipboardCopy } = useClipboard();
 
-const dark = computed(() => store.dark)
-const preview = computed(() => store.preview)
+const dark = computed(() => store.dark);
+const preview = computed(() => store.preview);
 
 const copy = (file: Entity) => {
-  selected.value = file
-  clipboardCopy(file.url)
+  selected.value = file;
+  clipboardCopy(file.url);
 
   setTimeout(() => {
-    selected.value = undefined
-  }, 1000)
-}
+    selected.value = undefined;
+  }, 1000);
+};
 
-onMounted(() => store.syncDarkMode())
+onMounted(() => store.syncDarkMode());
 </script>
 
 <template>

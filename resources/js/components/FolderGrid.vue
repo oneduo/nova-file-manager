@@ -1,14 +1,14 @@
 <script setup lang="ts">
-import type { Folder as FolderType } from '__types__'
-import Folder from '@/components/Cards/Folder.vue'
+import Folder from '@/components/Cards/Folder.vue';
+import type { Folder as FolderType } from '__types__';
 
 interface Props {
-  folders: FolderType[]
+  folders: FolderType[];
 }
 
 withDefaults(defineProps<Props>(), {
   folders: () => [],
-})
+});
 </script>
 
 <template>

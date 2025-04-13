@@ -1,33 +1,33 @@
 <script setup lang="ts">
-import { Entity } from '__types__'
-import { computed, onMounted, ref } from 'vue'
-import Button from '@/components/Elements/Button.vue'
-import InputModal from '@/components/Modals/InputModal.vue'
-import useBrowserStore from '@/stores/browser'
+import Button from '@/components/Elements/Button.vue';
+import InputModal from '@/components/Modals/InputModal.vue';
+import useBrowserStore from '@/stores/browser';
+import { Entity } from '__types__';
+import { computed, onMounted, ref } from 'vue';
 
 interface Props {
-  file: Entity
-  name: string
-  onSubmit: (value: string) => void
-  destFile: File
-  destName?: string
+  file: Entity;
+  name: string;
+  onSubmit: (value: string) => void;
+  destFile: File;
+  destName?: string;
 }
 
-const props = defineProps<Props>()
+const props = defineProps<Props>();
 
-const store = useBrowserStore()
+const store = useBrowserStore();
 
-const value = ref<string | null>(null)
+const value = ref<string | null>(null);
 
 onMounted(() => {
-  value.value = props.destName ?? ''
-})
+  value.value = props.destName ?? '';
+});
 
-const image = computed(() => URL.createObjectURL(props.destFile))
+const image = computed(() => URL.createObjectURL(props.destFile));
 
 // ACTIONS
-const closeModal = (name: string) => store.closeModal({ name })
-const submit = () => value.value && props.onSubmit(value.value)
+const closeModal = (name: string) => store.closeModal({ name });
+const submit = () => value.value && props.onSubmit(value.value);
 </script>
 
 <template>
@@ -41,7 +41,7 @@ const submit = () => value.value && props.onSubmit(value.value)
       </div>
       <div>
         <div
-          class="w-full border rounded-md space-y-2 px-3 py-2 bg-gray-100 dark:bg-gray-900 shadow-sm focus-within:ring-1 focus-within:ring-blue-600 focus-within:border-blue-600 border-gray-400 dark:border-gray-700"
+          class="w-full border rounded-md space-y-2 px-3 py-2 bg-gray-100 dark:bg-gray-900 shadow-2xs focus-within:ring-1 focus-within:ring-blue-600 focus-within:border-blue-600 border-gray-400 dark:border-gray-700"
         >
           <label class="block text-xs font-medium text-gray-700 dark:text-gray-200" for="name">
             {{ __('Name') }}
@@ -50,7 +50,7 @@ const submit = () => value.value && props.onSubmit(value.value)
             id="name"
             v-model="value"
             :placeholder="__('NovaFileManager.actions.uploadCrop')"
-            class="block w-full border-0 p-0 bg-gray-100 dark:bg-gray-900 placeholder-gray-400 sm:text-sm text-black dark:text-white focus:outline-none focus:ring-0"
+            class="block w-full border-0 p-0 bg-gray-100 dark:bg-gray-900 placeholder-gray-400 sm:text-sm text-black dark:text-white focus:outline-hidden focus:ring-0"
             name="name"
             type="text"
           />

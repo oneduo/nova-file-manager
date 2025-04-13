@@ -1,41 +1,41 @@
 <script setup lang="ts">
-import { DocumentIcon } from '@heroicons/vue/24/outline'
+import ImageLoader from '@/components/Elements/ImageLoader.vue';
+import Spinner from '@/components/Elements/Spinner.vue';
+import { DocumentIcon } from '@heroicons/vue/24/outline';
 import {
   CheckCircleIcon,
   ExclamationCircleIcon,
   ExclamationTriangleIcon,
   PlayIcon,
   XCircleIcon,
-} from '@heroicons/vue/24/solid'
-import { Entity } from '__types__'
-import { computed } from 'vue'
-import ImageLoader from '@/components/Elements/ImageLoader.vue'
-import Spinner from '@/components/Elements/Spinner.vue'
+} from '@heroicons/vue/24/solid';
+import { Entity } from '__types__';
+import { computed } from 'vue';
 
 interface Props {
-  file: Entity
-  isUploading?: boolean
-  isUploaded?: boolean
-  uploadRatio?: number
-  selected: boolean
-  onDeselect?: (file: Entity) => void
-  singleDisk?: boolean
-  fieldMode?: boolean
+  file: Entity;
+  isUploading?: boolean;
+  isUploaded?: boolean;
+  uploadRatio?: number;
+  selected: boolean;
+  onDeselect?: (file: Entity) => void;
+  singleDisk?: boolean;
+  fieldMode?: boolean;
 }
 
 const props = withDefaults(defineProps<Props>(), {
   selected: false,
-})
+});
 
-const isImage = computed(() => props.file.type === 'image')
-const isVideo = computed(() => props.file.type === 'video')
-const isFile = computed(() => props.file.type !== 'image' && props.file.type !== 'video')
-const missing = computed(() => !props.file.exists)
-const name = computed(() => (missing.value ? props.file.path : props.file.name))
+const isImage = computed(() => props.file.type === 'image');
+const isVideo = computed(() => props.file.type === 'video');
+const isFile = computed(() => props.file.type !== 'image' && props.file.type !== 'video');
+const missing = computed(() => !props.file.exists);
+const name = computed(() => (missing.value ? props.file.path : props.file.name));
 </script>
 
 <template>
-  <button class="relative cursor-pointer group focus-visible:outline-none flex flex-col items-start" :title="name">
+  <button class="relative cursor-pointer group focus-visible:outline-hidden flex flex-col items-start" :title="name">
     <div
       :class="[
         'relative block aspect-square w-full h-full overflow-hidden rounded-lg hover:shadow-md hover:opacity-75 border border-gray-200/50 dark:border-gray-700/50 text-left',
