@@ -1,5 +1,5 @@
-@tailwind components;
-@tailwind utilities;
+@import "tailwindcss";
+@source "../js";
 
 .shepherd-button {
   @apply my-1 rounded-full bg-gray-100 px-4 py-1 text-xs font-bold uppercase text-indigo-700 hover:bg-indigo-500 hover:text-indigo-100;
