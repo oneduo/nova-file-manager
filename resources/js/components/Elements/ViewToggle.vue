@@ -23,7 +23,7 @@ const views = ref<{ name: View; icon: Component }[]>([
   },
 ]);
 
-const selectedClass = 'bg-white dark:bg-gray-700 text-blue-500 shadow-sm';
+const selectedClass = 'bg-white dark:bg-gray-700 text-blue-500 shadow-2xs';
 const unselectedClass = 'text-gray-400 dark:hover:text-white hover:text-black';
 </script>
 
@@ -33,7 +33,7 @@ const unselectedClass = 'text-gray-400 dark:hover:text-white hover:text-black';
       v-for="view in views"
       :key="view.name"
       :class="[
-        'rounded-md p-1.5 focus:outline-none focus:ring-1 focus:outline-blue-500',
+        'rounded-md p-1.5 focus:outline-hidden focus:ring-1 focus:outline-blue-500',
         current === view.name ? selectedClass : unselectedClass,
       ]"
       type="button"

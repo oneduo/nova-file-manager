@@ -39,7 +39,7 @@ const onRename = (value: string) => {
   >
     <button class="flex w-full flex-row items-center" @click="setPath(folder.path)">
       <span
-        class="flex-shrink-0 flex items-center justify-center py-4 pl-3 text-gray-900 dark:text-gray-100 text-sm font-medium group-hover:opacity-75"
+        class="shrink-0 flex items-center justify-center py-4 pl-3 text-gray-900 dark:text-gray-100 text-sm font-medium group-hover:opacity-75"
       >
         <FolderIcon class="h-4 w-4" />
       </span>
@@ -66,7 +66,7 @@ const onRename = (value: string) => {
             <div class="py-1">
               <MenuItem v-if="showRenameFolder">
                 <button
-                  class="hover:bg-gray-50 dark:hover:bg-gray-800 block w-full text-left cursor-pointer py-2 px-3 focus:outline-none focus:ring rounded truncate whitespace-nowrap text-gray-500 active:text-gray-600 dark:text-gray-500 dark:hover:text-gray-400 dark:active:text-gray-600"
+                  class="hover:bg-gray-50 dark:hover:bg-gray-800 block w-full text-left cursor-pointer py-2 px-3 focus:outline-hidden focus:ring-3 rounded-xs truncate whitespace-nowrap text-gray-500 active:text-gray-600 dark:text-gray-500 dark:hover:text-gray-400 dark:active:text-gray-600"
                   @click="openModal(`rename-folder-${folder.id}`)"
                 >
                   {{ __('NovaFileManager.actions.rename') }}
@@ -75,7 +75,7 @@ const onRename = (value: string) => {
 
               <MenuItem v-if="showDeleteFolder">
                 <button
-                  class="hover:bg-red-50 dark:hover:bg-red-600/20 block w-full text-left cursor-pointer py-2 px-3 focus:outline-none focus:ring rounded truncate whitespace-nowrap text-red-500 dark:text-red-500 dark:hover:text-red-700"
+                  class="hover:bg-red-50 dark:hover:bg-red-600/20 block w-full text-left cursor-pointer py-2 px-3 focus:outline-hidden focus:ring-3 rounded-xs truncate whitespace-nowrap text-red-500 dark:text-red-500 dark:hover:text-red-700"
                   @click="openModal(`delete-folder-${folder.id}`)"
                 >
                   {{ __('NovaFileManager.actions.delete') }}

@@ -31,7 +31,7 @@ const style = computed(() => variants[props.variant]);
   <component
     :is="href ? 'a' : 'button'"
     :class="[
-      'inline-flex items-center py-2 px-4 border-0 uppercase rounded-md shadow-sm text-xs font-medium text-white hover:shadow-md hover:opacity-75 disabled:opacity-50 focus:outline-none focus:ring-1',
+      'inline-flex items-center py-2 px-4 border-0 uppercase rounded-md shadow-2xs text-xs font-medium text-white hover:shadow-md hover:opacity-75 disabled:opacity-50 focus:outline-hidden focus:ring-1',
       style,
     ]"
     :href="href"

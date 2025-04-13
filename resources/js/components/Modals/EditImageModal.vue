@@ -94,7 +94,7 @@ const submitCrop = (name: string) => {
           {{ __('NovaFileManager.actions.editImage', { image: file.name }) }}
         </h2>
 
-        <div class="flex flex-row gap-2 justify-end flex-shrink-0">
+        <div class="flex flex-row gap-2 justify-end shrink-0">
           <IconButton ref="buttonRef" :title="__('NovaFileManager.actions.close')" @click.prevent.stop="close">
             <XMarkIcon class="w-5 h-5" />
           </IconButton>

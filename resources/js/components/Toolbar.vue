@@ -74,7 +74,7 @@ const openUploadModal = () => {
 
         <ViewToggle :current="view" :set-view="setView" data-tour="nfm-view-toggle" />
       </div>
-      <div class="flex flex-row gap-x-2 justify-end w-full sm:w-auto flex-shrink-0">
+      <div class="flex flex-row gap-x-2 justify-end w-full sm:w-auto shrink-0">
         <div class="p-2 rounded-md font-semibold text-xs text-gray-400" v-if="selection?.length">
           <span :class="limit !== null && selection.length > limit ? 'text-red-500' : 'text-blue-500'">
             {{ selection.length }}

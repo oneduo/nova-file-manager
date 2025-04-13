@@ -57,7 +57,7 @@ watch(files, () => submit());
   <TransitionRoot :show="isOpen" as="template" class="nova-file-manager">
     <Dialog
       as="div"
-      class="relative z-[60]"
+      class="relative z-60"
       style="z-index: 999"
       @close="closeModal"
       @dragover.prevent.stop="dragEnter"
@@ -74,7 +74,7 @@ watch(files, () => submit());
         leave-to="opacity-0"
       >
         <div
-          :class="['fixed inset-0  backdrop-blur-sm transition-opacity', active ? 'bg-blue-900/20' : 'bg-gray-800/20']"
+          :class="['fixed inset-0  backdrop-blur-xs transition-opacity', active ? 'bg-blue-900/20' : 'bg-gray-800/20']"
         />
       </TransitionChild>
 

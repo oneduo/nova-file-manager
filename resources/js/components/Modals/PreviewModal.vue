@@ -88,7 +88,7 @@ const copy = (file: Entity) => {
           {{ file?.name }}
         </h2>
 
-        <div class="flex flex-row gap-2 justify-end flex-shrink-0">
+        <div class="flex flex-row gap-2 justify-end shrink-0">
           <IconButton
             v-if="!readOnly && showDeleteFile"
             variant="danger"

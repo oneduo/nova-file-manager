@@ -72,7 +72,7 @@ const onSearch = debounce(({ target: { value } }) => {
 
 <template>
   <TransitionRoot :show="isOpen" as="template" class="nova-file-manager" @after-leave="close" appear>
-    <Dialog as="div" class="relative z-[60]" @close="close">
+    <Dialog as="div" class="relative z-60" @close="close">
       <TransitionChild
         as="template"
         enter="ease-out duration-100"
@@ -82,7 +82,7 @@ const onSearch = debounce(({ target: { value } }) => {
         leave-from="opacity-100"
         leave-to="opacity-0"
       >
-        <div class="fixed inset-0 bg-gray-800/20 backdrop-blur-sm transition-opacity" />
+        <div class="fixed inset-0 bg-gray-800/20 backdrop-blur-xs transition-opacity" />
       </TransitionChild>
 
       <div :class="{ dark }" class="fixed inset-0 z-10 overflow-y-auto p-4 sm:p-6 md:p-20">
@@ -109,7 +109,7 @@ const onSearch = debounce(({ target: { value } }) => {
                 <Spinner class="pointer-events-none absolute top-3.5 left-4 h-5 w-5" aria-hidden="true" v-else />
 
                 <ComboboxInput
-                  class="h-12 w-full border-0 bg-transparent pl-11 pr-4 text-gray-800 dark:text-gray-200 placeholder-gray-400 focus:outline-none sm:text-sm"
+                  class="h-12 w-full border-0 bg-transparent pl-11 pr-4 text-gray-800 dark:text-gray-200 placeholder-gray-400 focus:outline-hidden sm:text-sm"
                   :placeholder="__('NovaFileManager.spotlight.placeholder')"
                   @change.prevent.stop="onSearch"
                 />
@@ -202,7 +202,7 @@ const onSearch = debounce(({ target: { value } }) => {
                 <template v-for="tip in tips" :key="tip.key">
                   <kbd
                     :class="[
-                      'mx-1 flex h-5 w-5 items-center justify-center rounded border bg-white dark:bg-gray-800 font-semibold sm:mx-2',
+                      'mx-1 flex h-5 w-5 items-center justify-center rounded-xs border bg-white dark:bg-gray-800 font-semibold sm:mx-2',
                       tip?.active
                         ? 'border-blue-500 text-blue-500'
                         : 'border-gray-400 dark:border-gray-600 text-gray-500 dark:text-gray-500',

@@ -22,7 +22,7 @@ const setSearch = debounce(({ target: { value } }) => {
     <input
       :placeholder="__('Search')"
       :value="search"
-      class="rounded-full pr-3 h-9 pl-8 w-full bg-gray-100 focus:dark:bg-gray-700 dark:bg-gray-700/40 dark:focus:bg-gray-800 focus:bg-white focus:outline-none focus:ring-1 focus:outline-blue-500 text-sm placeholder-gray-500 text-gray-500 dark:text-gray-200"
+      class="rounded-full pr-3 h-9 pl-8 w-full bg-gray-100 dark:focus:bg-gray-700 dark:bg-gray-700/40 dark:focus:bg-gray-800 focus:bg-white focus:outline-hidden focus:ring-1 focus:outline-blue-500 text-sm placeholder-gray-500 text-gray-500 dark:text-gray-200"
       type="search"
       @input="setSearch"
     />

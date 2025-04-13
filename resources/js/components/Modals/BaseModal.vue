@@ -28,7 +28,7 @@ const closeModal = () => {
 
 <template>
   <TransitionRoot :show="isOpen" as="template" class="nova-file-manager">
-    <Dialog as="div" class="relative z-[60]" style="z-index: 999" @close="closeModal" :initial-focus="initialFocusRef">
+    <Dialog as="div" class="relative z-60" style="z-index: 999" @close="closeModal" :initial-focus="initialFocusRef">
       <TransitionChild
         as="template"
         enter="ease-out duration-300"
@@ -38,7 +38,7 @@ const closeModal = () => {
         leave-from="opacity-100"
         leave-to="opacity-0"
       >
-        <div class="fixed inset-0 bg-gray-800/20 backdrop-blur-sm transition-opacity" />
+        <div class="fixed inset-0 bg-gray-800/20 backdrop-blur-xs transition-opacity" />
       </TransitionChild>
       <div :class="{ dark }" class="fixed z-10 inset-0 overflow-y-auto">
         <div class="flex items-end sm:items-center justify-center min-h-full p-0 md:p-4">

@@ -181,7 +181,7 @@ export default defineComponent({
 
           <div class="flex flex-row gap-2">
             <button
-              class="relative flex flex-row shrink-0 items-center px-4 py-2 rounded-md border border-gray-300 dark:hover:border-blue-500 dark:border-gray-600 bg-white dark:bg-gray-700 text-sm font-medium text-gray-700 dark:text-gray-200 focus:z-10 focus:outline-none"
+              class="relative flex flex-row shrink-0 items-center px-4 py-2 rounded-md border border-gray-300 dark:hover:border-blue-500 dark:border-gray-600 bg-white dark:bg-gray-700 text-sm font-medium text-gray-700 dark:text-gray-200 focus:z-10 focus:outline-hidden"
               type="button"
               @click="openBrowserModal"
             >
@@ -195,7 +195,7 @@ export default defineComponent({
         <DialogModal as="div" class="relative" @close="closeBrowserModal">
           <TransitionChild
             as="template"
-            class="z-[60]"
+            class="z-60"
             enter="ease-out duration-300"
             enter-from="opacity-0"
             enter-to="opacity-100"
@@ -203,10 +203,10 @@ export default defineComponent({
             leave-from="opacity-100"
             leave-to="opacity-0"
           >
-            <div class="fixed inset-0 bg-gray-800/20 backdrop-blur-sm transition-opacity" />
+            <div class="fixed inset-0 bg-gray-800/20 backdrop-blur-xs transition-opacity" />
           </TransitionChild>
 
-          <div :class="['fixed z-[60] inset-0 overflow-y-auto w-full', { dark }]">
+          <div :class="['fixed z-60 inset-0 overflow-y-auto w-full', { dark }]">
             <div class="flex items-start justify-center min-h-full">
               <TransitionChild
                 as="template"

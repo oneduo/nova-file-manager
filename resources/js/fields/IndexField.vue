@@ -49,7 +49,7 @@ const elevations = ['z-10', 'z-20', 'z-30'];
             <template v-for="(file, index) in thumbnails" :key="`thumbnail-${file.id}`">
               <div
                 v-if="!file.exists"
-                class="relative inline-block flex items-center justify-center h-10 w-10 rounded-xl ring-gray-200 dark:ring-gray-700 ring-1 shadow bg-gray-50 dark:bg-gray-900 text-red-500"
+                class="relative inline-block flex items-center justify-center h-10 w-10 rounded-xl ring-gray-200 dark:ring-gray-700 ring-1 shadow-xs bg-gray-50 dark:bg-gray-900 text-red-500"
                 :class="elevations[index]"
               >
                 <ExclamationTriangleIcon class="h-6 w-6" />
@@ -57,14 +57,14 @@ const elevations = ['z-10', 'z-20', 'z-30'];
               <img
                 v-else-if="file.type === 'image'"
                 :src="file.url"
-                class="relative inline-block h-10 w-10 rounded-xl ring-gray-200 dark:ring-gray-700 ring-1 shadow object-cover"
+                class="relative inline-block h-10 w-10 rounded-xl ring-gray-200 dark:ring-gray-700 ring-1 shadow-xs object-cover"
                 :class="elevations[index]"
                 :alt="file.name"
               />
 
               <template v-else-if="file.type === 'video'">
                 <video
-                  class="relative inline-block h-10 w-10 rounded-xl ring-gray-200 dark:ring-gray-700 ring-1 shadow object-cover"
+                  class="relative inline-block h-10 w-10 rounded-xl ring-gray-200 dark:ring-gray-700 ring-1 shadow-xs object-cover"
                   :class="elevations[index]"
                 >
                   <source :src="file.url" />
@@ -74,7 +74,7 @@ const elevations = ['z-10', 'z-20', 'z-30'];
 
               <div
                 v-else
-                class="relative inline-block flex items-center justify-center h-10 w-10 rounded-xl ring-gray-200 dark:ring-gray-700 ring-1 shadow bg-gray-50 dark:bg-gray-900"
+                class="relative inline-block flex items-center justify-center h-10 w-10 rounded-xl ring-gray-200 dark:ring-gray-700 ring-1 shadow-xs bg-gray-50 dark:bg-gray-900"
                 :class="elevations[index]"
               >
                 <DocumentIcon class="h-6 w-6" />
@@ -82,7 +82,7 @@ const elevations = ['z-10', 'z-20', 'z-30'];
             </template>
             <div
               v-if="rest > 0"
-              class="relative z-40 inline-block h-10 w-10 rounded-xl ring-gray-200 dark:ring-gray-700 ring-1 bg-gray-50 dark:bg-gray-900 dark:text-gray-400 flex items-center justify-center shadow"
+              class="relative z-40 inline-block h-10 w-10 rounded-xl ring-gray-200 dark:ring-gray-700 ring-1 bg-gray-50 dark:bg-gray-900 dark:text-gray-400 flex items-center justify-center shadow-xs"
             >
               +{{ rest }}
             </div>

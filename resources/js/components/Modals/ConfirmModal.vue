@@ -38,7 +38,7 @@ const iconBackgroundClass = computed(() => (props.variant ? variants[props.varia
     >
       <div class="sm:flex sm:items-start">
         <div
-          :class="`${iconBackgroundClass} mx-auto flex-shrink-0 flex items-center justify-center h-12 w-12 rounded-full sm:mx-0 sm:h-10 sm:w-10`"
+          :class="`${iconBackgroundClass} mx-auto shrink-0 flex items-center justify-center h-12 w-12 rounded-full sm:mx-0 sm:h-10 sm:w-10`"
         >
           <component :is="icon" :class="`${iconColorClass} h-6 w-6`" aria-hidden="true" />
         </div>

@@ -16,7 +16,7 @@ const setPage = (page: number) => store.setPage({ page });
   <div class="pt-3 flex items-center justify-between border-t border-gray-200/50 dark:border-gray-700/50 px-4 py-2">
     <div class="flex-1 flex items-center justify-between md:hidden">
       <button
-        class="relative inline-flex items-center px-3 py-2 rounded border border-gray-300 dark:border-gray-700 bg-gray-100/50 dark:bg-gray-900 text-sm font-semibold text-gray-500 hover:bg-gray-50 dark:hover:bg-gray-800"
+        class="relative inline-flex items-center px-3 py-2 rounded-xs border border-gray-300 dark:border-gray-700 bg-gray-100/50 dark:bg-gray-900 text-sm font-semibold text-gray-500 hover:bg-gray-50 dark:hover:bg-gray-800"
         @click.prevent="() => setPage(Math.max(1, currentPage - 1))"
       >
         {{ __('Previous') }}
@@ -31,7 +31,7 @@ const setPage = (page: number) => store.setPage({ page });
         </p>
       </div>
       <button
-        class="relative inline-flex items-center px-3 py-2 rounded border border-gray-300 dark:border-gray-700 bg-gray-100/50 dark:bg-gray-900 text-sm font-semibold text-gray-500 hover:bg-gray-50 dark:hover:bg-gray-800"
+        class="relative inline-flex items-center px-3 py-2 rounded-xs border border-gray-300 dark:border-gray-700 bg-gray-100/50 dark:bg-gray-900 text-sm font-semibold text-gray-500 hover:bg-gray-50 dark:hover:bg-gray-800"
         @click.prevent="() => setPage(Math.min(lastPage, currentPage + 1))"
       >
         {{ __('Next') }}
@@ -49,7 +49,7 @@ const setPage = (page: number) => store.setPage({ page });
         </p>
       </div>
       <div>
-        <nav aria-label="Pagination" class="relative z-0 inline-flex rounded-md shadow-sm -space-x-px">
+        <nav aria-label="Pagination" class="relative z-0 inline-flex rounded-md shadow-2xs -space-x-px">
           <button
             :disabled="currentPage === 1"
             class="relative inline-flex items-center p-2 rounded-l-md border border-gray-300 dark:border-gray-700 bg-gray-100/50 dark:bg-gray-900/30 text-xs font-medium text-gray-500 hover:bg-gray-50 dark:hover:bg-gray-800 hover:text-gray-800 dark:hover:text-gray-200"

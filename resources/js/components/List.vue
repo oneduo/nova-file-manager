@@ -56,7 +56,7 @@ const openModal = (name: string) => store.openModal({ name });
               <div class="relative flex-1 flex items-center justify-end">
                 <Menu as="div" class="relative inline-block text-left">
                   <MenuButton
-                    class="flex items-center text-gray-500 hover:text-blue-500 hover:bg-gray-50 dark:hover:bg-gray-600/50 rounded-full focus:outline-none mr-2 p-0.5"
+                    class="flex items-center text-gray-500 hover:text-blue-500 hover:bg-gray-50 dark:hover:bg-gray-600/50 rounded-full focus:outline-hidden mr-2 p-0.5"
                   >
                     <EllipsisHorizontalIcon class="h-3 w-3" />
                   </MenuButton>
@@ -67,7 +67,7 @@ const openModal = (name: string) => store.openModal({ name });
                     <div class="py-1">
                       <MenuItem v-if="showRenameFolder">
                         <button
-                          class="hover:bg-gray-50 dark:hover:bg-gray-800 block w-full text-left cursor-pointer py-2 px-3 focus:outline-none focus:ring rounded truncate whitespace-nowrap text-gray-500 active:text-gray-600 dark:text-gray-500 dark:hover:text-gray-400 dark:active:text-gray-600"
+                          class="hover:bg-gray-50 dark:hover:bg-gray-800 block w-full text-left cursor-pointer py-2 px-3 focus:outline-hidden focus:ring-3 rounded-xs truncate whitespace-nowrap text-gray-500 active:text-gray-600 dark:text-gray-500 dark:hover:text-gray-400 dark:active:text-gray-600"
                           @click="openModal(`rename-folder-${folder.id}`)"
                         >
                           {{ __('Rename') }}
@@ -75,7 +75,7 @@ const openModal = (name: string) => store.openModal({ name });
                       </MenuItem>
                       <MenuItem v-if="showDeleteFolder">
                         <button
-                          class="hover:bg-red-50 dark:hover:bg-red-600/20 block w-full text-left cursor-pointer py-2 px-3 focus:outline-none focus:ring rounded truncate whitespace-nowrap text-red-500 dark:text-red-500 dark:hover:text-red-700"
+                          class="hover:bg-red-50 dark:hover:bg-red-600/20 block w-full text-left cursor-pointer py-2 px-3 focus:outline-hidden focus:ring-3 rounded-xs truncate whitespace-nowrap text-red-500 dark:text-red-500 dark:hover:text-red-700"
                           @click="openModal(`delete-folder-${folder.id}`)"
                         >
                           {{ __('Delete') }}

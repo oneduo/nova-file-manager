@@ -19,7 +19,7 @@ withDefaults(defineProps<Props>(), {
   <Menu as="div" class="relative inline-block text-left shrink-0">
     <div class="group">
       <MenuButton
-        class="inline-flex justify-center items-center w-full rounded-md shadow-sm px-4 py-2 bg-gray-100 dark:bg-gray-700 text-sm font-medium text-gray-500 dark:text-gray-300 hover:text-black dark:hover:text-white focus:outline-none focus:ring-1 focus:outline-blue-500 whitespace-no-wrap"
+        class="inline-flex justify-center items-center w-full rounded-md shadow-2xs px-4 py-2 bg-gray-100 dark:bg-gray-700 text-sm font-medium text-gray-500 dark:text-gray-300 hover:text-black dark:hover:text-white focus:outline-hidden focus:ring-1 focus:outline-blue-500 whitespace-no-wrap"
         :disabled="isLoading"
       >
         <Spinner class="h-4 w-4" v-if="isLoading" />
@@ -42,14 +42,14 @@ withDefaults(defineProps<Props>(), {
       leave-to-class="transform opacity-0 scale-95"
     >
       <MenuItems
-        class="z-10 origin-top-left absolute text-xs left-0 mt-2 w-36 rounded-md shadow-lg bg-white dark:bg-gray-900 shadow-lg rounded-lg border border-gray-200 dark:border-gray-700 px-1 focus:outline-none"
+        class="z-10 origin-top-left absolute text-xs left-0 mt-2 w-36 rounded-md shadow-lg bg-white dark:bg-gray-900 shadow-lg rounded-lg border border-gray-200 dark:border-gray-700 px-1 focus:outline-hidden"
         tabindex="-1"
       >
         <div class="py-1">
           <MenuItem v-for="value in options" :key="value">
             <div class="flex flex-row">
               <button
-                class="flex flex-row justify-between items-center hover:bg-gray-50 dark:hover:bg-gray-800 block w-full text-left cursor-pointer py-2 px-3 focus:outline-none focus:ring-1 focus:ring-blue-500 rounded text-gray-500 dark:text-gray-500 dark:hover:text-gray-400 dark:active:text-gray-600"
+                class="flex flex-row justify-between items-center hover:bg-gray-50 dark:hover:bg-gray-800 block w-full text-left cursor-pointer py-2 px-3 focus:outline-hidden focus:ring-1 focus:ring-blue-500 rounded-xs text-gray-500 dark:text-gray-500 dark:hover:text-gray-400 dark:active:text-gray-600"
                 tabindex="1"
                 type="button"
                 @click.prevent="onClick(value)"

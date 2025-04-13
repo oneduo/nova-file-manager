@@ -23,10 +23,6 @@ const flattenColorPalette = (obj, sep = '-') =>
   )
 
 module.exports = {
-  mode: 'jit',
-  content: ['./resources/**/*{js,vue,blade.php,ts}'],
-  darkMode: 'class',
-  important: '.nova-file-manager',
   plugins: [
     function ({ addUtilities, theme }) {
       const utilities = {

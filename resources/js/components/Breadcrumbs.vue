@@ -21,15 +21,15 @@ withDefaults(defineProps<Props>(), {
     <ol class="flex items-center space-x-2 flex-wrap gap-y-0.5" role="list">
       <li>
         <button
-          class="flex items-center text-gray-400 dark:text-gray-600 hover:text-blue-500 dark:hover:text-blue-500 focus:outline-none"
+          class="flex items-center text-gray-400 dark:text-gray-600 hover:text-blue-500 dark:hover:text-blue-500 focus:outline-hidden"
           @click.prevent="setPath('/')"
         >
-          <HomeIcon class="flex-shrink-0 h-4 w-4" />
+          <HomeIcon class="shrink-0 h-4 w-4" />
         </button>
       </li>
       <li v-for="page in items" :key="page.path">
         <div class="flex items-center">
-          <ChevronRightIcon class="flex-shrink-0 h-4 w-4 text-gray-400 dark:text-gray-600" />
+          <ChevronRightIcon class="shrink-0 h-4 w-4 text-gray-400 dark:text-gray-600" />
           <button
             :class="`ml-2 text-xs font-regular hover:text-blue-500 ${
               page.current ? 'text-gray-800 dark:text-gray-200' : 'text-gray-400 dark:text-gray-600'
