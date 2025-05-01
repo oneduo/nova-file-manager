@@ -35,7 +35,7 @@
     "axios": "^1.8",
     "babel-loader": "^10.0.0",
     "copy-to-clipboard": "^3.3.3",
-    "eslint": "^9.23.0",
+    "eslint": "^9.25.1",
     "eslint-config-prettier": "^9.0.0",
     "eslint-plugin-import": "^2.31.0",
     "eslint-plugin-prettier-vue": "^5.0.0",
