@@ -430,6 +430,7 @@ trait InteractsWithFilesystem
                 'pinturaOptions' => $this->pinturaOptions,
                 'cropperOptions' => $this->cropperOptions,
                 'paginationOptions' => $this->resolvePagination($request),
+                'perPage' => config('nova-file-manager.pagination_default'),
             ];
         });
     }
