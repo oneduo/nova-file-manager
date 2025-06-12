@@ -794,6 +794,7 @@ const useBrowserStore = defineStore('nova-file-manager/browser', {
       pinturaOptions,
       cropperOptions,
       paginationOptions,
+      perPage,
       component,
     }: BrowserConfig) {
       this.isField = true
@@ -810,6 +811,7 @@ const useBrowserStore = defineStore('nova-file-manager/browser', {
       this.pinturaOptions = pinturaOptions
       this.cropperOptions = cropperOptions
       this.perPageOptions = paginationOptions ?? this.perPageOptions
+      this.perPage  = perPage ?? this.perPageOptions[0] ?? 10
       this.error = undefined
       this.permissions = permissions
       this.disk = undefined

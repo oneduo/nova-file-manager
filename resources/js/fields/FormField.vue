@@ -118,6 +118,7 @@ export default defineComponent({
         pinturaOptions: this.currentField.pinturaOptions ?? {},
         cropperOptions: this.currentField.cropperOptions ?? {},
         paginationOptions: this.currentField.paginationOptions ?? undefined,
+        perPage: this.currentField.perPage ?? undefined,
         component: this.$inertia?.page?.component,
       })
     },

@@ -29,6 +29,7 @@ export type BrowserConfig = {
   pinturaOptions?: PinturaOptions
   cropperOptions?: CropperOptions
   paginationOptions?: number[]
+  perPage?: number
   component?: string
 }
 
@@ -41,6 +42,7 @@ export type Config = {
   cropperOptions: CropperOptions
   outdated?: boolean
   paginationOptions?: number[]
+  perPage?: number
 }
 
 export type Entity = {
