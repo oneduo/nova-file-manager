@@ -94,7 +94,7 @@ interface InteractsWithFilesystem extends ResolvesUrl
     /**
      * Set the validation rules for the upload.
      *
-     * @param  callable|array<int, string|\Illuminate\Validation\Rule|\Illuminate\Contracts\Validation\Rule|callable>|string  ...$rules
+     * @param  callable|array<int, string|\Illuminate\Validation\Rule|\Illuminate\Contracts\Validation\ValidationRule|callable>|string  ...$rules
      * @return $this
      */
     public function uploadRules($rules): static;
