@@ -6,7 +6,7 @@ namespace Oneduo\NovaFileManager\Traits\Support;
 
 use Closure;
 use Illuminate\Contracts\Filesystem\Filesystem;
-use Illuminate\Contracts\Validation\Rule;
+use Illuminate\Contracts\Validation\ValidationRule;
 use Laravel\Nova\Http\Requests\NovaRequest;
 use Oneduo\NovaFileManager\Contracts\Support\InteractsWithFilesystem as InteractsWithFilesystemContract;
 
@@ -346,7 +346,7 @@ trait InteractsWithFilesystem
     /**
      * Set the validation rules for the upload.
      *
-     * @param  callable|array<int, string|\Illuminate\Validation\Rule|\Illuminate\Contracts\Validation\Rule|callable>|string  ...$rules
+     * @param  callable|array<int, string|\Illuminate\Validation\Rule|\Illuminate\Contracts\Validation\ValidationRule|callable>|string  ...$rules
      * @return $this
      */
     public function uploadRules($rules): static
@@ -354,7 +354,7 @@ trait InteractsWithFilesystem
         if ($rules instanceof Closure) {
             $this->uploadRules = [$rules];
         } else {
-            $this->uploadRules = ($rules instanceof Rule || is_string($rules)) ? func_get_args() : $rules;
+            $this->uploadRules = ($rules instanceof ValidationRule || is_string($rules)) ? func_get_args() : $rules;
         }
 
         return $this;
