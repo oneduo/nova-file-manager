@@ -46,19 +46,21 @@ A file manager tool and field for Laravel Nova. Beautifully designed, and custom
 
 ## Table of Contents
 
-- [Getting Started](#getting_started)
+- [Nova File Manager](#nova-file-manager)
+  - [Table of Contents](#table-of-contents)
+  - [Getting Started ](#getting-started-)
     - [Prerequisites](#prerequisites)
     - [Installing](#installing)
     - [Configuration](#configuration)
-- [Usage](#usage)
-- [Configuration](#configuration-file)
-- [Authors](#authors)
-- [Screenshots](#screenshots)
-- [Changelog](#changelog)
-- [Security](#security)
-- [Contributing](#contributing)
-- [Credits](#credits)
-- [License](#license)
+  - [Usage ](#usage-)
+  - [Configuration file ](#configuration-file-)
+  - [Authors ](#authors-)
+  - [Screenshots ](#screenshots-)
+  - [Changelog](#changelog)
+  - [Security](#security)
+  - [Contributing](#contributing)
+  - [Credits](#credits)
+  - [License](#license)
 
 ## Getting Started <a name = "getting_started"></a>
 
@@ -67,6 +69,7 @@ A file manager tool and field for Laravel Nova. Beautifully designed, and custom
 This package requires the following :
 
 - PHP 8.0 or higher
+- Laravel 10 or higher
 - Laravel Nova 4
 
 > **Note** If you plan on using this package with an S3 bucket, be mindful to follow the instructions
