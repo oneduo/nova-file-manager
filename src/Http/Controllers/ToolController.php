@@ -49,7 +49,7 @@ class ToolController extends Controller
                 callback: function () {
                     $current = InstalledVersions::getPrettyVersion('oneduo/nova-file-manager');
                     $latest = Http::get('https://api.github.com/repos/oneduo/nova-file-manager/releases/latest')->json('tag_name');
-
+                    $latest = $latest ?? '0.0.0'; // Set default values
                     return version_compare($current, $latest, '<');
                 });
         };
