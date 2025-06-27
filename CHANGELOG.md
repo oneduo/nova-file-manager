@@ -2,6 +2,26 @@
 
 All notable changes to `nova-file-manager` will be documented in this file
 
+## v0.14.0 - 2025-06-27
+
+### What's Changed
+
+* feat: add the ability to configure the default perPage
+
+Field :
+
+```php
+FileManager::make('Image')->perPage(fn () => 20);
+
+```
+Tool :
+
+```php
+NovaFileManager::make()->perPage(fn () => 20);
+
+```
+**Full Changelog**: https://github.com/oneduo/nova-file-manager/compare/v0.13.1...v0.14.0
+
 ## v0.13.1 - 2025-01-08
 
 ### What's Changed
@@ -511,6 +531,7 @@ rm -rf vendor/
 
 
 
+
 ```
 ```bash
 composer install oneduo/nova-file-manager
@@ -545,9 +566,11 @@ composer install oneduo/nova-file-manager
 
 
 
+
 ```
 ```bash
 composer rm bbs-lab/nova-file-manager
+
 
 
 
