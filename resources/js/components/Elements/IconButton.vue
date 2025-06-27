@@ -29,7 +29,7 @@ const variantClass = computed(() => variants[props.variant])
   <component
     :is="!asAnchor ? 'button' : 'a'"
     :class="`inline-flex items-center rounded-full border-0 p-2 shadow-sm focus:outline-none focus:ring-1 hover:opacity-75 disabled:opacity-25 ${variantClass}`"
-    :type="!asAnchor ? type ?? 'button' : undefined"
+    :type="!asAnchor ? (type ?? 'button') : undefined"
     :download="download ?? null"
   >
     <slot />
