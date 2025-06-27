@@ -793,6 +793,7 @@ const useBrowserStore = defineStore('nova-file-manager/browser', {
       usePintura,
       pinturaOptions,
       cropperOptions,
+      perPage,
       paginationOptions,
       component,
     }: BrowserConfig) {
@@ -809,6 +810,7 @@ const useBrowserStore = defineStore('nova-file-manager/browser', {
       this.usePintura = usePintura
       this.pinturaOptions = pinturaOptions
       this.cropperOptions = cropperOptions
+      this.perPage = perPage ?? this.perPage
       this.perPageOptions = paginationOptions ?? this.perPageOptions
       this.error = undefined
       this.permissions = permissions
@@ -833,7 +835,8 @@ const useBrowserStore = defineStore('nova-file-manager/browser', {
       this.usePintura = false
       this.pinturaOptions = {}
       this.cropperOptions = {}
-      ;(this.perPage = 10), (this.perPageOptions = range(10, 60, 10)), (this.error = undefined)
+      this.perPage = 10
+      this.perPageOptions = range(10, 60, 10)
       this.permissions = undefined
       this.disk = undefined
 
@@ -854,6 +857,7 @@ const useBrowserStore = defineStore('nova-file-manager/browser', {
       usePintura,
       pinturaOptions,
       cropperOptions,
+      perPage,
       paginationOptions,
     }: Config) {
       this.init()
@@ -868,6 +872,7 @@ const useBrowserStore = defineStore('nova-file-manager/browser', {
       this.usePintura = usePintura
       this.pinturaOptions = pinturaOptions
       this.cropperOptions = cropperOptions
+      this.perPage = perPage ?? this.perPage
       this.perPageOptions = paginationOptions ?? this.perPageOptions
       this.error = undefined
     },

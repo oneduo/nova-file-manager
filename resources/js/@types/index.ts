@@ -28,6 +28,7 @@ export type BrowserConfig = {
   usePintura: boolean
   pinturaOptions?: PinturaOptions
   cropperOptions?: CropperOptions
+  perPage?: number
   paginationOptions?: number[]
   component?: string
 }
@@ -40,6 +41,7 @@ export type Config = {
   pinturaOptions: PinturaOptions
   cropperOptions: CropperOptions
   outdated?: boolean
+  perPage?: number
   paginationOptions?: number[]
 }
 

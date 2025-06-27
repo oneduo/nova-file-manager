@@ -70,9 +70,11 @@ class NovaServiceProvider extends NovaApplicationServiceProvider
     public function tools()
     {
         return [
-            NovaFileManager::make()->pagination(function (NovaRequest $request) {
-                return [10, 42, 84];
-            }),
+            NovaFileManager::make()
+                ->pagination(function (NovaRequest $request) {
+                    return [10, 42, 84];
+                })
+                ->perPage(fn () => 42),
         ];
     }
 

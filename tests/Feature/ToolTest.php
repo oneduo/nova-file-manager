@@ -11,7 +11,6 @@ use Laravel\Nova\Http\Middleware\HandleInertiaRequests;
 use Laravel\Nova\Http\Requests\NovaRequest;
 use Laravel\Nova\Nova;
 use Oneduo\NovaFileManager\NovaFileManager;
-
 use function Pest\Laravel\actingAs;
 
 it('can show the file manager tool', function () {
@@ -89,5 +88,50 @@ it('can show the file manager tool with custom pagination', function () {
                     ],
                 ])
                 ->where('config.paginationOptions', [10, 42, 84]);
+        });
+});
+
+it('can show the file manager tool with defined perPage', function () {
+    Nova::$tools = [
+        NovaFileManager::make()
+            ->pagination(function (NovaRequest $request) {
+                return [10, 42, 84];
+            })
+            ->perPage(function (NovaRequest $request) {
+                return 42;
+            }),
+    ];
+
+    Route::middlewareGroup('nova', [
+        'web',
+        HandleInertiaRequests::class,
+        DispatchServingNovaEvent::class,
+        BootTools::class,
+    ]);
+
+    actingAs(new User())
+        ->get(route('nova-file-manager.tool'))
+        ->assertInertia(function (Assert $page) {
+            $page
+                ->component('NovaFileManager', false)
+                ->where('config.upload', null)
+                ->where('config.singleDisk', false)
+                ->where('config.permissions', [
+                    'file' => [
+                        'delete' => true,
+                        'download' => true,
+                        'edit' => true,
+                        'rename' => true,
+                        'unzip' => true,
+                        'upload' => true,
+                    ],
+                    'folder' => [
+                        'create' => true,
+                        'delete' => true,
+                        'rename' => true,
+                    ],
+                ])
+                ->where('config.paginationOptions', [10, 42, 84])
+                ->where('config.perPage', 42);
         });
 });

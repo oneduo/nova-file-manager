@@ -34,7 +34,7 @@ purge:
 env:
   - AUTH_MODEL=Workbench\App\Models\User
   - FILESYSTEM_DRIVER=public
-  - APP_URL=http://localhost:8000
+  - APP_URL=http://127.0.0.1:8000
   - AWS_ACCESS_KEY_ID=minio
   - AWS_SECRET_ACCESS_KEY=password
   - AWS_DEFAULT_REGION=us-east-1

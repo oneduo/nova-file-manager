@@ -15,7 +15,8 @@ class UserInfoItem extends Repeatable
     {
         return [
             Text::make('Card'),
-            FileManager::make('Image')->wrapper('repeater'),
+            FileManager::make('Image')->wrapper('repeater')
+                ->perPage(fn () => 20),
         ];
     }
 }

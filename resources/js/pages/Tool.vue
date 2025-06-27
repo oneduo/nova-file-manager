@@ -25,6 +25,7 @@ onBeforeMount(() => {
     usePintura: props.config.usePintura || false,
     pinturaOptions: props.config.pinturaOptions || {},
     cropperOptions: props.config.cropperOptions || {},
+    perPage: props.config.perPage || 10,
     paginationOptions: props.config.paginationOptions || undefined,
   })
 
