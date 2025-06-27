@@ -16,6 +16,7 @@ use Laravel\Nova\Http\Requests\NovaRequest;
 use Laravel\Nova\Nova;
 use Laravel\Nova\Tool;
 use Oneduo\NovaFileManager\NovaFileManager;
+use Throwable;
 
 class ToolController extends Controller
 {
@@ -48,7 +49,15 @@ class ToolController extends Controller
                 ttl: (int) CarbonInterval::days(config('nova-file-manager.update_checker.ttl_in_days'))->totalSeconds,
                 callback: function () {
                     $current = InstalledVersions::getPrettyVersion('oneduo/nova-file-manager');
-                    $latest = Http::get('https://api.github.com/repos/oneduo/nova-file-manager/releases/latest')->json('tag_name');
+                    try {
+                        $latest = Http::get('https://api.github.com/repos/oneduo/nova-file-manager/releases/latest')
+                            ->throw()
+                            ->json('tag_name');
+                    } catch (Throwable $e) {
+                        report($e);
+                        $latest = $current;
+                    }
+
 
                     return version_compare($current, $latest, '<');
                 });
