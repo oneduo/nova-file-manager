@@ -2,6 +2,14 @@
 
 All notable changes to `nova-file-manager` will be documented in this file
 
+## v0.15.1 - 2025-06-29
+
+### What's Changed
+
+* fix: improve download URL generation and enhance disk validation logic
+
+**Full Changelog**: https://github.com/oneduo/nova-file-manager/compare/v0.15.0...v0.15.1
+
 ## v0.15.0 - 2025-06-27
 
 ### What's Changed
@@ -22,11 +30,13 @@ Field :
 FileManager::make('Image')->perPage(fn () => 20);
 
 
+
 ```
 Tool :
 
 ```php
 NovaFileManager::make()->perPage(fn () => 20);
+
 
 
 ```
@@ -543,6 +553,7 @@ rm -rf vendor/
 
 
 
+
 ```
 ```bash
 composer install oneduo/nova-file-manager
@@ -579,9 +590,11 @@ composer install oneduo/nova-file-manager
 
 
 
+
 ```
 ```bash
 composer rm bbs-lab/nova-file-manager
+
 
 
 
