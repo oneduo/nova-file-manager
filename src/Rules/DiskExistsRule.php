@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace Oneduo\NovaFileManager\Rules;
 
 use Illuminate\Contracts\Validation\Rule;
+use Oneduo\NovaFileManager\Contracts\Services\FileManagerContract;
 
 class DiskExistsRule implements Rule
 {
@@ -14,9 +15,9 @@ class DiskExistsRule implements Rule
     {
         $this->disk = $value;
 
-        $inFileManagerAvailableDisks = in_array($this->disk, config('nova-file-manager.available_disks'), true);
+        $inFileManagerAvailableDisks = in_array($this->disk, array_merge(config('nova-file-manager.available_disks'), ['default']), true);
 
-        $inFilesystemsDisks = array_key_exists($this->disk, config('filesystems.disks'));
+        $inFilesystemsDisks = array_key_exists($this->disk, array_merge(config('filesystems.disks'), ['default' => '']));
 
         return $this->disk === null || ($inFileManagerAvailableDisks && $inFilesystemsDisks);
     }

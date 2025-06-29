@@ -22,7 +22,7 @@ class TestResourceWithOnDemandFilesystem extends Resource
                 ->filesystem(function (NovaRequest $request) {
                     return Storage::build([
                         'driver' => 'local',
-                        'root' => storage_path('framework/testing/disks/public/users/'.$request->user()->getKey()),
+                        'root' => storage_path('app//public/users/'.$request->user()->getKey()),
                         'url' => config('app.url').'/storage/users/'.$request->user()->getKey(),
                         'visibility' => 'public',
                     ]);
