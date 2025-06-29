@@ -11,6 +11,8 @@ interface Props {
   detail?: boolean
   field: NovaField
   onDeselect?: (file: Entity) => void
+  resourceName?: string
+  resourceId?: string | number
 }
 
 const props = withDefaults(defineProps<Props>(), {
@@ -27,6 +29,29 @@ const preview = (file: Entity) => {
   if (!props.detail) {
     return
   }
+
+  store.configure({
+    initialFiles: props.field.value ?? [],
+    multiple: props.field.multiple ?? false,
+    limit: props.field.limit ?? null,
+    wrapper: props.field.wrapper ?? null,
+    resource: props.resourceName ?? undefined,
+    resourceId: props.resourceId,
+    attribute: props.field.attribute,
+    singleDisk: props.field.singleDisk ?? false,
+    permissions: props.field.permissions,
+    flexibleGroup: [],
+    callback: undefined,
+    usePintura:  false,
+    pinturaOptions: undefined,
+    cropperOptions: undefined,
+    perPage: 10,
+    paginationOptions: undefined,
+    component: undefined,
+  })
+  store.setDisk({
+    disk: props.field.singleDisk ? 'default' : props.field.value[0].disk,
+  })
 
   file.exists && openPreview(file)
 }
