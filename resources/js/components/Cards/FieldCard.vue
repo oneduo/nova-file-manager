@@ -42,7 +42,7 @@ const preview = (file: Entity) => {
     permissions: props.field.permissions,
     flexibleGroup: [],
     callback: undefined,
-    usePintura:  false,
+    usePintura: false,
     pinturaOptions: undefined,
     cropperOptions: undefined,
     perPage: 10,

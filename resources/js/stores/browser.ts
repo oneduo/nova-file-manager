@@ -91,8 +91,7 @@ const useBrowserStore = defineStore('nova-file-manager/browser', {
     perPageOptions: range(10, 60, 10),
     view: 'grid',
     modals: [],
-    callback: () => {
-    },
+    callback: () => {},
 
     // files, folders and other data
     files: undefined,
