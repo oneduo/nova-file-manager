@@ -39,6 +39,8 @@ class FileManager extends Field implements Cover, InteractsWithFilesystemContrac
 
     public ?string $wrapper = null;
 
+    public bool $simple = false;
+
     public function __construct($name, $attribute = null, ?Closure $storageCallback = null)
     {
         parent::__construct($name, $attribute);
@@ -158,6 +160,15 @@ class FileManager extends Field implements Cover, InteractsWithFilesystemContrac
             return null;
         }
 
+        $this->applyWrapper();
+
+        if ($this->simple) {
+            $value = new Asset(
+                disk: app(FileManagerContract::class)->getDisk(),
+                path: $value,
+            );
+        }
+
         if ($value instanceof Asset) {
             $value = collect([$value]);
         }
@@ -173,8 +184,6 @@ class FileManager extends Field implements Cover, InteractsWithFilesystemContrac
                 $value = collect([new Asset(...$value)]);
             }
         }
-
-        $this->applyWrapper();
 
         return $value
             ->map(function (Asset $asset) {
@@ -220,8 +229,49 @@ class FileManager extends Field implements Cover, InteractsWithFilesystemContrac
         $this->multiple = $wrapper->multiple;
         $this->limit = $wrapper->limit;
         $this->asHtml = $wrapper->asHtml;
+        $this->simple = $wrapper->simple;
 
         $this->merge($wrapper);
+
+        return $this;
+    }
+
+    public function simple(bool $simple = true, ?Closure $filesystem = null): static
+    {
+        $this->simple = $simple;
+
+        if (!$this->simple) {
+            $this->prepareStorageCallback();
+            $this->filesystem = null;
+            return $this;
+        }
+
+        $this->filesystem($filesystem ?? fn () => config('nova-file-manager.default_disk'));
+
+        $this->prepareStorageCallback(function (
+            NovaRequest $request,
+            $model,
+            string $attribute,
+            string $requestAttribute
+        ) {
+            $value = $request->input($requestAttribute);
+
+            try {
+                $payload = json_decode($value ?? '', true, 512, JSON_THROW_ON_ERROR);
+            } catch (JsonException) {
+                $payload = [];
+            }
+
+            $files = collect($payload)->map(fn (array $file) => $file['path'] ?? null)->filter()->values();
+
+            if ($this->multiple) {
+                $value = $files->all();
+            } else {
+                $value = $files->first();
+            }
+
+            return [$attribute => $value];
+        });
 
         return $this;
     }
