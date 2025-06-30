@@ -11,6 +11,7 @@ use Laravel\Nova\Fields\Repeater;
 use Laravel\Nova\Fields\Text;
 use Laravel\Nova\Http\Requests\NovaRequest;
 use Laravel\Nova\Resource;
+use Oneduo\NovaFileManager\FileManager;
 use Workbench\App\Nova\Repeater\UserInfoItem;
 
 class User extends Resource
@@ -67,6 +68,15 @@ class User extends Resource
                 ->repeatables([
                     UserInfoItem::make(),
                 ]),
+
+            FileManager::make('Simple image')
+                ->simple()
+                ->rules('nullable')
+                ->hideFromIndex(),
+
+            FileManager::make('Image')
+                ->rules('nullable')
+                ->hideFromIndex(),
         ];
     }
 

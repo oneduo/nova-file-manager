@@ -463,6 +463,7 @@ trait InteractsWithFilesystem
             'canCreateFolder',
             'canDeleteFile',
             'canDeleteFolder',
+            'canDownloadFile',
             'canRenameFile',
             'canRenameFolder',
             'canUnzipFile',

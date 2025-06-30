@@ -807,6 +807,49 @@ const useBrowserStore = defineStore('nova-file-manager/browser', {
       component,
     }: BrowserConfig) {
       this.isField = true
+
+      this.configure({
+        initialFiles,
+        multiple,
+        limit,
+        wrapper,
+        resource,
+        resourceId,
+        attribute,
+        singleDisk,
+        permissions,
+        flexibleGroup,
+        callback,
+        usePintura,
+        pinturaOptions,
+        cropperOptions,
+        perPage,
+        paginationOptions,
+        component,
+      })
+
+      this.openModal({ name: BROWSER_MODAL_NAME })
+      this.setSelection({ files: [...initialFiles] })
+    },
+
+    configure({
+      multiple,
+      limit,
+      wrapper,
+      resource,
+      resourceId,
+      attribute,
+      singleDisk,
+      permissions,
+      flexibleGroup,
+      callback,
+      usePintura,
+      pinturaOptions,
+      cropperOptions,
+      perPage,
+      paginationOptions,
+      component,
+    }: BrowserConfig) {
       this.multiple = multiple
       this.limit = limit
       this.wrapper = wrapper
@@ -825,9 +868,6 @@ const useBrowserStore = defineStore('nova-file-manager/browser', {
       this.permissions = permissions
       this.disk = undefined
       this.component = component
-
-      this.openModal({ name: BROWSER_MODAL_NAME })
-      this.setSelection({ files: [...initialFiles] })
     },
 
     closeBrowser() {
