@@ -30,6 +30,6 @@ jobs:
           TAILWIND_MODE: build
 
       - name: Commit changes
-        uses: stefanzweifel/git-auto-commit-action@v5
+        uses: stefanzweifel/git-auto-commit-action@v6
         with:
           commit_message: "build(bot): build tool assets"
