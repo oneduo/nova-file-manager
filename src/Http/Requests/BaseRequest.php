@@ -62,6 +62,13 @@ class BaseRequest extends NovaRequest
             ? $this->flexibleAvailableFields($resource)
             : $resource->availableFields($this);
 
+        // Flatten repeater fields before searching by attribute
+        $fields = $fields->map(
+            fn($field) => get_class($field) === 'Laravel\Nova\Fields\Repeater'
+                ? $field->repeatables->map->fields($this)->flatten(1)
+                : $field
+        )->flatten(1);
+
         return $fields
             ->whereInstanceOf(FileManager::class)
             ->findFieldByAttribute($this->attribute, function () {
