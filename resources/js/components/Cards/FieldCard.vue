@@ -48,6 +48,7 @@ const preview = (file: Entity) => {
     perPage: 10,
     paginationOptions: undefined,
     component: undefined,
+    modalSize: props.field.modalSize ?? '7xl',
   })
   store.setDisk({
     disk: props.field.singleDisk ? 'default' : props.field.value[0].disk,

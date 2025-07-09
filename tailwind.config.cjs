@@ -61,4 +61,8 @@ module.exports = {
       addUtilities(utilities)
     },
   ],
+  safeList: [
+    'max-w-7xl',
+    'max-w-full',
+  ]
 }

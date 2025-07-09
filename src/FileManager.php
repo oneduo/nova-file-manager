@@ -86,6 +86,13 @@ class FileManager extends Field implements Cover, InteractsWithFilesystemContrac
         return $this;
     }
 
+    public function modalSize(string $size = '7xl'): static
+    {
+        $this->withMeta(['modalSize' => $size]);
+
+        return $this;
+    }
+
     public function resolveThumbnailUrl()
     {
         return is_callable($this->thumbnailUrlCallback) && !empty($this->value)
