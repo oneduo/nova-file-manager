@@ -120,6 +120,7 @@ export default defineComponent({
         perPage: this.currentField.perPage ?? 10,
         paginationOptions: this.currentField.paginationOptions ?? undefined,
         component: this.$inertia?.page?.component,
+        isField: true,
       })
     },
 

@@ -805,9 +805,8 @@ const useBrowserStore = defineStore('nova-file-manager/browser', {
       perPage,
       paginationOptions,
       component,
+      isField,
     }: BrowserConfig) {
-      this.isField = true
-
       this.configure({
         initialFiles,
         multiple,
@@ -826,6 +825,7 @@ const useBrowserStore = defineStore('nova-file-manager/browser', {
         perPage,
         paginationOptions,
         component,
+        isField,
       })
 
       this.openModal({ name: BROWSER_MODAL_NAME })
@@ -849,6 +849,7 @@ const useBrowserStore = defineStore('nova-file-manager/browser', {
       perPage,
       paginationOptions,
       component,
+      isField = false,
     }: BrowserConfig) {
       this.multiple = multiple
       this.limit = limit
@@ -868,6 +869,7 @@ const useBrowserStore = defineStore('nova-file-manager/browser', {
       this.permissions = permissions
       this.disk = undefined
       this.component = component
+      this.isField = isField
     },
 
     closeBrowser() {
@@ -913,7 +915,6 @@ const useBrowserStore = defineStore('nova-file-manager/browser', {
       this.clearSelection()
 
       this.limit = undefined
-      this.isField = false
       this.multiple = true
       this.singleDisk = singleDisk
       this.permissions = permissions

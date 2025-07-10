@@ -151,11 +151,11 @@ const copy = (file: Entity) => {
             <PencilSquareIcon class="w-5 h-5" />
           </IconButton>
 
-          <IconButton ref="buttonRef" @click.self="closePreview" :title="__('NovaFileManager.actions.close')">
+          <IconButton ref="buttonRef" @click="closePreview" :title="__('NovaFileManager.actions.close')">
             <XMarkIcon class="w-5 h-5" />
           </IconButton>
 
-          <IconButton v-if="isField" variant="success" @click="selectThenConfirm">
+          <IconButton v-if="isField && !props.readOnly" variant="success" @click="selectThenConfirm">
             <CheckIcon class="h-5 w-5" />
           </IconButton>
         </div>

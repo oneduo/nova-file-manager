@@ -50,6 +50,16 @@ class BaseRequest extends NovaRequest
         return filter_var($this->fieldMode, FILTER_VALIDATE_BOOL) ? $this->resolveField() : $this->resolveTool();
     }
 
+    // Override resource() to use $this->resource instead of $this->route('resource')
+    public function resource()
+    {
+        return tap(once(function () {
+            return Nova::resourceForKey($this->resource);
+        }), static function ($resource) {
+            abort_if(\is_null($resource), 404);
+        });
+    }
+
     public function resolveField(): ?InteractsWithFilesystem
     {
         if (!empty($this->wrapper) && $field = FileManager::forWrapper($this->wrapper)) {
