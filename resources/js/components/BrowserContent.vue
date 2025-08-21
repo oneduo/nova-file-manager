@@ -45,7 +45,7 @@ withDefaults(defineProps<Props>(), {
       <Disclosure v-if="files?.length" v-slot="{ open }" :default-open="true">
         <DisclosureButton>
           <div class="flex flex-row w-full items-center gap-x-1">
-            <span class="text-gray-500 text-xs">Files</span>
+            <span class="text-gray-500 text-xs">{{ __('Files') }}</span>
             <ChevronDownIcon v-if="open" class="h-3 w-3 text-gray-600" />
             <ChevronRightIcon v-else class="h-3 w-3 text-gray-600" />
           </div>
