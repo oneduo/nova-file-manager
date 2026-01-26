@@ -16,13 +16,23 @@ class Asset implements CastsAttributes
      *
      * @throws \JsonException
      */
-    public function get($model, string $key, $value, array $attributes): ?AssetObject
+    public function get($model, string $key, $value, array $attributes): AssetObject|string|null
     {
         if ($value === null) {
             return null;
         }
 
-        return new AssetObject(...json_decode($value, true, 512, JSON_THROW_ON_ERROR));
+        if (is_string($value)) {
+            $value = json_decode($value, true, 512, JSON_THROW_ON_ERROR);
+        } elseif (is_a($value, \stdClass::class)) {
+            $value = (array) $value;
+        }
+
+        if (static::shouldTransformToUrl()) {
+            return static::transformArrayToUrl($value);
+        }
+
+        return new AssetObject(...$value);
     }
 
     /**
@@ -42,5 +52,42 @@ class Asset implements CastsAttributes
         }
 
         throw new InvalidArgumentException('Invalid value for Asset cast');
+    }
+
+    /**
+     * @return bool
+     */
+    public static function shouldTransformToUrl(): bool
+    {
+        if ($confirmClass = config('nova-file-manager.custom_confirm_transform_class')) {
+            return (bool)(new $confirmClass)();
+        }
+
+        if (! $routes = config('nova-file-manager.array_to_url_routes')) {
+            return false;
+        }
+
+        foreach ($routes as $route) {
+            if (request()->routeIs($route) || request()->is($route)) {
+                return true;
+            }
+        }
+
+        return false;
+    }
+
+    /**
+     * @param array $data
+     * @return string
+     */
+    public static function transformArrayToUrl(array $data): string
+    {
+        $class = config('nova-file-manager.transform_to_url_class');
+
+        try {
+            return (string) new $class($data);
+        } catch (\Exception $e) {
+            return '';
+        }
     }
 }

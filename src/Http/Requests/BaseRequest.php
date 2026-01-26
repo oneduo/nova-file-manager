@@ -10,10 +10,12 @@ use Laravel\Nova\Http\Requests\NovaRequest;
 use Laravel\Nova\Nova;
 use Laravel\Nova\Resource;
 use Laravel\Nova\Tool;
+use MobileNowGroup\PageBuilder\FlexibleComponent;
 use Oneduo\NovaFileManager\Contracts\Services\FileManagerContract;
 use Oneduo\NovaFileManager\Contracts\Support\InteractsWithFilesystem;
 use Oneduo\NovaFileManager\FileManager;
 use Oneduo\NovaFileManager\NovaFileManager;
+use Whitecube\NovaFlexibleContent\Flexible;
 
 /**
  * @property-read ?string $disk
@@ -62,6 +64,35 @@ class BaseRequest extends NovaRequest
             ? $this->flexibleAvailableFields($resource)
             : $resource->availableFields($this);
 
+        // Flatten fields to handle Panels and complex field structures
+        $flattenedFields = $fields->map(function ($field) {
+            if ($field instanceof \Laravel\Nova\Fields\Panel) {
+                return $field->data;
+            }
+            return $field;
+        })->flatten();
+
+        $fields = new FieldCollection($flattenedFields->all());
+
+        // Check for FileManager field in flattened fields
+        $fileManagerField = $fields
+            ->whereInstanceOf(FileManager::class)
+            ->findFieldByAttribute($this->attribute);
+
+        if ($fileManagerField) {
+            return $fileManagerField;
+        }
+
+        // Special handling for SKU fields - check if it's a SKU field context
+        if ($this->isSkuFieldContext($fields)) {
+            // Look for FileManager fields within SKU field structure
+            $skuFileManager = $this->findSkuFileManagerField($fields);
+            if ($skuFileManager) {
+                return $skuFileManager;
+            }
+        }
+
+        // If not found, try standard Nova field resolution
         return $fields
             ->whereInstanceOf(FileManager::class)
             ->findFieldByAttribute($this->attribute, function () {
@@ -97,7 +128,7 @@ class BaseRequest extends NovaRequest
     {
         /** @var \Whitecube\NovaFlexibleContent\Flexible $field */
         $field = $fields
-            ->whereInstanceOf('Whitecube\NovaFlexibleContent\Flexible')
+            ->whereInstanceOf([Flexible::class, FlexibleComponent::class])
             ->findFieldByAttribute($attribute, function () {
                 abort(404);
             });
@@ -178,5 +209,64 @@ class BaseRequest extends NovaRequest
     public function authorizationActionAttribute(?string $class = null): string
     {
         return (string) str($class ?? static::class)->classBasename()->replace('Request', '')->snake(' ');
+    }
+
+    /**
+     * Check if the current request is in a SKU field context
+     *
+     * @param FieldCollection $fields
+     * @return bool
+     */
+    protected function isSkuFieldContext(FieldCollection $fields): bool
+    {
+        // Duck typing: SKU field has skuFields property
+        return $fields->contains(function ($field) {
+            return property_exists($field, 'skuFields') && is_array($field->skuFields ?? null);
+        });
+    }
+
+    /**
+     * Find FileManager field within SKU field structure
+     *
+     * @param FieldCollection $fields
+     * @return FileManager|null
+     */
+    protected function findSkuFileManagerField(FieldCollection $fields): ?FileManager
+    {
+        // Look for fields with skuFields property
+        $skuField = $fields->first(function ($field) {
+            return property_exists($field, 'skuFields') && is_array($field->skuFields ?? null);
+        });
+
+        if (!$skuField || !is_array($skuField->skuFields ?? null)) {
+            return null;
+        }
+
+        // Check if the requested attribute matches any FileManager field in skuFields
+        $childAttribute = $this->getChildAttributeFromSkuPath($this->attribute);
+
+        foreach ($skuField->skuFields as $field) {
+            if ($field instanceof FileManager && $field->attribute === $childAttribute) {
+                return $field;
+            }
+        }
+
+        return null;
+    }
+
+    /**
+     * Extract child attribute from SKU field path (e.g., "skus.0.media" -> "media")
+     *
+     * @param string $attribute
+     * @return string
+     */
+    protected function getChildAttributeFromSkuPath(string $attribute): string
+    {
+        // Handle patterns like "skus.0.media", "skus.1.hero_media", etc.
+        if (preg_match('/^skus\.\d+\.(.*)$/', $attribute, $matches)) {
+            return $matches[1];
+        }
+
+        return $attribute;
     }
 }

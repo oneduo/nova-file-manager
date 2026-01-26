@@ -16,6 +16,10 @@ class IndexController extends Controller
      */
     public function __invoke(IndexRequest $request)
     {
+        if (!$request->has('disk')) {
+            $request->merge(['disk' => config('nova-file-manager.default_disk')]);
+        }
+
         $manager = $request->manager();
 
         /** @var \Illuminate\Pagination\LengthAwarePaginator $paginator */

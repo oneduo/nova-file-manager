@@ -13,6 +13,7 @@ interface Props {
   onDeselect?: (file: Entity) => void
   resourceName?: string
   resourceId?: string | number
+  showAdditionalInfo?: boolean
 }
 
 const props = withDefaults(defineProps<Props>(), {
@@ -48,6 +49,7 @@ const preview = (file: Entity) => {
     perPage: 10,
     paginationOptions: undefined,
     component: undefined,
+    showAdditionalInfo: props.field.allowedExtensions ?? false,
   })
   store.setDisk({
     disk: props.field.singleDisk ? 'default' : props.field.value[0].disk,
@@ -64,6 +66,7 @@ const preview = (file: Entity) => {
     :on-deselect="onDeselect"
     :single-disk="singleDisk"
     :field-mode="true"
+    :show-additional-info="showAdditionalInfo"
     @click.prevent.stop="preview(file)"
   />
 </template>

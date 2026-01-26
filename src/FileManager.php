@@ -41,6 +41,8 @@ class FileManager extends Field implements Cover, InteractsWithFilesystemContrac
 
     public bool $simple = false;
 
+    protected array $allowedExtensions = [];
+
     public function __construct($name, $attribute = null, ?Closure $storageCallback = null)
     {
         parent::__construct($name, $attribute);
@@ -84,6 +86,19 @@ class FileManager extends Field implements Cover, InteractsWithFilesystemContrac
         $this->wrapper = $name;
 
         return $this;
+    }
+
+    /**
+     * @param array|string|null $extensions
+     * @return $this
+     */
+    public function allowedExtensions(array|string|null $extensions): static
+    {
+        try {
+            $this->allowedExtensions = array_filter(is_array($extensions) ? $extensions : explode(',', $extensions ?? ''));
+        } finally {
+            return $this;
+        }
     }
 
     public function resolveThumbnailUrl()
@@ -287,6 +302,7 @@ class FileManager extends Field implements Cover, InteractsWithFilesystemContrac
                 'limit' => $this->multiple ? $this->limit : 1,
                 'asHtml' => $this->asHtml,
                 'wrapper' => $this->wrapper,
+                'allowedExtensions' => $this->allowedExtensions,
             ],
             $this->options(),
         );

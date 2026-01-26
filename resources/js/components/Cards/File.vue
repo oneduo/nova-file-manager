@@ -21,6 +21,7 @@ interface Props {
   onDeselect?: (file: Entity) => void
   singleDisk?: boolean
   fieldMode?: boolean
+  showAdditionalInfo?: boolean
 }
 
 const props = withDefaults(defineProps<Props>(), {
@@ -97,7 +98,7 @@ const name = computed(() => (missing.value ? props.file.path : props.file.name))
     <p
       v-if="!missing || isUploading"
       :class="[
-        'pointer-events-none mt-2 block truncate font-medium text-gray-900 dark:text-gray-50 text-left w-full',
+        'pointer-events-none mt-1 block truncate font-medium text-gray-900 dark:text-gray-50 text-left w-full pb-1',
         isUploading || onDeselect ? 'text-xs' : 'text-sm',
       ]"
       :title="!isUploading ? name : file.name"
@@ -109,11 +110,12 @@ const name = computed(() => (missing.value ? props.file.path : props.file.name))
       {{ __('NovaFileManager.fileMissing', { path: file.path }) }}
     </p>
 
-    <div
+    <div v-if="showAdditionalInfo"
       class="gap-x-0.5 inline-flex flex-wrap items-center text-xs pointer-events-none block font-medium text-gray-500 text-left break-all"
     >
       <span v-if="file.size">{{ file.size }}</span>
-      <span v-if="fieldMode && !singleDisk && file.disk?.length > 0" class="ml-0.5">&centerdot; {{ file.disk }}</span>
+      <span v-if="file.size && (fieldMode && !singleDisk && file.disk?.length > 0)">&centerdot; </span>
+      <span v-if="fieldMode && !singleDisk && file.disk?.length > 0" class="ml-0.5">{{ file.disk }}</span>
     </div>
 
     <span class="absolute top-1 right-1" v-if="selected">

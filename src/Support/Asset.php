@@ -20,6 +20,7 @@ class Asset implements Arrayable, JsonSerializable
     public function __construct(
         public string $disk,
         public string $path,
+        public ?string $url = null,
         public ?Filesystem $filesystem = null,
     ) {
     }
@@ -43,6 +44,7 @@ class Asset implements Arrayable, JsonSerializable
         return [
             'disk' => $this->disk,
             'path' => $this->path,
+            'url' => $this->url,
         ];
     }
 

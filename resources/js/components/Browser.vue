@@ -23,12 +23,31 @@ const pagination = computed(() => store.pagination)
 const view = computed(() => store.view)
 const isFetchingData = computed(() => store.isFetchingData)
 const queue = computed(() => store.queue)
+const allowedExtensions = computed(() => store.allowedExtensions)
 const dragActive = ref(false)
 const dragFiles = ref([] as File[])
 const showTour = ref(false)
 
 // ACTIONS
 const { showUploadFile } = usePermissions()
+
+// HELPERS
+const isFileAllowed = (file: File): boolean => {
+  if (!allowedExtensions.value || allowedExtensions.value.length === 0) {
+    return true
+  }
+
+  const fileExtension = file.name.split('.').pop()?.toLowerCase()
+  if (!fileExtension) {
+    return false
+  }
+
+  return allowedExtensions.value.includes(fileExtension)
+}
+
+const filterAllowedFiles = (files: File[]): File[] => {
+  return files.filter(isFileAllowed)
+}
 
 // HOOKS
 onMounted(() => {
@@ -66,7 +85,11 @@ const dragDrop = async (event: DragEvent) => {
     return
   }
 
-  dragFiles.value = (await dataTransfer(event.dataTransfer?.items)) as File[]
+  if (!event.dataTransfer?.items) {
+    return
+  }
+
+  dragFiles.value = (await dataTransfer(event.dataTransfer.items)) as File[]
 }
 
 const submit = async () => {
@@ -78,7 +101,14 @@ const submit = async () => {
     return
   }
 
-  store.upload({ files: dragFiles.value })
+  const allowedFiles = filterAllowedFiles(dragFiles.value)
+
+  if (allowedFiles.length === 0) {
+    dragActive.value = false
+    return
+  }
+
+  store.upload({ files: allowedFiles })
 
   store.openModal({ name: QUEUE_MODAL_NAME })
 

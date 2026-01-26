@@ -22,6 +22,25 @@ const files = ref<File[] | FileList>()
 const store = useBrowserStore()
 const isOpen = computed(() => store.isOpen(props.name))
 const darkMode = computed(() => store.dark)
+const allowedExtensions = computed(() => store.allowedExtensions)
+
+// HELPERS
+const isFileAllowed = (file: File): boolean => {
+  if (!allowedExtensions.value || allowedExtensions.value.length === 0) {
+    return true
+  }
+  
+  const fileExtension = file.name.split('.').pop()?.toLowerCase()
+  if (!fileExtension) {
+    return false
+  }
+  
+  return allowedExtensions.value.includes(fileExtension)
+}
+
+const filterAllowedFiles = (files: File[]): File[] => {
+  return files.filter(isFileAllowed)
+}
 
 // ACTIONS
 const dragEnter = () => (active.value = true)
@@ -33,13 +52,25 @@ const openModal = (name: string) => store.openModal({ name })
 
 const submit = () => {
   if (files.value?.length) {
+    let filesToUpload: File[] = []
+    
     if (files.value instanceof FileList) {
-      props.upload(Array.from(files.value))
+      filesToUpload = Array.from(files.value)
     }
 
     if (files.value instanceof Array) {
-      props.upload(files.value)
+      filesToUpload = files.value
     }
+    
+    const allowedFiles = filterAllowedFiles(filesToUpload)
+    
+    if (allowedFiles.length === 0) {
+      closeModal()
+      active.value = false
+      return
+    }
+    
+    props.upload(allowedFiles)
   }
 
   closeModal()
@@ -107,6 +138,7 @@ watch(files, () => submit())
                         name="file-upload"
                         type="file"
                         multiple
+                        :accept="allowedExtensions && allowedExtensions.length > 0 ? allowedExtensions.map(ext => '.' + ext).join(',') : undefined"
                         @change="onChange"
                       />
                     </label>

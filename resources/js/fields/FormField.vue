@@ -78,6 +78,10 @@ export default defineComponent({
         ...attrs,
       }
     },
+
+    allowedExtensions() {
+      return this.currentField?.allowedExtensions || []
+    },
   },
 
   methods: {
@@ -111,6 +115,7 @@ export default defineComponent({
         singleDisk: this.currentField.singleDisk ?? false,
         permissions: this.currentField.permissions,
         flexibleGroup: this.flexibleGroup,
+        allowedExtensions: this.allowedExtensions,
         callback: selection => {
           this.value = selection
         },
@@ -139,7 +144,7 @@ export default defineComponent({
       let group = component.$parent
       let parent = component.$parent?.$parent?.$parent?.$parent
 
-      if (parent?.field?.component === 'nova-flexible-content') {
+      if (parent?.field?.component === 'nova-flexible-content' || parent?.field?.component === 'nova-page-builder') {
         elements.unshift(...this.resolveFlexible(parent))
         elements.push(`${group?.group?.name}:${parent.field.sortableUriKey}`)
       }

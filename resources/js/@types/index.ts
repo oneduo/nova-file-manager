@@ -31,6 +31,7 @@ export type BrowserConfig = {
   perPage?: number
   paginationOptions?: number[]
   component?: string
+  allowedExtensions?: string[]
 }
 
 export type Config = {
@@ -113,6 +114,7 @@ export type NovaField = {
   visible: boolean
   wrapper: string
   wrapping: boolean
+  allowedExtensions?: string[]
 }
 
 export type Pagination = {

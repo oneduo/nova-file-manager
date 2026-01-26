@@ -77,6 +77,7 @@ interface State {
   pinturaOptions?: PinturaOptions
   cropperOptions?: CropperOptions
   component?: string
+  allowedExtensions?: string[]
 }
 
 const useBrowserStore = defineStore('nova-file-manager/browser', {
@@ -602,7 +603,7 @@ const useBrowserStore = defineStore('nova-file-manager/browser', {
           Accept: 'application/json',
           'X-CSRF-TOKEN': csrf(),
         },
-      })
+      } as any)
 
       files.forEach(file => {
         uploader.addFile(file)
@@ -805,6 +806,7 @@ const useBrowserStore = defineStore('nova-file-manager/browser', {
       perPage,
       paginationOptions,
       component,
+      allowedExtensions,
     }: BrowserConfig) {
       this.isField = true
 
@@ -826,6 +828,7 @@ const useBrowserStore = defineStore('nova-file-manager/browser', {
         perPage,
         paginationOptions,
         component,
+        allowedExtensions,
       })
 
       this.openModal({ name: BROWSER_MODAL_NAME })
@@ -833,6 +836,7 @@ const useBrowserStore = defineStore('nova-file-manager/browser', {
     },
 
     configure({
+      initialFiles,
       multiple,
       limit,
       wrapper,
@@ -849,6 +853,7 @@ const useBrowserStore = defineStore('nova-file-manager/browser', {
       perPage,
       paginationOptions,
       component,
+      allowedExtensions,
     }: BrowserConfig) {
       this.multiple = multiple
       this.limit = limit
@@ -868,6 +873,10 @@ const useBrowserStore = defineStore('nova-file-manager/browser', {
       this.permissions = permissions
       this.disk = undefined
       this.component = component
+      this.allowedExtensions = allowedExtensions
+
+      this.openModal({ name: BROWSER_MODAL_NAME })
+      this.setSelection({ files: [...initialFiles] })
     },
 
     closeBrowser() {
@@ -888,6 +897,7 @@ const useBrowserStore = defineStore('nova-file-manager/browser', {
       this.perPageOptions = range(10, 60, 10)
       this.permissions = undefined
       this.disk = undefined
+      this.allowedExtensions = undefined
 
       this.setSelection({ files: [] })
       this.closeModal({ name: BROWSER_MODAL_NAME })
